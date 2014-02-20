@@ -28,7 +28,7 @@ def zipdir(dirPath=None, zipFilePath=None, includeDirInZip=True, regEx=None, exc
     for (archiveDirPath, dirNames, fileNames) in os.walk(dirPath):
         if archiveDirPath.find('\\.') != -1:
             print("Excluded: "+archiveDirPath)
-            continue 
+            continue
         print("Packing dir: "+archiveDirPath)
         for fileName in fileNames:
             if regEx and not re.match(regEx, fileName):
@@ -36,7 +36,7 @@ def zipdir(dirPath=None, zipFilePath=None, includeDirInZip=True, regEx=None, exc
                continue
             if exclude_regex and re.match(exclude_regex, fileName):
                print("Excluded by exclude_regex: "+fileName)
-               continue               
+               continue
             #if fileName[-1] == '~' or (fileName[0] == '.' and fileName != '.htaccess'):
                 #skip backup files and all hidden files except .htaccess
                 #continue
@@ -52,15 +52,15 @@ def zipdir(dirPath=None, zipFilePath=None, includeDirInZip=True, regEx=None, exc
             #Here to allow for inserting an empty directory.  Still TBD/TODO.
             outFile.writestr(zipInfo, "")
     outFile.close()
-    
+
 def main():
     regex=None
-    exclude_regex=None     
+    exclude_regex=None
     if len(sys.argv)>4:
       arg0,input,output,regex,exclude_regex = sys.argv
     else:
       arg0,input,output = sys.argv
-      
+
     filename = output
     directory = input
     zipdir(directory, filename, False,regex,exclude_regex)
