@@ -5,3 +5,7 @@
 *.oex
 *.zip
 *.safariexz
+
+scripts/
+background.js
+content_script.js
