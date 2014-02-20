@@ -9,8 +9,8 @@
       "en": "happy"
    },
    "description" : {
-      "en" : "Extend functional of vk.com",
-      "ru-ru" : "Расширение функционала социальной сети Вконтакте (vk.com)"
+      "en" : "Extension for Vk.com insired by and based on VkOpt.",
+      "ru-ru" : "Расширение для Vk.com, вдохновлённое и основанное на VkOpt."
    },
    "author": {
       "name": "Nikita Litvin"
