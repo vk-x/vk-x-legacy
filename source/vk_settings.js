@@ -1,15 +1,12 @@
 // ==UserScript==
-// @name          VKOpt 2.x
-// @author        KiberInfinity( /id13391307 )
-// @namespace     http://vkopt.net/
-// @description   Vkontakte Optimizer 2.x
+// @name          happy 0.1.0
+// @author        Nikita Litvin
+// @namespace     https://github.com/deltaidea/happy
+// @description   Extension for Vk.com insired by and based on VkOpt.
 // @include       *vkontakte.ru*
 // @include       *vk.com*
 // @include       *durov.ru*
 // ==/UserScript==
-//
-// (c) All Rights Reserved. VkOpt.
-//
 
 function InstallRelease(){
   if (window.vkopt_plugins && vkopt_plugins['vkdislikes']){

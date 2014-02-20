@@ -1,12 +1,12 @@
 // ==UserScript==
-// @description   VkOpt Languages
+// @name          happy 0.1.0
+// @author        Nikita Litvin
+// @namespace     https://github.com/deltaidea/happy
+// @description   Extension for Vk.com insired by and based on VkOpt.
 // @include       *vkontakte.ru*
 // @include       *vkadre.ru*
 // @include       *vk.com*
 // ==/UserScript==
-//
-// (c) All Rights Reserved. VkOpt.
-//
 
 
 vk_lang_ru={

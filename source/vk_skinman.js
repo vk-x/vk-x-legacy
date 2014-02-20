@@ -1,11 +1,11 @@
 // ==UserScript==
-// @description   Vkontakte Optimizer StyleModule (by KiberInfinity id13391307)
+// @name          happy 0.1.0
+// @author        Nikita Litvin
+// @namespace     https://github.com/deltaidea/happy
+// @description   Extension for Vk.com insired by and based on VkOpt.
 // @include       *vkontakte.ru*
 // @include       *vk.com*
 // ==/UserScript==
-//
-// (c) All Rights Reserved. VkOpt.
-//
 
 var VK_SKINMAN_VER=2;
 var VK_CSS_CATALOG_BASE_URL='http://vkopt.net/css/vk_css_list.js';

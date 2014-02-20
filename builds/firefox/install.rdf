@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
   <Description about="urn:mozilla:install-manifest">
-    <em:id>vkopt_moz@vkopt.net.ru</em:id>
+    <em:id>happy@deltaidea.github.com</em:id>
     <em:type>2</em:type>
     <em:unpack>true</em:unpack>
-    <em:name>VkOpt</em:name>
-    <em:version>2.2.1.131211</em:version>
-    <em:creator>KiberПсих</em:creator>
-    <em:description>Добавление множества функций для сайта ВКонтакте.ру</em:description>
+    <em:name>happy</em:name>
+    <em:version>0.1.0</em:version>
+    <em:creator>Nikita Litvin</em:creator>
+    <em:description>Extension for Vk.com insired by and based on VkOpt.</em:description>
     <em:contributor></em:contributor>
-    <em:homepageURL>http://vkopt.net/</em:homepageURL>
+    <em:homepageURL>https://github.com/deltaidea/happy</em:homepageURL>
 	 <em:iconURL>chrome://vkopt/skin/icon.png</em:iconURL>
     <em:icon64URL>chrome://vkopt/skin/icon64.png</em:icon64URL>
     <em:updateURL>http://vkopt.net/upd/update.rdf</em:updateURL>

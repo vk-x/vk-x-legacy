@@ -1,11 +1,11 @@
 // ==UserScript==
-// @description   Vkontakte Optimizer Module (by KiberInfinity id13391307)
+// @name          happy 0.1.0
+// @author        Nikita Litvin
+// @namespace     https://github.com/deltaidea/happy
+// @description   Extension for Vk.com insired by and based on VkOpt.
 // @include       *vkontakte.ru*
 // @include       *vk.com*
 // ==/UserScript==
-//
-// (c) All Rights Reserved. VkOpt.
-//
 
 
 /* TEXTAREAS FUNCTIONS */

@@ -1,12 +1,12 @@
 ﻿[{
    "type": "extension",
    "frameworkVersion": "1.0.6",
-   "version": "2.2.1.0",
+   "version": "0.1.0",
    "guid": "{458D9EF6-7F82-4E4A-9D1C-DCCD956E5583}",
-   "name": "VkOpt",
+   "name": "happy",
    "title": {
-      "ru-ru": "VkOpt",
-      "en": "VkOpt",
+      "ru-ru": "happy",
+      "en": "happy",
    },
    'description' : {
       'en' : 'Extend functional of vk.com',
@@ -14,7 +14,7 @@
    },
 
    'author': {
-      'name': 'KiberInfinity'
+      'name': 'Nikita Litvin'
    },
    'permissions': {
       'httpRequest': ['*.vkopt.net', 'vkopt.net', '*.googlecode.com','*.*'],
