@@ -6,23 +6,24 @@
    "name": "happy",
    "title": {
       "ru-ru": "happy",
-      "en": "happy",
+      "en": "happy"
    },
-   'description' : {
-      'en' : 'Extend functional of vk.com',
-      'ru-ru' : 'Расширение функционала социальной сети Вконтакте (vk.com)'
+   "description" : {
+      "en" : "Extend functional of vk.com",
+      "ru-ru" : "Расширение функционала социальной сети Вконтакте (vk.com)"
+   },
+   "author": {
+      "name": "Nikita Litvin"
    },
 
-   'author': {
-      'name': 'Nikita Litvin'
+   "permissions": {
+      "httpRequest": ["*.vkopt.net", "vkopt.net", "*.googlecode.com","*.*"],
+      "notifications": true
    },
-   'permissions': {
-      'httpRequest': ['*.vkopt.net', 'vkopt.net', '*.googlecode.com','*.*'],
-      'notifications': true
-   },
-   'service': {
-      'main': 'service.htm',
-      'debug': false
+
+   "service": {
+      "main": "service.htm",
+      "debug": false
    },
 
    "actions": [{
