@@ -1,8 +1,8 @@
 ﻿{
-  "appName": {
-    "message": "VkOpt"
-  },
-  "appDesc": {
-    "message": "Improve your VK.com. Official site and support: http://vkopt.net/"
-  }
+	"appName": {
+		"message": "happy"
+	},
+	"appDesc": {
+		"message": "Extension for Vk.com insired by and based on VkOpt."
+	}
 }
