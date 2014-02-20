@@ -13,5 +13,6 @@ copy background.js builds\vkopt.safariextension
 copy content_script.js builds\chrome
 copy content_script.js builds\firefox\chrome\content
 copy content_script.js builds\maxthon
+mkdir builds\opera.extension\includes 2> NUL
 copy content_script.js builds\opera.extension\includes
 copy content_script.js builds\vkopt.safariextension

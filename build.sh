@@ -12,5 +12,6 @@ cp background.js builds/vkopt.safariextension
 cp content_script.js builds/chrome
 cp content_script.js builds/firefox/chrome/content
 cp content_script.js builds/maxthon
+mkdir -p builds/opera.extension/includes
 cp content_script.js builds/opera.extension/includes
 cp content_script.js builds/vkopt.safariextension
