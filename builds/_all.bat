@@ -1,24 +1,21 @@
 @set /p answer=Version:
 
-@echo need update on server "config.json" and "scripts" > vkopt_%answer%_!onserver.txt
+@echo need update on server "config.json" and "scripts" > "happy-%answer%-REMINDER.txt"
 
-@del vkopt_%answer%_firefox.xpi
-_zip_packer.py firefox vkopt_%answer%_firefox.xpi
+@del "happy-%answer%-firefox.xpi"
+_zip_packer.py firefox "happy-%answer%-firefox.xpi"
 
+@del "happy-%answer%-opera.oex"
+_zip_packer.py opera "happy-%answer%-opera.oex"
 
-@del vkopt_%answer%_opera.oex
-_zip_packer.py opera.extension vkopt_%answer%_opera.oex
+@del "happy-%answer%-chromium.zip"
+_zip_packer.py chromium "happy-%answer%-chromium.zip"
 
+del "happy-%answer%-maxthon.mxaddon"
+makpak.exe  .\maxthon\  "happy-%answer%-maxthon.mxaddon"
 
-@del vkopt_%answer%_chrome.zip
-_zip_packer.py chrome vkopt_%answer%_chrome.zip
-
-del vkopt_%answer%_maxthon.mxaddon
-makpak.exe  .\maxthon\  vkopt_%answer%_maxthon.mxaddon
-
-@del vkopt_%answer%_opera.zip
+@del "happy-%answer%-opera.zip"
 cd ..
-builds\_zip_packer.py source builds\vkopt_%answer%_opera.zip "^vk(_|opt|lang)" "vkopt_debug.js"
-
+builds\_zip_packer.py source "builds\happy-%answer%-opera.zip" "^vk(_|opt|lang)" "vkopt_debug.js"
 
 pause
