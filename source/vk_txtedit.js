@@ -96,8 +96,8 @@ obj.focus();
      return len;
    }
  } else if (obj.contentEditable=="true"){
-   var sel=window.getSelection(); 
-   var r=sel.getRangeAt(0);  
+   var sel=window.getSelection();
+   var r=sel.getRangeAt(0);
    el=r.commonAncestorContainer;
    while(el && el.contentEditable!="true") {
         el = el.parentNode;
@@ -130,12 +130,12 @@ function replaceSelectedText(obj,cbFunc){
    }
    return true;
  } else if (obj.contentEditable=="true"){
-   var sel=window.getSelection(); 
+   var sel=window.getSelection();
    var r=sel.getRangeAt(0);
    el=r.commonAncestorContainer;
    while(el && el.contentEditable!="true") {
         el = el.parentNode;
-   }   
+   }
    if (el && el.contentEditable=="true"){
      var text = document.getSelection()+'';
      eval("var rs = "+cbFunc+"(text);");
@@ -199,14 +199,14 @@ function vkPrepareTxtPanels(node){
 	var te_btn_count=0;
 	var touts={};
 	if (!window.txtareas_events) txtareas_events=[];
-	
+
    var add_panel=function(ta){
-		if ((ta.getAttribute('onfocus') && ta.getAttribute('onfocus').indexOf('showEditPost')!=-1) || ta.getAttribute('vk_edit_btns')) 
+		if ((ta.getAttribute('onfocus') && ta.getAttribute('onfocus').indexOf('showEditPost')!=-1) || ta.getAttribute('vk_edit_btns'))
          return;//continue;//ge('edit_btns_'+ta.id)
 		var panel=vkCe('div',{id:'edit_btns_'+ta.id,"class":'vk_textedit_panel'},
 						//vkTxtPanelButtons(ta.id)+
 						'<div style="float:left; font-size:7px; margin-top:-10px; margin-right:3px;" onclick="fadeOut(\''+'edit_btns_'+ta.id+'\');">x</div>');
-		panel.appendChild(vkTxtPanelButtons(ta.id));				
+		panel.appendChild(vkTxtPanelButtons(ta.id));
 		//alert(panel.innerHTML);
 		ta.parentNode.insertBefore(panel,ta);
 		hide(panel);
@@ -249,7 +249,7 @@ function vkPrepareTxtPanels(node){
 		addEvent(ta, 'click', show_panel);
 		addEvent(ta, 'blur', hide_panel);
 		ta.vk_txt_panel_enabled=true;
-		ta.setAttribute('vk_edit_btns', true);   
+		ta.setAttribute('vk_edit_btns', true);
    };
 	for (var i=0;i<tas.length;i++){
 		var ta=tas[i];
@@ -265,15 +265,15 @@ function vkAddSmilePanel(el){
 	var touts={};
 	if (!window.txtareas_events) txtareas_events=[];
    //if (!window.txtareas_ids) txtareas_ids=0;
-	
+
    var add_panel=function(ta){
-		if ((ta.getAttribute('onfocus') && ta.getAttribute('onfocus').indexOf('showEditPost')!=-1) || ta.getAttribute('vk_edit_btns') || !ta.id) 
+		if ((ta.getAttribute('onfocus') && ta.getAttribute('onfocus').indexOf('showEditPost')!=-1) || ta.getAttribute('vk_edit_btns') || !ta.id)
          return;//continue;//ge('edit_btns_'+ta.id)
 		//if (!ta.id) ta.id='vktextfield_'+(txtareas_ids++);
       var panel=vkCe('div',{id:'edit_btns_'+ta.id,"class":'vk_textedit_panel'},
 						//vkTxtPanelButtons(ta.id)+
 						'<div style="float:left; font-size:7px; margin-top:-10px; margin-right:3px;" onclick="fadeOut(\''+'edit_btns_'+ta.id+'\');">x</div>');
-		panel.appendChild(vkTxtPanelButtons(ta.id));				
+		panel.appendChild(vkTxtPanelButtons(ta.id));
 		//alert(panel.innerHTML);
 		ta.parentNode.insertBefore(panel,ta);
 		hide(panel);
@@ -318,7 +318,7 @@ function vkAddSmilePanel(el){
 		addEvent(ta, 'click', show_panel);
 		addEvent(ta, 'blur', hide_panel);
 		ta.vk_txt_panel_enabled=true;
-		ta.setAttribute('vk_edit_btns', true);   
+		ta.setAttribute('vk_edit_btns', true);
    };
    add_panel(el);
 	vklog('PreparePanel time:' + (unixtime()-tstart) +'ms');
@@ -346,7 +346,7 @@ function SwichKeybText(str){
 					}
 		    }
 		  message=message+messer;
-	}	
+	}
    return message;
 }
 
@@ -379,7 +379,7 @@ if(vk_EnableSwichText){
 		    else if (document.activeElement.value){
             document.activeElement.value=SwichKeybText(document.activeElement.value);
           } else if (acelem.contentEditable=="true"){
-            
+
             FindAndProcessTextNodes(acelem,function(mainNode,childItem){
                var node = mainNode.childNodes[childItem];
                node.nodeValue=SwichKeybText(node.nodeValue);

@@ -22,7 +22,7 @@ var vk_upd_menu_timeout=20000;      //(ms) Update left menu timeout
 var vkMenuHideTimeout=400;          //(ms) Hide Menu Popups timeout
 var CHECK_FAV_ONLINE_DELAY = 20000; //(ms)  delay for check online statuses of faved users
 var FAVE_ONLINE_BLOCK_SHOW_COUNT=6;
-var SHOW_POPUP_PROFILE_DELAY=800;//ms 
+var SHOW_POPUP_PROFILE_DELAY=800;//ms
 
 /* Save messages history config */
 var SAVE_MSG_HISTORY_PATTERN="%username% (%date%):\r\n%message%\r\n%attachments%\r\n\r\n"; //Save Messages history file format (one record)
@@ -105,12 +105,12 @@ var YT_video_itag_formats={
      '5':  '240p.flv',
      '6':  '360p.flv',
      '34': '360p.flv',
-     '35': '480p.flv',   
-     
+     '35': '480p.flv',
+
      '36': '240p.3gp',
      '13': '.3gp (small)',
      '17': '.3gp (medium)',
-     
+
      '18': '360p.mp4',
      '22': '720p.mp4',
      '37': '1080p.mp4',
@@ -119,7 +119,7 @@ var YT_video_itag_formats={
      //'83': '480p.mp4',//3d?
      '84': '720p.mp4',//3d?
      //'85': '1080p.mp4',//3d?
-     
+
      '43': '360p.WebM',
      '44': '480p.WebM',
      '45': '720p.WebM',
@@ -129,7 +129,7 @@ var YT_video_itag_formats={
      '102':'720p.WebM'//3d?
      //'103':'1080p.WebM',//3d?
 
-}; 
+};
  // kolobok.us
 var SmilesMap = {
 'girl_angel': /O:-\)|O:\)|O\+\)|O=\)|0:-\)|0:\)|0\+\)|0=\)/gi,
@@ -147,30 +147,30 @@ var SmilesMap = {
 'blush':  /:-?\[|;-\.|;'>/gi, //\^_\^|
 
 'shok': /=-?[0OОoо]|o_0|o_O|0_o|O_o|[OО]_[OО]/gi,
-'diablo':  /[\]}]:-?>|>:-?\]|\*DIABLO\*/gi, 
+'diablo':  /[\]}]:-?>|>:-?\]|\*DIABLO\*/gi,
 'cray': /[:;]-?\'\(|[:;]\'-\(/gi,
-'mocking': /\*JOKINGLY\*|8[Pp]/gi, 
+'mocking': /\*JOKINGLY\*|8[Pp]/gi,
 'give_rose': /@-->--|@}->--|@}-:--|@>}--`---/gi,
-'music': /\[:-?\}/gi, 
+'music': /\[:-?\}/gi,
 'air_kiss':/\*KISSED\*/gi,
 'kiss': /[:;=]-\*+|[:;=]\*+|:-?\{\}|[\+=]\{\}|\^\.\^/gi,//[:;=]-\[\}|[:;=]\[\}
 'bad':  /[:;]-?[\!~]/gi,
-'wacko1': /[^\d]%-?\)|:\$/gi,  
+'wacko1': /[^\d]%-?\)|:\$/gi,
 'good':/\*THUMBS.UP\*|\*GOOD\*/gi,
 'drinks': /\*DRINK\*/gi,
-'pardon':/\*PARDON\*|=\]/gi,  
+'pardon':/\*PARDON\*|=\]/gi,
 'nea':/\*NO\*|:\&|:-\&/gi,
 'yes':/\*YES\*/gi,
-'sorry':/\*SORRY\*/gi,  
+'sorry':/\*SORRY\*/gi,
 'bye2':/\*BYE\*/gi,
 //'hi':/\*HI\*/gi,
 'unknown':/\*DONT_KNOW\*|\*UNKNOWN\*/gi,
-'dance':/\*DANCE\*/gi, 
+'dance':/\*DANCE\*/gi,
 'crazy':/\*CRAZY\*|%-\)/gi,
-'lol':/\*LOL\*|xD+|XD+/gi, 
+'lol':/\*LOL\*|xD+|XD+/gi,
 'i_am_so_happy': /:\!\)/gi,
 'mad': /:\\|:-[\\\/]/gi,
-'sorry':/\*SORRY\*/ig, 
+'sorry':/\*SORRY\*/ig,
 
 'greeting':[/\*HI\*/gi,'big_standart'],
 'ok':[/\*OK\*/ig,'big_standart'],
@@ -222,7 +222,7 @@ var TextPasteSmiles={
 'wacko1':'%-)',
 'crazy':'*CRAZY*',
 'mad':':-/',
-'lol':'*LOL*', 
+'lol':'*LOL*',
 'dance':'*DANCE* ',
 'nea':'*NO*',
 'yes':'*YES*',
@@ -256,10 +256,10 @@ var TextPasteSmiles={
 }
 
 
-	
+
 	function vkInitDebugBox(){
 	  var sHEIGHT=21;
-	  var sWIDTH=21; 
+	  var sWIDTH=21;
 	  var HEIGHT=300;
 	  var WIDTH=400;
 	  LAST_LOG_MSG='';
@@ -285,20 +285,20 @@ var TextPasteSmiles={
 			#vkDebug .log DIV .time{float:right; color: #BBB;}\
 			#vkDebug .log DIV .count{background:#44F; padding:0 2px; margin-right:4px; font-size:6pt; border-radius:5px; color:#FFF; border:1px solid #00A;}\
 	  ');
-	  
-	  
-	  
+
+
+
 	  var div=document.createElement('div');
-	  var panel=document.createElement('div'); 
-	  var btn=document.createElement('div'); 
-	  var wlog=document.createElement('div');  
+	  var panel=document.createElement('div');
+	  var btn=document.createElement('div');
+	  var wlog=document.createElement('div');
 	  div.id='vkDebug';
 	  panel.className='debugPanel';
 	  btn.className='mbtn';
 	  wlog.className='log';
 	  wlog.id='vkDebugLogW';
 	  //wlog.innerHTML='<div>log started</div>';
-	  
+
 	  var tomax=function(){
 		  var callback=function(){
 			  btn.onclick=tomin;
@@ -325,7 +325,7 @@ var TextPasteSmiles={
 	function vklog(s,type){
 	  if (vk_DEBUG){
 
-		
+
 		var node=ge('vkDebugLogW');
 		if (!node) return;
 		var div=document.createElement('div');
@@ -337,7 +337,7 @@ var TextPasteSmiles={
 		  case 2: style="color:#080;"; break;
 		  case 3: style="color:#00D;"; break;
 		}
-		
+
 		div.setAttribute('style',style);
 		div.appendChild($c("#", s));
 		//div.appendChild($c("span",{"class":"time", "#text": (new Date().getTime()) - vkstarted}));
@@ -350,7 +350,7 @@ var TextPasteSmiles={
 		} else {
 			LAST_EQ_LOG_MSG_COUNT=0;
 			node.appendChild(div);
-		}		
+		}
 		//node.appendChild(div);
 		node.scrollTop = node.scrollHeight;
 		LAST_LOG_MSG=s;
@@ -439,7 +439,7 @@ function vkOpt_toogle(){
     .vkSettList a { color: #2B587A;  margin: 0px;  padding: 3px;  display: inline-block; width:100px;  background: transparent;  border-bottom: solid 1px #CCD3DA; }\
     .vkSettList a:hover {  text-decoration: none;  background-color: rgba(0, 48, 96, 0.145); }\
   ");
-  
+
   var div=document.createElement('div');
   //var style="";  div.setAttribute("style",style);
   div.id='vk_onoff';
@@ -454,19 +454,19 @@ function vkOpt_toogle(){
   var showed=false;
   var hideFunc=function(){ hide_t=setTimeout(function(){slideUp(div); showed=false;},400); };
   var showFunc=function(){
-    cancelFunc(); 
-    if (!showed){ 
+    cancelFunc();
+    if (!showed){
       slideDown(div);
       showed=true;
     }
   };
   var cancelFunc=function(){ clearTimeout(hide_t); };
-  
+
   addEvent(btn, 'mouseover', showFunc);
   addEvent(btn, 'mouseout' , hideFunc);
   addEvent(div,'mouseover', cancelFunc);
   addEvent(div,'mouseout' , hideFunc);
-  //b.appendChild(div);  
+  //b.appendChild(div);
   if (!off){
 	var ref=ge('settings_filters');
 	//alert(ref + '\n'+dloc+'\n'+(dloc.indexOf('settings')==-1));
@@ -481,7 +481,7 @@ function vkOpt_toogle(){
   cb.appendChild(btn);
   cb.appendChild(div);
   ref.parentNode.appendChild(cb);
-  
+
 }
 
 function vkOnOffButton(){
@@ -510,7 +510,7 @@ function VkOptInit(ignore_login){
          break;
       }
    }
-  
+
   if (!window.vkscripts_ok || window.vkscripts_ok<vkOpt_js_count || !allow_init) {setTimeout(VkOptInit,10); return;}
   /*
   var err=IDL('VkoptDupFound');
@@ -520,16 +520,16 @@ function VkOptInit(ignore_login){
    return;
   }*/
 	if (window._vkopt_started) return;
-	
+
 	vkOpt_toogle();
 	if (vkgetCookie('vkopt_disable')=='1') return;
 	if (ge("quick_login") && !ignore_login) {
       ql.insertBefore(ce('div', {innerHTML: '<iframe class="upload_frame" id="quick_login_frame" name="quick_login_frame"></iframe>'}), qf);
       qf.target = 'quick_login_frame';
 
-      //     Inj.Wait('window.vk && vk.id',function(){      VkOptMainInit();      }); 
+      //     Inj.Wait('window.vk && vk.id',function(){      VkOptMainInit();      });
       window.onLoginDone = function(loc){document.location.href=loc};//nav.reload;
-		return; 
+		return;
 	}
 	VkOptMainInit();
 	md5=vkMD5;
@@ -540,6 +540,6 @@ var dloc=document.location.href;
 var vk_domain=document.location.host;
 if (vk_domain.match('vk\\.com') || vk_domain.match('vkontakte\\.ru')){
    if (!dloc.match(/\/m\.vk\.com|login\.vk\.com|oauth\.vk\.com|al_index\.php|frame\.php|widget_.+php|notifier\.php|audio\?act=done_add/i)){
-       vkonDOMReady(VkOptInit); 
+       vkonDOMReady(VkOptInit);
    }
 }
