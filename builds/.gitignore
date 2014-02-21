@@ -7,5 +7,3 @@
 *.safariexz
 
 scripts/
-background.js
-content_script.js

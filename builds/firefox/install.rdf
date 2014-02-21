@@ -1,50 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
-  <Description about="urn:mozilla:install-manifest">
-    <em:id>happy@deltaidea.github.com</em:id>
-    <em:type>2</em:type>
-    <em:unpack>true</em:unpack>
-    <em:name>happy</em:name>
-    <em:version>0.1.0</em:version>
-    <em:creator>Nikita Litvin</em:creator>
-    <em:description>Extension for Vk.com insired by and based on VkOpt.</em:description>
-    <em:contributor></em:contributor>
-    <em:homepageURL>https://github.com/deltaidea/happy</em:homepageURL>
-	 <em:iconURL>chrome://vkopt/skin/icon.png</em:iconURL>
-    <em:icon64URL>chrome://vkopt/skin/icon64.png</em:icon64URL>
-    <em:updateURL>http://vkopt.net/upd/update.rdf</em:updateURL>
-    <em:updateKey>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDKoFvysLtbyghFmQk/J9CLnLEzkULcQUTxFvhXUwyVozynqLmv3+WMoOur8DaSUvzQdHAvKxvzFKkFWYCCPJO83rJ76r6xhssGXa1i8ShfElBiPaW8CAj8W4EmSWnGnrGMsaonf0C3YX3iLgIbZTTz6ovnOH1tUPsOE3A8V4ohmwIDAQAB</em:updateKey>
-    <em:targetApplication>
-      <Description>
-        <!-- fennec -->
-        <em:id>{a23983c0-fd0e-11dc-95ff-0800200c9a66}</em:id>
-        <em:minVersion>4.0</em:minVersion>
-        <em:maxVersion>50.*</em:maxVersion>
-      </Description>
-    </em:targetApplication>
-    <em:targetApplication>
-      <Description>
-        <!-- fennec2 -->
-        <em:id>{aa3c5121-dab2-40e2-81ca-7ea25febc110}</em:id>
-        <em:minVersion>4.0</em:minVersion>
-        <em:maxVersion>50.*</em:maxVersion>
-      </Description>
-    </em:targetApplication>
-    <em:targetApplication>
-      <Description>
-        <!-- firefox -->
-        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-        <em:minVersion>4.0</em:minVersion>
-        <em:maxVersion>50.*</em:maxVersion>
-      </Description>
-    </em:targetApplication>
-    <em:targetApplication>
-      <Description>
-        <!-- seamonkey -->
-        <em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
-        <em:minVersion>2.5</em:minVersion>
-        <em:maxVersion>50.*</em:maxVersion>
-      </Description>
-    </em:targetApplication>
-  </Description>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+	<Description about="urn:mozilla:install-manifest">
+		<em:id>happy@deltaidea.github.com</em:id>
+		<em:name>happy</em:name>
+		<em:description>Extension for Vk.com insired by and based on VkOpt.</em:description>
+		<em:version>0.1.0</em:version>
+		<em:creator>Nikita Litvin</em:creator>
+		<em:homepageURL>https://github.com/deltaidea/happy</em:homepageURL>
+		<em:type>2</em:type>
+
+		<!-- Mozilla Firefox -->
+		<em:targetApplication>
+			<Description>
+				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+				<em:minVersion>25.0</em:minVersion>
+				<em:maxVersion>27.*</em:maxVersion>
+			</Description>
+		</em:targetApplication>
+	</Description>
 </RDF>

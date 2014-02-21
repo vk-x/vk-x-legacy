@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets" version="0.1.0" id="https://github.com/deltaidea/happy">
+<widget version="0.1.0"
+	xmlns="http://www.w3.org/ns/widgets"
+	id="https://github.com/deltaidea/happy">
 	<name short="happy">happy</name>
-	<description>Extension for Vk.com insired by and based on VkOpt.</description>
+	<description
+		>Extension for Vk.com insired by and based on VkOpt.</description>
 	<author href="https://github.com/deltaidea">Nikita Litvin</author>
 	<icon src="icons/icon88.png"/>
    <access origin="*"/>
-   <update-description href="http://vkopt.net/upd/upd_opera.xml"/>
 </widget>
