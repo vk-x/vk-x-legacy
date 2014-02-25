@@ -29,16 +29,5 @@ $( window ).on( "message", function( event ) {
 // See: content_script.js:23
 injectScript( "window._ext_ldr_vkopt_loader = true", { isSource: true });
 
-// See: background.js:10
-injectScript( "vkopt.js" );
-injectScript( "vk_face.js" );
-injectScript( "vk_lib.js", { runInFrame: true });
-injectScript( "vk_main.js" );
-injectScript( "vk_media.js" );
-injectScript( "vk_page.js" );
-injectScript( "vk_resources.js" );
-injectScript( "vk_settings.js" );
-injectScript( "vk_skinman.js" );
-injectScript( "vk_txtedit.js" );
-injectScript( "vk_users.js" );
-injectScript( "vklang.js" );
+// See: background.js:10 and gulpfile.js
+injectScript( "happy.js" );

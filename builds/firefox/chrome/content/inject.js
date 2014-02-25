@@ -41,21 +41,8 @@ var injectScript = function( doc, data, options ) {
 					injectScript( doc, "window._ext_ldr_vkopt_loader = true",
 						{ isSource: true });
 
-					// See: background.js:10
-					injectScript( doc, "vkopt.js" );
-					injectScript( doc, "vk_face.js" );
-				}
-					injectScript( doc, "vk_lib.js" );
-				if ( isTopWindow ) {
-					injectScript( doc, "vk_main.js" );
-					injectScript( doc, "vk_media.js" );
-					injectScript( doc, "vk_page.js" );
-					injectScript( doc, "vk_resources.js" );
-					injectScript( doc, "vk_settings.js" );
-					injectScript( doc, "vk_skinman.js" );
-					injectScript( doc, "vk_txtedit.js" );
-					injectScript( doc, "vk_users.js" );
-					injectScript( doc, "vklang.js" );
+					// See: background.js:10 and gulpfile.js
+					injectScript( doc, "happy.js" );
 				}
 			}, false );
 		}

@@ -1,0 +1,15 @@
+{
+  "name": "happy",
+  "version": "0.1.0",
+  "description": "Extension for Vk.com insired by and based on VkOpt.",
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deltaidea/happy"
+  },
+  "devDependencies": {
+    "gulp": "~3.5.2",
+    "gulp-load-plugins": "~0.3.0",
+    "gulp-concat": "~2.1.7"
+  }
+}
