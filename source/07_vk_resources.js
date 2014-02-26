@@ -1,12 +1,3 @@
-// ==UserScript==
-// @name          happy 0.1.0
-// @author        Nikita Litvin
-// @namespace     https://github.com/deltaidea/happy
-// @description   Extension for Vk.com insired by and based on VkOpt.
-// @include       *vkontakte.ru*
-// @include       *vk.com*
-// ==/UserScript==
-
 // for convert sounds to wav you can use http://audio.online-convert.com/convert-to-wav
 // for convert to base64: http://www.opinionatedgeek.com/dotnet/tools/Base64Encode/
 

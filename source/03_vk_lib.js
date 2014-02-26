@@ -1,20 +1,3 @@
-// ==UserScript==
-// @name          happy 0.1.0
-// @author        Nikita Litvin
-// @namespace     https://github.com/deltaidea/happy
-// @description   Extension for Vk.com insired by and based on VkOpt.
-// @include       *vkontakte.ru*
-// @include       *vk.com*
-// @include       *userapi.com*
-// @include       *vk.me*
-// @include       *vkadre.ru*
-// @include       *durov.ru*
-// @include       *youtube.com*
-// @include       *vimeo.com*
-// ==/UserScript==
-//*
-
-//*/
 /*!
  * Date Format 1.2.3
  * (c) 2007-2009 Steven Levithan <stevenlevithan.com>

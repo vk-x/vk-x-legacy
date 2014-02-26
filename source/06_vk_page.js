@@ -1,12 +1,3 @@
-// ==UserScript==
-// @name          happy 0.1.0
-// @author        Nikita Litvin
-// @namespace     https://github.com/deltaidea/happy
-// @description   Extension for Vk.com insired by and based on VkOpt.
-// @include       http://*vkontakte.ru/*
-// @include       http://*vk.com/*
-// ==/UserScript==
-
 /*!
 	profiles, walls, graffity from file and  etc.
 */

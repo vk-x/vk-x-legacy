@@ -1,13 +1,3 @@
-// ==UserScript==
-// @name          happy 0.1.0
-// @author        Nikita Litvin
-// @namespace     https://github.com/deltaidea/happy
-// @description   Extension for Vk.com insired by and based on VkOpt.
-// @include       *vkontakte.ru*
-// @include       *vk.com*
-// @include       *durov.ru*
-// ==/UserScript==
-
 function InstallRelease(){
   if (window.vkopt_plugins && vkopt_plugins['vkdislikes']){
       alert('Please uninstall old vkopt dislike plugin');
