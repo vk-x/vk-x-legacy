@@ -7,11 +7,14 @@
 *.safariexz
 
 scripts/
-opera/includes/inject.js
-maxthon/inject.js
 
 chromium/manifest.json
+
 firefox/install.rdf
 firefox/chrome.manifest
+
 maxthon/def.json
+maxthon/inject.js
+
+opera/includes/inject.js
 opera/config.xml
