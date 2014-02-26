@@ -1,8 +1,10 @@
 var gulp = require( "gulp" ),
+	config = require( "./package.json" ),
 	plugins = require( "gulp-load-plugins" )();
 
 gulp.task( "scripts", function() {
 	var baseStream = gulp.src( "source/*.js" )
+			.pipe( plugins.if( /\.template\.js/, plugins.template( config ) ) )
 			.pipe( plugins.concat( "dist.js" ) )
 			.pipe( gulp.dest( "builds/chromium" ) )
 			.pipe( gulp.dest( "builds/firefox/scripts" ) ),
@@ -31,8 +33,6 @@ gulp.task( "scripts", function() {
 });
 
 gulp.task( "meta", function() {
-	var config = require( "./package.json" );
-
 	gulp.src( "source/meta/chromium/manifest.json" )
 		.pipe( plugins.template( config ) )
 		.pipe( gulp.dest( "builds/chromium" ) );

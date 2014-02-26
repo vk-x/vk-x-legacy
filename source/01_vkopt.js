@@ -1,7 +1,3 @@
-/* VERSION INFO */
-var vVersion	= 221;
-var vBuild = 140107;
-var vPostfix = ' ';
 if (!window.vk_DEBUG) var vk_DEBUG=false;
 /* EXT CONFIG */
 if (!window.DefSetBits)

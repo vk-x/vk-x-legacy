@@ -14,30 +14,34 @@ function InstallRelease(){
       window.IDNewsObzor || window.AjMsgFormTo || window.IDAddFriend || window.IDAdmDelTopic || window.IDpostMatch || window.IDAppsProf)
       err.push(IDL('ErrOldVkoptFound'));
 
+  // TODO: Rename cookie or make this file a template. Do not use
+  // extension name in source code.
+  var lastUsedVersion = vkgetCookie( "happy" );
 
-  var cur_ver=vkgetCookie('vkOVer');
-  cur_ver=cur_ver?cur_ver.split('_'):[0,0];
-  var vver=parseInt(cur_ver[0]) || 0;
-  var vbuild=parseInt(cur_ver[1]) || 0;
-
-  if (vbuild && vbuild<vBuild) vkCheckSettLength();
-
-  if (!vbuild || vbuild<vBuild){
-      dApi.call('getUserSettings',{},function(r){
-         if(r.response!=dApi.SETTINGS){
-            dApi.Auth();
-         }
-      });
+  if ( lastUsedVersion !== app.version ) {
+    if ( lastUsedVersion != null ) {
+      vkCheckSettLength();
+    }
+    dApi.call( "getUserSettings", {}, function( response ) {
+      if( response.response !== dApi.SETTINGS ) {
+        dApi.Auth();
+      }
+    });
   }
 
-  if (vbuild<120730){
-      vkSetVal('VK_SAVE_MSG_HISTORY_PATTERN',SAVE_MSG_HISTORY_PATTERN);
+  if ( !vkGetVal( "VK_SAVE_MSG_HISTORY_PATTERN" ) ) {
+      vkSetVal( "VK_SAVE_MSG_HISTORY_PATTERN", SAVE_MSG_HISTORY_PATTERN );
   }
 
-  if ((!window.IDBit || window.IDBit=='') && (!vver || vver<vVersion)){
-     if (!vver || vver<200) vksetCookie('remixbit',DefSetBits);
+  if ( !window.IDBit && lastUsedVersion !== app.version ) {
+    if ( lastUsedVersion && parseInt( lastUsedVersion[ 0 ] ) !== app.version.major ) {
+      vksetCookie( "remixbit", DefSetBits );
+    }
 
-	  vksetCookie('vkOVer',vVersion+'_'+vBuild);
+    // TODO: Rename cookie or make this file a template. Do not use
+    // extension name in source code.
+	  vksetCookie( "happy", app.version );
+
 	  vksetCookie('vkplayer','00-0_0');
 	  if (!vkgetCookie('remixbit')) vksetCookie('remixbit',DefSetBits);
 	  vkCheckSettLength();
@@ -47,8 +51,8 @@ function InstallRelease(){
 	  vkMsg_Box.addButton(!isNewLib()?{
 		onClick: function(){vkMsg_Box.hide( 200 );},
 		style:'button_no',label:'OK'}:'OK',function(){vkMsg_Box.hide( 200 );},'no');
-	  var cont=IDL('YIV')+'<b>'+String(vVersion).split('').join('.')+'</b> (build <b>'+vBuild+'</b>)<br><br>'+IDL('INCD')+'<b>'+IDL('FIS')+'</b>';
-	  //cont='<table><tr><td>'+cont+'</td><td>'+hz_chooselang(true)+'</td></tr></table>'
+    var cont = IDL( "YIV" ) + "<b>" + app.version + "</b><br><br>" +
+      IDL( "INCD" ) + "<b>" + IDL( "FIS" ) + "</b>"
 	  cont+='<br><br>'+hz_chooselang(true);
 
      cont+='<br><br><div id="cfg_on_serv_info" style="text-align:center;"></div>';
@@ -1116,10 +1120,14 @@ function vkShowSettings(box){
   </div><div id="vksetts_tabs">%html</div>';
 
   vkDisableAjax();
-  var header='Vkontakte Optimizer '+String(vVersion).split('').join('.')+'<sup><i>'+vPostfix+'</i></sup> '+'(build '+vBuild+') <b class="fl_r"><a href="javascript: hz_chooselang();">'+IDL("ChangeVkOptLang")+'</a></b>';
+
+  var header = app.name + " " + app.version +
+    "<b class='fl_r'><a href='javascript: hz_chooselang();'>" +
+    IDL( "ChangeVkOptLang" ) + "</a></b>";
+
   if (!box){
     show('header');
-	document.title='[ VkOpt ['+String(vVersion).split('').join('.')+'] settings ]';
+    document.title = app.name + " " + app.version + " settings";
     ge('header').innerHTML='<h1>'+header+'</h1>';
     ge('content').innerHTML=tpl.replace(/%html/g,'');
     vkMakeSettings('vksetts_tabs');
