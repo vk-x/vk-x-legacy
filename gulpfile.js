@@ -45,6 +45,10 @@ gulp.task( "meta", function() {
 	gulp.src( "source/meta/maxthon/def.json" )
 		.pipe( plugins.template( config ) )
 		.pipe( gulp.dest( "builds/maxthon" ) );
+
+	gulp.src( "source/meta/opera/config.xml" )
+		.pipe( plugins.template( config ) )
+		.pipe( gulp.dest( "builds/opera" ) );
 });
 
 gulp.task( "default", [ "scripts", "meta" ]);

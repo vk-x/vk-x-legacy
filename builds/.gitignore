@@ -13,3 +13,4 @@ chromium/manifest.json
 firefox/install.rdf
 firefox/chrome.manifest
 maxthon/def.json
+opera/config.xml

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget version="<%= version %>"
+	xmlns="http://www.w3.org/ns/widgets"
+	id="<%= homepage %>">
+	<name short="<%= name %>"><%= name %></name>
+	<description><%= description %></description>
+	<author href="<%= author.url %>"><%= author.name %></author>
+   <access origin="*"/>
+</widget>
