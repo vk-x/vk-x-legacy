@@ -20,7 +20,6 @@
     "gulp-concat": "~2.1.7",
     "gulp-inject": "~0.4.1",
     "js-string-escape": "~1.0.0",
-    "gulp-template": "~0.1.1",
-    "gulp-rename": "~1.1.0"
+    "gulp-template": "~0.1.1"
   }
 }
