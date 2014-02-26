@@ -22,10 +22,5 @@
 	"web_accessible_resources": [
 		"scripts/*"
 	],
-	"icons": {
-		"32":"img/icon32.png",
-		"48": "img/icon48.png",
-		"128": "img/icon128.png"
-	},
 	"permissions": [ "http://*/*" ]
 }

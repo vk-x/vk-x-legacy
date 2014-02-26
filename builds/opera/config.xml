@@ -6,6 +6,5 @@
 	<description
 		>Extension for Vk.com inspired by and based on VkOpt.</description>
 	<author href="https://github.com/deltaidea">Nikita Litvin</author>
-	<icon src="icons/icon88.png"/>
    <access origin="*"/>
 </widget>
