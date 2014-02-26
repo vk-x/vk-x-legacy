@@ -1,10 +1,10 @@
-﻿{
+{
 	"manifest_version": 2,
-	"name": "happy",
-	"version": "0.1.0",
+	"name": "<%= name %>",
+	"version": "<%= version %>",
 	"description": "__MSG_appDesc__",
-	"homepage_url": "https://github.com/deltaidea/happy",
-	"author": "Nikita Litvin",
+	"homepage_url": "<%= homepage %>",
+	"author": "<%= author.name %>",
 	"default_locale": "en",
 	"content_scripts": [{
 		"js": [

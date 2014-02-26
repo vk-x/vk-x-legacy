@@ -2,6 +2,12 @@
   "name": "happy",
   "version": "0.1.0",
   "description": "Extension for Vk.com inspired by and based on VkOpt.",
+  "homepage": "https://github.com/deltaidea/happy",
+  "author": {
+    "name": "Nikita Litvin",
+    "email": "deltaidea@derpy.ru",
+    "url": "https://github.com/deltaidea"
+  },
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
@@ -13,6 +19,7 @@
     "gulp-concat": "~2.1.7",
     "gulp-inject": "~0.4.1",
     "js-string-escape": "~1.0.0",
+    "gulp-template": "~0.1.1",
     "gulp-rename": "~1.1.0"
   }
 }

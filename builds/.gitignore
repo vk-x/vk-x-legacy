@@ -7,3 +7,5 @@
 *.safariexz
 
 scripts/
+
+chromium/manifest.json

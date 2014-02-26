@@ -32,4 +32,13 @@ gulp.task( "scripts", function() {
 			.pipe( gulp.dest( "builds/opera/includes" ) );
 });
 
-gulp.task( "default", [ "scripts" ]);
+gulp.task( "meta", function() {
+	var config = require( "./package.json" );
+
+	gulp.src( "source/meta/chromium-manifest.json" )
+		.pipe( plugins.template( config ) )
+		.pipe( plugins.rename( "manifest.json" ) )
+		.pipe( gulp.dest( "builds/chromium" ) );
+});
+
+gulp.task( "default", [ "scripts", "meta" ]);
