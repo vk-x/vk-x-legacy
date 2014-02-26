@@ -4,7 +4,7 @@
 	id="https://github.com/deltaidea/happy">
 	<name short="happy">happy</name>
 	<description
-		>Extension for Vk.com insired by and based on VkOpt.</description>
+		>Extension for Vk.com inspired by and based on VkOpt.</description>
 	<author href="https://github.com/deltaidea">Nikita Litvin</author>
 	<icon src="icons/icon88.png"/>
    <access origin="*"/>

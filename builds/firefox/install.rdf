@@ -4,7 +4,7 @@
 	<Description about="urn:mozilla:install-manifest">
 		<em:id>happy@deltaidea.github.com</em:id>
 		<em:name>happy</em:name>
-		<em:description>Extension for Vk.com insired by and based on VkOpt.</em:description>
+		<em:description>Extension for Vk.com inspired by and based on VkOpt.</em:description>
 		<em:version>0.1.0</em:version>
 		<em:creator>Nikita Litvin</em:creator>
 		<em:homepageURL>https://github.com/deltaidea/happy</em:homepageURL>
