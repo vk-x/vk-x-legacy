@@ -2,12 +2,22 @@ var gulp = require( "gulp" ),
 	plugins = require( "gulp-load-plugins" )();
 
 gulp.task( "scripts", function() {
-	return gulp.src( "source/*.js" )
-		.pipe( plugins.concat( "happy.js" ) )
-		.pipe( gulp.dest( "builds/chromium/scripts" ) )
-		.pipe( gulp.dest( "builds/firefox/scripts" ) )
-		.pipe( gulp.dest( "builds/maxthon/scripts" ) )
-		.pipe( gulp.dest( "builds/opera/scripts" ) );
+	var baseStream = gulp.src( "source/*.js" )
+			.pipe( plugins.concat( "happy.js" ) )
+			.pipe( gulp.dest( "builds/chromium/scripts" ) )
+			.pipe( gulp.dest( "builds/firefox/scripts" ) ),
+
+		operaStream = baseStream
+			.pipe( plugins.inject( "source/meta/opera-inject.js", {
+				starttag: "window.eval( \"",
+				endtag: "\" );",
+				transform: function( filepath, file ) {
+					var escapeString = require( "js-string-escape" );
+					return escapeString( file.contents );
+				}
+			}) )
+			.pipe( plugins.rename( "inject.js" ) )
+			.pipe( gulp.dest( "builds/opera/includes" ) );
 });
 
 gulp.task( "default", [ "scripts" ]);

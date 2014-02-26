@@ -10,6 +10,8 @@
   "devDependencies": {
     "gulp": "~3.5.2",
     "gulp-load-plugins": "~0.3.0",
-    "gulp-concat": "~2.1.7"
+    "gulp-concat": "~2.1.7",
+    "gulp-inject": "~0.4.1",
+    "gulp-rename": "~1.1.0"
   }
 }
