@@ -12,3 +12,4 @@ opera/includes/inject.js
 chromium/manifest.json
 firefox/install.rdf
 firefox/chrome.manifest
+maxthon/def.json

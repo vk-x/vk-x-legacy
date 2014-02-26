@@ -1,19 +1,19 @@
-﻿[{
+[{
    "type": "extension",
    "frameworkVersion": "1.0.6",
-   "version": "0.1.0",
+   "version": "<%= version %>",
    "guid": "{31E22071-9669-4CA8-A498-89851B5AE91B}",
-   "name": "happy",
+   "name": "<%= name %>",
    "title": {
-      "ru-ru": "happy",
-      "en": "happy"
+      "en": "<%= name %>"
    },
-   "description" : {
-      "en" : "Extension for Vk.com inspired by and based on VkOpt.",
-      "ru-ru" : "Расширение для Vk.com, вдохновлённое и основанное на VkOpt."
+   "description": {
+      "en": "<%= description %>",
+      "ru-ru": "<%= description_ru %>"
    },
    "author": {
-      "name": "Nikita Litvin"
+      "name": "<%= author.name %>",
+      "email": "<%= author.email %>"
    },
 
    "permissions": {

@@ -41,6 +41,10 @@ gulp.task( "meta", function() {
 		"source/meta/firefox/chrome.manifest" ])
 		.pipe( plugins.template( config ) )
 		.pipe( gulp.dest( "builds/firefox" ) );
+
+	gulp.src( "source/meta/maxthon/def.json" )
+		.pipe( plugins.template( config ) )
+		.pipe( gulp.dest( "builds/maxthon" ) );
 });
 
 gulp.task( "default", [ "scripts", "meta" ]);
