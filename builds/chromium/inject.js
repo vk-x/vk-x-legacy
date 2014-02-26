@@ -1,5 +1,4 @@
-var isTopWindow = window.top === window,
-	prefix = "scripts/";
+var isTopWindow = window.top === window;
 
 	// http://stackoverflow.com/a/9517879/1619166
 	injectScript = function( data, options ) {
@@ -9,7 +8,7 @@ var isTopWindow = window.top === window,
 			if ( options.isSource ) {
 				tag.textContent = data;
 			} else {
-				tag.src = chrome.extension.getURL( prefix + data );
+				tag.src = chrome.extension.getURL( data );
 			}
 			( document.head || document.documentElement ).appendChild( tag );
 		}
@@ -30,4 +29,4 @@ $( window ).on( "message", function( event ) {
 injectScript( "window._ext_ldr_vkopt_loader = true", { isSource: true });
 
 // See: background.js:10 and gulpfile.js
-injectScript( "happy.js" );
+injectScript( "dist.js" );

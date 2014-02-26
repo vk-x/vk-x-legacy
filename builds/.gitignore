@@ -6,12 +6,13 @@
 *.zip
 *.safariexz
 
-scripts/
 
 chromium/manifest.json
+chromium/dist.js
 
 firefox/install.rdf
 firefox/chrome.manifest
+firefox/scripts/dist.js
 
 maxthon/def.json
 maxthon/inject.js
