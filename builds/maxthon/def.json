@@ -24,7 +24,6 @@
       "type": "script",
       "entryPoints": [ "doc_start" ],
       "include": [ "vk.com" ],
-      "js": [ "inject.js" ],
-      "includeFrames": true
+      "js": [ "inject.js" ]
    }]
 }]
