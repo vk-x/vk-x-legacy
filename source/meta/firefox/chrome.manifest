@@ -1,0 +1,4 @@
+content <%= name %> chrome/content/ contentaccessible=yes
+resource <%= name %> scripts/
+
+overlay chrome://browser/content/browser.xul chrome://<%= name %>/content/overlay.xul

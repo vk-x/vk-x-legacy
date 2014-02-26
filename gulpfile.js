@@ -39,6 +39,11 @@ gulp.task( "meta", function() {
 		.pipe( plugins.template( config ) )
 		.pipe( plugins.rename( "manifest.json" ) )
 		.pipe( gulp.dest( "builds/chromium" ) );
+
+	gulp.src([ "source/meta/firefox/install.rdf",
+		"source/meta/firefox/chrome.manifest" ])
+		.pipe( plugins.template( config ) )
+		.pipe( gulp.dest( "builds/firefox" ) );
 });
 
 gulp.task( "default", [ "scripts", "meta" ]);
