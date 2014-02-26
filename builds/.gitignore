@@ -7,5 +7,6 @@
 *.safariexz
 
 scripts/
+opera/includes/inject.js
 
 chromium/manifest.json
