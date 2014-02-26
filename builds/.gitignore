@@ -8,6 +8,7 @@
 
 scripts/
 opera/includes/inject.js
+maxthon/inject.js
 
 chromium/manifest.json
 firefox/install.rdf
