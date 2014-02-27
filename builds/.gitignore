@@ -8,10 +8,12 @@
 
 
 chromium/manifest.json
+chromium/inject.js
 chromium/dist.js
 
 firefox/install.rdf
 firefox/chrome.manifest
+firefox/chrome/content/inject.js
 firefox/scripts/dist.js
 
 maxthon/def.json

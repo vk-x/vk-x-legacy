@@ -1,11 +1,16 @@
 var gulp = require( "gulp" ),
 	config = require( "./package.json" ),
+	noticeTemplate = require( "fs" )
+		.readFileSync( "./source/meta/notice.template.js" ),
 	plugins = require( "gulp-load-plugins" )();
 
 gulp.task( "scripts", function() {
 	var baseStream = gulp.src( "source/*.js" )
 			.pipe( plugins.if( /\.template\.js/, plugins.template( config ) ) )
-			.pipe( plugins.concat( "dist.js" ) )
+			.pipe( plugins.concat( "dist.js" ) );
+
+		distStream = baseStream
+			.pipe( plugins.header( noticeTemplate, config ) )
 			.pipe( gulp.dest( "builds/chromium" ) )
 			.pipe( gulp.dest( "builds/firefox/scripts" ) ),
 
@@ -18,6 +23,7 @@ gulp.task( "scripts", function() {
 					return escapeString( file.contents );
 				}
 			}) )
+			.pipe( plugins.header( noticeTemplate, config ) )
 			.pipe( gulp.dest( "builds/maxthon" ) ),
 
 		operaStream = baseStream
@@ -29,6 +35,7 @@ gulp.task( "scripts", function() {
 					return escapeString( file.contents );
 				}
 			}) )
+			.pipe( plugins.header( noticeTemplate, config ) )
 			.pipe( gulp.dest( "builds/opera/includes" ) );
 });
 
@@ -37,10 +44,18 @@ gulp.task( "meta", function() {
 		.pipe( plugins.template( config ) )
 		.pipe( gulp.dest( "builds/chromium" ) );
 
+	gulp.src( "source/meta/chromium/inject.js" )
+		.pipe( plugins.header( noticeTemplate, config ) )
+		.pipe( gulp.dest( "builds/chromium" ) );
+
 	gulp.src([ "source/meta/firefox/install.rdf",
 		"source/meta/firefox/chrome.manifest" ])
 		.pipe( plugins.template( config ) )
 		.pipe( gulp.dest( "builds/firefox" ) );
+
+	gulp.src( "source/meta/firefox/inject.js" )
+		.pipe( plugins.header( noticeTemplate, config ) )
+		.pipe( gulp.dest( "builds/firefox/chrome/content" ) );
 
 	gulp.src( "source/meta/maxthon/def.json" )
 		.pipe( plugins.template( config ) )
