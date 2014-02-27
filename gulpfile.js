@@ -70,7 +70,7 @@ gulp.task( "scripts", [ "meta" ], function() {
 			.pipe( plugins.header( noticeTemplate, config ) )
 			.pipe( gulp.dest( "builds/opera/includes" ) );
 
-		return es.concat( distStream, maxthonStream, operaStream );
+	return es.concat( distStream, maxthonStream, operaStream );
 });
 
 gulp.task( "default", [ "scripts" ]);
