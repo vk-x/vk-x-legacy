@@ -1,8 +1,8 @@
 {
   "name": "happy",
   "version": "0.1.0",
-  "description": "Extension for Vk.com inspired by and based on VkOpt.",
-  "description_ru": "Расширение для Vk.com, вдохновлённое и основанное на VkOpt.",
+  "description": "Extension for VK.com inspired by and based on VkOpt.",
+  "description_ru": "Расширение для VK.com, вдохновлённое и основанное на VkOpt.",
   "homepage": "https://github.com/deltaidea/happy",
   "author": {
     "name": "Nikita Litvin",
