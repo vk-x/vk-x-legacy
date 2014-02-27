@@ -42,7 +42,7 @@ var injectScript = function( doc, data, options ) {
 						{ isSource: true });
 
 					// See: background.js:10 and gulpfile.js
-					injectScript( doc, "happy.js" );
+					injectScript( doc, "dist.js" );
 				}
 			}, false );
 		}
