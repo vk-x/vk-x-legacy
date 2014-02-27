@@ -18,7 +18,7 @@ function InstallRelease(){
   // extension name in source code.
   var lastUsedVersion = vkgetCookie( "happy" );
 
-  if ( lastUsedVersion !== app.version ) {
+  if ( lastUsedVersion !== app.version.full ) {
     if ( lastUsedVersion != null ) {
       vkCheckSettLength();
     }
@@ -33,14 +33,14 @@ function InstallRelease(){
       vkSetVal( "VK_SAVE_MSG_HISTORY_PATTERN", SAVE_MSG_HISTORY_PATTERN );
   }
 
-  if ( !window.IDBit && lastUsedVersion !== app.version ) {
+  if ( !window.IDBit && lastUsedVersion !== app.version.full ) {
     if ( lastUsedVersion && parseInt( lastUsedVersion[ 0 ] ) !== app.version.major ) {
       vksetCookie( "remixbit", DefSetBits );
     }
 
     // TODO: Rename cookie or make this file a template. Do not use
     // extension name in source code.
-	  vksetCookie( "happy", app.version );
+	  vksetCookie( "happy", app.version.full );
 
 	  vksetCookie('vkplayer','00-0_0');
 	  if (!vkgetCookie('remixbit')) vksetCookie('remixbit',DefSetBits);
@@ -51,7 +51,7 @@ function InstallRelease(){
 	  vkMsg_Box.addButton(!isNewLib()?{
 		onClick: function(){vkMsg_Box.hide( 200 );},
 		style:'button_no',label:'OK'}:'OK',function(){vkMsg_Box.hide( 200 );},'no');
-    var cont = IDL( "YIV" ) + "<b>" + app.version + "</b><br><br>" +
+    var cont = IDL( "YIV" ) + "<b>" + app.version.full + "</b><br><br>" +
       IDL( "INCD" ) + "<b>" + IDL( "FIS" ) + "</b>"
 	  cont+='<br><br>'+hz_chooselang(true);
 
@@ -1121,13 +1121,13 @@ function vkShowSettings(box){
 
   vkDisableAjax();
 
-  var header = app.name + " " + app.version +
+  var header = app.name + " " + app.version.full +
     "<b class='fl_r'><a href='javascript: hz_chooselang();'>" +
     IDL( "ChangeVkOptLang" ) + "</a></b>";
 
   if (!box){
     show('header');
-    document.title = app.name + " " + app.version + " settings";
+    document.title = app.name + " " + app.version.full + " settings";
     ge('header').innerHTML='<h1>'+header+'</h1>';
     ge('content').innerHTML=tpl.replace(/%html/g,'');
     vkMakeSettings('vksetts_tabs');
