@@ -11,11 +11,7 @@ chromium/manifest.json
 chromium/inject.js
 chromium/dist.js
 
-firefox/install.rdf
-firefox/chrome.manifest
-firefox/chrome/content/overlay.xul
-firefox/chrome/content/inject.js
-firefox/scripts/dist.js
+firefox/
 
 maxthon/def.json
 maxthon/inject.js
