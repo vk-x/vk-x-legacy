@@ -864,10 +864,10 @@ var vkMozExtension = {
 		guid:parseInt(Math.random()*10000),
 		cmd_item:'vkopt_command',
 		last_cmd:'',
-		handler:function(id,cmd){topMsg('<b>Maybe conflict detected</b><br>VkOpt may work not correctly<br>'+JSON.stringify(cmd),4);},
+		handler:function(id,cmd){topMsg('<b>Maybe conflict detected</b><br>' + app.name + ' may work not correctly<br>'+JSON.stringify(cmd),4);},
 		Init:function(handler){
 			if (!window.localStorage && window.topMsg){
-				topMsg('<b>You use old browser.</b><br>VkOpt can work not correctly',4);
+				topMsg('<b>You use old browser.</b><br>' + app.name + ' can work not correctly',4);
 				vkBroadcast.disabled=true;
 				return;
 			}
@@ -914,7 +914,7 @@ var vkMozExtension = {
 
 
 ////////////////
-// VkOpt Ajax //
+// Extension Ajax //
 ////////////////
 	function PrepReq() {
 	  var tran = null;
@@ -1811,9 +1811,10 @@ function vk_oauth_api(app_id,scope){
                parent.window.postMessage({act:"oapi_login_success",href:dloc},"*");
          }
       },
-      show_error:function(r){
-         topMsg('<b>VkOpt:</b> [code:'+r.error.error_code+']<br>'+r.error.error_msg,2,'#FFB4A3');
-         console.log(r);
+      show_error: function( result ) {
+         topMsg( "<b>" +app.name + ":</b> error " + result.error.error_code +
+         	"]<br>" + result.error.error_msg, 2, "#FFB4A3" );
+         console.log( result );
       },
       call:function(method, inputParams, callback, captcha){
          if (api.allow_call){
@@ -2529,7 +2530,9 @@ function vkDisableAjax(){
 function vkWnd(text,title){
 	var url='about:blank';
 	var as_data=true;
-	text='<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"><html><head><title>'+(title?title:'VkOpt')+'</title></head><body>'+text+'</body></html>';
+	text = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"><html>" +
+		"<head><title>" + ( title ? title : app.name ) + "</title></head>" +
+		"<body>" + text + "</body></html>";
 	if (as_data){
 		url='data:text/html;charset=utf-8,'+encodeURIComponent(text);//charset=utf-8,
 	}

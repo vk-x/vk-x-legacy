@@ -145,9 +145,9 @@ function vkSettingsPage(){
 	if (!ge('vkopt_settings_tab') && ge('settings_filters')){
 		var li=vkCe('li',{id:'vkopt_settings_tab'});
 		li.innerHTML='\
-			<a href="/settings?act=vkopt" onclick="return checkEvent(event)" onmousedown="return vkShowSettings();">\
+			<a href="/settings?act="' + app.name + ' onclick="return checkEvent(event)" onmousedown="return vkShowSettings();">\
 			<b class="tl1"><b></b></b><b class="tl2"></b>\
-			<b class="tab_word">VkOpt</b>\
+			<b class="tab_word">' + app.name + '</b>\
 			</a>';
 		ge('settings_filters').appendChild(li);
 	}
@@ -252,7 +252,7 @@ function vkCheckSettLength(){
 }
 
 //////////////////////
-/* VKOPT SETTINGS */
+/* EXTENSION SETTINGS */
 
 // for color select //
 var pickers = [];

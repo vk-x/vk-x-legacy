@@ -46,7 +46,7 @@ vk_phviewer={
    reply_to:function(post, toId, event, rf,v,replyName){
          console.log(post);
          if (!toId){
-            console.log(post, 'VkOpt: Reply canceled. toId=null!');
+            console.log(post, app.name + ': Reply canceled. toId=null!');
             return;
          }
          var name=(replyName[1] || '').split(',')[0];
@@ -3825,15 +3825,8 @@ function vkAudioLoadAlbum(albumid){
    Audio.loadAlbum({from_pad: '', album: albumid} );
 }
 
-
-
-// ==UserScript==
-// @name          LastFM scrobbler v1.0 (vkOpt plugin)
-// @description   (by KiberInfinity id13391307)
-// @include       *vkontakte.ru*
-// @include       *vk.com*
-// ==/UserScript==
-// Scrobbling API documentation: http://users.last.fm/~tims/scrobbling/scrobbling2.html
+// LastFM scrobbler v1.0 (vkOpt plugin) - KiberInfinity http://vk.com/id13391307
+// See: http://users.last.fm/~tims/scrobbling/scrobbling2.html
 vkLastFM={
    api_key:"8077e41f067a717abb49db6159081cb5",
    api_secret:"e13a67e7e53c3c26d3734eefe34259a3",

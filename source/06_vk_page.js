@@ -1428,7 +1428,8 @@ function vkFriends_get(idx){
 	var tout=getSet('-',5);
     IDFriendTime=(tout?tout:1)*60000;
 	if (!IDFriendTime) {
-		topMsg('Please, check <a href="/settings?act=vkopt">VkOpt settings</a>');
+		topMsg('Please, check <a href="/settings?act=' + app.name +
+         '">' + app.name + ' settings</a>');
 		return;
 	}
     IDFrOnlineTO = setTimeout("vkFriends_get('"+idx+"');", IDFriendTime);
@@ -2048,7 +2049,7 @@ vk_groups = {
             }
 
          },
-         onFail:function(text){console.log('VkOpt: get "requests" list fail! ['+text+']');return true;}
+         onFail:function(text){console.log( app.name + ': get "requests" list fail! ['+text+']');return true;}
       });
    },
    request_accept:function(gid,mid,hash){

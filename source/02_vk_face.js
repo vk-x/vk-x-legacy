@@ -1063,7 +1063,8 @@ function vkMenu(){//vkExLeftMenu
         ['settings?act=blacklist',IDL("mSeB")],
         ['settings?act=mobile',IDL("mSeMobile")],
         ['settings?act=balance',IDL("mSeBalance")],
-        [['settings?act=vkopt',"vkShowSettings(false); return false;"],"VKOpt"], //['settings?act=vkopt" onClick="vkShowSettings(false); return false;',"VKOpt"],
+        [[ "settings?act=" + app.name, "vkShowSettings(false); return false;" ],
+        	app.name ],
         [['settings?skinman','vkShowSkinMan(); return false;'],IDL("SkinMan")/*,false,vkbrowser.mozilla*/],
         [['#','hz_chooselang(); return false;'],IDL("ChangeVkOptLang")]
     ],
@@ -1118,13 +1119,8 @@ function vkMenu(){//vkExLeftMenu
       ExMenu['vkopt'].push([["#","vk_photos.url(prompt('Image URL:')); return false;"],'UploadImg v2']);
       ExMenu['vkopt'].push([["#","vk_photos.scan_walls_list_box(); return false;"],'Grab walls (photo)']);
       ExMenu['vkopt'].push([["#","(function(){var keys=[]; for(var key in localStorage) if(/im_draft/.test(key)){console.log(key); keys.push(key)}; for (var i=0; i<keys.length; i++) localStorage.removeItem(keys[i]);})(); return false;"],'Del LS Trash']);
-      ExMenu['vkopt'].push([["#","showBox('/al_apps.php', {act: 'show_app_friends_box', aid: 2168679}, {cache: 1, params:{width: '400px', bodyStyle: 'padding: 0px'}, stat: ['boxes.css','apps.css'], dark: 1}); return false;"],'Friends+Vkopt']);
+      ExMenu['vkopt'].push([["#","showBox('/al_apps.php', {act: 'show_app_friends_box', aid: 2168679}, {cache: 1, params:{width: '400px', bodyStyle: 'padding: 0px'}, stat: ['boxes.css','apps.css'], dark: 1}); return false;"],'Friends+' + app.name ]);
   }
-  /*
-  ExMenu['vkopt']=[];
-  ExMenu['vkopt'].push(["javascript: vkHighlightCounters();",IDL("updateLMenu")]);
-  ExMenu['vkopt'].push(["http://vkopt.net/",'<b>VkOpt Forum</b>']);
-  */
 
   vkMenuCurrentSub=null;
   vkMenuHider=null;
@@ -1217,7 +1213,7 @@ function vkMenu(){//vkExLeftMenu
      div.className='moreDiv more_div';
      nav.appendChild(div);
   }
-  var li=vkCe('li',{id:"frOpt"},'<a class="left_row" href="settings?act=vkopt" onclick="vkShowSettings(true); return false;"><span class="left_label inl_bl">'+IDL('VKopt',1)+'</span><span></span></a>');
+  var li=vkCe('li',{id:"frOpt"},'<a class="left_row" href="settings?act=' + app.name + '" onclick="vkShowSettings(true); return false;"><span class="left_label inl_bl">'+IDL('VKopt',1)+'</span><span></span></a>');
   nav.appendChild(li);
   //*/
 
@@ -1235,7 +1231,7 @@ function vkMenu(){//vkExLeftMenu
       page='custom_link';
     else if ((item.className || '').indexOf('vk_custom_sublink')!=-1)
       page='custom_sublink';
-    else if (item.href.indexOf('act=vkopt')!=-1)
+    else if (item.href.indexOf( "act=" + app.name )!=-1)
       page='vkopt';
     else
       page=(page)?page[1]:'';
@@ -1294,25 +1290,7 @@ function vkMenu(){//vkExLeftMenu
     }
   }
   var nav=(ge('sideBar') || ge('side_bar')).getElementsByTagName('ol')[0];
-  //var nav=ge('nav');
-  /*var div=document.createElement('div');
-  div.className='moreDiv more_div';
-  nav.appendChild(div);
-  if (window.vkNavLinks){
-        var li=document.createElement('li');
-        var html='';
-        for (var i=0;i<vkNavLinks.length; i++)  html+='<a href="'+vkNavLinks[i][1]+'" '+(vkNavLinks[i][2]?vkNavLinks[i][2]:'')+'>'+vkNavLinks[i][0]+'</a>';
-        li.id='frNavLinks';
-        li.innerHTML=html;
-        nav.appendChild(li);
-  }*/
-  /*var li=document.createElement('li');
-  var html="";
-  for (var i=0;window.vkNavLinks && i<vkNavLinks.length; i++)  html+='<a href="'+vkNavLinks[i][1]+'" '+(vkNavLinks[i][2]?vkNavLinks[i][2]:'')+'>'+vkNavLinks[i][0]+'</a>';
-  html+='<a href="settings?act=vkopt" '+setActions()+' onclick="vkShowSettings(true); return false;">'+ExMenu.vkopt[0]+'</a><ul '+setActions()+'>'+ExMenu.vkopt[1]+'</ul>';
-  li.id='frOpt';
-  li.innerHTML=html;
-  nav.appendChild(li);*/
+
   if (window.vkLinks && vkLinks.length>1){
         var li=document.createElement('li');
         var html='<a class="left_row" href="#" '+setActions()+' onclick="return false;"><span class="left_label inl_bl">'+vkLinks[0]+'</span></a><ul '+setActions()+'>';//
@@ -1569,7 +1547,7 @@ function vkGetCalendar(){
 			<div class="calendar_header">\
 			  <div class="right arrow fl_r"><a href="" onclick="vk_cur.vk_calGetMonth(1); return false;"></a></div>\
 			  <div class="left arrow fl_r"><a href="" onclick="vk_cur.vk_calGetMonth(-1); return false;"></a></div>\
-			  <div class="header_month fl_r" id="vk_calendar_header">VkOpt</div>\
+			  <div class="header_month fl_r" id="vk_calendar_header">' + app.name + '</div>\
 			</div>\
 			<div id="vk_calendar_table_wrap"></div>\
 			<div id="vk_calendar_events" style="display:none"  onmouseover="leftBlockOver(\'_vk_cal\')" onmouseout="leftBlockOut(\'_vk_cal\')">\

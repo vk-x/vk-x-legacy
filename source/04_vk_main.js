@@ -240,7 +240,9 @@ function VkOptMainInit(){
 
   vk_plugins.init();
   addEvent(document, 'mouseup', vkOnDocumentClick);
-  if (location.href.match('act=vkopt'))	vkShowSettings();
+  if ( location.href.match( "act=" + app.name ) ) {
+    vkShowSettings();
+  }
   if (window.topMsg){
 	vkStManHook();
 	for (var key in StaticFiles)  if (key.indexOf('.js') != -1) vkInj(key);
