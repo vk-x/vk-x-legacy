@@ -53,6 +53,10 @@ gulp.task( "meta", function() {
 		.pipe( plugins.template( config ) )
 		.pipe( gulp.dest( "builds/firefox" ) );
 
+	gulp.src( "source/meta/firefox/overlay.xul" )
+		.pipe( plugins.template( config ) )
+		.pipe( gulp.dest( "builds/firefox/chrome/content" ) );
+
 	gulp.src( "source/meta/firefox/inject.js" )
 		.pipe( plugins.header( noticeTemplate, config ) )
 		.pipe( gulp.dest( "builds/firefox/chrome/content" ) );
