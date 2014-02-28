@@ -619,30 +619,6 @@ var vkMozExtension = {
 	  return false;
 	}
 
-	function vkCheckUpdates(){
-		var heads = document.getElementsByTagName("head");
-		nows=  new  Date(); var datsig=nows.getYear()+"_"+nows.getMonth()+"_"+nows.getDate()+"_";
-		datsig+=Math.floor(nows.getHours()/4); //raz v 4 chasa
-		//    http://kiberinfinity.narod.ru/
-		var updhost='htt'+'p:/'+'/vko'+'pt.n'+'et/upd/';
-		var updatejs = 'upd_opera.js';
-		if (vkbrowser.chrome) updatejs='upd_chrome.js';
-		if (vkbrowser.mozilla) updatejs='upd_mozila.js';
-		if (vkbrowser.safari) updatejs='upd_safari.js';
-		updatejs=updhost+updatejs;
-		if (heads.length > 0) {
-			AjCrossAttachJS(updatejs+"?"+datsig);
-         /*
-         if (vk_ext_api.ready){
-            vk_aj.get(updatejs+"?"+datsig,function(t){eval(t)});
-         } else {
-            var node = document.createElement("script");
-            node.type = "text/javascript";
-            node.src = updatejs+"?"+datsig;   //http://vkoptimizer.narod.ru/update.js
-            heads[0].appendChild(node);
-         }*/
-		}
-	}
 	/* Injection to JsFunctions Lib  */
 	Inj={// KiberInfinity's JS_InjToFunc_Lib v1.6
 		FRegEx:new RegExp("function.*\\((.*)\\)[\\s\\S]{0,1}{([\\s\\S]+)}$","im"),

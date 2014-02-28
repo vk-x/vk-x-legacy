@@ -272,7 +272,6 @@ function VkOptMainInit(){
   vkFaveOnlineChecker();
   vk_audio_player.init();
   vkMoneyBoxAddHide();
-  vkCheckUpdates();
   setTimeout(vkFriendsCheckRun,2000);
   window.vk_vid_down &&  setTimeout(vk_vid_down.vkVidLinks,0);
   if (vkgetCookie('IDFriendsUpd') && (vkgetCookie('IDFriendsUpd') != '_')) {	vkShowFriendsUpd();  }
