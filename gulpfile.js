@@ -16,18 +16,18 @@ var gulp = require( "gulp" ),
 		// Some files are really large now (> 1.5 Mb!), so that can last
 		// for several seconds, and if you push some changes during indexing
 		// you'll get an error from clean-* task.
-		var lastBusyFile = null,
+		var busyFiles = [],
 			retryInterval = 50,
 			colors = require( "colors" );
 		(function retryRemove() {
 			fs.remove( folder, function( error ) {
 				if ( error ) {
-					if ( error.path !== lastBusyFile ) {
+					if ( busyFiles.indexOf( error.path ) === -1 ) {
 						console.log( ( "Can't remove " +
 							path.relative( process.cwd(), error.path ) +
 							", will retry each " + retryInterval + "ms" +
 							" until success." ).yellow );
-						lastBusyFile = error.path;
+						busyFiles.push( error.path );
 					}
 					setTimeout( retryRemove, retryInterval );
 				} else {
