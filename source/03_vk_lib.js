@@ -1994,7 +1994,6 @@ var vk_ext_api={
          window.addEventListener("message", vk_ext_api.on_message,false);
          vk_ext_api.inited = true;
       }
-      vk_ext_api.req()
    },
    on_message:function(e){
 		var res=e.data || {};
@@ -2053,7 +2052,6 @@ var vk_ext_api={
    }
 }
 vk_ext_api.init();
-vk_ext_api.req({act:'check_ext'},function(){vk_ext_api.ready=true;});
 vk_aj=vk_ext_api.ajax;
 /*
 
