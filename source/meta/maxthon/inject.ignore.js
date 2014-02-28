@@ -5,7 +5,7 @@
 // Now we use gulp to concat source code and inject it below.
 
 	// See gulpfile.js
-var gulpShouldFillThis = "This will be replaced with the contents of source/";
+var gulpShouldFillThis = "This will be replaced with the contents of source/",
 
 	injectScript = function( code ) {
 		var tag = document.createElement( "script" );

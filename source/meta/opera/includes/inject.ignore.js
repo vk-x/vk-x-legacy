@@ -1,9 +1,3 @@
-// ==UserScript==
-// @include http://vk.com/*
-// @exclude http://vk.com/notifier.php*
-// @exclude http://vk.com/*_frame.php*
-// ==/UserScript==
-
 // Opera 12 does not allow to access resources from web,
 // so script file injection is only possible with background
 // script which does have access to local resources.
@@ -31,4 +25,5 @@ window._ext_ldr_vkopt_loader = true;
 // Needs further investigation cause eval() is too slow to leave it so.
 
 // See: gulpfile.js
-window.eval( "This will be replaced with the contents of source/ folder" );
+var gulpShouldFillThis = "This will be replaced with the contents of source/";
+window.eval( gulpShouldFillThis );

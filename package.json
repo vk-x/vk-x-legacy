@@ -18,10 +18,11 @@
   "devDependencies": {
     "gulp": "~3.5.2",
     "event-stream": "~3.1.0",
+    "fs-extra": "~0.8.1",
     "gulp-load-plugins": "~0.3.0",
     "gulp-concat": "~2.1.7",
     "gulp-rename": "~1.1.0",
-    "gulp-clean": "~0.2.4",
+    "gulp-filter": "~0.3.0",
     "gulp-if": "0.0.5",
     "gulp-inject": "~0.4.1",
     "js-string-escape": "~1.0.0",
