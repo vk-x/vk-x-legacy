@@ -128,4 +128,8 @@ gulp.task( "dist-zip", [ "scripts", "clean-dist" ], function() {
 
 gulp.task( "dist", [ "dist-maxthon", "dist-zip" ]);
 
-gulp.task( "default", [ "scripts" ]);
+gulp.task( "build", [ "scripts" ]);
+
+gulp.task( "default", [ "build" ], function() {
+	gulp.watch( "source/**/*.*", [ "build" ]);
+});
