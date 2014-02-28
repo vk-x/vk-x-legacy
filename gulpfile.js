@@ -134,7 +134,7 @@ gulp.task( "dist-zip", [ "scripts", "clean-dist" ], function() {
 		// How to install unpacked extension:
 		// https://developer.chrome.com/extensions/getstarted#unpacked
 		// It is possible to make it auto reloading on changes:
-		// http://stackoverflow.com/a/127672001
+		// http://stackoverflow.com/a/12767200
 		chromiumStream = gulp.src( "**/*.*", {
 			cwd: path.join( process.cwd(), "build", "chromium" )
 		}).pipe( plugins.zip( prefix + "-chromium.zip" ) ),
