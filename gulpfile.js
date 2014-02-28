@@ -7,8 +7,35 @@ var gulp = require( "gulp" ),
 	noticeTemplate = fs.readFileSync( "./source/meta/notice.template.js" ),
 	plugins = require( "gulp-load-plugins" )();
 
-gulp.task( "clean-build", function() {
-	return fs.removeSync( "build" );
+// You may want to keep dist/ folder during development
+// so should split "clean" into "clean-build" and "clean-dist".
+[ "build", "dist" ].forEach(function( folder ) {
+	gulp.task( "clean-" + folder, function( done ) {
+		// Sometimes node fails to remove some file because it is being
+		// indexed by Sublime Text or is opened by some other process.
+		// Some files are really large now (> 1.5 Mb!), so that can last
+		// for several seconds, and if you push some changes during indexing
+		// you'll get an error from clean-* task.
+		var lastBusyFile = null,
+			retryInterval = 50,
+			colors = require( "colors" );
+		(function retryRemove() {
+			fs.remove( folder, function( error ) {
+				if ( error ) {
+					if ( error.path !== lastBusyFile ) {
+						console.log( ( "Can't remove " +
+							path.relative( process.cwd(), error.path ) +
+							", will retry each " + retryInterval + "ms" +
+							" until success." ).yellow );
+						lastBusyFile = error.path;
+					}
+					setTimeout( retryRemove, retryInterval );
+				} else {
+					done();
+				}
+			});
+		})();
+	});
 });
 
 gulp.task( "meta", [ "clean-build" ], function() {
@@ -65,10 +92,6 @@ gulp.task( "scripts", [ "meta" ], function() {
 			.pipe( gulp.dest( "build/chromium" ) );
 
 	return es.concat( injectStream, distStream, vendorStream );
-});
-
-gulp.task( "clean-dist", function() {
-	return fs.removeSync( "dist" );
 });
 
 gulp.task( "dist-maxthon", [ "scripts", "clean-dist" ], function( done ) {
