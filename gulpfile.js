@@ -7,11 +7,11 @@ var gulp = require( "gulp" ),
 	noticeTemplate = fs.readFileSync( "./source/meta/notice.template.js" ),
 	plugins = require( "gulp-load-plugins" )();
 
-gulp.task( "clean", function() {
+gulp.task( "clean-build", function() {
 	return fs.removeSync( "build" );
 });
 
-gulp.task( "meta", [ "clean" ], function() {
+gulp.task( "meta", [ "clean-build" ], function() {
 	var metaStream = gulp.src( "source/meta/*/**/*" )
 			.pipe( plugins.filter( "!**/*.ignore.*" ) )
 			.pipe( plugins.if( /\.template\./, plugins.template( config ) ) )
@@ -67,14 +67,18 @@ gulp.task( "scripts", [ "meta" ], function() {
 	return es.concat( injectStream, distStream, vendorStream );
 });
 
-gulp.task( "dist-maxthon", [ "scripts" ], function( done ) {
+gulp.task( "clean-dist", function() {
+	return fs.removeSync( "dist" );
+});
+
+gulp.task( "dist-maxthon", [ "scripts", "clean-dist" ], function( done ) {
 	if ( require( "os" ).type() !== "Windows_NT" ) {
 		return done();
 	}
 
 	var execFile = require( "child_process" ).execFile,
 		resultName = config.name + "-" + config.version + "-maxthon.mxaddon",
-		pathToResult = path.join( process.cwd(), "build", resultName ),
+		pathToResult = path.join( process.cwd(), "dist", resultName ),
 		pathToSource = path.join( process.cwd(), "build", "maxthon" ),
 		pathToBuilder = path.join( process.cwd(), "maxthon-packager.exe" );
 
@@ -88,7 +92,7 @@ gulp.task( "dist-maxthon", [ "scripts" ], function( done ) {
 	);
 });
 
-gulp.task( "dist-zip", [ "scripts" ], function() {
+gulp.task( "dist-zip", [ "scripts", "clean-dist" ], function() {
 	var prefix = config.name + "-" + config.version,
 
 		// Firefox allows to install add-ons from .xpi packages
@@ -119,7 +123,7 @@ gulp.task( "dist-zip", [ "scripts" ], function() {
 		}).pipe( plugins.zip( prefix + "-opera.oex" ) );
 
 	return es.concat( firefoxStream, chromiumStream, operaStream )
-		.pipe( gulp.dest( "build" ) );
+		.pipe( gulp.dest( "dist" ) );
 });
 
 gulp.task( "dist", [ "dist-maxthon", "dist-zip" ]);
