@@ -9,6 +9,35 @@ var injectScript = function( doc, data, options ) {
 		( doc.head || doc.documentElement ).appendChild( tag );
 	},
 
+	// This function provides old interface for cross-origin ajax
+	// until new one won't be implemented.
+	// See: vk_ext_api object defined in vk_lib.js
+	handleMessage = function( messageEvent ) {
+		var data = messageEvent.data;
+		if ( data.mark === "vkopt_loader" ) {
+			var requestType = data.act.toUpperCase(),
+				sub = data._sub;
+			if ([ "GET", "POST", "HEAD" ].indexOf( requestType ) !== -1 ) {
+				// Overlay scripts can make cross-origin ajax requests.
+				request = new XMLHttpRequest();
+				request.open( requestType, data.url, true );
+				request.onload = function() {
+					if ( this.status >= 200 && this.status < 400 ) {
+						var response = this.response;
+						if ( requestType === "HEAD" ) {
+							response = this.getAllResponseHeaders();
+						}
+						win.postMessage({
+							response: { response: response },
+							sub: sub
+						}, "*" );
+					}
+				};
+				request.send();
+			}
+		}
+	},
+
 	init = function() {
 		if ( gBrowser ) {
 			gBrowser.addEventListener( "DOMContentLoaded", function( e ) {
@@ -25,16 +54,7 @@ var injectScript = function( doc, data, options ) {
 				if ( url.indexOf( "/notifier.php" ) !== -1 ||
 					url.indexOf( "_frame.php" ) !== -1 ) return;
 
-				win.addEventListener( "message", function( messageEvent ) {
-					var data = messageEvent.data;
-					if ( data.mark === "vkopt_loader" ) {
-						// This function should provide old interface for
-						// cross-origin ajax until new one won't be implemented.
-						// See: ex_api.on_message in content_script.js
-						// and ext_api in background.js
-						win.console.log( data );
-					}
-				}, false );
+				win.addEventListener( "message", handleMessage, false );
 
 				if ( isTopWindow ) {
 					// See: content_script.js:23
