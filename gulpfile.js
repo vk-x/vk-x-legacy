@@ -2,6 +2,7 @@ var gulp = require( "gulp" ),
 	es = require( "event-stream" ),
 	path = require( "path" ),
 	fs = require( "fs-extra" ),
+	colors = require( "colors" ),
 	config = fs.readJsonSync( "./package.json" ),
 	userscriptHeader = fs.readFileSync( "./source/meta/userscript-header.js" ),
 	noticeTemplate = fs.readFileSync( "./source/meta/notice.template.js" ),
@@ -17,8 +18,7 @@ var gulp = require( "gulp" ),
 		// for several seconds, and if you push some changes during indexing
 		// you'll get an error from clean-* task.
 		var busyFiles = [],
-			retryInterval = 50,
-			colors = require( "colors" );
+			retryInterval = 50;
 		(function retryRemove() {
 			fs.remove( folder, function( error ) {
 				if ( error ) {
@@ -93,6 +93,7 @@ gulp.task( "scripts", [ "meta" ], function() {
 
 gulp.task( "dist-maxthon", [ "scripts", "clean-dist" ], function( done ) {
 	if ( require( "os" ).type() !== "Windows_NT" ) {
+		console.log( "Maxthon packager only works on Windows.".yellow );
 		return done();
 	}
 
