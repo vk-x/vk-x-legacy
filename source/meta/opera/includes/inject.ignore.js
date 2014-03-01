@@ -6,14 +6,18 @@
 // eval'ed here.
 // Now we use gulp to concat source code and inject it below.
 
+// These two event handlers and index.html provide
+// old interface for cross-origin ajax until new one won't be implemented.
+// See: vk_ext_api object defined in vk_lib.js
+
+opera.extension.addEventListener( "message", function( responseEvent ) {
+	window.postMessage( responseEvent.data, "*" );
+}, false );
+
 window.addEventListener( "message", function( messageEvent ) {
-	var data = messageEvent.data;
-	if ( data.mark === "vkopt_loader" ) {
-		// This function should provide old interface for
-		// cross-origin ajax until new one won't be implemented.
-		// See: ex_api.on_message in content_script.js
-		// and ext_api in background.js
-		console.log( data );
+	if ( messageEvent.data.mark === "vkopt_loader" ) {
+		// Pass request to background.js
+		opera.extension.postMessage( messageEvent.data );
 	}
 }, false );
 

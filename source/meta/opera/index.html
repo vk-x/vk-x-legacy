@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-<!-- This file just should contain valid html. -->
-<!-- See: source/meta/opera-inject.js -->
-<!-- http://dev.opera.com/articles/view/extensions-api-injected-scripts/ -->
-	<head></head>
+	<!-- UserScripts (includes/*.js)
+		can't make cross-domain ajax requests
+		so here is a background script which can. -->
+	<head><script src="background.js"></script></head>
 	<body></body>
 </html>
