@@ -86,12 +86,9 @@ gulp.task( "scripts", [ "meta" ], function() {
 		distStream = baseStream()
 			.pipe( plugins.header( noticeTemplate, config ) )
 			.pipe( gulp.dest( "build/chromium" ) )
-			.pipe( gulp.dest( "build/firefox/scripts" ) ),
+			.pipe( gulp.dest( "build/firefox/scripts" ) );
 
-		vendorStream = gulp.src( "source/vendor/*.js" )
-			.pipe( gulp.dest( "build/chromium" ) );
-
-	return es.concat( injectStream, distStream, vendorStream );
+	return es.concat( injectStream, distStream );
 });
 
 gulp.task( "dist-maxthon", [ "scripts", "clean-dist" ], function( done ) {

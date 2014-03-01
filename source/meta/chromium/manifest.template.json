@@ -7,10 +7,7 @@
 	"author": "<%= author.name %>",
 	"default_locale": "en",
 	"content_scripts": [{
-		"js": [
-			"jquery-2.1.0.min.js",
-			"inject.js"
-		],
+		"js": [ "inject.js" ],
 		"run_at": "document_start",
 		"matches": [ "http://vk.com/*", "https://vk.com/*" ],
 		"exclude_globs": [
