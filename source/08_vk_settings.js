@@ -145,7 +145,7 @@ function vkSettingsPage(){
 	if (!ge('vkopt_settings_tab') && ge('settings_filters')){
 		var li=vkCe('li',{id:'vkopt_settings_tab'});
 		li.innerHTML='\
-			<a href="/settings?act="' + app.name + ' onclick="return checkEvent(event)" onmousedown="return vkShowSettings();">\
+			<a href="/settings?act=' + app.name + '" onclick="return checkEvent(event)" onmousedown="return vkShowSettings();">\
 			<b class="tl1"><b></b></b><b class="tl2"></b>\
 			<b class="tab_word">' + app.name + '</b>\
 			</a>';
