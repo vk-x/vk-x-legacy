@@ -1213,7 +1213,7 @@ function vkMenu(){//vkExLeftMenu
      div.className='moreDiv more_div';
      nav.appendChild(div);
   }
-  var li=vkCe('li',{id:"frOpt"},'<a class="left_row" href="settings?act=' + app.name + '" onclick="vkShowSettings(true); return false;"><span class="left_label inl_bl">'+IDL('VKopt',1)+'</span><span></span></a>');
+  var li=vkCe('li',{id:"frOpt"},'<a class="left_row" href="settings?act=' + app.name + '" onclick="vkShowSettings(true); return false;"><span class="left_label inl_bl">' + app.name + '</span><span></span></a>');
   nav.appendChild(li);
   //*/
 
