@@ -59,7 +59,7 @@ gulp.task( "meta", [ "clean-build" ], function() {
 	return es.concat( metaStream, licenseStream );
 });
 
-gulp.task( "scripts", [ "meta" ], function() {
+gulp.task( "scripts", [ "clean-build" ], function() {
 	var baseStream = function() {
 			return gulp.src( "source/*.js" )
 				.pipe( plugins.if( /\.template\.js/,
@@ -91,7 +91,7 @@ gulp.task( "scripts", [ "meta" ], function() {
 	return es.concat( injectStream, distStream );
 });
 
-gulp.task( "dist-maxthon", [ "scripts", "clean-dist" ], function( done ) {
+gulp.task( "dist-maxthon", [ "meta", "scripts", "clean-dist" ], function( done ) {
 	if ( require( "os" ).type() !== "Windows_NT" ) {
 		console.log( "Maxthon packager only works on Windows.".yellow );
 		return done();
@@ -113,7 +113,7 @@ gulp.task( "dist-maxthon", [ "scripts", "clean-dist" ], function( done ) {
 	);
 });
 
-gulp.task( "dist-zip", [ "scripts", "clean-dist" ], function() {
+gulp.task( "dist-zip", [ "meta", "scripts", "clean-dist" ], function() {
 	var prefix = config.name + "-" + config.version,
 
 		// Firefox allows to install add-ons from .xpi packages
@@ -151,7 +151,7 @@ gulp.task( "dist-zip", [ "scripts", "clean-dist" ], function() {
 
 gulp.task( "dist", [ "dist-maxthon", "dist-zip" ]);
 
-gulp.task( "build", [ "scripts" ]);
+gulp.task( "build", [ "meta", "scripts" ]);
 
 gulp.task( "default", [ "build" ], function() {
 	gulp.watch( "source/**/*.*", [ "build" ]);
