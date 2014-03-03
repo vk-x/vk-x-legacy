@@ -29,6 +29,7 @@
     "karma-phantomjs-launcher": "~0.1.2",
     "karma-lodash-template-preprocessor": "~0.1.1",
     "gulp-karma": "0.0.2",
+    "gulp-coffee": "~1.4.1",
     "gulp-zip": "~0.1.2",
     "gulp-concat": "~2.1.7",
     "gulp-rename": "~1.1.0",

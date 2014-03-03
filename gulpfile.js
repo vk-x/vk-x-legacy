@@ -10,7 +10,7 @@ var gulp = require( "gulp" ),
 
 // See: https://github.com/lazd/gulp-karma
 gulp.task( "test", function() {
-	return gulp.src([ "source/*.js", "test/*.test.js" ])
+	return gulp.src([ "source/*.*", "test/*.test.litcoffee" ])
 		.pipe( plugins.karma({
 			configFile: "karma-config.litcoffee"
 		}) );
@@ -69,9 +69,11 @@ gulp.task( "meta", [ "clean-build" ], function() {
 
 gulp.task( "scripts", [ "clean-build", "test" ], function() {
 	var baseStream = function() {
-			return gulp.src( "source/*.js" )
-				.pipe( plugins.if( /\.template\.js/,
+			return gulp.src( "source/*.*" )
+				.pipe( plugins.if( /\.template\./i,
 					plugins.template( config ) ) )
+				.pipe( plugins.if( /\.litcoffee$/i,
+					plugins.coffee({ bare: true }) ) )
 				.pipe( plugins.concat( "dist.js" ) );
 		},
 

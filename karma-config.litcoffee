@@ -1,13 +1,14 @@
 	module.exports = ( config ) ->
 		config.set
 			files: [
-				"source/*.js"
-				"test/*.test.js" ]
+				"source/*.*"
+				"test/*.test.litcoffee" ]
 
 			frameworks: [ "mocha", "chai" ]
 
 			preprocessors:
 				"**/*.template.*": [ "lodash" ]
+				"**/*.litcoffee": [ "coffee" ]
 
 			lodashPreprocessor:
 				data: require "./package.json"
