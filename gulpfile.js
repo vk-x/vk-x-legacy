@@ -8,6 +8,14 @@ var gulp = require( "gulp" ),
 	noticeTemplate = fs.readFileSync( "./source/meta/notice.template.js" ),
 	plugins = require( "gulp-load-plugins" )();
 
+// See: https://github.com/lazd/gulp-karma
+gulp.task( "test", function() {
+	return gulp.src([ "source/*.js", "test/*.test.js" ])
+		.pipe( plugins.karma({
+			configFile: "karma-config.js"
+		}) );
+});
+
 // You may want to keep dist/ folder during development
 // so should split "clean" into "clean-build" and "clean-dist".
 [ "build", "dist" ].forEach(function( folder ) {
