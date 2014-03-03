@@ -12,7 +12,7 @@ var gulp = require( "gulp" ),
 gulp.task( "test", function() {
 	return gulp.src([ "source/*.js", "test/*.test.js" ])
 		.pipe( plugins.karma({
-			configFile: "karma-config.js"
+			configFile: "karma-config.litcoffee"
 		}) );
 });
 
