@@ -67,7 +67,7 @@ gulp.task( "meta", [ "clean-build" ], function() {
 	return es.concat( metaStream, licenseStream );
 });
 
-gulp.task( "scripts", [ "clean-build" ], function() {
+gulp.task( "scripts", [ "clean-build", "test" ], function() {
 	var baseStream = function() {
 			return gulp.src( "source/*.js" )
 				.pipe( plugins.if( /\.template\.js/,
@@ -162,5 +162,5 @@ gulp.task( "dist", [ "dist-maxthon", "dist-zip" ]);
 gulp.task( "build", [ "meta", "scripts" ]);
 
 gulp.task( "default", [ "build" ], function() {
-	gulp.watch( "source/**/*.*", [ "build" ]);
+	gulp.watch([ "source/**/*.*", "test/**/*.*" ], [ "build" ]);
 });
