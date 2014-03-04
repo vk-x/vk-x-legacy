@@ -19,6 +19,7 @@
     "gulp": "~3.5.2",
     "event-stream": "~3.1.0",
     "fs-extra": "~0.8.1",
+    "coffee-script": "~1.7.1",
     "gulp-load-plugins": "~0.3.0",
     "colors": "~0.6.2",
     "karma": "~0.10.9",
