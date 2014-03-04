@@ -1,4 +1,4 @@
-	<%= name %> =
+	app =
 		name: "<%= name %>"
 		version:
 			full: "<%= version %>"
@@ -7,4 +7,4 @@
 			patch: <%= version.split( "." )[ 2 ] %>
 		homepage: "<%= homepage %>"
 
-	app = <%= name %>
+	<%= name %> = app
