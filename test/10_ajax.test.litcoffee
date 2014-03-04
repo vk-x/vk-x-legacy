@@ -135,3 +135,57 @@ It just checks that request is correct and calls provided function
 				app.ajax.request
 					url: "http://example.com/"
 					callback: callback
+
+## app.ajax.get
+**`app.ajax.get`** is an alias for `app.ajax.request method: "GET"`
+
+		describe "get", ->
+			it "should set method to GET", ( done ) ->
+				# Set up a background listener.
+				mimicBackgroundListener ( -> done() ),
+					# method should be changed to GET.
+					method: "GET"
+					url: "http://example.com/"
+					data: "bar"
+
+				# Send request to background.
+				app.ajax.get
+					method: "POST"
+					url: "http://example.com/"
+					data: "bar"
+
+## app.ajax.post
+**`app.ajax.post`** is an alias for `app.ajax.request method: "POST"`
+
+		describe "post", ->
+			it "should set method to post", ( done ) ->
+				# Set up a background listener.
+				mimicBackgroundListener ( -> done() ),
+					# method should be changed to POST.
+					method: "POST"
+					url: "http://example.com/"
+					data: "bar"
+
+				# Send request to background.
+				app.ajax.post
+					method: "GET"
+					url: "http://example.com/"
+					data: "bar"
+
+## app.ajax.head
+**`app.ajax.head`** is an alias for `app.ajax.request method: "HEAD"`
+
+		describe "head", ->
+			it "should set method to HEAD", ( done ) ->
+				# Set up a background listener.
+				mimicBackgroundListener ( -> done() ),
+					# method should be changed to HEAD.
+					method: "HEAD"
+					url: "http://example.com/"
+					data: "bar"
+
+				# Send request to background.
+				app.ajax.head
+					method: "POST"
+					url: "http://example.com/"
+					data: "bar"

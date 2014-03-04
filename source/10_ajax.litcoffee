@@ -46,6 +46,19 @@ property to message data with a value of `_requestId` property like so:
 			# Send a request, wait for response.
 			window.postMessage settings, "*"
 
+## Shortcut methods
+
+		shortcut = {}
+
+		for method in [ "get", "head", "post" ]
+			do ( method ) ->
+				shortcut[ method ] = ( settings = {}) ->
+					settings.method = method.toUpperCase()
+					request settings
+
 ## Public interface
 
 		request: request
+		get: shortcut.get
+		head: shortcut.head
+		post: shortcut.post
