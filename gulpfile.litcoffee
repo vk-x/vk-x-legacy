@@ -49,7 +49,7 @@
 
 		es.concat metaStream, licenseStream
 
-	gulp.task "scripts", [ "clean-build", "test" ], ->
+	gulp.task "scripts", [ "clean-build" ], ->
 		baseStream = ->
 			gulp.src "source/*.*"
 				.pipe plugins.if /\.template\./, plugins.template config
@@ -138,5 +138,5 @@ which are simply zip archives.
 
 	gulp.task "build", [ "meta", "scripts" ]
 
-	gulp.task "default", [ "build" ], ->
-		gulp.watch [ "source/**/*.*", "test/**/*.*" ], [ "build" ]
+	gulp.task "default", [ "build", "test" ], ->
+		gulp.watch [ "source/**/*.*", "test/**/*.*" ], [ "build", "test" ]
