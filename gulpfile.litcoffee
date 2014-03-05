@@ -187,7 +187,7 @@ Distributable Maxthon extension created using `maxthon-packager.exe`
 			console.log ( "Maxthon packager only guaranteed " +
 				"to work on Windows. Trying anyway..." ).yellow
 
-		execFile = ( require "child_process" ).execFile
+		{ execFile } = require "child_process"
 		resultName = "#{config.name}-#{config.version}-maxthon.mxaddon"
 		pathToResult = path.join cwd, "dist", resultName
 		pathToSource = path.join cwd, "build", "maxthon"
