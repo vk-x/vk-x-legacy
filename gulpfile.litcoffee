@@ -6,8 +6,8 @@
 	fs = require "fs-extra"
 	colors = require "colors"
 	config = require "./package"
-	plugins = do require "gulp-load-plugins"
-	cwd = do process.cwd
+	plugins = ( require "gulp-load-plugins" )()
+	cwd = process.cwd()
 
 	bowerDeps =
 		"lodash": "bower_components/lodash/dist/lodash.min.js"
@@ -37,8 +37,8 @@
 							"will retry each #{retryInterval}ms until success."
 							console.log errorMessage.yellow
 						setTimeout tryRemove, retryInterval
-					else do done
-			do tryRemove
+					else done()
+			tryRemove()
 
 	gulp.task "meta", [ "clean-build" ], ->
 		noticeTemplate = fs.readFileSync "./source/meta/notice.template.js"
@@ -67,7 +67,7 @@
 				.pipe plugins.if /\.litcoffee$/, plugins.coffee bare: yes
 				.pipe plugins.concat "dist.js"
 
-		injectTransform = plugins.inject do baseStream,
+		injectTransform = plugins.inject baseStream(),
 			starttag: "gulpShouldFillThis = \""
 			endtag: "\""
 			transform: ( path, file ) ->
@@ -84,7 +84,7 @@
 			.pipe plugins.rename basename: "inject"
 			.pipe gulp.dest "build"
 
-		distStream = ( do baseStream )
+		distStream = ( baseStream() )
 			.pipe plugins.header noticeTemplate, config
 			.pipe gulp.dest "build/chromium"
 			.pipe gulp.dest "build/firefox/scripts"
@@ -111,7 +111,7 @@
 				else unless isWindows
 					console.log ( "Looks like Maxthon packager finished " +
 						"successfully." ).green
-				do done
+				done()
 
 	gulp.task "dist-zip", [ "meta", "scripts", "clean-dist" ], ->
 		prefix = "#{config.name}-#{config.version}"
