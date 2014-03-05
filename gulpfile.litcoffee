@@ -1,4 +1,6 @@
 	gulp = require "gulp"
+	_ = require "lodash"
+	bower = require "bower"
 	es = require "event-stream"
 	path = require "path"
 	fs = require "fs-extra"
@@ -7,8 +9,17 @@
 	plugins = do require "gulp-load-plugins"
 	cwd = do process.cwd
 
+	bowerDeps =
+		"lodash": "bower_components/lodash/dist/lodash.min.js"
+		"uri.js": "bower_components/uri.js/src/URI.js"
+
+	sourceList = _.union ( _.values bowerDeps ), [ "source/*.*" ]
+
+	gulp.task "bower", ->
+		bower.commands.install _.keys bowerDeps
+
 	gulp.task "test", ->
-		gulp.src [ "source/*.*", "test/*.test.litcoffee" ]
+		gulp.src _.union sourceList, [ "test/*.test.litcoffee" ]
 			.pipe plugins.karma
 				configFile: "karma-config"
 
@@ -51,7 +62,7 @@
 
 	gulp.task "scripts", [ "clean-build" ], ->
 		baseStream = ->
-			gulp.src "source/*.*"
+			gulp.src sourceList
 				.pipe plugins.if /\.template\./, plugins.template config
 				.pipe plugins.if /\.litcoffee$/, plugins.coffee bare: yes
 				.pipe plugins.concat "dist.js"

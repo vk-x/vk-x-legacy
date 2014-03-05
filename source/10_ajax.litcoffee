@@ -12,18 +12,29 @@ in CoffeeScript.
 
 ## app.ajax.request
 
-		request = ( settings = {}) ->
-			# Save callback privately, do not pass it with request settings.
-			callback = settings.callback ? ->
-			delete settings.callback if settings.callback
+		request = ( options = {}) ->
+			# Keep callback private, do not pass it with request settings.
+			callback = options.callback ? ->
+			delete options.callback if options.callback
 
-			# Use defaults for omitted settings.
-			settings.method ?= "GET"
-			settings.url ?= ""
-			settings.data ?= {}
+			requestId = app.util.uniqueId app.name
 
-			# requestId looks like (app.name + "0.73895393").
-			settings._requestId = requestId = app.name + Math.random()
+			# These are passed with request event.
+			settingsForRequest = app.util.defaults options,
+				method: "GET"
+				url: ""
+				data: {}
+			settingsForRequest._requestId = requestId
+
+			# These are passed to callback along with response.
+			settingsForCallback = app.util.cloneDeep settingsForRequest
+
+			if settingsForRequest.method in [ "GET", "HEAD" ]
+				# Append GET params to url.
+				settingsForRequest.url = app.util.uri settingsForRequest.url
+					.addQuery settingsForRequest.data
+					.href()
+				settingsForRequest.data = {}
 
 			listener = ( message ) ->
 
@@ -37,14 +48,16 @@ property to message data with a value of `_requestId` property like so:
 				# Don't listen anymore when the response arrives.
 				window.removeEventListener "message", listener
 
-				# Pass response and full request data to callback.
-				callback message.data.response, message.data
+				# Take only response from message, use sane saved data.
+				settingsForCallback.response = message.data.response
+				settingsForCallback._responseId = message.data._responseId
+				callback settingsForCallback.response, settingsForCallback
 
 			# Listen for response.
 			window.addEventListener "message", listener, no
 
 			# Send a request, wait for response.
-			window.postMessage settings, "*"
+			window.postMessage settingsForRequest, "*"
 
 ## Shortcut methods
 
@@ -52,9 +65,9 @@ property to message data with a value of `_requestId` property like so:
 
 		for method in [ "get", "head", "post" ]
 			do ( method ) ->
-				shortcut[ method ] = ( settings = {}) ->
-					settings.method = method.toUpperCase()
-					request settings
+				shortcut[ method ] = ( options = {}) ->
+					options.method = method.toUpperCase()
+					request options
 
 ## Public interface
 

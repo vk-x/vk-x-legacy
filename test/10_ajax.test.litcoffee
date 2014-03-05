@@ -136,6 +136,41 @@ It just checks that request is correct and calls provided function
 					url: "http://example.com/"
 					callback: callback
 
+#### It appends `GET` params to url:
+
+			for method in [ "GET", "HEAD" ]
+				do ( method ) ->
+					it "should append GET params to url when #{method}",
+					( done ) ->
+						# Will be called by app.ajax as a callback.
+						callback = ( response, requestData ) ->
+							response.should.equal "response"
+							requestData.response.should.equal "response"
+							requestData.method.should.equal method
+							requestData.url.should.equal ""
+							# Should not encode or cast to string request data.
+							requestData.data.should.have.property "foo", null
+							requestData.data.bar.should.equal yes
+							requestData.data.qux.should.equal " space"
+							done()
+
+						# Set up a background listener.
+						mimicBackgroundListener ( requestData ) ->
+							requestData.url.should
+								.equal "?foo&bar=true&qux=+space"
+							requestData._responseId = requestData._requestId
+							requestData.response = "response"
+							window.postMessage requestData, "*"
+
+						# Send request to background and call callback on response.
+						app.ajax.request
+							method: method
+							data:
+								foo: null
+								bar: true
+								qux: " space"
+							callback: callback
+
 ## app.ajax.get
 **`app.ajax.get`** is an alias for `app.ajax.request method: "GET"`
 
@@ -145,8 +180,8 @@ It just checks that request is correct and calls provided function
 				mimicBackgroundListener ( -> done() ),
 					# method should be changed to GET.
 					method: "GET"
-					url: "http://example.com/"
-					data: "bar"
+					url: "http://example.com/?bar"
+					data: {}
 
 				# Send request to background.
 				app.ajax.get
@@ -181,8 +216,8 @@ It just checks that request is correct and calls provided function
 				mimicBackgroundListener ( -> done() ),
 					# method should be changed to HEAD.
 					method: "HEAD"
-					url: "http://example.com/"
-					data: "bar"
+					url: "http://example.com/?bar"
+					data: {}
 
 				# Send request to background.
 				app.ajax.head
