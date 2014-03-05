@@ -92,9 +92,10 @@
 		es.concat injectStream, distStream
 
 	gulp.task "dist-maxthon", [ "meta", "scripts", "clean-dist" ], ( done ) ->
-		if do ( require "os" ).type isnt "Windows_NT"
-			console.log "Maxthon packager only works on Windows.".yellow
-			do done
+		isWindows = ( require "os" ).type() is "Windows_NT"
+		unless isWindows
+			console.log ( "Maxthon packager only guaranteed " +
+				"to work on Windows. Trying anyway..." ).yellow
 
 		execFile = ( require "child_process" ).execFile
 		resultName = "#{config.name}-#{config.version}-maxthon.mxaddon"
@@ -104,7 +105,12 @@
 
 		execFile pathToBuilder, [ pathToSource, pathToResult ], null,
 			( error ) ->
-				console.log "Maxthon builder exited with error:", error if error
+				if error
+					console.log "Maxthon packager exitted with error:".red,
+						error
+				else unless isWindows
+					console.log ( "Looks like Maxthon packager finished " +
+						"successfully." ).green
 				do done
 
 	gulp.task "dist-zip", [ "meta", "scripts", "clean-dist" ], ->
