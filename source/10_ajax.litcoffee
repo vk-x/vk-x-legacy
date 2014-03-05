@@ -43,7 +43,7 @@ in CoffeeScript.
 property to message data with a value of `_requestId` property like so:
 `message.data._responseId = message.data._requestId`.
 
-				return if message.data._responseId isnt requestId
+				return unless message.data._responseId is requestId
 
 				# Don't listen anymore when the response arrives.
 				window.removeEventListener "message", listener
