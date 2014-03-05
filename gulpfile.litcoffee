@@ -83,6 +83,7 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 	config = require "./package"
 	plugins = ( require "gulp-load-plugins" )()
 	cwd = process.cwd()
+	distPrefix = "#{config.name}-#{config.version}"
 
 #### bower
 
@@ -188,7 +189,7 @@ Distributable Maxthon extension created using `maxthon-packager.exe`
 				"to work on Windows. Trying anyway..." ).yellow
 
 		{ execFile } = require "child_process"
-		resultName = "#{config.name}-#{config.version}-maxthon.mxaddon"
+		resultName = "#{distPrefix}-maxthon.mxaddon"
 		pathToResult = path.join cwd, "dist", resultName
 		pathToSource = path.join cwd, "build", "maxthon"
 		pathToBuilder = path.join cwd, "maxthon-packager.exe"
@@ -207,14 +208,13 @@ Distributable Maxthon extension created using `maxthon-packager.exe`
 Distributable extensions created using ZIP archivation.
 
 	gulp.task "dist-zip", [ "meta", "scripts", "clean-dist" ], ->
-		prefix = "#{config.name}-#{config.version}"
 
 **Firefox** allows to install add-ons from `.xpi` packages
 (which are simply zip archives), you might want one.
 
 		firefoxStream = gulp.src "**/*.*",
 				cwd: path.join cwd, "build", "firefox"
-			.pipe plugins.zip "#{prefix}-firefox.xpi"
+			.pipe plugins.zip "#{distPrefix}-firefox.xpi"
 
 **Chromium** (particularly Google Chrome) uses `.crx`
 which are hard to create.  
@@ -223,14 +223,14 @@ Chrome Web Store or just because it is easier to send.
 
 		chromiumStream = gulp.src "**/*.*",
 				cwd: path.join cwd, "build", "chromium"
-			.pipe plugins.zip "#{prefix}-chromium.zip"
+			.pipe plugins.zip "#{distPrefix}-chromium.zip"
 
 **Opera** allows to install extensions from `.oex` packages
 (which are simply zip archives), you might want one.
 
 		operaStream = gulp.src "**/*.*",
 				cwd: path.join cwd, "build", "opera"
-			.pipe plugins.zip "#{prefix}-opera.oex"
+			.pipe plugins.zip "#{distPrefix}-opera.oex"
 
 		es.concat firefoxStream, chromiumStream, operaStream
 			.pipe gulp.dest "dist"
