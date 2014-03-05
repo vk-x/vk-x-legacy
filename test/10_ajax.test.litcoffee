@@ -16,6 +16,22 @@ where the file is stored.
 
 ## How?
 
+#### API
+
+```CoffeeScript
+app.ajax.request method: "GET", url: "relative or absolute", data: to: "send"
+```
+Supported methods are **`"GET"`**, **`"HEAD"`**, and **`"POST"`**.
+
+There're shortcuts for them:
+```CoffeeScript
+app.ajax.get url: "relative or absolute", data: to: "send"
+app.ajax.head url: "relative or absolute", data: to: "send"
+app.ajax.post url: "relative or absolute", data: to: "send"
+```
+For `"GET"` and `"HEAD"` requests `data` will be encoded and
+appended to url as GET params: `?to=send`.
+
 #### Use extension sandboxed script with elevated permissions.
 
 Injected scripts (which we are testing here) can't make cross-origin requests
