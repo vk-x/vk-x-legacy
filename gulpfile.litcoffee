@@ -1,6 +1,81 @@
+# Dev documentation
+
+## Tech stack
+
+We use [CoffeeScript](http://coffeescript.org) language.
+
+## Fork the repo
+
+- If you are new to Git see: https://help.github.com/articles/set-up-git
+- Sign up for [Github](https://github.com/).
+- Fork the project repo. See: https://help.github.com/articles/fork-a-repo
+
+## Prepare environment
+
+We use [gulp](http://gulpjs.com) to build extensions and
+[Karma](http://karma-runner.github.io/) to run tests.  
+See `package.json` for a full list of dependencies.
+
+- Install [NodeJS](http://nodejs.org/).
+- Install [gulp](http://gulpjs.com) command line utility:
+`$ npm install -g gulp`
+- Install dev dependencies: `$ npm install`
+- Install source dependencies: `$ gulp bower`
+
+**Note**: run all these commands inside project directory.
+
+## Build unpacked extensions
+To build unpacked extensions open command line and type: `$ gulp build`.
+
+## Install an unpacked extension
+
+#### Chromium
+Manual: https://developer.chrome.com/extensions/getstarted#unpacked  
+Path to unpacked extension: `./build/chromium` (relative to project folder).
+
+How to reload extension using a button or hotkey:
+http://stackoverflow.com/q/2963260
+
+#### Firefox
+Manual: http://stackoverflow.com/q/15908094  
+Path to unpacked extension: `./build/firefox` (relative to project folder).  
+Extension ID: see `<em:id>` element in `./build/firefox/install.rdf`.
+
+#### Opera 12
+Manual:
+- Open Opera, go to extensions page (press `Ctrl + Shift + E`).
+- Drag'n'drop `./build/opera/config.xml` on the
+Opera extensions page.
+
+#### Maxthon
+No idea. :(
+
+## Run tests
+To run unit tests open command line and type: `$ gulp test`.
+
+## Build extensions
+To build packed extensions open command line and type: `$ gulp dist`.
+
+## Test and build continuously
+If you want to rerun tests and rebuild unpacked extensions on
+changes simply run: `$ gulp`.
+
+Then go change some code and see it rebuilding automatically.
+
+# Tasks specification
+
+#### gulpfile.js
+[gulp](http://gulpjs.com) uses `gulpfile.js` as a place
+for tasks specification.  
+It doesn't support CoffeeScript out-of-the-box,
+so we use `gulpfile.js` to load runtime CoffeeScript compiler and then load
+this `gulpfile.litcoffee` file.
+
+#### Loading dependencies
+See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
+
 	gulp = require "gulp"
 	_ = require "lodash"
-	bower = require "bower"
 	es = require "event-stream"
 	path = require "path"
 	fs = require "fs-extra"
@@ -9,6 +84,8 @@
 	plugins = ( require "gulp-load-plugins" )()
 	cwd = process.cwd()
 
+#### bower
+
 	bowerDeps =
 		"lodash": "bower_components/lodash/dist/lodash.min.js"
 		"uri.js": "bower_components/uri.js/src/URI.js"
@@ -16,12 +93,17 @@
 	sourceList = _.union ( _.values bowerDeps ), [ "source/*.*" ]
 
 	gulp.task "bower", ->
+		bower = require "bower"
 		bower.commands.install _.keys bowerDeps
+
+#### test
 
 	gulp.task "test", ->
 		gulp.src _.union sourceList, [ "test/*.test.litcoffee" ]
 			.pipe plugins.karma
 				configFile: "karma-config"
+
+#### clean-build and clean-dist
 
 	for folder in [ "build", "dist" ]
 		do ( folder ) -> gulp.task "clean-#{folder}", ( done ) ->
@@ -39,6 +121,8 @@
 						setTimeout tryRemove, retryInterval
 					else done()
 			tryRemove()
+
+#### meta
 
 	gulp.task "meta", [ "clean-build" ], ->
 		noticeTemplate = fs.readFileSync "./source/meta/notice.template.js"
@@ -59,6 +143,8 @@
 			.pipe gulp.dest "build/opera"
 
 		es.concat metaStream, licenseStream
+
+#### scripts
 
 	gulp.task "scripts", [ "clean-build" ], ->
 		baseStream = ->
@@ -91,6 +177,10 @@
 
 		es.concat injectStream, distStream
 
+#### dist-maxthon
+Distributable Maxthon extension created using `maxthon-packager.exe`
+([Extension/Skin Package Tool](http://forum.maxthon.com/thread-801-1-1.html)).
+
 	gulp.task "dist-maxthon", [ "meta", "scripts", "clean-dist" ], ( done ) ->
 		isWindows = ( require "os" ).type() is "Windows_NT"
 		unless isWindows
@@ -113,36 +203,30 @@
 						"successfully." ).green
 				done()
 
+#### dist-zip
+Distributable extensions created using ZIP archivation.
+
 	gulp.task "dist-zip", [ "meta", "scripts", "clean-dist" ], ->
 		prefix = "#{config.name}-#{config.version}"
 
-Firefox allows to install add-ons from .xpi packages
-(which are simply zip archives), so you may want to send one
-to friends or install it yourself.
-It is possible to install unpacked source directly and
-auto reload on changes: http://stackoverflow.com/q/15908094
+**Firefox** allows to install add-ons from `.xpi` packages
+(which are simply zip archives), you might want one.
 
 		firefoxStream = gulp.src "**/*.*",
 				cwd: path.join cwd, "build", "firefox"
 			.pipe plugins.zip "#{prefix}-firefox.xpi"
 
-Chromium (particularly Google Chrome) does not allow
-to install extensions from .crx packages not from
-Google Chrome Web Store but you may want to send zip-archived
-unpacked extension to friends.
-How to install unpacked extension:
-https://developer.chrome.com/extensions/getstarted#unpacked
-It is possible to make it auto reloading on changes:
-http://stackoverflow.com/a/12767200
-Tip: for now you can use this extension as it has a hotkey:
-http://git.io/ujSDUw
+**Chromium** (particularly Google Chrome) uses `.crx`
+which are hard to create.  
+You might need a `.zip` with unpacked extension though to upload to
+Chrome Web Store or just because it is easier to send.
 
 		chromiumStream = gulp.src "**/*.*",
 				cwd: path.join cwd, "build", "chromium"
 			.pipe plugins.zip "#{prefix}-chromium.zip"
 
-Opera 12 only allows to install extensions from .oex packages
-which are simply zip archives.
+**Opera** allows to install extensions from `.oex` packages
+(which are simply zip archives), you might want one.
 
 		operaStream = gulp.src "**/*.*",
 				cwd: path.join cwd, "build", "opera"
@@ -150,6 +234,8 @@ which are simply zip archives.
 
 		es.concat firefoxStream, chromiumStream, operaStream
 			.pipe gulp.dest "dist"
+
+#### Shortcuts
 
 	gulp.task "dist", [ "dist-maxthon", "dist-zip" ]
 
