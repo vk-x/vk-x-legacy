@@ -5766,7 +5766,7 @@ vk_vid_down={
          var links=[];
          for (var i=0;i<map.length;i++){
             var sig=map[i].sig //|| Qi(map[i].s);// || (decode_sig(map[i].s));
-            if (!map[i].sig) continue;// "Qi(map[i].s)" calc sig normaly, but links not valid
+            if (!map[i].sig && map[i].s) continue;// "Qi(map[i].s)" calc sig normaly, but links not valid
 
             var format=YT_video_itag_formats[map[i].itag];
             var info=(map[i].type+'').split(';')[0]+' '+(obj.fmt_list[i]+'').split('/')[1];

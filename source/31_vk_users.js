@@ -624,6 +624,7 @@ function vkPopupAvatar(id,el,in_box){
 function vkShowProfile(el,html,uid,right){
 	//if
    clearTimeout(allowHidePhoto);
+   stManager.add('emoji.js');
     if (!ge("vkbigPhoto")) {
             var ht = '<div id="vkbigPhoto" onmousemove="clearTimeout(allowHidePhoto);" onmouseout="vkHidePhoto()" style="z-index:1000;display:none;position:absolute;background:transparent;"></div>';
             div = document.createElement('div');
@@ -943,6 +944,8 @@ function vkGetProfile(uid,callback,no_switch_button){
 					  <div class="label fl_l">'+info_labels[i][1]+'</div>\n\
 					  <div class="labeled fl_l">'+info_labels[i][0]+'</div>\n\
 					</div>';
+    if (window.Emoji && Emoji.emojiToHTML)
+            profile.activity = Emoji.emojiToHTML(profile.activity,true) || profile.activity;//.replace(/"\/images\//g,'"http://vk.com/images/') || profile.activity;
 		var html=VK_PROFILE_TPL.replace("%AVA_SRC%",ava_url)
 							   .replace(/%UID%/g,uid)
 							   .replace(/%USERNAME%/g,(verified==1?'<span class="vk_profile_verified"></span>':'')+username)
