@@ -5773,8 +5773,28 @@ vk_vid_down={
             if (!format) vklog('<b>YT '+map[i].itag+'</b>: \n'+(map[i].stereo3d?'3D/':'')+info,1);
             format=(map[i].stereo3d?'3D/':'')+(format?format:info);
 
-            //links.push([map[i].url+'&signature='+sig+'&'+ajx2q(params), format,info]); // sig=Qi(map[i].s)
-            links.push([map[i].url+'&signature='+sig+'&quality='+map[i].quality+(obj.title?'&title='+encodeURIComponent(obj.title.replace(/\+/g,' ')):''), format,info]);
+            // Original VkOpt code checks if title exists.
+            // Maybe it really can be null.
+            videoTitle = obj.title || "";
+
+            // Youtube returns video title as an array of strings
+            // if it is longer than 50 characters or so.
+            if ( app.util.isArray( obj.title ) ) {
+              videoTitle = videoTitle.join();
+            }
+
+            // It also escapes spaces as "+".
+            // TODO: Find out how does Youtube escape "+" itself.
+            videoTitle = videoTitle.replace( "+", " " );
+
+            links.push([
+              map[i].url +
+                "&signature=" + sig +
+                "&quality=" + map[i].quality +
+                "&title=" + encodeURIComponent( videoTitle ),
+              format,
+              info
+            ]);
          }
          callback(links);
       });
