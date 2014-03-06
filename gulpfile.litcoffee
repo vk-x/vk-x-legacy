@@ -98,6 +98,7 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 		bower.commands.install _.keys bowerDeps
 
 #### test
+See `karma-config.litcoffee` file for docs on tests.
 
 	gulp.task "test", ->
 		gulp.src _.union sourceList, [ "test/*.test.litcoffee" ]
