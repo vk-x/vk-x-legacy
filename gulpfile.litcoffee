@@ -181,9 +181,6 @@ See `test/karma-config.litcoffee` file for docs on tests.
 				path.basename = path.basename.replace /\.template$/, ""
 				return
 			.pipe plugins.if /\.litcoffee$/, plugins.coffee bare: yes
-			.pipe plugins.if /\.litcoffee$/, plugins.rename ( path ) ->
-				path.basename = path.basename.replace /\.litcoffee$/, ".js"
-				return
 			.pipe plugins.if /\.js$/, plugins.header noticeTemplate, config
 			.pipe gulp.dest "build"
 
