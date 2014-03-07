@@ -120,7 +120,16 @@ See `test/karma-config.litcoffee` file for docs on tests.
 				configFile: "test/karma-config.litcoffee"
 				port: 9877
 
-		es.concat injectedTestStream, chromiumTestStream
+		# Firefox meta scripts.
+		firefoxTestStream = gulp.src [
+			"source/meta/firefox/chrome/content/helpers.template.litcoffee"
+			"test/meta/firefox/helpers.test.litcoffee"
+		]
+			.pipe plugins.karma
+				configFile: "test/karma-config.litcoffee"
+				port: 9878
+
+		es.concat injectedTestStream, chromiumTestStream, firefoxTestStream
 
 #### clean-build and clean-dist
 
