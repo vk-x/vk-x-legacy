@@ -27,17 +27,21 @@ Also see `package.json` file for a list of dependencies.
 
 	module.exports = ( config ) ->
 		config.set
+			basePath: "../"
+
+			logLevel: config.LOG_WARN
+
 			files: [
 				"source/*.*"
 				"test/*.test.litcoffee" ]
 
-			frameworks: [ "mocha", "chai" ]
+			frameworks: [ "mocha", "sinon-chai" ]
 
 			preprocessors:
 				"**/*.template.*": [ "lodash" ]
 				"**/*.litcoffee": [ "coffee" ]
 
 			lodashPreprocessor:
-				data: require "./package.json"
+				data: require "../package.json"
 
 			browsers: [ "PhantomJS" ]

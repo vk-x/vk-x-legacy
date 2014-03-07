@@ -98,12 +98,29 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 		bower.commands.install _.keys bowerDeps
 
 #### test
-See `karma-config.litcoffee` file for docs on tests.
+See `test/karma-config.litcoffee` file for docs on tests.
 
 	gulp.task "test", ->
-		gulp.src _.union sourceList, [ "test/*.test.litcoffee" ]
+		# We have to run test suites in different Karma instances
+		# as code has a hard to refactor global state.
+
+		# Injected (main) scripts.
+		injectedTestStream = gulp.src _.union sourceList,
+		[ "test/*.test.litcoffee" ]
 			.pipe plugins.karma
-				configFile: "karma-config"
+				configFile: "test/karma-config.litcoffee"
+				port: 9876
+
+		# Chromium meta scripts.
+		chromiumTestStream = gulp.src [
+			"source/meta/chromium/helpers.litcoffee"
+			"test/meta/chromium/helpers.test.litcoffee"
+		]
+			.pipe plugins.karma
+				configFile: "test/karma-config.litcoffee"
+				port: 9877
+
+		es.concat injectedTestStream, chromiumTestStream
 
 #### clean-build and clean-dist
 
@@ -134,6 +151,10 @@ See `karma-config.litcoffee` file for docs on tests.
 			.pipe plugins.if /\.template\./, plugins.template config
 			.pipe plugins.if /\.template\./, plugins.rename ( path ) ->
 				path.basename = path.basename.replace /\.template$/, ""
+				return
+			.pipe plugins.if /\.litcoffee$/, plugins.coffee bare: yes
+			.pipe plugins.if /\.litcoffee$/, plugins.rename ( path ) ->
+				path.basename = path.basename.replace /\.litcoffee$/, ".js"
 				return
 			.pipe plugins.if /\.js$/, plugins.header noticeTemplate, config
 			.pipe gulp.dest "build"
