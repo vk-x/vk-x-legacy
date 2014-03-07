@@ -138,8 +138,17 @@ See `test/karma-config.litcoffee` file for docs on tests.
 				configFile: "test/karma-config.litcoffee"
 				port: 9879
 
+		# Opera 12 meta scripts.
+		operaTestStream = gulp.src [
+			"source/meta/opera/helpers.litcoffee"
+			"test/meta/opera/helpers.test.litcoffee"
+		]
+			.pipe plugins.karma
+				configFile: "test/karma-config.litcoffee"
+				port: 9880
+
 		es.concat injectedTestStream, chromiumTestStream, firefoxTestStream,
-			maxthonTestStream
+			maxthonTestStream, operaTestStream
 
 #### clean-build and clean-dist
 
