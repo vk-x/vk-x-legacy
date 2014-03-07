@@ -129,7 +129,17 @@ See `test/karma-config.litcoffee` file for docs on tests.
 				configFile: "test/karma-config.litcoffee"
 				port: 9878
 
-		es.concat injectedTestStream, chromiumTestStream, firefoxTestStream
+		# Maxthon meta scripts.
+		maxthonTestStream = gulp.src [
+			"source/meta/maxthon/helpers.litcoffee"
+			"test/meta/maxthon/helpers.test.litcoffee"
+		]
+			.pipe plugins.karma
+				configFile: "test/karma-config.litcoffee"
+				port: 9879
+
+		es.concat injectedTestStream, chromiumTestStream, firefoxTestStream,
+			maxthonTestStream
 
 #### clean-build and clean-dist
 
@@ -195,7 +205,8 @@ See `test/karma-config.litcoffee` file for docs on tests.
 		userscriptHeader = fs.readFileSync "./source/meta/userscript-header.js"
 		noticeTemplate = fs.readFileSync "./source/meta/notice.template.js"
 
-		injectStream = gulp.src "source/meta/**/inject.ignore.js"
+		injectStream = gulp.src "source/meta/**/inject.ignore.*"
+			.pipe plugins.if /\.litcoffee$/, plugins.coffee bare: yes
 			.pipe injectTransform
 			.pipe plugins.header noticeTemplate, config
 			.pipe plugins.if /opera/, plugins.header userscriptHeader
