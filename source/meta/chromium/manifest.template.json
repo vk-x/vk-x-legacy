@@ -9,12 +9,7 @@
 	"content_scripts": [{
 		"js": [ "inject.js" ],
 		"run_at": "document_start",
-		"matches": [ "http://vk.com/*", "https://vk.com/*" ],
-		"exclude_globs": [
-			"*/notifier.php*",
-			"*/*_frame.php*"
-		],
-		"all_frames": true
+		"matches": [ "http://vk.com/*", "https://vk.com/*" ]
 	}],
 	"web_accessible_resources": [
 		"dist.js"

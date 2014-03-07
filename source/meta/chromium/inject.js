@@ -1,17 +1,13 @@
-var isTopWindow = window.top === window;
-
-	// http://stackoverflow.com/a/9517879/1619166
-	injectScript = function( data, options ) {
+// http://stackoverflow.com/a/9517879/1619166
+var injectScript = function( data, options ) {
 		var options = options || {}, tag;
-		if ( isTopWindow || options.runInFrame ) {
-			tag = document.createElement( "script" );
-			if ( options.isSource ) {
-				tag.textContent = data;
-			} else {
-				tag.src = chrome.extension.getURL( data );
-			}
-			( document.head || document.documentElement ).appendChild( tag );
+		tag = document.createElement( "script" );
+		if ( options.isSource ) {
+			tag.textContent = data;
+		} else {
+			tag.src = chrome.extension.getURL( data );
 		}
+		( document.head || document.documentElement ).appendChild( tag );
 	};
 
 window.addEventListener( "message", function( messageEvent ) {
