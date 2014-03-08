@@ -10,12 +10,40 @@
 	handleAjax = ({ data }) ->
 		return unless data.requestOf is "<%= name %>"
 
-		request data.method, data.url
+		superagent data.method, data.url
 			.send data.data
 			.end ( response ) ->
+
 				delete data.requestOf
 				data.responseOf = "<%= name %>"
-				data.response = response
+				# postMessage() clones data for security reasons.
+				# Let's prepare safe clonable properties.
+				data.response = {}
+				safeProperties = [
+					"accepted"
+					"badRequest"
+					"body"
+					"charset"
+					"clientError"
+					"error"
+					"forbidden"
+					"header"
+					"info"
+					"noContent"
+					"notAcceptable"
+					"notFound"
+					"ok"
+					"serverError"
+					"status"
+					"statusType"
+					"text"
+					"type"
+					"unauthorized"
+				]
+				for prop in safeProperties
+					data.response[ prop ] = response[ prop ]
+				# P.S. There're other properties like "xhr"
+				# (raw XMLHttpRequest) which can't be cloned.
 
 				window.postMessage data, "*"
 
