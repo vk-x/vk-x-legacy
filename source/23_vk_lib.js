@@ -1928,79 +1928,18 @@ function remixmid() {
 
   return tmp;
 }
-//
-var vk_ext_api={
-   mark:'vkopt_loader',
-   callbacks:{},
-   cid:1,
-   ready: window._ext_ldr_vkopt_loader?true:false,
-   init:function(){
-      if (!vk_ext_api.inited){
-         window.addEventListener("message", vk_ext_api.on_message,false);
-         vk_ext_api.inited = true;
-      }
-   },
-   on_message:function(e){
-		var res=e.data || {};
-      var data=res.response;
-      var sub=res.sub || {};
-      if (sub.cid && sub.mark==vk_ext_api.mark){
-         vk_ext_api.callbacks['cb_'+sub.cid](data);
-      }
-   },
-   req:function(data,callback){
-      /*
-      {
-         act: get post head ajax
-         mark: vk_ext_api.mark
-         url:
-         params:
-         options: only for ajax
-      }*/
-      var cid=vk_ext_api.cid++;
-      data = data || {};
-      data.mark = vk_ext_api.mark;
-      data._sub = {cid:cid,mark:vk_ext_api.mark};
-      if (callback)
-         vk_ext_api.callbacks['cb_'+cid]=function(response){
-            callback(response);
-            delete vk_ext_api.callbacks['cb_'+cid];
-         }
-      window.postMessage(data,"*");
-   },
-   ajax:{
-      get:function(url,callback){
-         vk_ext_api.req({act:'get',url:url},function(r){
-            callback(r.response);
-         });
-      },
-      post:function(url,params,callback){
-         vk_ext_api.req({act:'post',url:url,params:params},function(r){
-            callback(r.response);
-         });
-      },
-      head:function(url,callback){
-         vk_ext_api.req({act:'head',url:url},function(r){
-            var raw=(r.response || '').split(/\r?\n/);
-            var headers={};
-            for (var i=0; i<raw.length; i++){
-               var s=raw[i].split(':');
-               var n=s.shift().replace(/^\s+|\s+$/g, '');
-               var c=s.join(':').replace(/^\s+|\s+$/g, '');
-               if (n && c)
-                  headers[n]=c;
-            }
 
-            callback(headers);
-         });
-      },
-   }
-}
-vk_ext_api.init();
-vk_aj=vk_ext_api.ajax;
-/*
+var vk_ext_api = {
+  ready: true,
 
-*/
+  req: function() {
+    console.log( "vk_ext_api.req() called directly with arguments:",
+      arguments );
+    throw Error( "vk_ext_api.req() called directly!" );
+  },
+  // ajax.get() was only used in vkStyle() in vk_skinman.js,
+  // ajax.head() and ajax.post() were only used in XFR.post().
+};
 
 var XFR={
 	reqs:0,
@@ -2013,14 +1952,14 @@ var XFR={
 
       if (vk_ext_api.ready && url && !XFR.vk_ext_api_exclude.test(url)){
          if (only_head){
-            vk_aj.head(url,function(h){
-               var l=parseInt(h['Content-Length']);
-               callback(h,l);
-            });
+            var passContentLength = function( response, meta ) {
+              contentLength = parseInt( meta.response
+                .header[ "content-length" ]);
+              callback( meta.response.header, contentLength );
+            };
+            app.ajax.head({ url: url, callback: passContentLength });
          } else {
-            vk_aj.post(url,data,function(t){
-               callback(t);
-            });
+            app.ajax.post({ url: url, data: data, callback: callback });
          }
          return;
       }

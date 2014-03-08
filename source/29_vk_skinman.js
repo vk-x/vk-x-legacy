@@ -119,37 +119,32 @@ function vkStyle(url){
    }
 
    if (need_xhr && vk_ext_api.ready){
-      vk_aj.get(url,function(css){
-         if (vk_skinman_last_style_url!=url) return; // if new theme apply before loaded previous
+    var processCss = function( css ) {
+      // if new theme apply before loaded previous
+      if (vk_skinman_last_style_url!=url) return;
 
-         var t=url.split('/');
-         t.pop();
-         var base_url=t.join('/');
-         var base_domain=t[0]+'//'+t[2];
-         //*
-         var replaced=0;
-         css=css.replace(/(url\(['"]?)(.{6})/g,function(str,p1,p2,offset,s){
-            if (p2!='http:/' && p2!='https:'){
-               //console.log('"'+p2+'"', str);
-               replaced++;
-               return p1+(p2[0]=='/'?base_domain:base_url+'/')+p2;
-            } else {
-               return p1+''+p2;
-            }
-            //console.log(p1,p2);
-         });
-         if (replaced){
-            console.log('Process css: '+url+'\nbase_url: '+base_url+'\nbase_domain: '+base_domain+'\nreplaced: '+replaced);
-         }
-         //*/
-
-         vkcssNode = document.createElement("style");
-         vkcssNode.type = "text/css";
-         vkcssNode.id="vkStyleCSS";
-         vkcssNode.appendChild(document.createTextNode(css));
-         set(vkcssNode);
+      var t=url.split('/');
+      t.pop();
+      var base_url=t.join('/');
+      var base_domain=t[0]+'//'+t[2];
+      var replaced=0;
+      css=css.replace(/(url\(['"]?)(.{6})/g,function(str,p1,p2,offset,s){
+        if (p2!='http:/' && p2!='https:'){
+           replaced++;
+           return p1+(p2[0]=='/'?base_domain:base_url+'/')+p2;
+        } else {
+           return p1+''+p2;
+        }
       });
 
+      vkcssNode = document.createElement("style");
+      vkcssNode.type = "text/css";
+      vkcssNode.id="vkStyleCSS";
+      vkcssNode.appendChild(document.createTextNode(css));
+      set(vkcssNode);
+    };
+
+    app.ajax.get({ url: url, callback: processCss });
    } else {
       vkcssNode = document.createElement('link');
       vkcssNode.type = 'text/css';
@@ -158,10 +153,6 @@ function vkStyle(url){
       if (url) vkcssNode.href = url;
       set(vkcssNode);
    }
-
-   /*
-   if (ge("vkStyleCSS"))
-      ge("vkStyleCSS").href=url; */
 }
 
 function vkStyleJS(url){
