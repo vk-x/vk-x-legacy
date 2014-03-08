@@ -1,5 +1,16 @@
 # Dev documentation
 
+## Build status
+
+master | develop
+:----: | :-----:
+[![Build Status](https://travis-ci.org/deltaidea/happy.png?branch=master)](https://travis-ci.org/deltaidea/happy) | [![Develop](https://travis-ci.org/deltaidea/happy.png?branch=develop)](https://travis-ci.org/deltaidea/happy)
+
+We have **[Travis CI](https://travis-ci.org/deltaidea/happy)** running
+`gulp test && gulp dist` on each push and Pull Request.  
+See **Prepare environment**, **Run tests** and **Build extensions**
+below for more info.
+
 ## Tech stack
 
 We use [CoffeeScript](http://coffeescript.org) language.
