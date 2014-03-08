@@ -1,7 +1,7 @@
 	# This function provides old interface for cross-origin ajax
 	# until new one won't be implemented.
 	# See: vk_ext_api object defined in vk_lib.js and ./inject.litcoffee
-	makeAjaxRequest = ( callback ) -> ({ data }) ->
+	handleOldAjax = ( callback ) -> ({ data }) ->
 		return unless data.mark is "vkopt_loader" and data._sub
 		
 		method = data.act.toUpperCase()

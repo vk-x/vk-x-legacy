@@ -2,7 +2,7 @@
 	# until new one won't be implemented.
 	# See: ./helpers.litcoffee
 	done = ( response ) -> window.postMessage response, "*"
-	window.addEventListener "message", ( makeAjaxRequest done ), no
+	window.addEventListener "message", ( handleOldAjax done ), no
 
 	# See: content_script.js:23
 	inject "window._ext_ldr_vkopt_loader = true", isSource: yes

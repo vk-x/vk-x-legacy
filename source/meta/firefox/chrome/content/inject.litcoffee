@@ -12,7 +12,7 @@
 			return if -1 is url.indexOf "://vk.com/"
 
 			done = ( response ) -> win.postMessage response, "*"
-			win.addEventListener "message", ( makeAjaxRequest done ), no
+			win.addEventListener "message", ( handleOldAjax done ), no
 
 			# See: content_script.js:23
 			inject doc, "window._ext_ldr_vkopt_loader = true", isSource: yes

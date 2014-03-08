@@ -3,11 +3,11 @@ See `source/meta/chromium/helpers.litcoffee`.
 
 	describe "opera inject script", ->
 
-### makeAjaxRequest
+### handleOldAjax
 This test suite is not full and probably never be full for old ajax interface.
 Better go refactor it or implement new one.
 
-		describe "makeAjaxRequest", ->
+		describe "handleOldAjax", ->
 			xhr = null
 			before -> xhr = sinon.useFakeXMLHttpRequest()
 			after -> xhr.restore()
@@ -15,7 +15,7 @@ Better go refactor it or implement new one.
 			it "should not do anything with irrelevant message", ->
 				xhr.onCreate = sinon.stub().throws Error "Unwanted request!"
 
-				( makeAjaxRequest sinon.stub().throws() ) data:
+				( handleOldAjax sinon.stub().throws() ) data:
 					mark: "irrelevant message"
 					act: "get"
 					url: "http://example.com/"
@@ -24,13 +24,13 @@ Better go refactor it or implement new one.
 			it "should not do anything with incorrect data", ->
 				xhr.onCreate = sinon.stub().throws Error "Unwanted request!"
 
-				( makeAjaxRequest sinon.stub().throws() ) data:
+				( handleOldAjax sinon.stub().throws() ) data:
 					mark: "vkopt_loader"
 					act: "LOLWTF"
 					url: "http://example.com/"
 					_sub: "you should not care about _sub"
 
-				( makeAjaxRequest sinon.stub().throws() ) data:
+				( handleOldAjax sinon.stub().throws() ) data:
 					mark: "vkopt_loader"
 					act: "GET"
 					url: "http://example.com/"
@@ -44,7 +44,7 @@ Better go refactor it or implement new one.
 
 				callback = sinon.spy()
 
-				( makeAjaxRequest callback ) data:
+				( handleOldAjax callback ) data:
 					mark: "vkopt_loader"
 					act: "GET"
 					url: "http://example.com/"

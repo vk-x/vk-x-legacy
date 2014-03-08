@@ -1,6 +1,6 @@
 See `background.litcoffee`.
 
-	makeAjaxRequest = ( callback ) -> ({ data, source }) ->
+	handleOldAjax = ( callback ) -> ({ data, source }) ->
 		return unless data.mark is "vkopt_loader" and data._sub
 		
 		method = data.act.toUpperCase()

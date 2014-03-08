@@ -3,7 +3,7 @@ won't be implemented.
 See: `./helpers.litcoffee`
 
 	done = ( response ) -> window.postMessage response, "*"
-	window.addEventListener "message", ( makeAjaxRequest done ), no
+	window.addEventListener "message", ( handleOldAjax done ), no
 
 Maxthon 4 does not allow to access files from web, so
 script file injection is impossible.
