@@ -15,6 +15,9 @@
     "type": "git",
     "url": "https://github.com/deltaidea/happy"
   },
+  "scripts": {
+    "test": "gulp test"
+  },
   "devDependencies": {
     "gulp": "~3.5.2",
     "lodash": "~2.4.1",
