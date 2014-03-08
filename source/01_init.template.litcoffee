@@ -10,4 +10,3 @@
 	<%= name %> = app
 
 	app.util = _.noConflict()
-	app.util.uri = URI.noConflict()

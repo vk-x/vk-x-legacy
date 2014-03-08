@@ -19,45 +19,33 @@ in CoffeeScript.
 
 			requestId = app.util.uniqueId app.name
 
-			# These are passed with request event.
-			settingsForRequest = app.util.defaults options,
+			settings = app.util.defaults options,
 				method: "GET"
 				url: ""
 				data: {}
-			settingsForRequest._requestId = requestId
+			settings._requestId = requestId
+			settings.requestOf = app.name
 
-			# These are passed to callback along with response.
-			settingsForCallback = app.util.cloneDeep settingsForRequest
-
-			if settingsForRequest.method in [ "GET", "HEAD" ]
-				# Append GET params to url.
-				settingsForRequest.url = app.util.uri settingsForRequest.url
-					.addQuery settingsForRequest.data
-					.href()
-				settingsForRequest.data = {}
-
-			listener = ( message ) ->
+			listener = ({ data }) ->
 
 **Important**: in order to distinguish requests from responses
 (both sent via `message` event) background script must add `_responseId`
 property to message data with a value of `_requestId` property like so:
 `message.data._responseId = message.data._requestId`.
 
-				return unless message.data._responseId is requestId
+				return unless data.responseOf is app.name
+				return unless data._requestId is requestId
 
 				# Don't listen anymore when the response arrives.
 				window.removeEventListener "message", listener
 
-				# Take only response from message, use sane saved data.
-				settingsForCallback.response = message.data.response
-				settingsForCallback._responseId = message.data._responseId
-				callback settingsForCallback.response, settingsForCallback
+				callback data.response.body, data
 
 			# Listen for response.
 			window.addEventListener "message", listener, no
 
 			# Send a request, wait for response.
-			window.postMessage settingsForRequest, "*"
+			window.postMessage settings, "*"
 
 ## Shortcut methods
 

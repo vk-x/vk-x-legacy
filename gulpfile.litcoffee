@@ -100,66 +100,23 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 
 	bowerDeps =
 		"lodash": "bower_components/lodash/dist/lodash.min.js"
-		"uri.js": "bower_components/uri.js/src/URI.js"
+
+	bowerBackgroundDeps =
+		"superagent": "bower_components/superagent/superagent.js"
 
 	sourceList = _.union ( _.values bowerDeps ), [ "source/*.*" ]
 
 	gulp.task "bower", ->
 		bower = require "bower"
-		bower.commands.install _.keys bowerDeps
+		bower.commands.install _.keys _.merge bowerDeps, bowerBackgroundDeps
 
 #### test
 See `test/karma-config.litcoffee` file for docs on tests.
 
 	gulp.task "test", ->
-		# We have to run test suites in different Karma instances
-		# as code has a hard to refactor global state.
-
-		# Injected (main) scripts.
-		injectedTestStream = gulp.src _.union sourceList,
-		[ "test/*.test.litcoffee" ]
+		gulp.src _.union sourceList, [ "test/*.test.litcoffee" ]
 			.pipe plugins.karma
 				configFile: "test/karma-config.litcoffee"
-				port: 9876
-
-		# Chromium meta scripts.
-		chromiumTestStream = gulp.src [
-			"source/meta/chromium/helpers.litcoffee"
-			"test/meta/chromium/helpers.test.litcoffee"
-		]
-			.pipe plugins.karma
-				configFile: "test/karma-config.litcoffee"
-				port: 9877
-
-		# Firefox meta scripts.
-		firefoxTestStream = gulp.src [
-			"source/meta/firefox/chrome/content/helpers.template.litcoffee"
-			"test/meta/firefox/helpers.test.litcoffee"
-		]
-			.pipe plugins.karma
-				configFile: "test/karma-config.litcoffee"
-				port: 9878
-
-		# Maxthon meta scripts.
-		maxthonTestStream = gulp.src [
-			"source/meta/maxthon/helpers.litcoffee"
-			"test/meta/maxthon/helpers.test.litcoffee"
-		]
-			.pipe plugins.karma
-				configFile: "test/karma-config.litcoffee"
-				port: 9879
-
-		# Opera 12 meta scripts.
-		operaTestStream = gulp.src [
-			"source/meta/opera/helpers.litcoffee"
-			"test/meta/opera/helpers.test.litcoffee"
-		]
-			.pipe plugins.karma
-				configFile: "test/karma-config.litcoffee"
-				port: 9880
-
-		es.concat injectedTestStream, chromiumTestStream, firefoxTestStream,
-			maxthonTestStream, operaTestStream
 
 #### clean-build and clean-dist
 
@@ -195,13 +152,17 @@ See `test/karma-config.litcoffee` file for docs on tests.
 			.pipe plugins.if /\.js$/, plugins.header noticeTemplate, config
 			.pipe gulp.dest "build"
 
+		bowerBackgroundDepsStream = gulp.src _.values bowerBackgroundDeps
+			.pipe plugins.concat "helpers.js"
+			.pipe gulp.dest "build/chromium"
+
 		licenseStream = gulp.src "LICENSE.md"
 			.pipe gulp.dest "build/chromium"
 			.pipe gulp.dest "build/firefox"
 			.pipe gulp.dest "build/maxthon"
 			.pipe gulp.dest "build/opera"
 
-		es.concat metaStream, licenseStream
+		es.concat metaStream, licenseStream, bowerBackgroundDepsStream
 
 #### scripts
 

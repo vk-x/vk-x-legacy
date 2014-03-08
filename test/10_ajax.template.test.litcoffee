@@ -19,18 +19,19 @@ where the file is stored.
 #### API
 
 ```CoffeeScript
-app.ajax.request method: "GET", url: "relative or absolute", data: to: "send"
+cb = ( response, meta ) -> if meta.status is 200 then alert response
+
+app.ajax.request method: "GET", callback: cb, url: "http://example.com/", data: to: "send"
 ```
 Supported methods are **`"GET"`**, **`"HEAD"`**, and **`"POST"`**.
 
 There're shortcuts for them:
 ```CoffeeScript
-app.ajax.get url: "relative or absolute", data: to: "send"
-app.ajax.head url: "relative or absolute", data: to: "send"
-app.ajax.post url: "relative or absolute", data: to: "send"
+app.ajax.get url: "/"
+app.ajax.head url: "/"
+app.ajax.post url: "/"
 ```
-For `"GET"` and `"HEAD"` requests `data` will be encoded and
-appended to url as GET params: `?to=send`.
+Requests are done using http://visionmedia.github.io/superagent internally.
 
 #### Use extension sandboxed script with elevated permissions.
 
@@ -64,6 +65,8 @@ The `settings` object is guaranteed to have the following properties:
 - **`method`** - `"GET"`, `"HEAD"`, `"POST"` - http request method
 - **`url`** - `string` - target URL
 - **`data`** - `object` - data to send
+- **`requestOf`** - `string` - you should check that this equals project
+name: `return unless message.data.requestOf is app.name`
 - **`_requestId`** - `string` - unique request identifier
 
 #### Response message
@@ -75,7 +78,11 @@ The `settings` object is guaranteed to have the following properties:
 - **`method`** - `"GET"`, `"HEAD"`, `"POST"` - http request method
 - **`url`** - `string` - target URL
 - **`data`** - `object` - sent data
-- **`_responseId`** - `string` - unique response identifier
+- **`response`** - `object` -
+[recieved data](http://visionmedia.github.io/superagent/#response-properties)
+- **`responseOf`** - `string` - you should check that this equals project
+name: `return unless message.data.responseOf is app.name`
+- **`_requestId`** - `string` - unique response identifier
 equal to `_requestId` specified in request message
 
 ## Mimic background script for testing purposes
@@ -98,6 +105,7 @@ It just checks that request is correct and calls provided function
 				for key, value of expectedData
 					requestData.should.have.property key
 					requestData[ key ].should.deep.equal value
+				requestData.requestOf.should.equal "<%= name %>"
 				callback requestData if callback
 
 			window.addEventListener "message", listener, no
@@ -136,56 +144,22 @@ It just checks that request is correct and calls provided function
 				# Will be called by app.ajax as a callback.
 				callback = ( response, requestData ) ->
 					response.should.equal "foo"
-					requestData.response.should.equal "foo"
+					requestData.response.body.should.equal "foo"
 					requestData.method.should.equal "GET"
 					requestData.url.should.equal "http://example.com/"
 					done()
 
 				# Set up a background listener.
 				mimicBackgroundListener ( requestData ) ->
-					requestData._responseId = requestData._requestId
-					requestData.response = "foo"
+					delete requestData.requestOf
+					requestData.responseOf = "<%= name %>"
+					requestData.response = { body: "foo" }
 					window.postMessage requestData, "*"
 
 				# Send request to background and call callback on response.
 				app.ajax.request
 					url: "http://example.com/"
 					callback: callback
-
-#### It appends `GET` params to url:
-
-			for method in [ "GET", "HEAD" ]
-				do ( method ) ->
-					it "should append GET params to url when #{method}",
-					( done ) ->
-						# Will be called by app.ajax as a callback.
-						callback = ( response, requestData ) ->
-							response.should.equal "response"
-							requestData.response.should.equal "response"
-							requestData.method.should.equal method
-							requestData.url.should.equal ""
-							# Should not encode or cast to string request data.
-							requestData.data.should.have.property "foo", null
-							requestData.data.bar.should.equal yes
-							requestData.data.qux.should.equal " space"
-							done()
-
-						# Set up a background listener.
-						mimicBackgroundListener ( requestData ) ->
-							requestData.url.should
-								.equal "?foo&bar=true&qux=+space"
-							requestData._responseId = requestData._requestId
-							requestData.response = "response"
-							window.postMessage requestData, "*"
-
-						# Send request to background and call callback on response.
-						app.ajax.request
-							method: method
-							data:
-								foo: null
-								bar: true
-								qux: " space"
-							callback: callback
 
 ## app.ajax.get
 **`app.ajax.get`** is an alias for `app.ajax.request method: "GET"`
@@ -196,14 +170,12 @@ It just checks that request is correct and calls provided function
 				mimicBackgroundListener ( -> done() ),
 					# method should be changed to GET.
 					method: "GET"
-					url: "http://example.com/?bar"
-					data: {}
+					url: "http://example.com/"
 
 				# Send request to background.
 				app.ajax.get
 					method: "POST"
 					url: "http://example.com/"
-					data: "bar"
 
 ## app.ajax.post
 **`app.ajax.post`** is an alias for `app.ajax.request method: "POST"`
@@ -215,13 +187,11 @@ It just checks that request is correct and calls provided function
 					# method should be changed to POST.
 					method: "POST"
 					url: "http://example.com/"
-					data: "bar"
 
 				# Send request to background.
 				app.ajax.post
 					method: "GET"
 					url: "http://example.com/"
-					data: "bar"
 
 ## app.ajax.head
 **`app.ajax.head`** is an alias for `app.ajax.request method: "HEAD"`
@@ -232,11 +202,9 @@ It just checks that request is correct and calls provided function
 				mimicBackgroundListener ( -> done() ),
 					# method should be changed to HEAD.
 					method: "HEAD"
-					url: "http://example.com/?bar"
-					data: {}
+					url: "http://example.com/"
 
 				# Send request to background.
 				app.ajax.head
 					method: "POST"
 					url: "http://example.com/"
-					data: "bar"
