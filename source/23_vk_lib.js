@@ -761,91 +761,36 @@ var vkMozExtension = {
 		return d;
 	}
 
+/**
+ * TODO: Remove these functions completely; use app.ajax directly.
+ */
 
-////////////////
-// Extension Ajax //
-////////////////
-	function PrepReq() {
-	  var tran = null;
-	  try { tran = new XMLHttpRequest(); }
-	  catch(e) { tran = null; }
-	  try { if(!tran) tran = new ActiveXObject("Msxml2.XMLHTTP"); }
-	  catch(e) { tran = null; }
-	  try { if(!tran) tran = new ActiveXObject("Microsoft.XMLHTTP"); }
-	  catch(e) { tran = null; }
-	return tran;}
+function AjGet ( url, callback ) {
+  var callbackAdapter = function( response, meta ) {
+    callback( meta, meta.response.text );
+  };
+  app.ajax.get({ url: url, callback: callbackAdapter });
+  return true;
+}
 
-	function urlEncData(data) {
-		var query = [];
-		if (data instanceof Object) {
-			for (var k in data) {
-				query.push(encodeURIComponent(k) + "=" +
-						encodeURIComponent(data[k]));
-			}
-			return query.join('&');
-		} else {
-			return encodeURIComponent(data);
-		}
-	}
-	var vkAjTransport={};
-	function AjGet(url, callback,unsyn) {
-	var request = (vkAjTransport.readyState == 4 || vkAjTransport.readyState==0)? vkAjTransport:PrepReq();
-	vkAjTransport=request;
-	if(!request) return false;
-	  request.onreadystatechange = function() {
-	  if(request.readyState == 4 && callback) callback(request,request.responseText);
-	};
-	  //unsyn=!unsyn;
-	  request.open('GET', url, !unsyn);
-	  request.send(null);
-	  return true;
-	}
+function AjPost ( url, data, callback ) {
+  var callbackAdapter = function( response, meta ) {
+    meta.error = meta.response.error;
+    callback( meta.response, meta.response.text );
+  };
+  app.ajax.post({ url: url, callback: callbackAdapter, data: data });
+  return true;
+}
+
+function AjCrossAttachJS ( url ) {
+  var evalScript = function( script ) {
+    window.eval( script );
+  };
+  app.ajax.get({ url: url, callback: evalScript });
+  return true;
+}
 
 
-	function AjPost(url, data, callback) {
-		var request = PrepReq();
-		if(!request) return false;
-		request.onreadystatechange  = function() {
-				if(request.readyState == 4 && callback) callback(request,request.responseText);
-			};
-		request.open('POST', url, true);
-		if (request.setRequestHeader)
-			request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-			request.setRequestHeader("X-Requested-With", "XMLHttpRequest");//*/
-		request.send(urlEncData(data));
-		return true;
-	}
-
-   function AjCrossAttachJS(url,id) {
-      	if (vk_ext_api.ready && (url || '').replace(/^\s+|\s+$/g, '')){
-            vk_aj.get(url,function(t){window.eval(t)});
-            return true;
-         } else {
-            var request = PrepReq();
-            if(!request) return false;
-            request.onerror=function(){
-               //alert('to <head>');
-               var element = document.createElement('script');
-               element.type = 'text/javascript';
-               element.src = url;
-               if (id)
-                  element.id=id;
-               document.getElementsByTagName('head')[0].appendChild(element);
-            }
-            request.onreadystatechange = function() {
-               if(request.readyState == 4 && request.responseText!=''){
-                  //alert('JS loaded');
-                  window.eval(request.responseText);
-               }
-            };
-            request.open('GET', url, true);
-            request.send(null);
-            return false;
-         }
-	}
-//////////////
-// Ajax end //
-//////////////
 
 String.prototype.leftPad = function (l, c) {
 	return new Array(l - this.length + 1).join(c || '0') + this;
