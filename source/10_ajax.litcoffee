@@ -39,7 +39,7 @@ property to message data with a value of `_requestId` property like so:
 				# Don't listen anymore when the response arrives.
 				window.removeEventListener "message", listener
 
-				callback data.response.body, data
+				callback data.response.text, data
 
 			# Listen for response.
 			window.addEventListener "message", listener, no

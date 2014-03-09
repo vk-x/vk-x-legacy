@@ -144,7 +144,7 @@ It just checks that request is correct and calls provided function
 				# Will be called by app.ajax as a callback.
 				callback = ( response, requestData ) ->
 					response.should.equal "foo"
-					requestData.response.body.should.equal "foo"
+					requestData.response.text.should.equal "foo"
 					requestData.method.should.equal "GET"
 					requestData.url.should.equal "http://example.com/"
 					done()
@@ -153,7 +153,7 @@ It just checks that request is correct and calls provided function
 				mimicBackgroundListener ( requestData ) ->
 					delete requestData.requestOf
 					requestData.responseOf = "<%= name %>"
-					requestData.response = { body: "foo" }
+					requestData.response = { text: "foo" }
 					window.postMessage requestData, "*"
 
 				# Send request to background and call callback on response.
