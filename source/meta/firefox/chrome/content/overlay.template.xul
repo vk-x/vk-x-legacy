@@ -2,5 +2,6 @@
 <overlay id="<%= name %>-overlay"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 	<script src="helpers.js" />
+	<script src="absolute-url.js" />
 	<script src="inject.js" />
 </overlay>

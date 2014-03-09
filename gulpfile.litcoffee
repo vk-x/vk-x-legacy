@@ -155,6 +155,7 @@ See `test/karma-config.litcoffee` file for docs on tests.
 		bowerBackgroundDepsStream = gulp.src _.values bowerBackgroundDeps
 			.pipe plugins.concat "helpers.js"
 			.pipe gulp.dest "build/chromium"
+			.pipe gulp.dest "build/firefox/chrome/content"
 
 		licenseStream = gulp.src "LICENSE.md"
 			.pipe gulp.dest "build/chromium"
