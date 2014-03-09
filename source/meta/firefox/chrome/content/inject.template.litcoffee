@@ -13,6 +13,7 @@
 		absoluteUrl = absolutizeURI win.location.href, data.url
 
 		superagent data.method, absoluteUrl
+			.set data.headers
 			.send data.data
 			.end ( response ) ->
 				# postMessage() clones data for security reasons.

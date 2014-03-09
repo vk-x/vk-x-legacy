@@ -23,6 +23,7 @@ in CoffeeScript.
 				method: "GET"
 				url: ""
 				data: {}
+				headers: {}
 			settings._requestId = requestId
 			settings.requestOf = app.name
 

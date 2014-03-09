@@ -11,6 +11,7 @@
 		return unless data.requestOf is "<%= name %>"
 
 		superagent data.method, data.url
+			.set data.headers
 			.send data.data
 			.end ( response ) ->
 				delete data.requestOf

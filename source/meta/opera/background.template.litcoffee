@@ -9,6 +9,7 @@ See: `source/meta/opera/index.html`.
 		absoluteUrl = absolutizeURI data.sourceUrl, data.url
 
 		superagent data.method, absoluteUrl
+			.set data.headers
 			.send data.data
 			.end ( response ) ->
 				# postMessage() clones data for security reasons.

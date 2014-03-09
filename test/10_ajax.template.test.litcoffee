@@ -135,6 +135,7 @@ It just checks that request is correct and calls provided function
 					method: "GET"
 					url: ""
 					data: {}
+					headers: {}
 
 				app.ajax.request()
 
