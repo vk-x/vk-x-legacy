@@ -6,17 +6,20 @@ and passed them to this script as strings. They were then
 `eval`ed here.
 Now we use **gulp** to concat source code and inject it below.
 
-These two event handlers and `index.html` provide
-old interface for cross-origin ajax until new one won't be implemented.
-See: `vk_ext_api` object defined in `vk_lib.js`.
+These two event handlers and `index.html` provide an interface
+for same-origin and cross-origin ajax.  
+See: `test/ajax.test.litcoffee`.
 
 	opera.extension.addEventListener "message", ({ data }) ->
+		# Pass response from background.litcoffee to injected script.
 		window.postMessage data, "*"
 	, false
 
 	window.addEventListener "message", ({ data }) ->
-		# Pass request to background.js
-		opera.extension.postMessage data if data.mark is "vkopt_loader"
+		return unless data.requestOf is "<%= name %>"
+		# Pass request to background.litcoffee
+		data.sourceUrl = window.location.href
+		opera.extension.postMessage data
 	, false
 
 Although this file runs in the page context, there're some

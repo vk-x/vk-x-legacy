@@ -157,6 +157,7 @@ See `test/karma-config.litcoffee` file for docs on tests.
 			.pipe gulp.dest "build/chromium"
 			.pipe gulp.dest "build/firefox/chrome/content"
 			.pipe gulp.dest "build/maxthon"
+			.pipe gulp.dest "build/opera"
 
 		licenseStream = gulp.src "LICENSE.md"
 			.pipe gulp.dest "build/chromium"
