@@ -156,6 +156,7 @@ See `test/karma-config.litcoffee` file for docs on tests.
 			.pipe plugins.concat "helpers.js"
 			.pipe gulp.dest "build/chromium"
 			.pipe gulp.dest "build/firefox/chrome/content"
+			.pipe gulp.dest "build/maxthon"
 
 		licenseStream = gulp.src "LICENSE.md"
 			.pipe gulp.dest "build/chromium"
@@ -185,6 +186,10 @@ See `test/karma-config.litcoffee` file for docs on tests.
 		noticeTemplate = fs.readFileSync "./source/meta/notice.template.js"
 
 		injectStream = gulp.src "source/meta/**/inject.ignore.*"
+			.pipe plugins.if /\.template\./, plugins.template config
+			.pipe plugins.if /\.template\./, plugins.rename ( path ) ->
+				path.basename = path.basename.replace /\.template$/, ""
+				return
 			.pipe plugins.if /\.litcoffee$/, plugins.coffee bare: yes
 			.pipe injectTransform
 			.pipe plugins.header noticeTemplate, config
