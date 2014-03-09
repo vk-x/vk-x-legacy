@@ -13,9 +13,9 @@
 		superagent data.method, data.url
 			.send data.data
 			.end ( response ) ->
-
 				delete data.requestOf
 				data.responseOf = "<%= name %>"
+
 				# postMessage() clones data for security reasons.
 				# Let's prepare safe clonable properties.
 				data.response = {}
