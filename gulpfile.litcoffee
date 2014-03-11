@@ -104,7 +104,11 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 	bowerBackgroundDeps =
 		"superagent": "bower_components/superagent/superagent.js"
 
-	sourceList = _.union ( _.values bowerDeps ), [ "source/*.*" ]
+	sourceListForTop = _.union ( _.values bowerDeps ), [ "source/*.*",
+	"source/run-in-top/*.*" ]
+
+	sourceListForFrames = _.union ( _.values bowerDeps ), [ "source/*.*",
+	"source/run-in-frames/*.*" ]
 
 	gulp.task "bower", ->
 		bower = require "bower"
@@ -114,7 +118,7 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 See `test/karma-config.litcoffee` file for docs on tests.
 
 	gulp.task "test", ->
-		gulp.src _.union sourceList, [ "test/*.test.litcoffee" ]
+		gulp.src _.union sourceListForTop, [ "test/*.test.litcoffee" ]
 			.pipe plugins.karma
 				configFile: "test/karma-config.litcoffee"
 
@@ -170,14 +174,27 @@ See `test/karma-config.litcoffee` file for docs on tests.
 #### scripts
 
 	gulp.task "scripts", [ "clean-build" ], ->
-		baseStream = ->
-			gulp.src sourceList
+		sourceForTopStream = ->
+			gulp.src sourceListForTop
 				.pipe plugins.if /\.template\./, plugins.template config
 				.pipe plugins.if /\.litcoffee$/, plugins.coffee bare: yes
-				.pipe plugins.concat "dist.js"
+				.pipe plugins.concat "run-in-top.js"
 
-		injectTransform = plugins.inject baseStream(),
-			starttag: "gulpShouldFillThis = \""
+		sourceForFramesStream = ->
+			gulp.src sourceListForFrames
+				.pipe plugins.if /\.template\./, plugins.template config
+				.pipe plugins.if /\.litcoffee$/, plugins.coffee bare: yes
+				.pipe plugins.concat "run-in-frames.js"
+
+		injectSourceForTop = plugins.inject sourceForTopStream(),
+			starttag: "sourceForTop = \""
+			endtag: "\""
+			transform: ( path, file ) ->
+				escapeString = require "js-string-escape"
+				escapeString file.contents
+
+		injectSourceForFrames = plugins.inject sourceForFramesStream(),
+			starttag: "sourceForFrames = \""
 			endtag: "\""
 			transform: ( path, file ) ->
 				escapeString = require "js-string-escape"
@@ -192,13 +209,14 @@ See `test/karma-config.litcoffee` file for docs on tests.
 				path.basename = path.basename.replace /\.template$/, ""
 				return
 			.pipe plugins.if /\.litcoffee$/, plugins.coffee bare: yes
-			.pipe injectTransform
+			.pipe injectSourceForTop
+			.pipe injectSourceForFrames
 			.pipe plugins.header noticeTemplate, config
 			.pipe plugins.if /opera/, plugins.header userscriptHeader
 			.pipe plugins.rename basename: "inject"
 			.pipe gulp.dest "build"
 
-		distStream = ( baseStream() )
+		distStream = es.concat sourceForTopStream(), sourceForFramesStream()
 			.pipe plugins.header noticeTemplate, config
 			.pipe gulp.dest "build/chromium"
 			.pipe gulp.dest "build/firefox/scripts"

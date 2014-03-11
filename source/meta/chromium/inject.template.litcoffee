@@ -54,4 +54,6 @@
 	inject "window._ext_ldr_vkopt_loader = true", isSource: yes
 
 	# See: background.js:10 and gulpfile.litcoffee
-	inject "dist.js"
+	inject "run-in-top.js" if window is window.top
+
+	inject "run-in-frames.js" if window isnt window.top

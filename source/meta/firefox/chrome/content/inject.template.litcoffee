@@ -63,7 +63,6 @@
 			win = doc.defaultView
 			url = doc.location.href
 
-			return unless win is win.top
 			return if -1 is url.indexOf "://vk.com/"
 
 			win.addEventListener "message", ( handleAjax win ), no
@@ -72,7 +71,9 @@
 			inject doc, "window._ext_ldr_vkopt_loader = true", isSource: yes
 
 			# See: background.js:10 and gulpfile.js
-			inject doc, "dist.js"
+			inject doc, "run-in-top.js" if win is win.top
+
+			inject doc, "run-in-frames.js" if win isnt win.top
 
 		gBrowser.addEventListener "DOMContentLoaded", processOpenedWindow, no
 

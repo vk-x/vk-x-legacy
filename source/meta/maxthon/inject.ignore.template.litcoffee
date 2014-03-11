@@ -54,10 +54,15 @@ this file injected them using `<script src="external url">` tag.
 
 Now we use gulp to concat source code and inject it below.
 
-	gulpShouldFillThis = "This will be replaced with the source"
+	# See: gulpfile.litcoffee
+	sourceForTop = "This will be replaced with the source"
+	sourceForFrames = "This will be replaced with the source"
 
 	# See: content_script.js:23
 	inject "window._ext_ldr_vkopt_loader = true"
 
-	# See: background.js:10 and gulpfile.litcoffee
-	inject gulpShouldFillThis
+	# See: background.js:10
+	if window is window.top
+		inject sourceForTop
+	else
+		inject sourceForFrames

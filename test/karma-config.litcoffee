@@ -33,6 +33,7 @@ Also see `package.json` file for a list of dependencies.
 
 			files: [
 				"source/*.*"
+				"source/run-in-top/*.*"
 				"test/*.test.litcoffee" ]
 
 			frameworks: [ "mocha", "sinon-chai" ]

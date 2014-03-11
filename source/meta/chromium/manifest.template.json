@@ -9,10 +9,12 @@
 	"content_scripts": [{
 		"js": [ "helpers.js", "inject.js" ],
 		"run_at": "document_start",
+		"all_frames": true,
 		"matches": [ "http://vk.com/*", "https://vk.com/*" ]
 	}],
 	"web_accessible_resources": [
-		"dist.js"
+		"run-in-top.js",
+		"run-in-frames.js"
 	],
 	"permissions": [ "http://*/*" ]
 }

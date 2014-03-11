@@ -26,9 +26,15 @@ Although this file runs in the page context, there're some
 weird errors when trying to run source code without `eval()`.
 Needs further investigation because `eval()` is too slow to leave it so.
 
+	# See: gulpfile.litcoffee
+	sourceForTop = "This will be replaced with the source"
+	sourceForFrames = "This will be replaced with the source"
+
 	# See: content_script.js:23
 	window._ext_ldr_vkopt_loader = true
 
-	# See: gulpfile.litcoffee
-	gulpShouldFillThis = "This will be replaced with the source"
-	window.eval gulpShouldFillThis
+	# See: background.js:10
+	if window is window.top
+		window.eval sourceForTop
+	else
+		window.eval sourceForFrames
