@@ -10,7 +10,7 @@
 		"js": [ "helpers.js", "inject.js" ],
 		"run_at": "document_start",
 		"all_frames": true,
-		"matches": [ "http://vk.com/*", "https://vk.com/*" ]
+		"matches": [ "*://vk.com/*", "*://*.vk.com/*" ]
 	}],
 	"web_accessible_resources": [
 		"run-in-top.js",
