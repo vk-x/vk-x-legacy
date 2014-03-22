@@ -5898,7 +5898,6 @@ vk_vid_down={
       if (String(link).indexOf('youtube.com')==-1) return;
       var vid=String(link).split('?')[0].split('/').pop();
       vk_vid_down.vkGetYoutubeLinks(vid,function(r){
-         //alert(JSON.Str(r));
          if (!r) return;
          var html='';
          for (var i=0;i<r.length;i++)

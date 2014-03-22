@@ -1,35 +1,3 @@
-if (!window.JSON) JSON ={
-	stringify:function (obj) {
-		var t = typeof (obj);
-		if (t != "object" || obj === null) {
-			if (t == "string") obj = '"'+obj+'"';
-			return String(obj);
-		} else {
-			var n, v, json = [], arr = (obj && obj.constructor == Array);
-			for (n in obj) {
-				v = obj[n]; t = typeof(v);
-				if (t == "string") v = '"'+v+'"';
-				else if (t == "object" && v !== null) v = JSON.stringify(v);
-				json.push((arr ? "" : '"' + n + '":') + String(v));
-			}
-			return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
-		}
-	},
-	parse: function (str) {
-		if (str === "") str = '""';
-		eval("var p=" + str + ";");
-		return p;
-	}
-};
-JSON.Str=JSON.stringify;
-/*
-if (!window.localStorage) localStorage={
-	getItem:function(){},
-	setItem:function(){}
-}
-*/
-
-
 /* FUNCTIONS LEVEL 0*/
 ///////////
 function isNewLib(){return window.showWriteMessageBox?true:false}
@@ -1731,7 +1699,7 @@ var XFR={
       }
 		data=data || {};
 		var req_id=this.reqs++;
-		var frame_url=domain+'?xfr_query='+escape(JSON.Str([url,data,req_id,only_head?1:0]));
+		var frame_url=domain+'?xfr_query='+escape(JSON.stringify([url,data,req_id,only_head?1:0]));
 		var fr=vkCe('iframe', {src: frame_url, id:"xfr_frame"+req_id, style:"visibility:hidden; position:absolute; display:none;" });
 		document.body.appendChild(fr);
 		if (this.callbacks.length==0) window.addEventListener("message", this.onMessage,false);
@@ -1785,10 +1753,10 @@ var XFR={
 					var all=r.getAllResponseHeaders();
 					var len=r.getResponseHeader('Content-Length');
 					var data=['xfr',req_id,all,len];
-					parent.window.postMessage(JSON.Str(data),"*");
+					parent.window.postMessage(JSON.stringify(data),"*");
 				} else {
 					var data=['xfr',req_id,t];
-					parent.window.postMessage(JSON.Str(data),"*");
+					parent.window.postMessage(JSON.stringify(data),"*");
 					//callback(t);
 				}
 			});
@@ -1808,7 +1776,7 @@ var XFR2 = {
       if (domain.indexOf('youtube.com') != -1) domain += '/embed/';
 
       var req_id = this.reqs++;
-      var frame_url = domain + '?xfr__query=' + escape(JSON.Str([req_id, url]));
+      var frame_url = domain + '?xfr__query=' + escape(JSON.stringify([req_id, url]));
       var fr = vkCe('iframe', {
          src: frame_url,
          id: "xfr_frame" + req_id,

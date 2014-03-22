@@ -195,8 +195,6 @@ function vkProcessResponseNode(node,url,q){
    if (!url) return;
    if (q.offset && url.indexOf('wall')!=-1) vkAddDelWallCommentsLink(node);
    if (q.offset && url.indexOf('albums')!=-1) vkAddAlbumCommentsLinks(node);
-   // alert(url+'\n'+JSON.Str(q));albums-126529
-
 }
 
 function vkLocationCheck(){
@@ -219,12 +217,7 @@ function VkOptMainInit(){
       setTimeout(VkOptMainInit,50);
       return;
   }
-  /* Get lang data:
-   javascript:x=[];for (var key in vk_lang_ru) x.push("'"+key+"': '"+(typeof vk_lang_ru[key] == 'string'?(IDL(key)==key?'':IDL(key)):JSON.Str(vk_lang_ru[key]))+"'"); alert(x.join(',\n'));
 
-  vkExtendLang({
-
-  });//*/
   vkStyles();
   if (!ge('content')) return;
   if (getSet(69)=='n') vkopt_disabled_ad=true;
