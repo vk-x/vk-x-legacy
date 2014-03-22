@@ -53,32 +53,27 @@
 
 				win.postMessage responseData, "*"
 
-	init = ->
-		return unless gBrowser
+	processOpenedWindow = ({ doc, win, url }) ->
+		return unless /^http(s)?:\/\/([a-z0-9\.]+\.)?vk\.com\//.test url
 
-		processOpenedWindow = ({ originalTarget }) ->
-			return unless originalTarget.nodeName is "#document"
+		win.addEventListener "message", ( handleAjax win ), no
 
-			doc = originalTarget
+		# See: content_script.js:23
+		inject doc, "window._ext_ldr_vkopt_loader = true", isSource: yes
+
+		# See: background.js:10 and gulpfile.js
+		inject doc, "run-in-top.js" if win is win.top
+
+		inject doc, "run-in-frames.js" if win isnt win.top
+
+	Components.classes[ "@mozilla.org/observer-service;1" ]
+		.getService Components.interfaces.nsIObserverService
+		.addObserver observe: ( obj, eventType ) ->
+			return unless eventType is "document-element-inserted"
+			doc = obj
+			return unless doc.location?
 			win = doc.defaultView
 			url = doc.location.href
 
-			return if -1 is url.indexOf "://vk.com/"
-
-			win.addEventListener "message", ( handleAjax win ), no
-
-			# See: content_script.js:23
-			inject doc, "window._ext_ldr_vkopt_loader = true", isSource: yes
-
-			# See: background.js:10 and gulpfile.js
-			inject doc, "run-in-top.js" if win is win.top
-
-			inject doc, "run-in-frames.js" if win isnt win.top
-
-		gBrowser.addEventListener "DOMContentLoaded", processOpenedWindow, no
-
-	loadListener = ->
-		window.removeEventListener "load", loadListener
-		init()
-
-	window.addEventListener "load", loadListener, no
+			processOpenedWindow doc: doc, win: win, url: url
+		, "document-element-inserted", no
