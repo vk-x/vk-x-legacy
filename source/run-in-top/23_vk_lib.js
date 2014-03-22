@@ -1392,7 +1392,8 @@ var dApi = {
 		AjPost('/login.php?app=' + dApi.API_ID + '&layout=popup&type=browser&settings=' + dApi.SETTINGS,{},oncheck)
 	},
 	show_error:function(r){
-		topError(r.error.error_msg+'<br>error_code: '+r.error.error_code,{dt:2});
+		console.error( "[" + app.name + "]: " + r.error.error_code + " - " +
+      r.error.error_msg );
 	},
 	call: function(method, inputParams, callback, captcha) {
 		if (arguments.length == 2) {    callback=inputParams;     inputParams={};   }
