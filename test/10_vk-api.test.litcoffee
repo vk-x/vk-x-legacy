@@ -21,8 +21,21 @@ without throwing him into online.
 
 [**`getAccessToken`**](http://vk.com/dev/auth_mobile)
 
+All options are required.
+
 ```CoffeeScript
 app.vkApi.getAccessToken callback: ( accessToken ) -> alert accessToken
+```
+
+[**`request`**](http://vk.com/dev/auth_mobile)
+
+All options are required.
+
+```CoffeeScript
+app.vkApi.request
+	method: "users.get"
+	data: fields: "online"
+	callback: ({ online }) -> alert if online then "Online" else "Offline"
 ```
 
 #### Use hidden iframe for authorization.
@@ -161,3 +174,55 @@ Let's rock.
 						fakeCallback accessToken
 						app.vkApi.getAccessToken callback: ( accessToken ) ->
 							fakeCallback accessToken
+
+## app.vkApi.request
+
+**`app.vkApi.request`** is an async method to make
+[a request to VK API](http://vk.com/dev/api_requests).
+
+It is actually just a wrapper for `app.vkApi.getAccessToken`
+and `app.ajax.get`.
+
+		describe "request", ->
+
+#### It gets access token and calls `app.ajax.get`.
+
+			it "should fetch token and call app.ajax.get", ( done ) ->
+
+				sinon.stub app.vkApi, "getAccessToken", ({ callback } = {}) ->
+					# Defer callback execution to mimic async process.
+					setTimeout -> callback "fake token"
+
+				sinon.stub app.ajax, "get", ({ url, data, callback } = {}) ->
+					url.should.equal "https://api.vk.com/method/users.get"
+					data.should.deep.equal
+						foo: "bar"
+						access_token: "fake token"
+					# Defer callback execution to mimic async process.
+					setTimeout -> callback "{\"online\":0}", {}
+
+`callback` should be called only once. It should get `online: 0`
+as an argument.
+
+				isFakeCallbackCalled = no
+				fakeCallback = ( result ) ->
+					isFakeCallbackCalled.should.equal no
+					isFakeCallbackCalled = yes
+					result.should.deep.equal online: 0
+					app.vkApi.getAccessToken.restore()
+					app.ajax.get.restore()
+					done()
+
+Let's rock.
+
+				app.vkApi.request
+					method: "users.get"
+					data: foo: "bar"
+					callback: fakeCallback
+
+#### It throws when some arguments are missing.
+
+			it "should throw when some arguments are missing", ->
+
+				app.vkApi.request
+					.should.throw "app.vkApi.requests - not enough arguments!"
