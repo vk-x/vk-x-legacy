@@ -42,68 +42,21 @@ function getGidUid(url,callback){ //callback(uid,gid)
 	if (vkUsersGroupsDomain[url]){callback(vkUsersGroupsDomain[url][0],vkUsersGroupsDomain[url][1]);  return; }
 
    var obj_id=url.split('/').pop();
-   dApi.call('resolveScreenName',{screen_name:obj_id},function(r){
-     var res=r.response;
-     switch(res.type){
-      case 'user': callback(res.object_id);                  break;
-      case 'group': callback(null,res.object_id);            break;
-      case 'application': callback(null,null,res.object_id); break;
-      default: callback(null,null); break;
+   app.vkApi.request({
+     method: "utils.resolveScreenName",
+     data: { screen_name: obj_id },
+     callback: function( r ) {
+       var res=r.response;
+       switch(res.type){
+        case 'user': callback(res.object_id);                  break;
+        case 'group': callback(null,res.object_id);            break;
+        case 'application': callback(null,null,res.object_id); break;
+        default: callback(null,null); break;
+       }
      }
    });
-
 }
-/*
-function getGidUid(url,callback){ //callback(uid,gid)
-	url=String(url);
-	if (url.match(/^\d+$/)){callback(url);  return;}
-	if (url.match(/^u\d+$/)){callback(url.match(/^u(\d+)$/)[1],null);  return;}
-	if (url.match(/id\d+$/)){callback(url.match(/id(\d+)$/)[1],null);  return;}
 
-	if (url.match(/^g\d+$/)){callback(null,url.match(/^g(\d+)$/)[1]);  return;}
-	if (url.match(/club\d+$/)){callback(url.match(/club(\d+)$/)[1],null);  return;}
-
-	if (vkUsersGroupsDomain[url]){callback(vkUsersGroupsDomain[url][0],vkUsersGroupsDomain[url][1]);  return; }
-	AjGet('/al_groups.php?act=add_link_box&al=1&lnk='+url,function(r,t){
-		var res=t.match(/http:\/\/cs\d+.vk.+\/(u\d+|g\d+)\/[A-Za-z0-9]_[A-Za-z0-9]+.jpg/);
-		var id=res?res[1]:null;
-		if (id){
-			var o=id.substr(0,1);
-			var id=id.substr(1).replace(/^[0]+/,'');
-			if (o=='u')
-				callback(id,null);//user
-			else
-				callback(null,id);//group
-		} else if (t.indexOf('images/question_100.gif')>0){ //if NULL AVA
-			if (t.match(/http:\/\/vk.+\/images\/question_100\.gif/)){// if 'NULL AVA (USER)';
-
-             dApi.call('getProfiles',{domains:url},function(r){
-               if (r.response.length && r.response[0].uid)     callback(r.response[0].uid,null);
-               else callback(null,null);
-             });
-             /_*
-             AjGet('/groups_ajax.php?act=a_inv_by_link&page='+url,function(r){
-					r=r.responseText;
-					var uid=(r)?r.match(/name=.id..value=.(\d+)/)[1]:null;
-					vkUsersGroupsDomain[url]=[uid,null];
-					callback(uid,null);
-				 });*_/
-			} else {  // if 'NULL AVA (GROUP)';
-				var gurl=url.split('/');
-				gurl=(gurl[gurl.length-1])?gurl[gurl.length-1]:url;
-				gurl=gurl.split('?')[0];
-				AjGet(gurl+'?al=1',function(r,t){
-					var gid=t.match(/"group_id":(\d+)/);
-					if (gid) callback(null,gid[1]);
-					if (!gid) vklog('>_< group parse error...',1);//alert('NO AVA GROUP');
-				});
-			}
-		} else {
-			vklog('It\'s no user or group link');//alert('WTF');
-		}
-	});
-}
-*/
 function ExtractUserID(link){
     if (!link) return null;
 	var tmp2=link.match(/\/id(\d+)$/);
@@ -126,10 +79,18 @@ function vkGetUserInfo(uid,callback){
    if (_vk_users_info[uid])
       callback(_vk_users_info[uid]);
    else
-      dApi.call('users.get',{uids:uid,fields:'photo, photo_medium, photo_big, photo_rec, screen_name'},function(r){
-         _vk_users_info[uid]=r.response[0];
-         _vk_users_info[uid].name= r.response[0].first_name+' '+r.response[0].last_name;
-         callback(_vk_users_info[uid])
+      app.vkApi.request({
+        method: "users.get",
+        data: {
+          uids: uid,
+          fields: "photo,photo_medium,photo_big,photo_rec,screen_name",
+          v: "3.0"
+        },
+        callback: function( r ) {
+          _vk_users_info[uid]=r.response[0];
+          _vk_users_info[uid].name= r.response[0].first_name+' '+r.response[0].last_name;
+          callback(_vk_users_info[uid])
+        }
       });
 }
 
@@ -175,16 +136,20 @@ vk_users = {
             }
          });
       }
-      dApi.call('friends.get',{uid:target_uid,count:10},function(r){
-         if (!r.response || !r.response[0]){
-            alert('Sorry... Mission impossible...');
-            if (!ops.el) box.hide();
-            return;
-         }
-         console.log('fid',r.response[0]);
-         fid=r.response[0];
-         scan();
-      })
+      app.vkApi.request({
+        method: "friends.get",
+        data: { uid: target_uid, count: 10, v: "3.0" },
+        callback: function( r ) {
+          if (!r.response || !r.response[0]){
+             alert('Sorry... Mission impossible...');
+             if (!ops.el) box.hide();
+             return;
+          }
+          console.log('fid',r.response[0]);
+          fid=r.response[0];
+          scan();
+        }
+      });
    }
 }
 
@@ -455,14 +420,11 @@ function vkAddToFave(uid,is_del){ // Turn you to online
 }
 
 function vkAddToSubscribtions(uid,is_del){
-   if (is_del)
-      dApi.call('subscriptions.unfollow',{uid:uid},function(r){
-         vkMsg('<b>OK</b>',2000);
-      });
-   else
-      dApi.call('subscriptions.follow',{uid:uid},function(r){
-         vkMsg('<b>OK</b>',2000);
-      });
+  app.vkApi.request({
+    method: "subscriptions." + is_del ? "unfollow" : "follow",
+    data: { uid: uid, v: "3.0" },
+    callback: function() { vkMsg('<b>OK</b>',2000); }
+  });
 }
 
 function vkAddToBL(uid){
@@ -978,16 +940,25 @@ function vkGetProfile(uid,callback,no_switch_button){
 		  code += ',msg_count:msg_count';
         code += ',vkopt_user:API.isAppUser({uid:"'+uid+'"})';
 		  code += '};';
-		  dApi.call("execute", {'code': code}, function(r){
-			//alert(print_r(r));
-			if (r.response && r.response.profile) VK_CURRENT_PROFILES_DATA['uid'+uid]=r;
-			MakeProfile(r);
-		  });
+
+      app.vkApi.request({
+        method: "execute",
+        data: { code: code, v: "3.0" },
+        callback: function( r ) {
+          if (r.response && r.response.profile) {
+            VK_CURRENT_PROFILES_DATA['uid'+uid]=r;
+          }
+          MakeProfile(r);
+        }
+      });
 	  }
 }
 
 function vkProfileUpdOnline(uid,callback){
-   dApi.call('users.get',{uids:uid,fields:'online,last_seen'},function(r){
+  app.vkApi.request({
+    method: "users.get",
+    data: { uids:uid,fields:'online,last_seen', v: "3.0" },
+    callback: function( r ) {
       if (r.response && r.response[0]){
          var profile=r.response[0];
          var last_seen=(profile.last_seen || {}).time;
@@ -996,7 +967,8 @@ function vkProfileUpdOnline(uid,callback){
       } else {
          callback('');
       }
-   })
+    }
+  });
 }
 
 var _vk_fr_lists_info={};
@@ -1010,56 +982,56 @@ function vkFriendUserInLists(uid,callback,only_cats){
          '+(_vk_fr_lists_info.friends && _vk_fr_lists_info.lists ?'':'friends=API.friends.get({fields:"uid,lists"}); lists=API.friends.getLists();')+'\
          return {uid:uid,status:x[0].friend_status,in_lists:user_in_lists,lists:lists,friends:friends};\
       ';
-      dApi.call('execute',{code:code},function(r){
-         var x=r.response;
-         if (x.friends && x.lists){
-            _vk_fr_lists_info.friends=x.friends;
-            _vk_fr_lists_info.lists=x.lists;
-         } else {
-            x.friends=_vk_fr_lists_info.friends;
-            x.lists=_vk_fr_lists_info.lists;
-         }
-         var cats=[];
-         var html='';
-         var in_lists=null;
-         var friends=x.friends;
-         for (var i=0; i<friends.length;i++){
-            if (friends[i].uid==uid){
-               in_lists=friends[i].lists;
-            }
-         }
+      app.vkApi.request({
+        method: "execute",
+        data: { code: code, v: "3.0" },
+        callback: function( r ) {
+          var x=r.response;
+          if (x.friends && x.lists){
+             _vk_fr_lists_info.friends=x.friends;
+             _vk_fr_lists_info.lists=x.lists;
+          } else {
+             x.friends=_vk_fr_lists_info.friends;
+             x.lists=_vk_fr_lists_info.lists;
+          }
+          var cats=[];
+          var html='';
+          var in_lists=null;
+          var friends=x.friends;
+          for (var i=0; i<friends.length;i++){
+             if (friends[i].uid==uid){
+                in_lists=friends[i].lists;
+             }
+          }
 
-         if (x.status==3 && in_lists && x.lists){
-            var l={};
-            for (var i=0; i<x.lists.length; i++)
-               l[x.lists[i].lid]=x.lists[i].name;
+          if (x.status==3 && in_lists && x.lists){
+             var l={};
+             for (var i=0; i<x.lists.length; i++)
+                l[x.lists[i].lid]=x.lists[i].name;
 
-            for (var i=0; i<in_lists.length; i++){
-               var lid=in_lists[i];
-               cats.push('<a href="/friends?section=list'+lid+'" onclick="return nav.go(this,event);">'+l[lid]+'</a>');
-            }
-         }
-         cats=cats.join(', ');
+             for (var i=0; i<in_lists.length; i++){
+                var lid=in_lists[i];
+               cats.push('<a href="/friends?section=list'+lid+'"  onclick="return nav.go(this,event);">'+l[lid]+'</a>');
+             }
+          }
+          cats=cats.join(', ');
 
-         switch(x.status){
-            case 0:
-               html=IDL('NotInFriends');
-               break;
-            case 1:
-               html=IDL('OutFriendRequests');
-               break;
-            case 2:
-               html=IDL('FriendRequests');
-               break;
-            case 3:
-               html=IDL('UserInFriend')+''+(cats!=''?': ':'')+cats;
-               break;
-         }
-         callback(only_cats?cats:html,x.status);
-         //console.log(html);
-         /*
-         x.status
-         x.uid*/
+          switch(x.status){
+             case 0:
+                html=IDL('NotInFriends');
+                break;
+             case 1:
+                html=IDL('OutFriendRequests');
+                break;
+             case 2:
+                html=IDL('FriendRequests');
+                break;
+             case 3:
+                html=IDL('UserInFriend')+''+(cats!=''?': ':'')+cats;
+                break;
+          }
+          callback(only_cats?cats:html,x.status);
+        }
       });
 }
 
@@ -1136,34 +1108,41 @@ function vkFriendsCheck(nid){
 	addButton(box,IDL('Hide'),box.hide,'no');
 	box.content('<div class="box_loader"></div>');
 	frList(function(fids,str,cnt){
-		dApi.call('notes.add',{title:'friends_ok_'+cnt,text:str,privacy:3},function(r){
-			var nid=r.response.nid;
-			setSet('-',nid,NID_CFG);
-            setTimeout(function(){box.hide(); vkFriendsCheck(nid);},300);
-		});
+    app.vkApi.request({
+      method: "notes.add",
+      data: { title:'friends_ok_'+cnt,text:str,privacy:3, v: "3.0" },
+      callback: function( r ) {
+        var nid=r.response.nid;
+        setSet('-',nid,NID_CFG);
+        setTimeout(function(){box.hide(); vkFriendsCheck(nid);},300);
+      }
+    });
 	});
   };
   var searchNote=function(){
-	dApi.call('notes.get',{count:100},function(r){
-		if (r.error && r.error.error_code==180){
-			setTimeout(newNote,300);
-			return;
-		}
-		var notes=r.response;
-		notes.shift();
-		var note=0;
-		for(var i=0; i<notes.length;i++)
-			if (notes[i].title.match(/friends_ok_\d+/) && notes[i].text.match(/[\d-]+/))	{note=notes[i]; nid=note.nid; break;}
+    app.vkApi.request({
+      method: "notes.get",
+      data: { count: 100, v: "3.0" },
+      callback: function( r ) {
+        if (r.error && r.error.error_code==180){
+        	setTimeout(newNote,300);
+        	return;
+        }
+        var notes=r.response;
+        notes.shift();
+        var note=0;
+        for(var i=0; i<notes.length;i++)
+        	if (notes[i].title.match(/friends_ok_\d+/) && notes[i].text.match(/[\d-]+/))	{note=notes[i]; nid=note.nid; break;}
 
-		if (note){
-		  box.removeButtons();
-		  addButton(box,IDL('Cancel'),box.hide,'no');
-		  addButton(box,IDL('No'),newNote,'no');
-		  addButton(box,IDL('Yes'),UseOldNote,'yes');
-		  box.content(IDL('FrNoteFound').replace('{note}','<a href="note'+note.uid+'_'+note.nid+'" target="blank">'+note.title+'</a>'));//.show();
-		} else setTimeout(newNote,300);
-
-	});
+        if (note){
+          box.removeButtons();
+          addButton(box,IDL('Cancel'),box.hide,'no');
+          addButton(box,IDL('No'),newNote,'no');
+          addButton(box,IDL('Yes'),UseOldNote,'yes');
+          box.content(IDL('FrNoteFound').replace('{note}','<a href="note'+note.uid+'_'+note.nid+'" target="blank">'+note.title+'</a>'));//.show();
+        } else setTimeout(newNote,300);
+      }
+    });
   };
 
 	var friends_check=function(){
@@ -1171,57 +1150,69 @@ function vkFriendsCheck(nid){
 		addButton(box,IDL('Hide'),box.hide,'no');
 		ge('vkfrupdck1').className='vkcheckbox_on';
 		frList(function(fids,PostData,cnt){
-			dApi.call('notes.getById',{nid:nid},function(r){
-				if (r.error && r.error.error_code==180){
-					searchNote();
-					return;
-				}
-				ge('vkfrupdck2').className='vkcheckbox_on';
-				var text=r.response.text;
-				var note=text.match(/[\d-]+/);
-				if (!note) {alert(IDL('FrListNoteError')); searchNote(); return;}
-				var nfids=note[0].split('-');
-				if (parseInt(nfids[0])==nfids.length-1) var ncount=nfids.shift();
-				var i=0;
-				while (i<nfids.length){
-					for (var j=0;j<fids.length;j++)
-					  if(parseInt(fids[j])==parseInt(nfids[i])){
-						fids.splice(j,1);
-						nfids.splice(i,1);
-						i--;
-						break;
-					  }
-					i++;
-				}
-				//
-				vksetCookie('IDFriendsUpd', nfids.join('-')+'_'+fids.join('+'), getSet('-',FUPD_CFG));
-				vkShowFriendsUpd();
-				dApi.call('notes.edit',{nid:nid,title:'friends_ok_'+cnt,text:PostData,privacy:3},function(r){
-					ge('vkfrupdck3').className='vkcheckbox_on';
-					hide('vkfrupdloader');
-					var remadd=vkShowFriendsUpd(true);
-					  if (!remadd) ge('vkfrupdresult').innerHTML='<b>'+IDL('WithoutChanges')+'</b>';
-					  else {
-						  ge('vkfrupdresult').innerHTML='<table width="100%"><tr valign="top"><td>'+remadd.rem+'</td><td valign="top">'+remadd.add+'</td></tr></table>';
-						  vkProccessLinks(ge('vkfrupdresult'));
-						  var fids_x=fids.concat(nfids);
-						  dApi.call('getProfiles',{uids:fids_x.join(',')},function(r){//fids.join(',')+','+nfids.join(',')
-							//alert(print_r(r));
-							for (var i=0;r.response && i<r.response.length;i++){
-							  var user=r.response[i];
-							  var elem=ge('vkfr'+user.uid);
-							  if (elem) elem.innerHTML=user.first_name+' '+user.last_name;
-
-							}
-							vkProccessLinks(ge('vkfrupdresult'));
-						  });
-					  }
-
-
-					/*var nid=r.response.nid;
-					vkFriendsCheck(nid);*/
-				});
-			});
+      app.vkApi.request({
+        method: "notes.getById",
+        data: { nid: nid, v: "3.0" },
+        callback: function( r ) {
+          if (r.error && r.error.error_code==180){
+            searchNote();
+            return;
+          }
+          ge('vkfrupdck2').className='vkcheckbox_on';
+          var text=r.response.text;
+          var note=text.match(/[\d-]+/);
+          if (!note) {alert(IDL('FrListNoteError')); searchNote(); return;}
+          var nfids=note[0].split('-');
+          if (parseInt(nfids[0])==nfids.length-1) var ncount=nfids.shift();
+          var i=0;
+          while (i<nfids.length){
+            for (var j=0;j<fids.length;j++)
+              if(parseInt(fids[j])==parseInt(nfids[i])){
+              fids.splice(j,1);
+              nfids.splice(i,1);
+              i--;
+              break;
+              }
+            i++;
+          }
+          vksetCookie('IDFriendsUpd', nfids.join('-')+'_'+fids.join('+'), getSet('-',FUPD_CFG));
+          vkShowFriendsUpd();
+          app.vkApi.request({
+            method: "notes.edit",
+            data: {
+              nid: nid,
+              title: "friends_ok_" + cnt,
+              text: PostData,
+              privacy: 3,
+              v: "3.0"
+            },
+            callback: function( r ) {
+              ge('vkfrupdck3').className='vkcheckbox_on';
+              hide('vkfrupdloader');
+              var remadd=vkShowFriendsUpd(true);
+              if (!remadd) ge('vkfrupdresult').innerHTML='<b>'+IDL('WithoutChanges')+'</b>';
+              else {
+                ge('vkfrupdresult').innerHTML='<table width="100%"><tr valign="top"><td>'+remadd.rem+'</td><td valign="top">'+remadd.add+'</td></tr></table>';
+                vkProccessLinks(ge('vkfrupdresult'));
+                var fids_x=fids.concat(nfids);
+                app.vkApi.request({
+                  method: "getProfiles",
+                  data: { uids: fids_x.join( "," ), v: "3.0" },
+                  callback: function( r ) {
+                    for (var i=0;r.response && i<r.response.length;i++){
+                      var user=r.response[i];
+                      var elem=ge('vkfr'+user.uid);
+                      if (elem)
+                        elem.innerHTML=user.first_name+' '+user.last_name;
+                    }
+                    vkProccessLinks(ge('vkfrupdresult'));
+                  }
+                });
+              }
+            }
+          });
+        }
+      });
 		});
 	};
   if (!nid) nid=getSet('-',NID_CFG);
@@ -1262,14 +1253,20 @@ function vkShowFriendsUpd(ret,names){
             html.rem+html.add+
          '</div>';
   vkProccessLinks(el);
-   if (names) dApi.call('getProfiles',{uids:names.join(',')},function(r){
-      for (var i=0;r.response && i<r.response.length;i++){
-         var user=r.response[i];
-         var elem=ge('vkfrsb'+user.uid);
-         if (elem) elem.innerHTML=user.first_name+' '+user.last_name;
+  if (names) {
+    app.vkApi.request({
+      method: "getProfiles",
+      data: { uids: names.join( "," ), v: "3.0" },
+      callback: function( r ) {
+        for (var i=0;r.response && i<r.response.length;i++){
+           var user=r.response[i];
+           var elem=ge('vkfrsb'+user.uid);
+           if (elem) elem.innerHTML=user.first_name+' '+user.last_name;
+        }
+        vkProccessLinks(el);
       }
-      vkProccessLinks(el);
-   });
+    });
+  }
 }
 function vkHideRemAddFrBlock(){
   var FUPD_CFG=1;//days
@@ -1281,9 +1278,13 @@ function vkHideRemAddFrBlock(){
 //////////////
 //*
 function vkFriendsIdsGet(callback){
-		dApi.call('friends.get',{},function(r){
-			callback(r.response);
-		});
+  app.vkApi.request({
+    method: "friends.get",
+    data: { v: "3.0" },
+    callback: function( r ) {
+      callback(r.response);
+    }
+  });
 }
 
 
@@ -1298,18 +1299,22 @@ function vkFriendsBySex(add_link){
 	if (add_link) return;
 
 	var RunMake=function(){
-		dApi.call('friends.get',{fields:'sex'},function(r){
-			var fr=r.response;
-			var res=[[],[],[]];  // [0] - WTF?	[1] - Female [2] - Male
-			for (var i=0;i<fr.length;i++){
-				res[fr[i].sex].push(fr[i].uid);
-			}
-			for (var i=0;i<3;i++) if(res[i].length){
-				makecat(ge('frcat'+i).value,res[i],i);
-			}
-			box.removeButtons();
-			box.addButton(IDL('Cancel'),box.hide,'no');
-		});
+    app.vkApi.request({
+      method: "friends.get",
+      data: { fields: "sex", v: "3.0" },
+      callback: function( r ) {
+        var fr=r.response;
+        var res=[[],[],[]];  // [0] - WTF?	[1] - Female [2] - Male
+        for (var i=0;i<fr.length;i++){
+          res[fr[i].sex].push(fr[i].uid);
+        }
+        for (var i=0;i<3;i++) if(res[i].length){
+          makecat(ge('frcat'+i).value,res[i],i);
+        }
+        box.removeButtons();
+        box.addButton(IDL('Cancel'),box.hide,'no');
+      }
+    });
 	};
 
 	var makecat=function(title,friendsList,idx){
@@ -1317,20 +1322,24 @@ function vkFriendsBySex(add_link){
 		box.addButton(IDL('Cancel'),box.hide,'no');
 		var elem=ge('frcatp'+idx);
 		elem.innerHTML=vkLdrImg;
-		dApi.call('friends.getLists',{},function(r){
-			var listId=0;
-			var cats=r.response;
-			for (var i=0;i<cats.length;i++)
-				if (cats[i].name==title) listId=cats[i].lid;
-			AjPost('al_friends.php',{act:'edit_list_title_box', cat_id: listId,al:1},function(r,t){		// also hash in /al_friends.php?act=edit_list_hash&cat_id=0&al=1
-				var hash=t.split('cur.saveList(')[1].split("'")[1];
-				AjPost('al_friends.php', {act: 'save_list', title: title, cat_id: listId, friends: friendsList.join(','), hash: hash},function(r, t) {
-					elem.innerHTML="<b>OK</b>";
-					box.removeButtons();
-					box.addButton(IDL('OK'),box.hide,'yes');
-				});
-			});
-		});
+    app.vkApi.request({
+      method: "friends.getLists",
+      data: { v: "3.0" },
+      callback: function( r ) {
+        var listId=0;
+        var cats=r.response;
+        for (var i=0;i<cats.length;i++)
+          if (cats[i].name==title) listId=cats[i].lid;
+        AjPost('al_friends.php',{act:'edit_list_title_box', cat_id: listId,al:1},function(r,t){    // also hash in /al_friends.php?act=edit_list_hash&cat_id=0&al=1
+          var hash=t.split('cur.saveList(')[1].split("'")[1];
+          AjPost('al_friends.php', {act: 'save_list', title: title, cat_id: listId, friends: friendsList.join(','), hash: hash},function(r, t) {
+            elem.innerHTML="<b>OK</b>";
+            box.removeButtons();
+            box.addButton(IDL('OK'),box.hide,'yes');
+          });
+        });
+      }
+    });
 	};
 
 	var box=new MessageBox({title: IDL('ParseFriends'),closeButton:true,width:"350px"});
@@ -1375,20 +1384,23 @@ function vkHighlightFriends(){
 	var fr=vkGetVal('vk_friends_ids'+uid);
 	var load_friends=function(callback){
 		var vkFr=[];
-		dApi.call('friends.get',{fields:'domain'},function(r){
-			for (var i=0;i<r.response.length;i++){
-				var user=r.response[i];
-				vkFr.push(user.domain);
-				if (user.domain != 'id'+user.uid) vkFr.push('id'+user.uid);
-			}
-			vk_friends_id_list=vkFr.join(',');
-			var result=unixtime()+','+remixmid()+'|'+vk_friends_id_list;
-			vkSetVal('vk_friends_ids'+uid,result);
-			vklog('friends loaded from API. highlighting...');
-			highlight();
-		});
+    app.vkApi.request({
+      method: "friends.get",
+      data: { fields: "domain", v: "3.0" },
+      callback: function( r ) {
+        for (var i=0;i<r.response.length;i++){
+          var user=r.response[i];
+          vkFr.push(user.domain);
+          if (user.domain != 'id'+user.uid) vkFr.push('id'+user.uid);
+        }
+        vk_friends_id_list=vkFr.join(',');
+        var result=unixtime()+','+remixmid()+'|'+vk_friends_id_list;
+        vkSetVal('vk_friends_ids'+uid,result);
+        vklog('friends loaded from API. highlighting...');
+        highlight();
 
-
+      }
+    });
 	};
 	var highlight=function(){
 		var nodes=ge('content').getElementsByTagName('a');
@@ -1561,8 +1573,15 @@ function vkFavOnlineChecker(on_storage){
       }
       var new_onl=[];
       vkCmd('fav_users_statuses','ok');
-      dApi.call('getProfiles',{uids:val.join(','), fields:'online,photo_rec'},function(r){
-         if (r.response){
+      app.vkApi.request({
+        method: "getProfiles",
+        data: {
+          uids: val.join( "," ),
+          fields: "online,photo_rec",
+          v: "3.0"
+        },
+        callback: function( r ) {
+          if (r.response){
             var res=r.response;
 
             for (var i=0; i<res.length;i++){
@@ -1584,16 +1603,14 @@ function vkFavOnlineChecker(on_storage){
                }
             }
             vkCmd('fav_users_statuses','ok');
-         } else {
+          } else {
             vklog('FavOnline Api error')
-         }
-         timeout();
+          }
+          timeout();
+        }
       });
    }
-
 }
-
-
 
 function vkFavUsersList(add_button){
    if (add_button){
@@ -1632,27 +1649,37 @@ function vkFavUsersList(add_button){
        </div>\
      </div>\
    </div>';
-   dApi.call('getProfiles',{uids:val.join(','), fields:'online,photo_medium_rec'},function(r){
-      var html='';
-      if (r.response){
-         var res=r.response;
-         var onlines=[];
-         for (var i=0; i<res.length;i++){
-            var u=res[i];
-            if (u.online==1) onlines.push(u);
-            html+=tpl.replace(/%uid/g,u.uid)
-                     .replace(/%username/g,u.first_name+' '+u.last_name)
-                     .replace(/%online/g,u.online?vkOnlineInfo(u):'')
-                     .replace(/%ava/g,u.photo_medium_rec)
-         }
-      } else {
-         html="Fav Error";
+
+    app.vkApi.request({
+      method: "getProfiles",
+      data: {
+        uids: val.join( "," ),
+        fields: "online,photo_medium_rec",
+        v: "3.0"
+      },
+      callback: function( r ) {
+        var html='';
+        if (r.response){
+           var res=r.response;
+           var onlines=[];
+           for (var i=0; i<res.length;i++){
+              var u=res[i];
+              if (u.online==1) onlines.push(u);
+              html+=tpl.replace(/%uid/g,u.uid)
+                       .replace(/%username/g,u.first_name+' '+u.last_name)
+                       .replace(/%online/g,u.online?vkOnlineInfo(u):'')
+                       .replace(/%ava/g,u.photo_medium_rec)
+           }
+        } else {
+           html="Fav Error";
+        }
+        show('header');
+        ge('title').innerHTML=IDL('FavUsers');
+        p.innerHTML='<div id="vk_fav_users_cont" style="padding:10px;">'+html+'</div>';
+        vkProcessNode(p);
       }
-      show('header');
-      ge('title').innerHTML=IDL('FavUsers');
-      p.innerHTML='<div id="vk_fav_users_cont" style="padding:10px;">'+html+'</div>';
-      vkProcessNode(p);
-   });
+    });
+
    return false;
 }
 
@@ -1679,20 +1706,28 @@ function vkFaveOnlineChecker(on_storage){
       }
       var new_onl=[];
       vkCmd('fave_users_statuses','ok');
-      dApi.call('fave.getUsers',{offset:0, count:1000, fields:'online,photo_50'},function(r){
-         var users=r.response;
-         var count=users.shift();
-         //console.log(r)
-         for (var i=0; i<users.length;i++){
+      app.vkApi.request({
+        method: "fave.getUsers",
+        data: {
+          offset: 0,
+          count: 1000,
+          fields: "online,photo_50",
+          v: "3.0"
+        },
+        callback: function( r ) {
+          var users=r.response;
+          var count=users.shift();
+          //console.log(r)
+          for (var i=0; i<users.length;i++){
             var u=users[i];
             u.id=u.uid;
             if (onlines[u.id]==0 && u.online) new_onl.push(u);
             onlines[u.id]=u.online;
-         }
-         var ostr=[];
-         for (var key in onlines) ostr.push(key+'_'+(onlines[key]?1:0));
-         vkSetVal('FaveList_Onlines',ostr.join('-'));
-         if (!ignore){
+          }
+          var ostr=[];
+          for (var key in onlines) ostr.push(key+'_'+(onlines[key]?1:0));
+          vkSetVal('FaveList_Onlines',ostr.join('-'));
+          if (!ignore){
             for (var i=0;i<new_onl.length;i++){
                if (getSet(49)=='y' && vkIsFavUser(new_onl[i].id)) continue;
                var tm=(new Date).format('isoTime');
@@ -1704,50 +1739,13 @@ function vkFaveOnlineChecker(on_storage){
                // vkNotifyUserCheckAndShow
                vkShowNotify({sound:'On',title:IDL('FaveOnline'),text:text,_time:tm,author_photo:new_onl[i].photo_50,author_link:'id'+new_onl[i].id,link:'id'+new_onl[i].id,onclick:"nav.go('id"+new_onl[i].id+"')"});
             }
-         }
-         vkCmd('fave_users_statuses','ok');
-         timeout();
-      })
-
-      /*
-      vkApis.faves(function(r,onl){
-         if (r){
-            for (var i=0; i<r.length;i++){
-               var u=r[i];
-               if (onlines[u.id]==0 && u.online) new_onl.push(u);
-               onlines[u.id]=u.online;
-            }
-            var ostr=[];
-            for (var key in onlines) ostr.push(key+'_'+(onlines[key]?1:0));
-            vkSetVal('FaveList_Onlines',ostr.join('-'));
-            if (!ignore){
-               for (var i=0;i<new_onl.length;i++){
-                  if (getSet(49)=='y' && vkIsFavUser(new_onl[i].id)) continue;
-                  var tm=(new Date).format('isoTime');
-                  var time='<div class="fl_r">'+tm+'</div>';
-                  var text='<b><a href="/id'+new_onl[i].id+'" onclick="nav.go(this);">'+new_onl[i].name+'</a></b>'+time;
-                  if (new_onl[i].online>1){
-                     new_onl[i].online_app=""+new_onl[i].online;
-                     new_onl[i].online_mobile=1;
-                     new_onl[i].online=1;
-                  };
-                  text+='<br>'+vkOnlineInfo(new_onl[i]);
-
-                  // vkNotifyUserCheckAndShow
-                  vkShowNotify({sound:'On',title:IDL('FaveOnline'),text:text,_time:tm,author_photo:new_onl[i].photo,author_link:'id'+new_onl[i].id,link:'id'+new_onl[i].id,onclick:"nav.go('id"+new_onl[i].id+"')"});
-               }
-            }
-            vkCmd('fave_users_statuses','ok');
-         } else {
-            vklog('FaveOnline Api error')
-         }
-         timeout();
-      });*/
+          }
+          vkCmd('fave_users_statuses','ok');
+          timeout();
+        }
+      });
    }
-
 }
-//*///
-////
 
 vk_friends={
    cat_links:function(){

@@ -22,11 +22,8 @@ function InstallRelease(){
     if ( lastUsedVersion != null ) {
       vkCheckSettLength();
     }
-    dApi.call( "getUserSettings", {}, function( response ) {
-      if( response.response !== dApi.SETTINGS ) {
-        dApi.Auth();
-      }
-    });
+    // TODO: Check app permissions and force reauth if needed.
+    // app.vkApi.request({ method: "getUserSettings" });
   }
 
   if ( !vkGetVal( "VK_SAVE_MSG_HISTORY_PATTERN" ) ) {
@@ -1146,21 +1143,12 @@ function vkShowSettings(box){
   vkLoadSettingsFromServer(true);//check cfg backup
   return false;
 }
-//vkGetSettings(vkoptSets['Media']) javascript: ge('content').innerHTML=vkGetSettings(vkoptSets['Media']); void(0);
-// javascript: vkMakeSettings();
 
 function vkSaveSettingsOnServer(check){
 	var sett=vkgetCookie("remixbit");
 	var cur_date=Math.round((new Date().getTime())/1000);
 	sett+='|'+cur_date;
 
-   /*
-    VK_CURRENT_CSS_URL=vkGetVal("VK_CURRENT_CSS_URL") || "";//vk_LSGetVal - only localstore; vkGetVal- localstore && cookie
-    VK_CURRENT_CSS_CODE=vk_LSGetVal('VK_CURRENT_CSS_CODE') || ""; // vk_LSSetVal('VK_CURRENT_CSS_CODE',code);
-    VK_CURRENT_CSSJS_URL=vkGetVal('VK_CURRENT_CSSJS_URL') || "";
-   */
-
-   //dApi.call('execute',{code:'return [API.storage.get({key:"remixbits"}),API.storage.get({key:"Qwe"}),];'},console.log)
    var csscode=encodeURIComponent(vk_LSGetVal('VK_CURRENT_CSS_CODE') || "");
    csscode=csscode.length<4096?csscode:'';
 
@@ -1183,83 +1171,73 @@ function vkSaveSettingsOnServer(check){
    for (var key in cfg)
       code.push(key+':API.storage.set({key:"'+key+'",value:"'+cfg[key]+'"})');
    code="return {"+code.join(',')+"};";
-   //alert(code);
-   dApi.call('execute',{code:code},function(r){
-      ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_info">'+IDL('seCfgBackupSaved')+'</div>';
-      console.log('Store vkopt settings result:',r);
+
+   app.vkApi.request({
+     method: "execute",
+     data: { code: code, v: "3.0" },
+     callback: function( r ) {
+       ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_info">'+IDL('seCfgBackupSaved')+'</div>';
+       console.log('Store vkopt settings result:',r);
+     }
    });
-   /*
-	dApi.call('storage.set',{key:'remixbits',value:sett},function(r){
-		ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_info">'+IDL('seCfgBackupSaved')+'</div>';
-	});
- 	var FavList=vkGetVal('FavList');
-   if(FavList && FavList!='')  dApi.call('storage.set',{key:'FavList',value:FavList},function(){});
-   */
 }
 function vkLoadSettingsFromServer(check,callback){
 	var params={keys:'remixbits,vklang,FavList,menu_custom_links,vk_sounds_vol,VK_CURRENT_CSS_URL,VK_CURRENT_CSSJS_URL,VK_CURRENT_CSS_CODE'};
-   if (check) params={key:'remixbits'};
-   dApi.call('storage.get',params,function(r){
-		if (check){
-			if (r.response && r.response!=''){
-				var cfg=r.response.split('|');
-				if (cfg[1] && parseInt(cfg[1])){
-					var date=(new Date(parseInt(cfg[1])*1000)).format("dd.mm.yyyy (HH:MM:ss)");
-					ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_info">'+IDL('seCfgBackupDate')+' <b>'+date+'</b> </div>';
-               if (callback) callback(true);
-				} else {
-					ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_warn">'+IDL('seCfgNoBackup')+' #1</div>';
-               if (callback) callback(false);
-				}
-			} else {
-				ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_warn">'+IDL('seCfgNoBackup')+' #2</div>';
-            if (callback) callback(false);
-			}
-      } else {
-			if (r.response && r.response!=''){
-				var scfg={};
-            for (var i=0; i<r.response.length; i++)
-               scfg[r.response[i].key]=r.response[i].value;
-            console.log('vkopt config from API server',scfg);
-            // vkopt settings
-            var cfg=scfg['remixbits'].split('|');
-				vksetCookie('remixbit', cfg[0]);
+  if (check) params={key:'remixbits'};
+  params.v = "3.0";
+  app.vkApi.request({
+   method: "storage.get",
+   data: params,
+   callback: function( r ) {
+     if (check){
+       if (r.response && r.response!=''){
+         var cfg=r.response.split('|');
+         if (cfg[1] && parseInt(cfg[1])){
+           var date=(new Date(parseInt(cfg[1])*1000)).format("dd.mm.yyyy (HH:MM:ss)");
+           ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_info">'+IDL('seCfgBackupDate')+' <b>'+date+'</b> </div>';
+                if (callback) callback(true);
+         } else {
+           ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_warn">'+IDL('seCfgNoBackup')+' #1</div>';
+                if (callback) callback(false);
+         }
+       } else {
+         ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_warn">'+IDL('seCfgNoBackup')+' #2</div>';
+             if (callback) callback(false);
+       }
+       } else {
+       if (r.response && r.response!=''){
+         var scfg={};
+             for (var i=0; i<r.response.length; i++)
+                scfg[r.response[i].key]=r.response[i].value;
+             console.log('vkopt config from API server',scfg);
+             // vkopt settings
+             var cfg=scfg['remixbits'].split('|');
+         vksetCookie('remixbit', cfg[0]);
 
-            if (scfg['vklang'])
-               vksetCookie('vklang',scfg['vklang']);
+             if (scfg['vklang'])
+                vksetCookie('vklang',scfg['vklang']);
 
-            // FavList
-            var val=scfg['FavList'];
-            var FavList=vkGetVal('FavList');
-            if (val && val!='' && FavList!=val){
-               if(!FavList || FavList=='') vkSetVal('FavList',val);
-               else if(confirm(IDL('FavListRelace'))) vkSetVal('FavList',val);
-            }
-            if (scfg['menu_custom_links']) vkSetVal('menu_custom_links',scfg['menu_custom_links']);
-            // SkinManager settings
-            if (scfg['VK_CURRENT_CSS_URL']) vkSetVal('VK_CURRENT_CSS_URL',scfg['VK_CURRENT_CSS_URL']);
-            if (scfg['VK_CURRENT_CSSJS_URL']) vkSetVal('VK_CURRENT_CSSJS_URL',scfg['VK_CURRENT_CSSJS_URL']);
-            if (scfg['VK_CURRENT_CSS_CODE']) vk_LSSetVal('VK_CURRENT_CSS_CODE',decodeURIComponent(scfg['VK_CURRENT_CSS_CODE']));
-            if (scfg['vk_sounds_vol']) vkSetVal("vk_sounds_vol",scfg['vk_sounds_vol']);
+             // FavList
+             var val=scfg['FavList'];
+             var FavList=vkGetVal('FavList');
+             if (val && val!='' && FavList!=val){
+                if(!FavList || FavList=='') vkSetVal('FavList',val);
+                else if(confirm(IDL('FavListRelace'))) vkSetVal('FavList',val);
+             }
+             if (scfg['menu_custom_links']) vkSetVal('menu_custom_links',scfg['menu_custom_links']);
+             // SkinManager settings
+             if (scfg['VK_CURRENT_CSS_URL']) vkSetVal('VK_CURRENT_CSS_URL',scfg['VK_CURRENT_CSS_URL']);
+             if (scfg['VK_CURRENT_CSSJS_URL']) vkSetVal('VK_CURRENT_CSSJS_URL',scfg['VK_CURRENT_CSSJS_URL']);
+             if (scfg['VK_CURRENT_CSS_CODE']) vk_LSSetVal('VK_CURRENT_CSS_CODE',decodeURIComponent(scfg['VK_CURRENT_CSS_CODE']));
+             if (scfg['vk_sounds_vol']) vkSetVal("vk_sounds_vol",scfg['vk_sounds_vol']);
 
-				ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_info">'+IDL('seCfgRestored')+'</div>';
-			} else {
-				ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_error">'+IDL('seCfgLoadError')+' #0</div>';
-			}
-         /*
-         dApi.call('storage.get',{key:'FavList'},function(r){
-            var val=r.response;
-            var FavList=vkGetVal('FavList');
-            if (val && val!='' && FavList!=val){
-               if(!FavList || FavList=='') vkSetVal('FavList',val);
-               else if(confirm(IDL('FavListRelace'))) vkSetVal('FavList',val);
-            }
-         });*/
-		}
-	});
-
-
-
+         ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_info">'+IDL('seCfgRestored')+'</div>';
+       } else {
+         ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_error">'+IDL('seCfgLoadError')+' #0</div>';
+       }
+     }
+   }
+  });
 }
 
 function vkUpdateSounds(on_command){

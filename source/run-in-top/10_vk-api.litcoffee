@@ -10,7 +10,18 @@ on internal details.
 		apiAppInfo =
 			id: 4238625
 			permissions: [
+				"audio"
+				"docs"
 				"friends"
+				"groups"
+				"messages"
+				"notes"
+				"pages"
+				"photos"
+				"stats"
+				"status"
+				"video"
+				"wall"
 			]
 
 		apiVersion = "5.16"

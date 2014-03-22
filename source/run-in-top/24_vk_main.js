@@ -200,7 +200,6 @@ function vkProcessResponseNode(node,url,q){
 }
 
 function vkLocationCheck(){
-  if (dApi.onLogin()) return true;
   if (vkCheckInstallCss()) return true;
   XFR.check();
   if (location.href.match('/away')) if (getSet(6) == 'y'){
@@ -425,45 +424,71 @@ function vkWikiPagesList(add_btn){
    var ldr=ge('vk_wiki_pages_list_loader');
    if (ldr) show(ldr);
    var gid=Math.abs(cur.oid);
-   //if (gid==1) gid=-1;
-   dApi.call('pages.getTitles',{gid: gid},function(r){
-      if (ldr) hide(ldr);
-      var t='';
-      var x=(r.response || []).map(function(obj,a2){
-         console.log(obj);
-         var page='page-'+obj.group_id+'_'+obj.pid;
-         t+='<a href="/'+page+'">'+page+'</a><span class="divider">|</span>'+
-            '<a href="/pages.php?oid=-'+obj.group_id+'&p='+encodeURIComponent(obj.title)+'&act=history" target="_blank">'+IDL('History')+'</a><span class="divider">|</span>'+
-            '<a href="#" onclick="return vkGetWikiCode('+obj.pid+','+obj.group_id+');">'+IDL('Code')+'</a><span class="divider">|</span>'+
-            '   <b>'+obj.title+'</b>  (creator:'+obj.creator_name+')<br>';
+
+  app.vkApi.request({
+    method: "pages.getTitles",
+    data: { group_id: gid },
+    callback: function( result ) {
+          // TODO: get the presentation out of here.
+      var html = "",
+          // WTF?
+          owner = ( cur.oid && cur.oid < 0 ? "club" : "id" ) +
+            Math.abs( cur.oid || vk.id );
+      // Hide loading animation.
+      if ( ldr ) {
+        hide( ldr );
+      }
+      result.response.map(function( page ) {
+        var pageLink = 'page-' + page.group_id + '_' + page.id;
+        // WTF?
+        html += "<a href='/" + pageLink + "'>" + pageLink + "</a>" +
+          "<span class='divider'>|</span>" +
+          "<a href='/pages.php?oid=-" + page.group_id + "&p=" +
+          encodeURIComponent( page.title ) + "&act=history' target='_blank'>" +
+          IDL( "History" ) + "</a><span class='divider'>|</span>" +
+          "<a href='#' onclick='return vkGetWikiCode(" + page.id + "," +
+          page.group_id + ");'>" + IDL( "Code" ) + "</a>" +
+          "<span class='divider'>|</span>" +
+          " <b>" + page.title + "</b> (creator: " + page.creator_name + ")<br>";
       });
-      var box=vkAlertBox('Wiki Pages','<h3>Owner: '+(cur.oid && cur.oid<0?'club':'id')+Math.abs(cur.oid || vk.id)+'<a class="fl_r" id="vk_add_wiki_page" href="#" onclick="vkWikiNew(); return false;">'+IDL('Add')+'</a>'+'</h3>'+'<br>'+t);
-      box.setOptions({width:'680px'});
-   });
+
+      vkAlertBox( "Wiki Pages", "<h3>Owner: " + owner +
+        "<a class='fl_r' id='vk_add_wiki_page' href='#' " +
+        "onclick='vkWikiNew(); return false;'>" + IDL( "Add" ) + "</a>" +
+        "</h3><br>" + html ).setOptions({ width: "680px" });
+    }
+  });
 }
 
 /* WIKI GET CODE*/
-function vkGetWikiCode(pid,gid){
-	//var dloc=document.location.href;
-	//var gid=dloc.match(/o=-(\d+)/);
-	//gid=gid?gid[1]:null;
-   var params={gid:gid}
-   if ((pid+"").match(/^\d+$/)){
-      params['pid']=pid;
-   } else {
-      params['title']=pid;
-   }
-	dApi.call('pages.get',params,function(r){
-      var data=r.response;
-      if (!data.source) {
-         alert('Nothing...');
-         return;
+function vkGetWikiCode( pageTitleOrId, ownerId ) {
+  var data = {
+    owner_id: ownerId
+  };
+
+  if ( /^\d+$/.test( pageTitleOrId.toString() ) ) {
+    data.page_id = pageTitleOrId
+  } else {
+    data.title = pageTitleOrId
+  }
+
+  app.vkApi.request({
+    method: "pages.get",
+    data: data,
+    callback: function( result ) {
+      if ( !result.response ) {
+        alert( "Nothing..." );
+        console.log( result );
+        return;
       }
-      var code=(data.source || "").replace(/<br>/gi,'\r\n');
-      var box=vkAlertBox('Wiki-code','<h2>'+data.title+'</h2><textarea id="vk_wikicode_area" style="width:460px; height:300px;">'+code+'</textarea>');
-      box.setOptions({width:'500px'});
-   });
-   return false;
+      var code = ( result.response.source || "" ).replace( /<br>/gi, "\r\n" );
+      vkAlertBox( "Wiki-code", "<h2>" + data.title + "</h2>" +
+        "<textarea id='vk_wikicode_area' style='width:460px; height:300px;'>" +
+        code + "</textarea>" ).setOptions({ width: "500px" });
+    }
+  });
+
+  return false;
 }
 
 
@@ -495,55 +520,30 @@ function isGroupAdmin(gid){
 	} else return false;
 }
 
-function vkCheckGroupsAdmin(){
-   dApi.call('groups.get',{extended:1},function(r){
-      var data=r.response || [0];
-      var count=data.shift();
-      gids=[];
-      for (var i=0; i<data.length; i++){
-         var g=data[i];
-         if (g.is_admin==1){
-           gids.push(-g.gid,g.screen_name);
-         }
+function vkCheckGroupsAdmin() {
+  app.vkApi.request({
+    method: "groups.get",
+    data: { extended: 1 },
+    callback: function( result ) {
+      if ( !result.response ) {
+        return;
       }
-      if (gids.length>0){
-         var r="vk_adm_gr_"+remixmid();
-         vkSetVal(r,gids.join(','));
+      var adminGroupIds = [],
+          groups = result.response.items,
+          count = result.response.count,
+          i, group;
+      for ( i = 0; i < count; i++ ) {
+        group = groups[ i ];
+        if ( group.is_admin === 1 ) {
+          adminGroupIds.push( -group.id, group.screen_name );
+        }
       }
-      //alert(gids.join('\n'));
-   });
+      if ( adminGroupIds.length > 0 ) {
+        vkSetVal( "vk_adm_gr_" + vk.id, adminGroupIds.join( "," ) );
+      }
+    }
+  });
 }
-/*
-function vkCheckGroupAdmin(){
-	var r="vk_adm_gr_"+remixmid();
-	var val=vkGetVal(r);
-	var add=function(s){
-		if ((','+val+',').indexOf(',' + s + ',') != -1) return;
-      vklog(val);
-		val+=','+s;
-      vklog(val);
-      val=val.replace(/^,+|,+$/g, '');
-      vklog(val);
-		vkSetVal(r,val);
-	}
-	var del=function(s){
-		val+=(','+val+',').replace(','+s+',',',');
-		val=val.replace(/^,+|,+$/g, '');
-		vkSetVal(r,val);
-	}
-	if (ge('page_actions')){
-		var h=ge('page_actions').innerHTML;
-		if (h.indexOf('?act=edit')!=-1 && !isGroupAdmin()){
-			add(cur.oid);
-			add(nav.objLoc[0]);
-		}
-		if (h.indexOf('?act=edit')==-1 && isGroupAdmin()){
-			del(cur.oid);
-			del(nav.objLoc[0]);
-		}
-	}
-}*/
-
 
 
 /* COMMON.JS */
@@ -1139,9 +1139,18 @@ vk_messages={
             code.push('API.messages.getHistory({user_id:'+uid+', count:'+PER_REQ+', offset:'+offset+', rev:1}).items');//
             offset+=PER_REQ;
          }
-         dApi.call('execute',{code:'return {count:API.messages.getHistory({user_id:'+uid+', count:0, offset:0}).count, items:'+code.join('+')+'};',v:'5.5'},function(r){
-            var msgs = r.response.items;
-            var count = r.response.count;
+
+        app.vkApi.request({
+          method: "execute",
+          data: {
+            code: "return { count: API.messages.getHistory({" +
+              "user_id:" + uid + "," +
+              "count:0, offset:0}).count, items:" + code.join( "+" ) + "};",
+            v: "5.5"
+          },
+          callback: function( result ) {
+            var msgs = result.response.items;
+            var count = result.response.count;
             ge('saveldr').innerHTML=vkProgressBar(offset,count,w);
 
             messages = messages.concat(msgs);
@@ -1150,40 +1159,48 @@ vk_messages={
             } else {
                collect_users(messages);
                ge('saveldr').innerHTML=vkProgressBar(0,100,w,'Users data... %');
-               dApi.call('users.get',{user_ids:users_ids.join(','),fields:'photo_100',v:'5.5'},function(r){
-                  ge('saveldr').innerHTML=vkProgressBar(90,100,w,'Users data... %');
-                  var usrs=r.response;
-                  var users={};
-                  for (var i=0; i<usrs.length; i++)
-                     users[usrs[i].id]=usrs[i];
-                  for (var i=0; i<users_ids.length; i++)
-                     if (!users[users_ids[i]])
-                        users[users_ids[i]]={
-                           id: users_ids[i],
-                           first_name: 'DELETED',
-                           last_name: '',
-                           photo_100: 'http://vk.com/images/deactivated_c.gif'
-                        }
+               app.vkApi.request({
+                  method: "users.get",
+                  data: {
+                    user_ids: users_ids.join( "," ),
+                    fields: "photo_100",
+                    v: "5.5"
+                  },
+                  callback: function( result ) {
+                    ge('saveldr').innerHTML=vkProgressBar(90,100,w,'Users data... %');
+                    var usrs=result.response;
+                    var users={};
+                    for (var i=0; i<usrs.length; i++)
+                       users[usrs[i].id]=usrs[i];
+                    for (var i=0; i<users_ids.length; i++)
+                       if (!users[users_ids[i]])
+                          users[users_ids[i]]={
+                             id: users_ids[i],
+                             first_name: 'DELETED',
+                             last_name: '',
+                             photo_100: 'http://vk.com/images/deactivated_c.gif'
+                          }
 
-                  var html=vk_messages.make_html(messages, users);
-                  html=vk_messages.html_tpl.replace(/%messages_body/g,html);
-                  ge('saveldr').innerHTML=vkProgressBar(100,100,w,'Users data... %');
-                  show('save_btn_text');
-                  hide('saveldr');
+                    var html=vk_messages.make_html(messages, users);
+                    html=vk_messages.html_tpl.replace(/%messages_body/g,html);
+                    ge('saveldr').innerHTML=vkProgressBar(100,100,w,'Users data... %');
+                    show('save_btn_text');
+                    hide('saveldr');
 
-                  var file_name=[];
-                  for (var key in users){
-                     var uid=parseInt(key || '0');
-                     if (history_uids[key] && !(window.vk && uid==vk.id)) file_name.push(users[key].first_name+" "+users[key].last_name+'('+uid+')');
+                    var file_name=[];
+                    for (var key in users){
+                       var uid=parseInt(key || '0');
+                       if (history_uids[key] && !(window.vk && uid==vk.id)) file_name.push(users[key].first_name+" "+users[key].last_name+'('+uid+')');
+                    }
+
+                    html=html.replace(/%title/g,'VK Messages: '+file_name.join(','));
+
+                    vkSaveText(html,"messages_"+vkCleanFileName(file_name.join(',')).substr(0,250)+".html");
                   }
-
-                  html=html.replace(/%title/g,'VK Messages: '+file_name.join(','));
-
-                  vkSaveText(html,"messages_"+vkCleanFileName(file_name.join(',')).substr(0,250)+".html");
                });
-               //alert(users);
             }
-         });
+          }
+        });
       }
       scan();
    }
@@ -1504,8 +1521,12 @@ function vkImTypingEvent(uid,need_close){
          if (!chat) {
             show();
          } else {
-            dApi.call('messages.getChat',{chat_id:chat},function(r){
-               show(r.response.title);
+            app.vkApi.request({
+              method: "messages.getChat",
+              data: { chat_id: chat },
+              callback: function( result ) {
+                show( result.response.title );
+              }
             });
          }
       });
@@ -1767,15 +1788,26 @@ function vkDeleteMessages_(is_out){// step 1: scan all; step 2: delete; This fun
 	};
 	var scan=function(){
 		if (cur_offset==0) ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,IDL('msgreq')+' %');
-		dApi.call('messages.get',{out:is_out?1:0,count:100,offset:cur_offset,preview_length:1},function(r){
-			if (abort) return;
-			var ms=r.response;
-			if (!ms[0]){ del();	return;	}
-			var msg_count=ms.shift();
-			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,msg_count,310,IDL('msgreq')+' %');
-			for (var i=0;i<ms.length;i++) mids.push(ms[i].mid);
-			if (cur_offset<msg_count){	cur_offset+=100; setTimeout(scan,MSG_SCAN_REQ_DELAY);} else del();
-		});
+
+    app.vkApi.request({
+      method: "messages.get",
+      data: {
+        out: is_out ? 1 : 0,
+        count: 100,
+        offset: cur_offset,
+        preview_length: 1
+      },
+      callback: function( result ) {
+  			if (abort) return;
+  			var ms=result.response;
+  			if (!ms[0]){ del();	return;	}
+  			var msg_count=ms.shift();
+  			ge('vk_scan_msg').innerHTML = vkProgressBar(
+          cur_offset,msg_count,310,IDL('msgreq')+' %');
+  			for (var i=0;i<ms.length;i++) mids.push(ms[i].mid);
+  			if (cur_offset<msg_count){	cur_offset+=100; setTimeout(scan,MSG_SCAN_REQ_DELAY);} else del();
+      }
+    });
 	};
 	var run=function(){
 		box=new MessageBox({title: IDL('DeleteMessages'),closeButton:true,width:"350px"});
@@ -1813,27 +1845,40 @@ function vkRestoreMessages(is_out){// step 1: scan all; step 2: delete; This fun
 		var ids_part=deleted.slice(del_offset,del_offset+1);
 		if (ids_part.length==0){	alert(restored.join(', ')); box.hide();		vkMsg(IDL('DeleteMessagesDone'),3000);	}
 		else
-      dApi.call('messages.restore',{mid:ids_part.join(',')},function(r){
-         if (r.response=='1'){
+      app.vkApi.request({
+        method: "messages.restore",
+        data: { message_id: ids_part.join( "," )},
+        callback: function( result ) {
+          if (result.response=='1'){
             restored.push(ids_part.join(',')+' - ok');
-         } else {
+          } else {
             restored.push(ids_part.join(',')+' - fail');
-         }
-         del_offset+=1;
-         setTimeout(restore,MSG_DEL_REQ_DELAY);
+          }
+          del_offset+=1;
+          setTimeout(restore,MSG_DEL_REQ_DELAY);
+        }
       });
 	};
 	var scan=function(){
 		if (cur_offset==0) ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,IDL('msgreq')+' %');
-		dApi.call('messages.get',{out:is_out?1:0,count:100,offset:cur_offset,preview_length:1},function(r){
-			if (abort) return;
-			var ms=r.response;
-			if (!ms[0]){ restore();	return;	}
-			var msg_count=ms.shift();
-			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,msg_count,310,IDL('msgreq')+' %');
-			for (var i=0;i<ms.length;i++) mids.push(ms[i].mid);
-			if (cur_offset<msg_count){	cur_offset+=100; setTimeout(scan,MSG_SCAN_REQ_DELAY);} else restore();
-		});
+    app.vkApi.request({
+      method: "messages.get",
+      data: {
+        out: is_out ? 1 : 0,
+        count: 100,
+         offset: cur_offset,
+         preview_length: 1
+      },
+      callback: function( result ) {
+        if (abort) return;
+        var ms=result.response;
+        if (!ms[0]){ restore();	return;	}
+        var msg_count=ms.shift();
+        ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,msg_count,310,IDL('msgreq')+' %');
+        for (var i=0;i<ms.length;i++) mids.push(ms[i].mid);
+        if (cur_offset<msg_count){	cur_offset+=100; setTimeout(scan,MSG_SCAN_REQ_DELAY);} else restore();
+      }
+    });
 	};
 	var run=function(){
 		box=new MessageBox({title: IDL('ScanMessages'),closeButton:true,width:"350px"});
@@ -1879,23 +1924,30 @@ function vkDeleteMessages(is_out){
 			ge('vk_del_msg').innerHTML=vkProgressBar(1,1,310,' ');
 			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,IDL('msgreq')+' %');
 		}
-		dApi.call('messages.get',{out:is_out?1:0,count:REQ_CNT,offset:0,preview_length:1},function(r){
-			if (abort) return;
-			var ms=r.response;
-			if (ms==0 || !ms[0]){
-				deldone();
-				return;
-			}
-			if (msg_count==0) msg_count=ms.shift();
-			else ms.shift();
-			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,IDL('msgreq')+' %');
-			for (var i=0;i<ms.length;i++) mids.push(ms[i].mid);
-			cur_offset+=REQ_CNT;
-			vklog(mids);
-			del(scan);
-			//setTimeout(scan,MSG_SCAN_REQ_DELAY);
-
-		});
+    app.vkApi.request({
+      method: "messages.get",
+      data: {
+        out: is_out ? 1 : 0,
+        count: REQ_CNT,
+        offset: 0,
+        preview_length: 1
+      },
+      callback: function( result ) {
+        if (abort) return;
+        var ms=result.response;
+        if (ms==0 || !ms[0]){
+          deldone();
+          return;
+        }
+        if (msg_count==0) msg_count=ms.shift();
+        else ms.shift();
+        ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,IDL('msgreq')+' %');
+        for (var i=0;i<ms.length;i++) mids.push(ms[i].mid);
+        cur_offset+=REQ_CNT;
+        vklog(mids);
+        del(scan);
+      }
+    });
 	};
 	var run=function(){
 		box=new MessageBox({title: IDL('DeleteMessages'),closeButton:true,width:"350px"});
@@ -1954,23 +2006,29 @@ function vkDeleteMessagesHistory(uid){
 			ge('vk_del_msg').innerHTML=vkProgressBar(1,1,310,' ');
 			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,IDL('msgreq')+' %');
 		}
-		dApi.call('messages.getHistory',{uid:uid,count:REQ_CNT,offset:0},function(r){
-			if (abort) return;
-			var ms=r.response;
-			if (ms==0 || !ms[0]){
-				deldone();
-				return;
-			}
-			if (msg_count==0) msg_count=ms.shift();
-			else ms.shift();
-			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,IDL('msgreq')+' %');
-			for (var i=0;i<ms.length;i++) mids.push(ms[i].mid);
-			cur_offset+=REQ_CNT;
-			vklog(mids);
-			del(scan);
-			//setTimeout(scan,MSG_SCAN_REQ_DELAY);
-
-		});
+    app.vkApi.request({
+      method: "messages.getHistory",
+      data: {
+        user_id: uid,
+        count: REQ_CNT,
+        offset: 0
+      },
+      callback: function( result ) {
+        if (abort) return;
+        var ms=r.response;
+        if (ms==0 || !ms[0]){
+          deldone();
+          return;
+        }
+        if (msg_count==0) msg_count=ms.shift();
+        else ms.shift();
+        ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,IDL('msgreq')+' %');
+        for (var i=0;i<ms.length;i++) mids.push(ms[i].mid);
+        cur_offset+=REQ_CNT;
+        vklog(mids);
+        del(scan);
+      }
+    });
 	};
 	var run=function(){
 		box=new MessageBox({title: IDL('DeleteMessages'),closeButton:true,width:"350px"});
@@ -2016,111 +2074,110 @@ function vkMakeMsgHistory(uid,show_format){
 		//document.title='offset:'+offset;
       var w=getSize(ge('saveldr'),true)[0];
 		if (offset==0) ge('saveldr').innerHTML=vkProgressBar(offset,10,w);
-		dApi.call('messages.getHistory',{uid:uid,offset:offset,count:100},function(r){
-			//console.log(r);
-         //return;
-         ge('saveldr').innerHTML=vkProgressBar(offset,r.response[0],w);
-			var msgs=r.response;
-			var count=msgs.shift();
-			msgs.reverse();
-			var msg=null;
-			var res=''
-         var make_msg=function(msg,level){
-            level=level || 0;
-            var from_id= msg.from_id || msg.uid
-            if (msg.from_id) history_uids['%'+msg.from_id+'%']='1';
-            if (!users['%'+from_id+'%']){
-               users['%'+from_id+'%']='id'+from_id+' DELETED';
-               users_ids.push(from_id);
-            }
+    app.vkApi.request({
+      method: "messages.getHistory",
+      data: {
+        user_id: uid,
+        offset: offset,
+        count: 100
+      },
+      callback: function( result ) {
+        ge('saveldr').innerHTML=vkProgressBar(offset,result.response[0],w);
+        var msgs=result.response;
+        var count=msgs.shift();
+        msgs.reverse();
+        var msg=null;
+        var res=''
+        var make_msg=function(msg,level){
+          level=level || 0;
+          var from_id= msg.from_id || msg.uid
+          if (msg.from_id) history_uids['%'+msg.from_id+'%']='1';
+          if (!users['%'+from_id+'%']){
+             users['%'+from_id+'%']='id'+from_id+' DELETED';
+             users_ids.push(from_id);
+          }
 
-            var attach_text="";
-            for (var j=0; msg.attachments && j<msg.attachments.length;j++){
-               var attach=msg.attachments[j];
-               switch(attach.type){
-                  case  "photo":
-                     var a=attach.photo;
-                     var src=a.src_xxxbig || a.src_xxbig || a.src_xbig || a.src_big || a.src || a.src_small;
-                     var link="vk.com/photo"+a.owner_id+'_'+a.pid;
-                     attach_text+=link+" : "+src+"\r\n"+(a.text?a.text+"\r\n":"");
-                     break;
-                  case  "video":
-                     var a=attach.video;
-                     var link="vk.com/video"+a.owner_id+'_'+a.vid;
-                     attach_text+=link+" : "+(a.title?a.title+"\r\n":"")+"\r\n"+(a.description?a.description+"\r\n":"");
+          var attach_text="";
+          for (var j=0; msg.attachments && j<msg.attachments.length;j++){
+             var attach=msg.attachments[j];
+             switch(attach.type){
+                case  "photo":
+                   var a=attach.photo;
+                   var src=a.src_xxxbig || a.src_xxbig || a.src_xbig || a.src_big || a.src || a.src_small;
+                   var link="vk.com/photo"+a.owner_id+'_'+a.pid;
+                   attach_text+=link+" : "+src+"\r\n"+(a.text?a.text+"\r\n":"");
+                   break;
+                case  "video":
+                   var a=attach.video;
+                   var link="vk.com/video"+a.owner_id+'_'+a.vid;
+                   attach_text+=link+" : "+(a.title?a.title+"\r\n":"")+"\r\n"+(a.description?a.description+"\r\n":"");
 
-                     break;
-                  case  "audio":
-                     var a=attach.audio;
-                     var link="vk.com/audio?id="+a.owner_id+'&audio_id='+a.aid;
-                     attach_text+=link+" : "+(a.performer || "")+" - "+(a.title || "")+"\r\n";
-                     break;
-                  case  "doc":
-                     var a=attach.doc;
-                     attach_text+=a.url+" ("+vkFileSize(a.size)+"): "+a.title+"\r\n";
-                     break;
-                  /*
-                  case  "wall":
+                   break;
+                case  "audio":
+                   var a=attach.audio;
+                   var link="vk.com/audio?id="+a.owner_id+'&audio_id='+a.aid;
+                   attach_text+=link+" : "+(a.performer || "")+" - "+(a.title || "")+"\r\n";
+                   break;
+                case  "doc":
+                   var a=attach.doc;
+                   attach_text+=a.url+" ("+vkFileSize(a.size)+"): "+a.title+"\r\n";
+                   break;
+             }
+          }
+        var date=(new Date(msg.date*1000)).format(date_fmt);
+        var user='%'+from_id+'%';//(msg.from_id==mid?user2:user1);
+        var text=vkCe('div',{},(msg.body || '').replace(/<br>/g,"%{br}%")).innerText.replace(/%{br}%/g,'\r\n');// no comments....
+        //text=text.replace(/\n/g,'\r\n');
 
-                     break;*/
-               }
-
-            }
-            //console.log(msg);
-				var date=(new Date(msg.date*1000)).format(date_fmt);
-				var user='%'+from_id+'%';//(msg.from_id==mid?user2:user1);
-				var text=vkCe('div',{},(msg.body || '').replace(/<br>/g,"%{br}%")).innerText.replace(/%{br}%/g,'\r\n');// no comments....
-				//text=text.replace(/\n/g,'\r\n');
-
-				var ret=msg_pattern
-                 .replace(/%username%/g,user) //msg.from_id
-                 .replace(/%date%/g,    date)
-                 .replace(/%message%/g, text)
-                 .replace(/%attachments%/g, (attach_text!=""?"Attachments:[\r\n"+attach_text+"]":""));
-            var tab='\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t';
-            ret=ret.replace(/^.+$/mg,tab.substr(0,level)+"$&");
-            if (msg.fwd_messages)
-            for (var i=0; i<msg.fwd_messages.length; i++)
-               ret+=make_msg(msg.fwd_messages[i],level+1);
-            return ret;
-         }
-			for (var i=0;i<msgs.length;i++){
-				msg=msgs[i];
-            res+=make_msg(msg);
-			}
-			result=res+result;
-			if (offset<count){
-				offset+=100;
-				setTimeout(function(){collect(callback);},300);
-			} else {
-				//alert(result);
-				callback(result);
-			}
-		});
+        var ret=msg_pattern
+               .replace(/%username%/g,user) //msg.from_id
+               .replace(/%date%/g,    date)
+               .replace(/%message%/g, text)
+               .replace(/%attachments%/g, (attach_text!=""?"Attachments:[\r\n"+attach_text+"]":""));
+          var tab='\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t';
+          ret=ret.replace(/^.+$/mg,tab.substr(0,level)+"$&");
+          if (msg.fwd_messages)
+          for (var i=0; i<msg.fwd_messages.length; i++)
+             ret+=make_msg(msg.fwd_messages[i],level+1);
+          return ret;
+        }
+        for (var i=0;i<msgs.length;i++){
+          msg=msgs[i];
+              res+=make_msg(msg);
+        }
+        result=res+result;
+        if (offset<count){
+          offset+=100;
+          setTimeout(function(){collect(callback);},300);
+        } else {
+          //alert(result);
+          callback(result);
+        }
+      }
+    });
 	}
 	var run=function(){
-			collect(function(t){
-            dApi.call('getProfiles',{uids:users_ids.join(',')/*remixmid()+','+uid*/},function(r){
-               var file_name=[];
-               for (var i=0;i<r.response.length;i++){
-                  var u=r.response[i];
-                  users['%'+u.uid+'%']=u.first_name+" "+u.last_name;
-
-               }
-               for (var key in users){
-                  var uid=parseInt((key || '0').replace(/%/g,''));
-                  if (history_uids[key] && !(window.vk && uid==vk.id)) file_name.push(users[key]+'('+uid+')');
-                  t=t.split(key).join(users[key]);
-               }
-
-               show('save_btn_text');
-               hide('saveldr');
-               //alert(t);
-               vkSaveText(t,"messages_"+vkCleanFileName(file_name.join(',')).substr(0,250)+".txt");
-
-            });
-			});
-
+    collect(function(t){
+      app.vkApi.request({
+        method: "users.get",
+        data: { user_ids: users_ids.join( "," )},
+        callback: function( result ) {
+          var file_name=[];
+          for (var i=0;i<result.response.length;i++){
+            var u=result.response[i];
+            users['%'+u.id+'%']=u.first_name+" "+u.last_name;
+          }
+          for (var key in users){
+            var uid=parseInt((key || '0').replace(/%/g,''));
+            if (history_uids[key] && !(window.vk && uid==vk.id)) file_name.push(users[key]+'('+uid+')');
+            t=t.split(key).join(users[key]);
+          }
+          show('save_btn_text');
+          hide('saveldr');
+          vkSaveText(t,"messages_"+vkCleanFileName(file_name.join(',')).substr(0,250)+".txt");
+        }
+      });
+    });
 	}
 
 	if (show_format){
@@ -2184,11 +2241,16 @@ function vkCleanNotes(){
 			ge('vk_del_msg').innerHTML=vkProgressBar(1,1,310,' ');
 			del_offset=0;
 			callback();
-		} else
-		dApi.call('notes.delete', {nid:nid},function(r,t){
-			del_offset++;
-			setTimeout(function(){del(callback);},WALL_DEL_REQ_DELAY);
-		});
+		} else {
+      app.vkApi.request({
+        method: "notes.delete",
+        data: { note_id: nid },
+        callback: function() {
+          del_offset++;
+          setTimeout(function(){del(callback);},WALL_DEL_REQ_DELAY);
+        }
+      });
+    }
 	};
 	var msg_count=0;
 	var scan=function(){
@@ -2197,27 +2259,35 @@ function vkCleanNotes(){
 			ge('vk_del_msg').innerHTML=vkProgressBar(1,1,310,' ');
 			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,IDL('notesreq')+' %');
 		}
-		dApi.call('notes.get',{count:REQ_CNT,offset:0+start_offset},function(r){
-			if (abort) return;
-			var ms=r.response;
-			if (ms==0 || !ms[1]){
-				deldone();
-				return;
-			}
-			if (msg_count==0) msg_count=ms.shift();
-			else ms.shift();
-			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,IDL('notesreq')+' %');
-			for (var i=0;i<ms.length;i++){
-				if ((ms[i].date>del_time && by_time) || !by_time) mids.push(ms[i].nid);
-			}
-			cur_offset+=REQ_CNT;
-			if (mids.length==0){
-				deldone();
-				return;
-			}
-			del(scan);
+    app.vkApi.request({
+      method: "notes.get",
+      data: {
+        count: REQ_CNT,
+        offset: start_offset,
+        v: "3.0"
+      },
+      callback: function( result ) {
+        if (abort) return;
+        var ms=result.response;
+        if (ms==0 || !ms[1]){
+        	deldone();
+        	return;
+        }
+        if (msg_count==0) msg_count=ms.shift();
+        else ms.shift();
+        ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,IDL('notesreq')+' %');
+        for (var i=0;i<ms.length;i++){
+        	if ((ms[i].date>del_time && by_time) || !by_time) mids.push(ms[i].nid);
+        }
+        cur_offset+=REQ_CNT;
+        if (mids.length==0){
+        	deldone();
+        	return;
+        }
+        del(scan);
 
-		});
+      }
+    });
 	};
 	var vkRunClean=function(soffset){
 		start_offset=soffset?soffset:0;

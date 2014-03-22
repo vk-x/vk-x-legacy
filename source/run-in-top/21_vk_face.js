@@ -702,18 +702,27 @@ function vkFrCat2Menu(ret){
   }
 }
 
-function vkLoadFiendsGroups(sh){
-	dApi.call('friends.getLists',{},function(r){
-		var f=r.response;
-		vkFrCatList=[];
-		var str=[];
-		for (var i=0;i<f.length;i++){
-			str.push(f[i].lid+":'"+f[i].name+"'");
-			vkFrCatList[f[i].lid]=f[i].name;
-		}
-		str="vkFrCatList={"+str.join(',')+'};';
-		if (sh) {window.prompt("Copy to vkops.js","vkFrCatList="+str+";");} else {
-		  vkFrCat2Menu();
+function vkLoadFiendsGroups( showAsPrompt ) {
+	app.vkApi.request({
+		method: "friends.getLists",
+		callback: function( result ) {
+			var lists = result.response.items,
+				count = result.response.count,
+				formattedLists = {},
+				i, list;
+
+			for ( i = 0; i < count; i++ ) {
+				list = lists[ i ];
+				formattedLists[ list.id ] = list.name;
+			};
+
+			vkFrCatList = formattedLists;
+			if ( showAsPrompt ) {
+				window.prompt( "Copy to vkopt.js", "vkFrCatList = " +
+					JSON.stringify( formattedLists ) + ";" );
+			} else {
+				vkFrCat2Menu();
+			}
 		}
 	});
 }
@@ -1512,27 +1521,22 @@ function UserOnlineStatus(status) {// ADD LAST STATUS
 		/* vkGenDelay() -random для рассинхронизации запросов разных вкладок, иначе запросы со всех вкладок будут одновременно слаться. */
 		vk_check_online_timeout=setTimeout(UserOnlineStatus,vkGenDelay(vk_upd_menu_timeout,status!=null));
 	}
-	if (status!=null){
-		show_status(status);
-		//vklog('[onStorage] Online status');
+	if ( status != null ) {
+		show_status( status );
 	} else {
-		dApi.call("getProfiles",{ uid: remixmid(), fields:'online'},function(res) {
-			if (res.response){
-				//res.response[0].online_mobile
-            //res.response[0].online_app
-            //var st=res.response?res.response[0].online:null;
-            var p=res.response[0];
-            var st={
-                  online:p.online,
-                  online_app: p.online_app,
-                  online_mobile: p.online_mobile
-             };
-
-				show_status(st);
-				vkCmd('user_online_status',st);// /*res.response[0].online*/ шлём полученный статус в остальные вкладки
-				//vklog('Online status >> [onStorage] ');
-			} else {
-				vk_check_online_timeout=setTimeout(UserOnlineStatus,vkGenDelay(vk_upd_menu_timeout));
+		app.vkApi.request({
+			method: "users.get",
+			data: { fields: "online" },
+			callback: function( result ) {
+				info = result.response[ 0 ];
+				isOnline = {
+					online: info.online,
+					online_app: info.online_app,
+					online_mobile: info.online_mobile
+				};
+				show_status( isOnline );
+				// Send status to other tabs and windows.
+				vkCmd( "user_online_status", isOnline );
 			}
 		});
 	}

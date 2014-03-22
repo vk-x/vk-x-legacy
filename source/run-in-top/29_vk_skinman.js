@@ -563,20 +563,27 @@ vk_skinman={
       return like_wrap;
    },
    likes_load:function(pids){
-      dApi.call('photos.getById',{photos:pids.join(','),extended:1},function(r){
-         var data=r.response;
-         for (var i=0; i<data.length; i++){
+      app.vkApi.request({
+        method: "photos.getById",
+        data: {
+          photos: pids.join( "," ),
+          extended: 1,
+          v: "3.0"
+        },
+        callback: function( r ) {
+          var data=r.response;
+          for (var i=0; i<data.length; i++){
             var p=data[i];
             var cnt=data[i].likes.count;
             var my_like=data[i].likes.user_likes;
             var pid=data[i].owner_id+'_'+data[i].pid;
-
             var icon=ge('s_like_icon'+pid),
                 count=ge('s_like_count'+pid);
             if (count) count.innerHTML=cnt>0?cnt:'';
             if (icon && my_like) addClass(icon,'my_like');
-         }
-      })
+          }
+        }
+      });
    },
    like:function(pid){
       var id=pid.match(/(-?\d+)_(\d+)/);
@@ -587,12 +594,20 @@ vk_skinman={
           count=ge('s_like_count'+pid);
       var act=hasClass(icon,'my_like');
       (act?removeClass:addClass)(icon,'my_like');
-      dApi.call(act?'likes.delete':'likes.add',{type:'photo', owner_id:oid,item_id:item_id},function(r){
-         count.innerHTML=r.response.likes;
-         if (icon.parentNode.tt) icon.parentNode.tt.destroy();
-         //icon.parentNode.tt=null;
-         //vk_skinman.like_over(pid);
-      })
+
+      app.vkApi.request({
+        method: act ? "likes.delete" : "likes.add",
+        data: {
+          type: "photo",
+          owner_id: oid,
+          item_id: item_id,
+          v: "3.0"
+        },
+        callback: function( r ) {
+          count.innerHTML=r.response.likes;
+          if (icon.parentNode.tt) icon.parentNode.tt.destroy();
+        }
+      });
    },
    like_over:function(pid,el){
       var icon=ge('s_like_icon'+pid),
