@@ -1,7 +1,3 @@
-vk_dld={
-
-}
-
 /* PHOTOS */
 function vkPhotoViewer(){
   //main inj
