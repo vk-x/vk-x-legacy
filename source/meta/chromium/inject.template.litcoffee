@@ -10,43 +10,48 @@
 	handleAjax = ({ data }) ->
 		return unless data.requestOf is "<%= name %>"
 
-		superagent data.method, data.url
+		req = superagent data.method, data.url
 			.set data.headers
-			.send data.data
-			.end ( response ) ->
-				delete data.requestOf
-				data.responseOf = "<%= name %>"
 
-				# postMessage() clones data for security reasons.
-				# Let's prepare safe clonable properties.
-				data.response = {}
-				safeProperties = [
-					"accepted"
-					"badRequest"
-					"body"
-					"charset"
-					"clientError"
-					"error"
-					"forbidden"
-					"header"
-					"info"
-					"noContent"
-					"notAcceptable"
-					"notFound"
-					"ok"
-					"serverError"
-					"status"
-					"statusType"
-					"text"
-					"type"
-					"unauthorized"
-				]
-				for prop in safeProperties
-					data.response[ prop ] = response[ prop ]
-				# P.S. There're other properties like "xhr"
-				# (raw XMLHttpRequest) which can't be cloned.
+		if data.method is "POST"
+			req.send data.data
+		else
+			req.query data.data
 
-				window.postMessage data, "*"
+		req.end ( response ) ->
+			delete data.requestOf
+			data.responseOf = "<%= name %>"
+
+			# postMessage() clones data for security reasons.
+			# Let's prepare safe clonable properties.
+			data.response = {}
+			safeProperties = [
+				"accepted"
+				"badRequest"
+				"body"
+				"charset"
+				"clientError"
+				"error"
+				"forbidden"
+				"header"
+				"info"
+				"noContent"
+				"notAcceptable"
+				"notFound"
+				"ok"
+				"serverError"
+				"status"
+				"statusType"
+				"text"
+				"type"
+				"unauthorized"
+			]
+			for prop in safeProperties
+				data.response[ prop ] = response[ prop ]
+			# P.S. There're other properties like "xhr"
+			# (raw XMLHttpRequest) which can't be cloned.
+
+			window.postMessage data, "*"
 
 	window.addEventListener "message", handleAjax, no
 
