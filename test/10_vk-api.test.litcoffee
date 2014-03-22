@@ -198,6 +198,7 @@ and `app.ajax.get`.
 					data.should.deep.equal
 						foo: "bar"
 						access_token: "fake token"
+						v: app.vkApi._apiVersion
 					# Defer callback execution to mimic async process.
 					setTimeout -> callback "{\"online\":0}", {}
 

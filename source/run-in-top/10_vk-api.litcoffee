@@ -13,12 +13,14 @@ on internal details.
 				"friends"
 			]
 
+		apiVersion = "5.16"
+
 		authUrlParams =
 			client_id: apiAppInfo.id
 			scope: apiAppInfo.permissions.join ","
 			redirect_uri: encodeURIComponent "https://oauth.vk.com/blank.html"
 			display: "popup"
-			v: "5.14"
+			v: apiVersion
 			response_type: "token"
 
 		authUrl = "https://oauth.vk.com/authorize?" +
@@ -31,6 +33,8 @@ on internal details.
 Although these fields are exposed as public, it is strongly recommended to only
 use those without an undersore (`_`).
 Private methods are here for testing purposes only (see tests).
+
+		_apiVersion: apiVersion
 
 		_accessToken: null
 
@@ -67,11 +71,13 @@ Private methods are here for testing purposes only (see tests).
 			if not method or not callback
 				throw Error "app.vkApi.requests - not enough arguments!"
 			else
+				data ?= {}
 				requestUrl = requestBaseUrl + method
 				callbackWrap = ( response, meta ) ->
 					callback JSON.parse response
 				@getAccessToken callback: ( accessToken ) ->
 					data.access_token = accessToken
+					data.v ?= apiVersion
 					app.ajax.get
 						url: requestUrl
 						data: data
