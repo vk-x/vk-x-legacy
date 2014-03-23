@@ -5864,6 +5864,7 @@ vk_vid_down={
             if (!format) vklog('<b>YT '+map[i].itag+'</b>: \n'+(map[i].stereo3d?'3D/':'')+info,1);
             format=(map[i].stereo3d?'3D/':'')+(format?format:info);
 
+            obj.title = isArray(obj.title) ? obj.title.join('') : obj.title;
             // Original VkOpt code checks if title exists.
             // Maybe it really can be null.
             videoTitle = obj.title || "";

@@ -2,7 +2,7 @@ if (!window.vk_DEBUG) var vk_DEBUG=false;
 /* EXT CONFIG */
 if (!window.DefSetBits)
 
-var DefSetBits='ynyynnyyynyyy0n0yy0nnnynyyynyy0nynynnnnyy0yyy1yynnnnny0nynynynnnnyynnynnnynyyyynnyn3nnnnynynnnn-3-0-#c5d9e7-#34a235-1';
+var DefSetBits='ynyynnyyynyyy0n0yy0nnnynyyynyy0nynynnnnyy0yyy1yynnnnny0nynynynnnnyynnynnnynyyyynnyn3nnnnynynnnnn-3-0-#c5d9e7-#34a235-1';
 
 var DefExUserMenuCfg='11111110111111111111'; // default user-menu items config
 var vk_upd_menu_timeout=20000;      //(ms) Update left menu timeout
@@ -32,6 +32,7 @@ var USERMENU_SYMBOL='&#9660;&nbsp;';
 var MOD_PROFILE_BLOCKS=true;
 var CUT_VKOPT_BRACKET=false;     // true - убирает из надписей вкопта скобки "[" и "]"
 var MAIL_BLOCK_UNREAD_REQ=false; // true - отключает отсылку отчёта о прочтении сообщения, при его открытии из /mail
+var MAIL_BLOCK_TYPING_REQ=false; // true - отключает отсылку уведомления собеседнику о наборе текста
 var MAIL_SHOWMSG_FIX=true;
 var SUPPORT_STEALTH_MOD=true;    // прикидываемся перед ТП, что у нас не стоит расширение для скачивания.
 var VIDEO_AUTOPLAY_DISABLE=false;
@@ -49,13 +50,14 @@ var VKOPT_CFG_LIST=[
          'MOD_PROFILE_BLOCKS',
          'CUT_VKOPT_BRACKET',
          'MAIL_BLOCK_UNREAD_REQ',
+         'MAIL_BLOCK_TYPING_REQ',
          'SUPPORT_STEALTH_MOD',
          'VIDEO_AUTOPLAY_DISABLE',
          'FULL_ENCODE_FILENAME',
          'PHOTO_DOWNLOAD_NAMES'
 ];
 
-var vkNewSettings=[88,89,90,91,92,93,94]; //"new" label on settings item
+var vkNewSettings=[88,89,90,91,92,93,94,95]; //"new" label on settings item
 var SetsOnLocalStore={
   'vkOVer':'c',
   'remixbit':'c',

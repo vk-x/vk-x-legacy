@@ -35,6 +35,7 @@ function vkInj(file){
    case 'groups_list.js':  vkGroupsList(); break;
    case 'fave.js':         vk_fave.inj(); break;
    case 'photos.js':       vk_photos.inj_photos(); break;
+   case 'emoji.js':        vk_features.emoji_inj(); break;
   }
   vk_plugins.onjs(file);
 }
@@ -171,7 +172,7 @@ function vkOnNewLocation(startup){
 			case 'board'   :vkBoardPage(); break;
 			case 'search'  :vk_search.page(); break;
          case 'fave'    :vk_fave.page(); break;
-         case 'im'      :vkImPage(); break;
+         case 'im'      :vk_im.page(); break;
          case 'pages'   :vkWikiPages(); break;
          case 'apps'    :vk_apps.page(); break;
          //case 'groups_list': vkGroupsListPage(); break;
@@ -286,7 +287,7 @@ function vkProccessLinks(el){
 	  if (getSet(8)=='y')  ProcessUserPhotoLink(nodes[i]);
 	  if (getSet(6)=='y')  ProcessAwayLink(nodes[i]);
 	  if (getSet(38)=='y') ProcessHighlightFriendLink(nodes[i]);
-     if (getSet(55)=='y') vkProcessIMDateLink(nodes[i]);
+     if (getSet(55)=='y') vk_im.process_date_link(nodes[i]);
      if (getSet(58)=='y') vkProcessTopicLink(nodes[i]);
      //vkProcessDocPhotoLink(nodes[i]);
 	  vk_plugins.processlink(nodes[i]);
@@ -566,6 +567,9 @@ function vkAllowPost(url, q, options){
       if (url=='al_mail.php' && q.act=='show') return false;
       if (url=='al_im.php' && q.act=='a_mark_read') return false;
    }
+   if (MAIL_BLOCK_TYPING_REQ){
+      if (url=='al_im.php' && q.act=='a_typing') return false;
+   }
    return true;
 }
 function vkCommon(){
@@ -675,6 +679,12 @@ vk_features={
       fr.contentDocument.write(ge('vk_poll_code').value);
       */
       return false;
+   },
+   emoji_inj:function(){
+      //Emoji.cssEmoji[code][1]
+      if (getSet(95)=='y'){
+         Inj.Replace('Emoji.addEmoji','Emoji.cssEmoji[code][1]','(Emoji.cssEmoji[code]?Emoji.cssEmoji[code][1]:Emoji.codeToChr(code))');
+      }
    }
 }
 
@@ -884,46 +894,6 @@ function vkAudioChooseProcess(answer,url,q){
 
 
 /* IM */
-function vkImPage(){
-   vkImAddPreventHideCB();
-   vkMsgStatsBtn();
-}
-
-function vkProcessIMDateLink(node){
-   if (node.className=='im_date_link'){
-      var inp=vkNextEl(node);
-      var ts=0;
-      var fmt=(node.parentNode && node.parentNode.parentNode && hasClass(node.parentNode.parentNode,'im_add_row'))?'HH:MM:ss':'d.mm.yy HH:MM:ss';
-      if (inp && (ts=parseInt(inp.value)))  node.innerHTML=(new Date((ts-vk.dt)*1000)).format(fmt);
-   }
-}
-
-function vkImAddPreventHideCB(){
-   Inj.Wait('cur.imMedia',function(){
-      var p=geByClass('rows', cur.imMedia.menu.menuNode)[0];
-      var html='<div class="checkbox" id="vk_no_hide_add_box" onclick="checkbox(this); window.vk_prevent_addmedia_hide=isChecked(this);">'+
-                  //'<div></div>'+IDL('PreventHide')+
-                   '<table style="border-spacing:0px;"><tr><td><div></div></td>\
-                        <td>\
-                          <nobr>'+IDL('PreventHide')+'</nobr>\
-                        </td>\
-                      </tr>\
-                    </tbody>\
-                   </table>'+
-               '</div>';
-      var id='add_media_type_' +  cur.imMedia.menu.id + '_nohide';
-      if (!ge(id)){
-         // ADD WALL POST
-         var a=vkCe('a',{'onclick':'vk_im.attach_wall();','class':'add_media_item','style':"background-image: url('http://vk.com/images/icons/attach_icons.png'); background-position: 3px -130px;"},'<nobr>'+IDL('WallPost')+'</nobr>');
-         p.appendChild(a);
-
-         var a=vkCe('a',{id:id,'style':'border-top:1px solid #DDD; padding:2px; padding-top:4px;'},html);
-         p.appendChild(a);
-
-      }
-      Inj.Before(' cur.imMedia.onChange','boxQueue','if (!window.vk_prevent_addmedia_hide)');
-   });
-}
 
 vk_messages={
    html_tpl:'<!DOCTYPE html>\
@@ -936,7 +906,8 @@ vk_messages={
       a,a:visited{text-decoration:none;color:#2B587A} a:hover{text-decoration:underline} .att_head{color:#777;}\
       .att_ico{float:left;width:11px;height:11px;margin: 3px 3px 2px; background-image:url(\'http://vk.com/images/icons/mono_iconset.gif\');}\
       .att_photo{background-position: 0 -30px;} .att_audio{background-position: 0 -222px;} .att_video{background-position: 0 -75px;}\
-      .att_doc{background-position: 0 -280px;} .att_wall,.att_fwd{background-position: 0 -194px;} .att_gift{background-position: 0 -105px;}\
+      .att_doc{background-position: 0 -280px;} .att_wall,.att_fwd{background-position: 0 -194px;} .att_gift{background-position: 0 -105px;} \
+      .att_sticker{background-position: 0 -362px; width: 12px; height: 12px;}\
       .att_link{background-position: 0 -237px;} .attb_link a span{color:#777777 !important;} .att_geo{background-position: 0 -165px;}\
       .fwd{border:2px solid #C3D1E0;border-width: 0 0 0 2px;margin-left:85px;}\
       </style></head>\
@@ -986,32 +957,36 @@ vk_messages={
             console.log('Attach broken?', attach);
             attach[attach.type]={};
          }
-         if(attach.type=="photo"){
-            var photolink=attach.photo["photo_2560"] || attach.photo["photo_1280"] || attach.photo["photo_807"] || attach.photo["photo_604"];
-            var photo_size=attach.photo["width"] ? ' ('+attach.photo["width"]+'x'+attach.photo["height"]+')' : '';
-            html+='<div class="attacment"> <div class="att_ico att_photo"></div> <a target="_blank" href="'+photolink+'">[photo'+attach.photo["owner_id"]+'_'+attach.photo["id"]+']'+photo_size+'</a> </div>';
-         }
-         else if(attach.type=="audio"){
-            html+='<div class="attacment"> <div class="att_ico att_audio"></div> <a target="_blank" href="'+attach.audio["url"]+'">[audio'+attach.audio["owner_id"]+'_'+attach.audio["id"]+'] '+doc2text(attach.audio["artist"])+' - '+doc2text(attach.audio["title"])+' ('+a2t(attach.audio["duration"])+')</a></div>';
-         }
-         else if(attach.type=="video"){
-            html+='<div class="attacment"> <div class="att_ico att_video"></div> <a href="http://vk.com/video'+attach.video["owner_id"]+'_'+attach.video["id"]+'" target="_blank">[video'+attach.video["owner_id"]+'_'+attach.video["id"]+'] '+doc2text(attach.video["title"])+' ('+a2t(attach.video["duration"])+')</a></div>';
-         }
-         else if(attach.type=="doc"){
-            html+='<div class="attacment"> <div class="att_ico att_doc"></div> <a target="_blank" href="'+attach.doc["url"].replace(/&/g,'&amp;')+'">'+doc2text(attach.doc["title"])+'</a></div>';
-         }
-         else if(attach.type=="wall"){
-            html+='<div class="attacment"> <div class="att_ico att_wall"></div> <a target="_blank" href="http://vk.com/wall'+attach.wall["to_id"]+'_'+attach.wall["id"]+'">[wall'+attach.wall["to_id"]+'_'+attach.wall["id"]+']</a></div>';
-         }
-         else if(attach.type=="link"){
-            html+='<div class="attacment attb_link"> <div class="att_ico att_link"></div> <a href="'+attach.link["url"]+'" target="_blank"><span>'+IDL('HistMsgAttachLink')+'</span> '+doc2text(attach.link["title"])+'</a></div>';
-         }
-         else if(attach.type=="gift"){
-            html+='<div class="attacment"> <div class="att_ico att_gift"></div> <a target="_blank" href="'+attach.gift["thumb_256"]+'">'+IDL('HistMsgAttachGift')+' #'+attach.gift["id"]+'</a></div>';
-         }
-         else{
-            html+=JSON.stringify(attach);
-            console.log(attach.type+' is unknown');
+         switch (attach.type){
+            case 'photo':
+               var photolink=attach.photo["photo_2560"] || attach.photo["photo_1280"] || attach.photo["photo_807"] || attach.photo["photo_604"];
+               var photo_size=attach.photo["width"] ? ' ('+attach.photo["width"]+'x'+attach.photo["height"]+')' : '';
+               html+='<div class="attacment"> <div class="att_ico att_photo"></div> <a target="_blank" href="'+photolink+'">[photo'+attach.photo["owner_id"]+'_'+attach.photo["id"]+']'+photo_size+'</a> </div>';
+               break;
+            case 'audio':
+               html+='<div class="attacment"> <div class="att_ico att_audio"></div> <a target="_blank" href="'+attach.audio["url"]+'">[audio'+attach.audio["owner_id"]+'_'+attach.audio["id"]+'] '+doc2text(attach.audio["artist"])+' - '+doc2text(attach.audio["title"])+' ('+a2t(attach.audio["duration"])+')</a></div>';
+               break;
+            case 'video':
+               html+='<div class="attacment"> <div class="att_ico att_video"></div> <a href="http://vk.com/video'+attach.video["owner_id"]+'_'+attach.video["id"]+'" target="_blank">[video'+attach.video["owner_id"]+'_'+attach.video["id"]+'] '+doc2text(attach.video["title"])+' ('+a2t(attach.video["duration"])+')</a></div>';
+               break;
+            case 'doc':
+               html+='<div class="attacment"> <div class="att_ico att_doc"></div> <a target="_blank" href="'+attach.doc["url"].replace(/&/g,'&amp;')+'">'+doc2text(attach.doc["title"])+'</a></div>';
+               break;
+            case 'wall':
+               html+='<div class="attacment"> <div class="att_ico att_wall"></div> <a target="_blank" href="http://vk.com/wall'+attach.wall["to_id"]+'_'+attach.wall["id"]+'">[wall'+attach.wall["to_id"]+'_'+attach.wall["id"]+']</a></div>';
+               break;
+            case 'link':
+               html+='<div class="attacment attb_link"> <div class="att_ico att_link"></div> <a href="'+attach.link["url"]+'" target="_blank"><span>'+IDL('HistMsgAttachLink')+'</span> '+doc2text(attach.link["title"])+'</a></div>';
+               break;
+            case 'gift':
+               html+='<div class="attacment"> <div class="att_ico att_gift"></div> <a target="_blank" href="'+attach.gift["thumb_256"]+'">'+IDL('HistMsgAttachGift')+' #'+attach.gift["id"]+'</a></div>';
+               break;
+            case 'sticker':
+               html+='<div class="attacment"> <div class="att_ico att_sticker"></div> <a target="_blank" href="'+attach.sticker["photo_256"]+'">'+IDL('HistMsgAttachSticker')+' #'+attach.sticker["id"]+'</a></div>';
+               break;
+            default:
+               html+=JSON.stringify(attach);
+               console.log(attach.type+' is unknown');
          }
          return html;
       }
@@ -1207,8 +1182,88 @@ vk_im={
       .im_out .vk_im_reply{display:none;}\
       ';
    },
+   page: function(){
+      vk_im.add_prevent_hide_cbox();
+      //vkMsgStatsBtn();
+      vk_im.add_menus();
+   },
+   add_menus:function(){
+      if (!ge('vk_im_menu')){
+
+         var p_options = [];
+         if (getSet(40)=='y') {
+            p_options.push({l:IDL('msgdelinbox',2), onClick:function(item) {
+               vkDeleteMessages();
+            }});
+            p_options.push({l:IDL('msgdeloutbox',2), onClick:function(item) {
+               vkDeleteMessages(true);
+            }});
+         }
+         p_options.push({l:IDL('Stats',2), onClick:function(item) {
+            vkMsgStats();
+         }});
+
+         if (p_options.length>0){
+            var el=se('<li class="t_r" id="vk_im_menu">\
+               <span class="add_media_lnk" id="vk_im_menu_actions" style="cursor: pointer;">'+IDL('Actions')+'</span><span class="divider">|</span>\
+             </li>');
+            ge('im_top_tabs').appendChild(el);
+
+            stManager.add(['ui_controls.js', 'ui_controls.css'],function(){
+               cur.vkAlbumMenu = new DropdownMenu(p_options, {//
+                 target: ge('vk_im_menu_actions'),
+                 containerClass: 'dd_menu_posts',
+                 updateHeader:function(){ return IDL('Actions'); },
+                 //offsetLeft:-15,
+                 showHover:false
+               });
+            });
+         }
+
+      }
+      if (ge('vk_im_menu')){
+         if (nav.objLoc['sel'])
+            hide('vk_im_menu');
+         else
+            show('vk_im_menu');
+      }
+   },
    process_node:function(node){
       vk_im.reply_btns(node);
+   },
+   process_date_link: function (node){
+      if (node.className=='im_date_link'){
+         var inp=vkNextEl(node);
+         var ts=0;
+         var fmt=(node.parentNode && node.parentNode.parentNode && hasClass(node.parentNode.parentNode,'im_add_row'))?'HH:MM:ss':'d.mm.yy HH:MM:ss';
+         if (inp && (ts=parseInt(inp.value)))  node.innerHTML=(new Date((ts-vk.dt)*1000)).format(fmt);
+      }
+   },
+   add_prevent_hide_cbox: function (){
+      Inj.Wait('cur.imMedia',function(){
+         var p=geByClass('rows', cur.imMedia.menu.menuNode)[0];
+         var html='<div class="checkbox" id="vk_no_hide_add_box" onclick="checkbox(this); window.vk_prevent_addmedia_hide=isChecked(this);">'+
+                     //'<div></div>'+IDL('PreventHide')+
+                      '<table style="border-spacing:0px;"><tr><td><div></div></td>\
+                           <td>\
+                             <nobr>'+IDL('PreventHide')+'</nobr>\
+                           </td>\
+                         </tr>\
+                       </tbody>\
+                      </table>'+
+                  '</div>';
+         var id='add_media_type_' +  cur.imMedia.menu.id + '_nohide';
+         if (!ge(id)){
+            // ADD WALL POST
+            var a=vkCe('a',{'onclick':'vk_im.attach_wall();','class':'add_media_item','style':"background-image: url('http://vk.com/images/icons/attach_icons.png'); background-position: 3px -130px;"},'<nobr>'+IDL('WallPost')+'</nobr>');
+            p.appendChild(a);
+
+            var a=vkCe('a',{id:id,'style':'border-top:1px solid #DDD; padding:2px; padding-top:4px;'},html);
+            p.appendChild(a);
+
+         }
+         Inj.Before(' cur.imMedia.onChange','boxQueue','if (!window.vk_prevent_addmedia_hide)');
+      });
    },
    attach:function(type,media,data){
       if (!isArray(cur.imPeerMedias[cur.peer])) {
@@ -2114,7 +2169,9 @@ function vkMakeMsgHistory(uid,show_format){
                 case  "doc":
                    var a=attach.doc;
                    attach_text+=a.url+" ("+vkFileSize(a.size)+"): "+a.title+"\r\n";
-                   break;
+                     break;
+                  default:
+                    attach_text+=JSON.stringify(attach)+'\r\n';
              }
           }
         var date=(new Date(msg.date*1000)).format(date_fmt);

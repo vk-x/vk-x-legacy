@@ -273,7 +273,7 @@ function vkStyles(){
 		.audios_row { margin-top: 0px !important; padding-top:0px !important;}\
 		.audios_row .actions a{padding-top:2px !important; padding-bottom:2px !important;}\
       .audio_list .audio_title_wrap { width: 315px !important;}\
-      #audio.new .audio_edit_wrap, #audio.new .audio_add_wrap, #audio.new .audio_remove_wrap, #pad_playlist .audio_add_wrap { \
+      #audio.new .audio_edit_wrap, #audio.new .audio_add_wrap, #audio.new .audio_remove_wrap, #pad_playlist .audio_add_wrap, #pad_playlist_panel .audio_add { \
          margin-bottom: 0px !important;\
          margin-top: 0px !important;\
       }\
@@ -337,7 +337,7 @@ function vkStyles(){
       #audio.new .wall_module .audio .title_wrap { width: 288px !important; }\
       #audio.new .audio .info { width: 370px !important;}\
       #pad_playlist .audio .info {width: 435px !important;}\
-      #pad_playlist .audio .title_wrap {width: 328px !important; }\
+      #pad_playlist .audio .title_wrap, #pad_playlist_panel .audio .title_wrap {width: 328px !important; }\
       #pad_playlist_panel .audio .info {width: 370px !important;}\
       #pad_playlist_panel .wall_module .audio .title_wrap { max-width:290px !important; width: auto !important;}\
       \
@@ -528,7 +528,8 @@ function vkStyles(){
 			  border-radius: 4px;-moz-border-radius: 4px;-webkit-border-radius: 4px;-o-border-radius: 4px;\
 			}\
 			#side_bar ol li#myprofile a.edit {float:right;}\
-			.vk_textedit_panel{box-shadow: 0px -0px 3px #888; background:rgba(255,255,255,0.7); position:absolute; line-height:25px; padding:2px; margin-top:-35px;}\
+			.vk_textedit_panel{box-shadow: 0px -0px 3px #888; background:rgba(255,255,255,0.7); position:absolute; line-height:25px; min-height:22px; padding:2px; margin-top:-35px; padding-right_:23px;}\
+			.vk_emoji_mini_icon{background: url('http://vk.com/images/icons/mono_iconset.gif') no-repeat 50% -362px; width: 12px; height: 12px; margin: 6px;}\
 			a.vk_edit_btn{display:block; background-color:transparent; border:1px solid transparent; height:20px; width:20px; float:left;}\
 			a.vk_edit_btn:hover{background-color:#FFF; border:1px solid #DDD;}\
 			a.smile_btn{background-image:url(\""+smile_btn_img+"\")}\
@@ -901,6 +902,7 @@ function vkMenu(){//vkExLeftMenu
          .vkico_feed, .vkico_newsfeed,.vkico_fave,.vkico_custom_link,\
          .vkico_settings,.vkico_apps,.vkico_docs,\
          .vkico_wall,.vkico_gifts,.vkico_vkplug,.vkico_vkopt,.vkico_app,.vkico_ads,.vkico_pages,.vkico_support{background:url("http://vk.com/images/icons/mono_iconset.gif") no-repeat;}\
+         .is_2x .vkicon{background-image: url("http://vk.com/images/icons/mono_iconset_2x.png");  background-size: 12px 374px;}\
          .left_row  .vkicon{margin: 4px 3px -4px 0px;}\
          \
          .vkico_profile{background-position:0 2px;}\

@@ -168,18 +168,63 @@ function AddSmileBtn(rfield){
 }
 
 vk_gen_smiles_funcs=[];
-function vkTxtPanelButtons(eid){
+function vkTxtPanelButtons(eid,emoji){
 	var idx=vk_gen_smiles_funcs.length;
 	var need_gen=true;
-	vk_gen_smiles_funcs.push(function(el){
-		if (need_gen){
-			el.getElementsByTagName('div')[0].innerHTML=AddSmileBtn(eid);
-			need_gen=false;
-		}
-	});
-	var el=vkCe('a',{"class":"vk_edit_btn smile_btn",href:"#","onmouseover":"vk_gen_smiles_funcs["+idx+"](this);"},'<div class="vk_edit_sub_panel">qqwe'+/*AddSmileBtn(eid)+*/'</div>');
-	//el.getElementsByTagName('div').innerHTML=AddSmileBtn(eid);
-	return el;//'<a class="vk_edit_btn smile_btn" href="#"><div class="vk_edit_sub_panel">'+AddSmileBtn(eid)+'</div></a>';
+   if (emoji){
+
+
+      //var eid = 'reply_field39226536_390';
+      /*var el=vkCe('a',{
+         "class":"vk_edit_btn emoji_smile",
+         href:"#",
+         "onmousedown":"console.log(this); Emoji.ttClick(cur.emojiId['"+eid+"'], this); return cancelEvent(event);",
+         "onmouseover":"Emoji.ttOver(this);",
+         "onmouseout":"Emoji.ttOut(this);"
+      },'');*/
+      var el=se('<div class="emoji_smile_ fl_l" '+
+      'onmouseover="Emoji.ttOver(this);" '+
+      'onmouseout="Emoji.ttOut(this);" '+
+      'onclick="return cancelEvent(event);" '+
+      'onmouseup="return cancelEvent(event);" '+
+      'onmousedown="console.log(this); Emoji.ttClick(cur.emojiId[\''+eid+'\'], this); return cancelEvent(event);" '+
+      'style="opacity: 0.7; margin-top:-1px;"><div class="emoji_smile_icon_on"></div><div class="emoji_smile_icon vk_emoji_mini_icon"></div></div>');
+
+      var txt = ge(eid);//IM.getNewTxt();
+      var wrap = se('<div class="fl_l"></div>');
+      txt.parentNode.insertBefore(wrap,txt);
+      //cur.emoji_stickers = false;
+      cur.emojiId = cur.emojiId || {};
+      cur.emojiId[eid] = Emoji.init(txt, {
+         ttDiff: -105,
+         controlsCont: emoji,//el,//wrap.parentNode,//ge('submit_reply39226536_390'),//ge('imw_emoji_wrap'),
+         shouldFocus: true,
+         //onSend: IM.send,
+         noEnterSend: 1,
+         forceTxt: !cur.editable,
+         //checkEditable: IM.checkWriteEditable,
+         //saveDraft: IM.saveWriteDraft,
+         rceCont: se('<div class="fl_l"></div>'),//ge('im_rcemoji_cont'), // last used
+         //addMediaBtn: txt.parentNode,//ge('reply_media_lnk39226536_390'),
+         sendWrap: wrap,//ge('reply_media_lnk39226536_390').parentNode,
+         onStickerSend: function(stNum) {   }
+      });
+
+
+
+
+      return el;
+   } else {
+      vk_gen_smiles_funcs.push(function(el){
+         if (need_gen){
+            el.getElementsByTagName('div')[0].innerHTML=AddSmileBtn(eid);
+            need_gen=false;
+         }
+      });
+      var el=vkCe('a',{"class":"vk_edit_btn smile_btn",href:"#","onmouseover":"vk_gen_smiles_funcs["+idx+"](this);"},'<div class="vk_edit_sub_panel">qqwe'+/*AddSmileBtn(eid)+*/'</div>');
+      //el.getElementsByTagName('div').innerHTML=AddSmileBtn(eid);
+      return el;//'<a class="vk_edit_btn smile_btn" href="#"><div class="vk_edit_sub_panel">'+AddSmileBtn(eid)+'</div></a>';
+   }
 }
 /*
 function vkPrepareTxtPanels(node){
@@ -249,22 +294,33 @@ function vkPrepareTxtPanels(node){
 }*/
 
 function vkAddSmilePanel(el){
-	if (getSet(33)!='y') return;
+	if (getSet(33)!='y' && getSet(95)!='y') return;
 	var tstart=unixtime();
 	var te_btn_count=0;
 	var touts={};
 	if (!window.txtareas_events) txtareas_events=[];
    //if (!window.txtareas_ids) txtareas_ids=0;
 
+   var btns_count = 0;
    var add_panel=function(ta){
 		if ((ta.getAttribute('onfocus') && ta.getAttribute('onfocus').indexOf('showEditPost')!=-1) || ta.getAttribute('vk_edit_btns') || !ta.id)
          return;//continue;//ge('edit_btns_'+ta.id)
 		//if (!ta.id) ta.id='vktextfield_'+(txtareas_ids++);
-      var panel=vkCe('div',{id:'edit_btns_'+ta.id,"class":'vk_textedit_panel'},
+      var panel=vkCe('div',{id:'edit_btns_'+ta.id,"class":'vk_textedit_panel emoji_no_tabs'},
 						//vkTxtPanelButtons(ta.id)+
 						'<div style="float:left; font-size:7px; margin-top:-10px; margin-right:3px;" onclick="fadeOut(\''+'edit_btns_'+ta.id+'\');">x</div>');
-		panel.appendChild(vkTxtPanelButtons(ta.id));
+		if (getSet(33)=='y'){
+         panel.appendChild(vkTxtPanelButtons(ta.id));
+         btns_count++;
+      }
+      if (!(hasClass(ta,'im_editable') || ta.id=='mail_box_editable')){
+         if (getSet(95)=='y') {
+            panel.appendChild(vkTxtPanelButtons(ta.id,panel));
+            btns_count++;
+         }
+      }
 		//alert(panel.innerHTML);
+		if (btns_count == 0) return;
 		ta.parentNode.insertBefore(panel,ta);
 		hide(panel);
 		var show_panel=function(e){
