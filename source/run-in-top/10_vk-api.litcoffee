@@ -79,10 +79,11 @@ Private methods are here for testing purposes only (see tests).
 #### app.vkApi.request
 
 		request: ({ method, data, callback } = {}) ->
-			if not method or not callback
-				throw Error "app.vkApi.requests - not enough arguments!"
+			if not method
+				throw Error "app.vkApi.requests - method is missing!"
 			else
 				data ?= {}
+				callback ?= ->
 				requestUrl = requestBaseUrl + method
 				callbackWrap = ( response, meta ) ->
 					callback JSON.parse response

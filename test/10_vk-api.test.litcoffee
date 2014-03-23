@@ -221,9 +221,27 @@ Let's rock.
 					data: foo: "bar"
 					callback: fakeCallback
 
-#### It throws when some arguments are missing.
+#### It allows to omit `data` and `callback` options.
 
-			it "should throw when some arguments are missing", ->
+			it "should have \"data\" and \"callback\" optional", ( done ) ->
+
+				sinon.stub app.vkApi, "getAccessToken", ({ callback } = {}) ->
+					# Defer callback execution to mimic async process.
+					setTimeout -> callback "fake token"
+
+				sinon.stub app.ajax, "get", ({ url, data, callback } = {}) ->
+					url.should.equal "https://api.vk.com/method/users.get"
+					data.should.deep.equal
+						access_token: "fake token"
+						v: app.vkApi._apiVersion
+					done()
 
 				app.vkApi.request
-					.should.throw "app.vkApi.requests - not enough arguments!"
+					method: "users.get"
+
+#### It throws when `method` is missing.
+
+			it "should throw when \"method\" is missing", ->
+
+				( -> app.vkApi.request data: {}, callback: -> )
+					.should.throw "app.vkApi.requests - method is missing!"
