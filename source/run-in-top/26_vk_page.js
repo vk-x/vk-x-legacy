@@ -3721,7 +3721,7 @@ function vk_tag_api(section,url,app_id){
       init:function(){
          //dk.auth();
          if (!dk.is_enabled()) return;
-         dk.storage=new vk_tag_api('dislike','http://vk.dislike.server/',3429306);
+         dk.storage=new vk_tag_api('dislike','http://vk.dislike.server/',app.vkApi.APP_ID);
       },
       auth:function(callback){
          var auth_data=localStorage[dk.ls_val] || '{}';
