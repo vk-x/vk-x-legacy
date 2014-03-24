@@ -2511,8 +2511,8 @@ if (!window.geByTag1) geByTag1=function(searchTag, node) {return geByTag(searchT
 var dloc=document.location.href.split('/')[2] || '';
 
 
-api4dislike=vk_oauth_api(2347646,'photos,audio,video,wall,groups,messages,offline');
 oApi=vk_oauth_api(2168679,277758+131072+1048576);
+api4dislike=vk_oauth_api(app.vkApi.APP_ID,'photos,audio,video,wall,groups,messages,offline');
 setTimeout(api4dislike.check,10);
 setTimeout(oApi.check,10);
 

@@ -3673,7 +3673,7 @@ function vk_tag_api(section,url,app_id){
 
 (function(){
    dk={
-      app_id:3395854,
+      app_id: app.vkApi.APP_ID,
       server:'http://dislike.server/like.php',
       ls_val:'dislike_auth',
       ids_per_req:5,//10,//20,
