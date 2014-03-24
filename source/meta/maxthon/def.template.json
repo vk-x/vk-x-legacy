@@ -17,7 +17,7 @@
    },
 
    "permissions": {
-      "httpRequest": [ "*.*", "*.*.*", "*.vkadre.ru" ]
+      "httpRequest": [ "*" ]
    },
 
    "actions": [{
