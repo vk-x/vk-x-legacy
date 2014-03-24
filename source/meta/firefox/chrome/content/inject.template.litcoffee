@@ -4,6 +4,7 @@
 			tag.textContent = script
 		else
 			tag.src = "resource://<%= name %>/#{script}"
+			tag.charset = "UTF-8"
 		( target.head ? target.documentElement ).appendChild tag
 
 	handleAjax = ( win ) -> ({ data }) ->

@@ -5,6 +5,7 @@
 			tag.textContent = script
 		else
 			tag.src = chrome.extension.getURL script
+		tag.charset = "UTF-8"
 		( document.head ? document.documentElement ).appendChild tag
 
 	handleAjax = ({ data }) ->

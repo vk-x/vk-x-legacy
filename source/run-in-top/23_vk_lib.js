@@ -204,15 +204,9 @@ var vkMozExtension = {
 	}
 	function IDL(i,bracket) {
 	  vkLangGet();
-     var dec=function(val){
-       try {
-         return decodeURI(val);
-       } catch(e) { }
-       return val;
-     }
-	  if (vk_lang[i]) return vkCutBracket(dec(vk_lang[i]),bracket);
-	  if (vk_lang_ru[i]) return vkCutBracket(dec(vk_lang_ru[i]),bracket);
-	  if (window.vk_lang_add && vk_lang_add[i]) return vkCutBracket(dec(vk_lang_add[i]),bracket);
+	  if (vk_lang[i]) return vkCutBracket(vk_lang[i],bracket);
+	  if (vk_lang_ru[i]) return vkCutBracket(vk_lang_ru[i],bracket);
+	  if (window.vk_lang_add && vk_lang_add[i]) return vkCutBracket(vk_lang_add[i],bracket);
 	  else return vkCutBracket(i,bracket);
 	}
 
