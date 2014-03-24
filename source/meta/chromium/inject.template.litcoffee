@@ -15,6 +15,7 @@
 
 		if data.method is "POST"
 			req.send data.data
+				.type "form"
 		else
 			req.query data.data
 
