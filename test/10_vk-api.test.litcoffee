@@ -102,6 +102,11 @@ like `vkApi` hasn't been used.
 
 		beforeEach -> app.vkApi._accessToken = null
 
+## Application meta info
+
+		it "should have APP_ID", ->
+			app.vkApi.APP_ID.should.be.a "number"
+
 ## app.vkApi.getAccessToken
 
 **`app.vkApi.getAccessToken`** is an async method to get the

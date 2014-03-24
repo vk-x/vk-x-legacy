@@ -64,6 +64,12 @@ Private methods are here for testing purposes only (see tests).
 
 			document.body.appendChild authFrame
 
+#### Application meta info
+
+You may use this meta data.
+
+		APP_ID: apiAppInfo.id
+
 #### app.vkApi.getAccessToken
 
 		getAccessToken: ({ callback, force } = {}) ->
