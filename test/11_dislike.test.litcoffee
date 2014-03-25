@@ -22,15 +22,19 @@ app.dislike.request
 	target: objectUniqueId
 	dislike: yes # "yes" by default. Pass "no" to undo dislike.
 	callback: -> alert "Dislike set successfully!"
-```
 
-Only `target` is required.
+app.dislike.count
+	target: objectUniqueId
+	callback: ({ count, isDisliked }) -> alert "Dislikes: #{count}."
+```
 
 There're shortcuts:
 ```CoffeeScript
 app.dislike.add target: "object_id", callback: ->
 app.dislike.remove target: "object_id", callback: ->
 ```
+
+Only `target` is required in all methods.
 
 #### Use existing Like APIs internally.
 
@@ -228,3 +232,66 @@ Here's how:
 						done()
 
 				app.dislike.remove target: "fake object"
+
+## app.dislike.count
+**`app.dislike.count`** is a shortcut for the corresponding `app.vkApi` call.
+
+This is the source code of `execute.dislikeSummary` stored function:
+```JavaScript
+// This stored function returns { count, isDisliked }
+var dislikes = API.likes.getList({
+    type: "sitepage",
+    owner_id: Args.appId,
+    page_url: Args.targetUrl
+});
+if ( dislikes ) {
+    var count = dislikes.count;
+    var dislikeUserIds = dislikes.items;
+    var currentUserId = API.users.get()[ 0 ].id;
+    var isDisliked = false;
+    // likes.isLiked method requires item_id which can't be page url,
+    // it's easier to iterate through dislikes and see if current user
+    // is on the list.
+    // P.S. Yes, there's no Array::indexOf.
+    var i = 0;
+    if ( count > 0 ) {
+    	// TODO: Handle objects with more than 100 dislikes.
+        while ( i < count ) {
+            if ( dislikeUserIds[ i ] == currentUserId ) {
+                isDisliked = true;
+            }
+            i = i + 1;
+        }
+    }
+    return { count: count, isDisliked: isDisliked };
+} else {
+    return { count: 0, isDisliked: false };
+}
+```
+
+Back to tests.
+
+		describe "count", ->
+			it "should make correct app.vkApi.request call", ( done ) ->
+				sinon.stub app.vkApi, "request", ({ method, data, callback }) ->
+						method.should.equal "execute.dislikeSummary"
+						data.should.deep.equal
+							appId: app.dislike.APP_ID
+							targetUrl: app.dislike.BASE_URL + "fake object"
+						
+						# Defer callback execution to mimic async process.
+						setTimeout callback response: count: 5, isDisliked: yes
+
+				app.dislike.count
+					target: "fake object"
+					callback: ({ count, isDisliked }) ->
+						app.vkApi.request.should.have.been.called
+						app.vkApi.request.restore()
+						count.should.equal 5
+						isDisliked.should.equal yes
+						done()
+
+#### It requires `target` to be specified.
+
+			it "should throw when no target specified", ->
+				app.dislike.count.should.throw "Dislike target not specified!"

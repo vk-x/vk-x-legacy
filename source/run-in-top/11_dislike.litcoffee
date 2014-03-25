@@ -85,3 +85,35 @@ You may use this meta data.
 
 		remove: ({ target, callback } = {}) ->
 			@request target: target, dislike: no, callback: callback
+
+#### app.dislike.count
+
+		# Algorithm taken from VkOpt. Temporary adapter.
+		# TODO: Inject already normalized html.
+		_normalizeObjectId: ( rawId ) ->
+			return rawId if rawId.match /^([a-z_]+)(-?\d+)_(\d+)/
+
+			matches = rawId.match ///
+					( -?\d+ )( _? )
+					( photo | video | note | topic | wall_reply |
+						note_reply | photo_comment | video_comment |
+						topic_comment | )
+					( \d+ )
+				///
+			if matches
+				return ( matches[ 3 ] || "wall" ) +
+					"#{matches[ 1 ]}_#{matches[ 4 ]}"
+			else
+				return rawId
+
+		count: ({ target, callback } = {}) ->
+			throw Error "Dislike target not specified!" unless target
+			callback ?= ->
+			normalizedTarget = @_normalizeObjectId target
+
+			app.vkApi.request
+				method: "execute.dislikeSummary"
+				data:
+					appId: app.dislike.APP_ID
+					targetUrl: app.dislike.BASE_URL + normalizedTarget
+				callback: ({ response } = {}) -> callback response
