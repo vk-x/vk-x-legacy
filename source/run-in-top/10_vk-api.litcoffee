@@ -86,7 +86,7 @@ You may use this meta data.
 
 		request: ({ method, data, callback } = {}) ->
 			if not method
-				throw Error "app.vkApi.requests - method is missing!"
+				throw Error "app.vkApi.request - method is missing!"
 			else
 				data ?= {}
 				callback ?= ->

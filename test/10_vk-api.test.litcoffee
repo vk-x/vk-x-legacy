@@ -249,4 +249,4 @@ Let's rock.
 			it "should throw when \"method\" is missing", ->
 
 				( -> app.vkApi.request data: {}, callback: -> )
-					.should.throw "app.vkApi.requests - method is missing!"
+					.should.throw "app.vkApi.request - method is missing!"
