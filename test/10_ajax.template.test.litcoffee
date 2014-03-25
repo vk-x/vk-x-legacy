@@ -21,10 +21,17 @@ where the file is stored.
 ```CoffeeScript
 cb = ( response, meta ) -> if meta.status is 200 then alert response
 
-app.ajax.request method: "GET", callback: cb, url: "http://example.com/", data: to: "send"
+app.ajax.request
+	method: "GET"
+	url: "http://example.com/"
+	callback: cb
+	data: to: "send"
+	headers: to: "set"
 ```
-Supported methods are **`"GET"`**, **`"HEAD"`**, and **`"POST"`**.
 
+None of the options are required.
+
+Supported methods are **`"GET"`**, **`"HEAD"`**, and **`"POST"`**.
 There're shortcuts for them:
 ```CoffeeScript
 app.ajax.get url: "/"
@@ -65,6 +72,7 @@ The `settings` object is guaranteed to have the following properties:
 - **`method`** - `"GET"`, `"HEAD"`, `"POST"` - http request method
 - **`url`** - `string` - target URL
 - **`data`** - `object` - data to send
+- **`headers`** - `object` - request headers to set
 - **`requestOf`** - `string` - you should check that this equals project
 name: `return unless message.data.requestOf is app.name`
 - **`_requestId`** - `string` - unique request identifier
@@ -78,6 +86,7 @@ The `settings` object is guaranteed to have the following properties:
 - **`method`** - `"GET"`, `"HEAD"`, `"POST"` - http request method
 - **`url`** - `string` - target URL
 - **`data`** - `object` - sent data
+- **`headers`** - `object` - explicitly specified request headers
 - **`response`** - `object` -
 [recieved data](http://visionmedia.github.io/superagent/#response-properties)
 - **`responseOf`** - `string` - you should check that this equals project
