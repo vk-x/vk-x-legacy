@@ -26,6 +26,7 @@ app.ajax.request
 	url: "http://example.com/"
 	callback: cb
 	data: to: "send"
+	query: params: "to apply"
 	headers: to: "set"
 ```
 
@@ -72,6 +73,7 @@ The `settings` object is guaranteed to have the following properties:
 - **`method`** - `"GET"`, `"HEAD"`, `"POST"` - http request method
 - **`url`** - `string` - target URL
 - **`data`** - `object` - data to send
+- **`query`** - `object` - query params to send
 - **`headers`** - `object` - request headers to set
 - **`requestOf`** - `string` - you should check that this equals project
 name: `return unless message.data.requestOf is app.name`
@@ -86,6 +88,7 @@ The `settings` object is guaranteed to have the following properties:
 - **`method`** - `"GET"`, `"HEAD"`, `"POST"` - http request method
 - **`url`** - `string` - target URL
 - **`data`** - `object` - sent data
+- **`query`** - `object` - explicitly specified in `query` option query params
 - **`headers`** - `object` - explicitly specified request headers
 - **`response`** - `object` -
 [recieved data](http://visionmedia.github.io/superagent/#response-properties)
@@ -144,6 +147,7 @@ It just checks that request is correct and calls provided function
 					method: "GET"
 					url: ""
 					data: {}
+					query: {}
 					headers: {}
 
 				app.ajax.request()

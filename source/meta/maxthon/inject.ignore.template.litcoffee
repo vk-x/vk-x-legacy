@@ -8,6 +8,7 @@
 
 		req = superagent data.method, data.url
 			.set data.headers
+			.query data.query
 
 		if data.method is "POST"
 			req.send data.data
