@@ -125,6 +125,6 @@ You may use this meta data.
 			app.vkApi.request
 				method: "execute.dislikeSummary"
 				data:
-					appId: app.dislike.APP_ID
-					targetUrl: app.dislike.BASE_URL + normalizedTarget
+					appId: @APP_ID
+					targetUrl: @BASE_URL + normalizedTarget
 				callback: ({ response } = {}) -> callback response
