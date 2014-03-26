@@ -117,14 +117,22 @@ You may use this meta data.
 
 #### app.dislike.count
 
+		_dislikeCountCache: {}
 		count: ({ target, callback } = {}) ->
 			throw Error "Dislike target not specified!" unless target
 			callback ?= ->
 			normalizedTarget = @_normalizeObjectId target
 
-			app.vkApi.request
-				method: "execute.dislikeSummary"
-				data:
-					appId: @APP_ID
-					targetUrl: @BASE_URL + normalizedTarget
-				callback: ({ response } = {}) -> callback response
+			if @_dislikeCountCache[ normalizedTarget ]
+				callback @_dislikeCountCache[ normalizedTarget ]
+			else
+				context = @
+				app.vkApi.request
+					method: "execute.dislikeSummary"
+					data:
+						appId: @APP_ID
+						targetUrl: @BASE_URL + normalizedTarget
+					callback: ({ response } = {}) ->
+						context._dislikeCountCache[ normalizedTarget ] =
+							response
+						callback response

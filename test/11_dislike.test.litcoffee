@@ -315,6 +315,9 @@ if ( dislikes ) {
 Back to tests.
 
 		describe "count", ->
+
+			beforeEach -> app.dislike._dislikeCountCache = {}
+
 			it "should make correct app.vkApi.request call", ( done ) ->
 				sinon.stub app.vkApi, "request", ({ method, data, callback }) ->
 						method.should.equal "execute.dislikeSummary"
@@ -333,6 +336,29 @@ Back to tests.
 						count.should.equal 5
 						isDisliked.should.equal yes
 						done()
+
+			it "should cache results", ( done ) ->
+				sinon.stub app.vkApi, "request", ({ method, data, callback }) ->
+
+						# Defer callback execution to mimic async process.
+						setTimeout callback response: count: 5, isDisliked: yes
+
+				app.dislike.count
+					target: "fake object"
+					callback: ({ count, isDisliked }) ->
+						app.vkApi.request.should.have.been.called
+						count.should.equal 5
+						isDisliked.should.equal yes
+
+						# Second call, should use cache.
+						app.dislike.count
+							target: "fake object"
+							callback: ({ count, isDisliked }) ->
+								app.vkApi.request.should.have.been.calledOnce
+								app.vkApi.request.restore()
+								count.should.equal 5
+								isDisliked.should.equal yes
+								done()
 
 #### It requires `target` to be specified.
 
