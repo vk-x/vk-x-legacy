@@ -321,7 +321,7 @@ Back to tests.
 						data.should.deep.equal
 							appId: app.dislike.APP_ID
 							targetUrl: app.dislike.BASE_URL + "fake object"
-						
+
 						# Defer callback execution to mimic async process.
 						setTimeout callback response: count: 5, isDisliked: yes
 
