@@ -25,11 +25,8 @@ Private methods are here for testing purposes only (see tests).
 
 		_parseHashValues: ( html ) ->
 			try
-				_pageQuery =
-				( html.match /_pageQuery = '([a-f0-9]+)'/ )[ 1 ]
-
-				likeHash =
-				( html.match /likeHash = '([a-f0-9]+)'/ )[ 1 ]
+				_pageQuery = html.match( /_pageQuery = '([a-f0-9]+)'/ )[ 1 ]
+				likeHash = html.match( /likeHash = '([a-f0-9]+)'/ )[ 1 ]
 			catch
 				throw Error "app.dislike.request - invalid widget html!"
 
