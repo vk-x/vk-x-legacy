@@ -114,6 +114,56 @@ Here's how:
 				( -> app.dislike._parseHashValues html )
 					.should.throw "app.dislike.request - invalid widget html!"
 
+#### _getHashValues helper
+
+		describe "_getHashValues", ->
+
+			beforeEach -> app.dislike._hashValuesCache = {}
+
+			it "should _fetchWidgetHtml, _parseHashValues, and cache results",
+				( done ) ->
+					fakeWidgetHtml = "fake html"
+					fakeAppId = "fake app id"
+					fakeTargetUrl = "fake target url"
+					fakeHashValues =
+						pageQuery: "fake pageQuery"
+						likeHash: "fake hash"
+
+					sinon.stub app.dislike, "_fetchWidgetHtml",
+						({ appId, targetUrl, callback } = {}) ->
+							appId.should.equal fakeAppId
+							targetUrl.should.equal fakeTargetUrl
+							# Defer callback execution to mimic async process.
+							setTimeout -> callback fakeWidgetHtml
+
+					sinon.stub app.dislike, "_parseHashValues", ( html ) ->
+						html.should.equal fakeWidgetHtml
+						fakeHashValues
+
+					app.dislike._getHashValues
+						appId: fakeAppId
+						targetUrl: fakeTargetUrl
+						callback: ( hashValues ) ->
+							hashValues.should.deep.equal fakeHashValues
+							app.dislike._fetchWidgetHtml
+								.should.have.been.calledOnce
+							app.dislike._parseHashValues
+								.should.have.been.calledOnce
+							
+							# Second call, should use cache.
+							app.dislike._getHashValues
+								appId: fakeAppId
+								targetUrl: fakeTargetUrl
+								callback: ( hashValues ) ->
+									hashValues.should.deep.equal fakeHashValues
+									app.dislike._fetchWidgetHtml
+										.should.have.been.calledOnce
+									app.dislike._parseHashValues
+										.should.have.been.calledOnce
+									app.dislike._fetchWidgetHtml.restore()
+									app.dislike._parseHashValues.restore()
+									done()
+
 #### _performLikeRequest helper
 
 		describe "_performLikeRequest", ->
@@ -149,21 +199,16 @@ Here's how:
 #### It uses helpers to apply dislike.
 
 			it "should use helpers to apply dislike", ( done ) ->
-				fakeWidgetHtml = "_pageQuery = '123abc'; likeHash = '456def'"
 
-				sinon.stub app.dislike, "_fetchWidgetHtml",
+				sinon.stub app.dislike, "_getHashValues",
 					({ appId, targetUrl, callback } = {}) ->
 						appId.should.equal app.dislike.APP_ID
 						targetUrl.should.equal app.dislike.BASE_URL +
 							"fake object"
 						# Defer callback execution to mimic async process.
-						setTimeout -> callback fakeWidgetHtml
-
-				sinon.stub app.dislike, "_parseHashValues", ( html ) ->
-					html.should.equal fakeWidgetHtml
-
-					pageQuery: "fake pageQuery"
-					likeHash: "fake hash"
+						setTimeout -> callback
+							pageQuery: "fake pageQuery"
+							likeHash: "fake hash"
 
 				sinon.stub app.dislike, "_performLikeRequest",
 					({ appId, hashValues, dislike, callback }) ->
@@ -179,10 +224,8 @@ Here's how:
 					target: "fake object"
 					dislike: yes
 					callback: ->
-						app.dislike._fetchWidgetHtml.should.have.been.called
-						app.dislike._fetchWidgetHtml.restore()
-						app.dislike._parseHashValues.should.have.been.called
-						app.dislike._parseHashValues.restore()
+						app.dislike._getHashValues.should.have.been.called
+						app.dislike._getHashValues.restore()
 						app.dislike._performLikeRequest.should.have.been.called
 						app.dislike._performLikeRequest.restore()
 						done()

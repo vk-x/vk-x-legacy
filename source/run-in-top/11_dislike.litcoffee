@@ -33,6 +33,21 @@ Private methods are here for testing purposes only (see tests).
 			pageQuery: _pageQuery
 			likeHash: likeHash
 
+		_hashValuesCache: {}
+		_getHashValues: ({ appId, targetUrl, callback }) ->
+			cacheKey = "#{appId}#{targetUrl}"
+			if @_hashValuesCache[ cacheKey ]
+				callback @_hashValuesCache[ cacheKey ]
+			else
+				context = @
+				@_fetchWidgetHtml
+					appId: appId
+					targetUrl: targetUrl
+					callback: ( response ) ->
+						hashValues = context._parseHashValues response
+						context._hashValuesCache[ cacheKey ] = hashValues
+						callback hashValues
+
 		_performLikeRequest: ({ appId, hashValues, dislike, callback }) ->
 			app.ajax.post
 				url: widgetUrl
@@ -82,11 +97,10 @@ You may use this meta data.
 
 			originalContext = @
 
-			@_fetchWidgetHtml
+			@_getHashValues
 				appId: @APP_ID
 				targetUrl: @BASE_URL + @_normalizeObjectId target
-				callback: ( html ) ->
-					hashValues = originalContext._parseHashValues html
+				callback: ( hashValues ) ->
 					originalContext._performLikeRequest
 						appId: originalContext.APP_ID
 						hashValues: hashValues
