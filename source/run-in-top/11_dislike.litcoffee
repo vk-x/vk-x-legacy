@@ -44,6 +44,24 @@ Private methods are here for testing purposes only (see tests).
 					value: dislike
 				callback: -> callback()
 
+		# Algorithm taken from VkOpt. Temporary adapter.
+		# TODO: Inject already normalized html.
+		_normalizeObjectId: ( rawId ) ->
+			return rawId if rawId.match /^([a-z_]+)(-?\d+)_(\d+)/
+
+			matches = rawId.match ///
+					( -?\d+ )( _? )
+					( photo | video | note | topic | wall_reply |
+						note_reply | photo_comment | video_comment |
+						topic_comment | )
+					( \d+ )
+				///
+			if matches
+				return ( matches[ 3 ] || "wall" ) +
+					"#{matches[ 1 ]}_#{matches[ 4 ]}"
+			else
+				return rawId
+
 #### Application meta info
 
 You may use this meta data.
@@ -66,7 +84,7 @@ You may use this meta data.
 
 			@_fetchWidgetHtml
 				appId: @APP_ID
-				targetUrl: @BASE_URL + target
+				targetUrl: @BASE_URL + @_normalizeObjectId target
 				callback: ( html ) ->
 					hashValues = originalContext._parseHashValues html
 					originalContext._performLikeRequest
@@ -84,24 +102,6 @@ You may use this meta data.
 			@request target: target, dislike: no, callback: callback
 
 #### app.dislike.count
-
-		# Algorithm taken from VkOpt. Temporary adapter.
-		# TODO: Inject already normalized html.
-		_normalizeObjectId: ( rawId ) ->
-			return rawId if rawId.match /^([a-z_]+)(-?\d+)_(\d+)/
-
-			matches = rawId.match ///
-					( -?\d+ )( _? )
-					( photo | video | note | topic | wall_reply |
-						note_reply | photo_comment | video_comment |
-						topic_comment | )
-					( \d+ )
-				///
-			if matches
-				return ( matches[ 3 ] || "wall" ) +
-					"#{matches[ 1 ]}_#{matches[ 4 ]}"
-			else
-				return rawId
 
 		count: ({ target, callback } = {}) ->
 			throw Error "Dislike target not specified!" unless target
