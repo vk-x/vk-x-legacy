@@ -3806,68 +3806,16 @@ function vk_tag_api(section,url,app_id){
            } else gu();
          }
       },
-      get_dislikes:function(obj_ids){ // пополнение очереди на обработку
-         var need_run = (dk.queue.length===0); // если очередь была пустая, то нужно запустить получение инфы
-
-         var cached=[];
-         var uncached=[];
-         for (var i=0; i<obj_ids.length;i++){// отделяем кэшированные от новых
-            (dk.in_cache(obj_ids[i])?cached:uncached).push(obj_ids[i]);
-         }
-         //console.log('uncached:',JSON.stringify(uncached));
-         //console.log('cached:',JSON.stringify(cached));
-         setTimeout(function(){
-            for (var i=0; i<cached.length;i++){
-               var r=dk.update_dislike_view(cached[i],dk.cache[cached[i]].value);
+      get_dislikes: function( objectIdList ) {
+         dk.req({
+            likes: objectIdList.join( "," )
+         }, function( response ) {
+            var currentObjectId, currentObject;
+            for ( currentObjectId in response ) {
+               currentObject = response[ currentObjectId ];
+               dk.update_dislike_view( currentObjectId, currentObject );
             }
-         },50);
-         //dk.queue=dk.queue.concat(uncached); // новые в конец очереди
-         dk.queue=uncached.concat(dk.queue); //новые в начало очереди
-         if (need_run) {
-            clearTimeout(dk.timeout);
-            dk.timeout=setTimeout(dk.load_dislikes_info,300);
-         }
-      },
-      in_cache:function(obj_id){
-         if (dk.cache[obj_id]){
-            var ts=Math.round(new Date().getTime());
-            if (ts-dk.cache[obj_id].ts <= dk.cache_time)
-               return true;
-         }
-         return false;
-      },
-      add_to_cache:function(obj_id,val){
-         var item={
-            value:val,
-            ts:Math.round(new Date().getTime())
-         };
-         dk.cache[obj_id]=item;
-      },
-      load_dislikes_info:function(){
-         var load=function(){
-            /* чистим очередь от id, которых нет на странице. Имеет смысл раскомметить, если всегда идёт обработка только реально размещённых элементов страницы
-            for (var i=dk.queue.length-1; i>=0;i--){
-               if (!ge('dislike_count'+dk.queue[i])){
-                  var deleted=dk.queue.splice(i,1);
-                  console.log('deleted',deleted);
-               }
-            }*/
-            var ids=dk.queue.splice(0,dk.ids_per_req);
-            var need_continue = (dk.queue.length>0); // если очередь не пустая, то после текущей пачки, нужно обработать следущую
-            dk.req({likes:ids.join(',')},function(data){
-               //for (var i=0; i<ids.length;i++) ge('dislike_icon'+ids[i]).style.boxShadow="0 0 5px 2px #F00";
-
-               for (var obj_id in data){
-                  dk.add_to_cache(obj_id,data[obj_id]);
-                  dk.update_dislike_view(obj_id,data[obj_id]);
-               }
-               if (need_continue){
-                  //console.log('continue load info',ids,dk.queue);
-                  setTimeout(load,dk.delay);
-               }
-            });
-         };
-         load();
+         });
       },
       update_dislike_view:function(obj_id,val,c){
          var el=ge('dislike_count'+obj_id);
@@ -4070,7 +4018,6 @@ function vk_tag_api(section,url,app_id){
             dk.req(params,function(info){
                if (act){
                   var m=(act=='dislike')?-1:1;
-                  dk.add_to_cache(post,info.count*m);
                }
                animateCount(count, info.count);// UPDATE COUNTER
                dk.users_info(info.users,function(users){
