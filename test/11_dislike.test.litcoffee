@@ -85,6 +85,11 @@ Here's how:
 To get dislikes we can use regular
 [`likes.getList`](http://vk.com/dev/likes.getList) API method.
 
+## Application meta info
+
+		it "should have APP_ID", ->
+			app.dislike.APP_ID.should.be.a "number"
+
 ## app.dislike.request
 **`app.dislike.request`** is the main dislike method.
 
