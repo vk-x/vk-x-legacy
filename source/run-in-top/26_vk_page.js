@@ -3633,36 +3633,24 @@ function vk_tag_api(section,url,app_id){
          });
          //api4dislike.call('likes.getList',{type:'sitepage', page_url:url,owner_id:t.app},console.log)
       },
-      get_tags:function(obj_ids,callback){
-         var tmp=[];
-         for (var i=0; i<obj_ids.length; i++){
-            var like_obj=t.parse_id(obj_ids[i]);
-            var url=t.page_url+t.section+'/'+like_obj;
-            var a1='API.likes.getList({type:"sitepage",page_url:"'+url+'",owner_id:"'+t.app+'",count:1,offset:0}).count';
-            var a2='API.likes.getList({type:"sitepage",page_url:"'+url+'|'+vk.id+'",owner_id:"'+t.app+'",count:1,offset:0}).count';
-            tmp.push('"'+obj_ids[i]+'":{count:'+a1+',my:'+a2+'}');
-         }
-         var code='return {'+tmp.join(',')+'};';
-         var retry_count=0;
-         var get=function(){
-            //api_for_dislikes
-            api4dislike.call('execute',{code:code},{
-                  ok:function(r,t){
-                     if (callback) callback(r.response);
-                  },
-                  error:function(r,err){
-                     console.log('api marks error',obj_ids,err)
-                     retry_count++;
-                     if (retry_count<5){
-                        setTimeout(get,2000);
-                        console.log('api marks error.. wait 2sec and retry.. code:'+err.error_code);
-                     } else {
-                        console.log('api marks error',obj_ids,err)
-                     }
-                  }
+      get_tags: function( objectIdList, callback ) {
+         normalizedObjectIdList = app.util.without(
+            app.util.unique( objectIdList ),
+            "" );
+
+         normalizedObjectIdList.forEach(function( objectId ) {
+            app.dislike.count({
+               target: objectId,
+               callback: function( response ) {
+                  adaptedResponse = {};
+                  adaptedResponse[ objectId ] = {
+                     count: response.count,
+                     my: response.isDisliked ? 1 : 0
+                  };
+                  callback( adaptedResponse );
+               }
             });
-         }
-         get();
+         });
       }
    }
    return t;
