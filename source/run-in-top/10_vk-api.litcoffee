@@ -89,18 +89,15 @@ You may use this meta data.
 #### app.vkApi.request
 
 		request: ({ method, data, callback } = {}) ->
-			if not method
-				throw Error "app.vkApi.request - method is missing!"
-			else
-				data ?= {}
-				callback ?= ->
-				requestUrl = requestBaseUrl + method
-				callbackWrap = ( response, meta ) ->
-					callback JSON.parse response
-				@getAccessToken callback: ( accessToken ) ->
-					data.access_token = accessToken
-					data.v ?= apiVersion
-					app.ajax.get
-						url: requestUrl
-						data: data
-						callback: callbackWrap
+			throw Error "app.vkApi.request - method is missing!" if not method
+
+			data ?= {}
+			data.v ?= apiVersion
+			callback ?= ->
+			requestUrl = requestBaseUrl + method
+			@getAccessToken callback: ( accessToken ) ->
+				data.access_token = accessToken
+				app.ajax.get
+					url: requestUrl
+					data: data
+					callback: ( response ) -> callback JSON.parse response
