@@ -297,34 +297,25 @@ To get dislikes we can use regular
 
 This is the source code of `execute.dislikeSummary` stored function:
 ```JavaScript
-// This stored function returns { count, isDisliked }
-var dislikes = API.likes.getList({
-    type: "sitepage",
-    owner_id: Args.appId,
-    page_url: Args.targetUrl
+// Function signature: { appId, targetUrl } > { count, isDisliked }
+var dislikeList = API.likes.getList({
+	type: "sitepage",
+	owner_id: Args.appId,
+	page_url: Args.targetUrl,
+	count: 1
 });
-if ( dislikes ) {
-    var count = dislikes.count;
-    var dislikeUserIds = dislikes.items;
-    var currentUserId = API.users.get()[ 0 ].id;
-    var isDisliked = false;
-    // likes.isLiked method requires item_id which can't be page url,
-    // it's easier to iterate through dislikes and see if current user
-    // is on the list.
-    // P.S. Yes, there's no Array::indexOf.
-    var i = 0;
-    if ( count > 0 ) {
-    	// TODO: Handle objects with more than 100 dislikes.
-        while ( i < count ) {
-            if ( dislikeUserIds[ i ] == currentUserId ) {
-                isDisliked = true;
-            }
-            i = i + 1;
-        }
-    }
-    return { count: count, isDisliked: isDisliked };
+if ( dislikeList ) {
+	var isDisliked = false;
+	if ( dislikeList.count > 0 ) {
+		var currentUserId = API.users.get()[ 0 ].id;
+		var firstDislikedId = dislikeList.items[ 0 ];
+		if ( currentUserId == firstDislikedId ) {
+			isDisliked = true;
+		}
+	}
+	return { count: dislikeList.count, isDisliked: isDisliked };
 } else {
-    return { count: 0, isDisliked: false };
+	return { count: 0, isDisliked: false };
 }
 ```
 
