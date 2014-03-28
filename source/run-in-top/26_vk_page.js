@@ -3599,72 +3599,6 @@ function vk_tag_api(section,url,app_id){
          }
          //console.log('<<<',like_obj);
          return like_obj;
-      },
-      mark:function(obj_id,callback){
-         var like_obj=t.parse_id(obj_id);
-         t.widget_req(like_obj,true,function(num){
-            t.get_users(like_obj,0,6,callback);
-            t.widget_req(like_obj+'|'+vk.id,true,function(num){});// костыль
-         });
-
-      },
-      unmark:function(obj_id,callback){
-         var like_obj=t.parse_id(obj_id);
-         t.widget_req(like_obj,false,function(num){
-            t.get_users(like_obj,0,6,callback);
-            t.widget_req(like_obj+'|'+vk.id,false,function(num){});// костыль
-         });
-
-      },
-      get_users:function(obj_id,offset,count,callback){
-         offset = offset || 0;
-         count = count || 6;
-         var like_obj=t.parse_id(obj_id);
-         obj_id=like_obj;
-         var url=t.page_url+t.section+'/'+obj_id;
-
-         var code = "var dislikeList = API.likes.getList({" +
-               "type: \"sitepage\", page_url: \"" + url + "\"," +
-               "owner_id: \"" + t.app + "\", count: " + count + "," +
-               "offset: " + offset +
-            "});" +
-            "var users = API.users.get({" +
-               "user_ids: dislikeList.items," +
-               "fields: \"photo_200\"" +
-            "});" +
-            "return { count: dislikeList.count, users: users," +
-            "wtf: dislikeList.items };";
-
-         app.vkApi.request({
-            method: "execute",
-            data: { code: code },
-            callback: function( result ) {
-               // Somewhy API denies to return anything in "uids" field.
-               result.response.uids = result.response.wtf;
-               if ( callback ) {
-                  callback( result.response );
-               }
-            }
-         });
-      },
-      get_tags: function( objectIdList, callback ) {
-         normalizedObjectIdList = app.util.without(
-            app.util.unique( objectIdList ),
-            "" );
-
-         normalizedObjectIdList.forEach(function( objectId ) {
-            app.dislike.count({
-               target: objectId,
-               callback: function( response ) {
-                  adaptedResponse = {};
-                  adaptedResponse[ objectId ] = {
-                     count: response.count,
-                     my: response.isDisliked ? 1 : 0
-                  };
-                  callback( adaptedResponse );
-               }
-            });
-         });
       }
    }
    return t;
@@ -3784,26 +3718,39 @@ function vk_tag_api(section,url,app_id){
          }
          scan();
       },
-      req:function(params,callback){
-         if (params.likes!=null){
-            var arr=params.likes.split(',');
-            dk.storage.get_tags(arr,function(r){
-               var data={};
-               for (var key in r){
-                  data[key]= r[key].count*(r[key].my==1?-1:1);
-               }
-               callback(data);
-            });
-         }
-         if (params.object!=null){
-           var gu=function(){
-            dk.storage.get_users(params.object,params.offset || 0, params.limit || 6,function(r){
-                  callback({"users":r.uids,"count": r.count});
-            });
-           }
-           if (params.action!=null){
-               (params.action==1?dk.storage.mark:dk.storage.unmark)(params.object,gu);
-           } else gu();
+      req: function( params, callback ) {
+         if ( params.likes != null ) {
+            app.util( params.likes.split( "," ) )
+               .unique()
+               .without( "" )
+               .each(function( objectId ) {
+                  app.dislike.count({
+                     target: objectId,
+                     callback: function( response ) {
+                        adaptedResponse = {};
+                        adaptedResponse[ objectId ] = response;
+                        callback( adaptedResponse );
+                     }
+                  });
+               });
+         } else if ( params.object != null ) {
+            var getDislikeList = function() {
+               app.dislike.list({
+                  target: params.object,
+                  limit: params.limit || 6,
+                  offset: params.offset || 0,
+                  callback: callback
+               });
+            }
+            if ( params.action != null ) {
+               app.dislike.request({
+                  target: params.object,
+                  dislike: params.action,
+                  callback: getDislikeList
+               });
+            } else {
+               getDislikeList();
+            }
          }
       },
       get_dislikes: function( objectIdList ) {
@@ -3826,8 +3773,8 @@ function vk_tag_api(section,url,app_id){
             //-----------
             return false;
          }
-         var my=val<0;
-         val=Math.abs(val);
+         var my=val.isDisliked;
+         val=val.count;
          if (val>0)
             ge('dislike_count'+obj_id).innerHTML=val;
          (my?addClass:removeClass)(ge('dislike_icon' + obj_id),'my_dislike');
