@@ -3803,53 +3803,6 @@ function vk_tag_api(section,url,app_id){
                (params.action==1?dk.storage.mark:dk.storage.unmark)(params.object,gu);
            } else gu();
          }
-         return;
-         /*
-         var ts=Math.round(new Date().getTime());
-         if (ts-dk.last_req_ts<dk.delay){ // проверка времени последнего запроса
-            setTimeout(function(){
-               dk.req(params,callback);
-            },dk.delay);// или может сделать паузу = dk.delay-(ts-dk.last_req_ts)
-            return;
-         }
-         if (!(dk.auth_key && dk.api_id && dk.viewer_id)){ // нужна авторизация
-            dk.auth(function(){
-               setTimeout(function(){
-                  dk.req(params,callback);
-               },dk.delay);
-            });
-            return;
-         }
-
-         params = params || {};
-         params.auth=dk.auth_key;
-         params.app=dk.api_id;
-         params.uid=dk.viewer_id;
-         dk.post(dk.server,params,function(t){
-            var obj=JSON.parse(t);
-
-
-            if (obj['delay']){ // delay before next query in seconds
-               dk.delay=obj['delay']*1000;
-               delete obj['delay'];
-            }
-            if (obj['status']){
-               if(obj['status'] == -1){  //auth error
-                  localStorage[dk.ls_val]='{}';// reset auth settings
-                  dk.auth(function(){
-                     setTimeout(function(){
-                        dk.req(params,callback);
-                     },dk.delay);
-                  });
-                  return;
-               }
-               delete obj['status'];
-            }
-            if (callback){
-               callback(obj);
-            }
-         });
-         */
       },
       get_dislikes:function(obj_ids){ // пополнение очереди на обработку
          var need_run = (dk.queue.length===0); // если очередь была пустая, то нужно запустить получение инфы
