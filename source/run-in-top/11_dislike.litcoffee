@@ -136,3 +136,26 @@ You may use this meta data.
 						context._dislikeCountCache[ normalizedTarget ] =
 							response
 						callback response
+
+#### app.dislike.list
+
+		list: ({ target, limit, offset, callback } = {}) ->
+			throw Error "Dislike target not specified!" unless target
+			limit ?= 6
+			offset ?= 0
+			callback ?= ->
+			normalizedTarget = @_normalizeObjectId target
+
+			context = @
+			app.vkApi.request
+				method: "likes.getList"
+				data:
+					type: "sitepage"
+					page_url: @BASE_URL + normalizedTarget
+					owner_id: @APP_ID
+					count: limit
+					offset: offset
+				callback: ({ response } = {}) ->
+					callback
+						count: response?.count ? 0
+						users: response?.items ? []

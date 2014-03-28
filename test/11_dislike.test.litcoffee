@@ -26,6 +26,14 @@ app.dislike.request
 app.dislike.count
 	target: objectUniqueId
 	callback: ({ count, isDisliked }) -> alert "Dislikes: #{count}."
+
+app.dislike.list
+	target: objectUniqueId
+	limit: 6 # default is 6
+	offset: 0 # default is 0
+	callback: ({ count, users }) ->
+		alert "Total dislikes: #{count}"
+		alert "First one is id#{ users[ 0 ] }"
 ```
 
 There're shortcuts:
@@ -73,6 +81,9 @@ Here's how:
 	- `hash` - value of `likeHash`
 	- `pageQuery` - value of `_pageQuery`
 	- `value` - `1` to apply like or `0` to undo it
+
+To get dislikes we can use regular
+[`likes.getList`](http://vk.com/dev/likes.getList) API method.
 
 ## app.dislike.request
 **`app.dislike.request`** is the main dislike method.
@@ -364,3 +375,83 @@ Back to tests.
 
 			it "should throw when no target specified", ->
 				app.dislike.count.should.throw "Dislike target not specified!"
+
+## app.dislike.list
+**`app.dislike.list`** is a shortcut for the corresponding `app.vkApi` call.
+
+		describe "list", ->
+
+			it "should make correct app.vkApi.request call", ( done ) ->
+				sinon.stub app.vkApi, "request", ({ method, data, callback }) ->
+					method.should.equal "likes.getList"
+					data.should.deep.equal
+						type: "sitepage"
+						page_url: app.dislike.BASE_URL + "fake target"
+						owner_id: app.dislike.APP_ID
+						count: "fake count"
+						offset: "fake offset"
+
+					# Defer callback execution to mimic async process.
+					setTimeout callback response:
+						count: "fake count"
+						items: [ 10, 20, 30 ]
+
+				app.dislike.list
+					target: "fake target"
+					limit: "fake count"
+					offset: "fake offset"
+					callback: ({ count, users }) ->
+						app.vkApi.request.should.have.been.called
+						app.vkApi.request.restore()
+						count.should.equal "fake count"
+						users.should.deep.equal [ 10, 20, 30 ]
+						done()
+
+			it "should use sane defaults", ( done ) ->
+				sinon.stub app.vkApi, "request", ({ method, data, callback }) ->
+					method.should.equal "likes.getList"
+					data.should.deep.equal
+						type: "sitepage"
+						page_url: app.dislike.BASE_URL + "fake target"
+						owner_id: app.dislike.APP_ID
+						count: 6
+						offset: 0
+
+					# Defer callback execution to mimic async process.
+					setTimeout callback response:
+						count: "fake count"
+						items: [ 10, 20, 30 ]
+
+				app.dislike.list
+					target: "fake target"
+					callback: ({ count, users }) ->
+						app.vkApi.request.should.have.been.called
+						app.vkApi.request.restore()
+						count.should.equal "fake count"
+						users.should.deep.equal [ 10, 20, 30 ]
+						done()
+
+			it "should throw when no target specified", ->
+				app.dislike.list.should.throw "Dislike target not specified!"
+
+			it "should return safe defaults to callback", ( done ) ->
+				sinon.stub app.vkApi, "request", ({ method, data, callback }) ->
+					method.should.equal "likes.getList"
+					data.should.deep.equal
+						type: "sitepage"
+						page_url: app.dislike.BASE_URL + "fake target"
+						owner_id: app.dislike.APP_ID
+						count: 6
+						offset: 0
+
+					# Defer callback execution to mimic async process.
+					setTimeout callback error: "wrong target url, silly you"
+
+				app.dislike.list
+					target: "fake target"
+					callback: ({ count, users }) ->
+						app.vkApi.request.should.have.been.called
+						app.vkApi.request.restore()
+						count.should.equal 0
+						users.should.deep.equal []
+						done()
