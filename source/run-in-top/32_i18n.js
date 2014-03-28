@@ -845,7 +845,8 @@ vk_lang_ru = {
 	Yes: "Да",
 	YIV: "Вы установили happy v",
 	YouTube: "YouTube",
-	zodiac_signs: "Козерог,Водолей,Рыбы,Овен,Телец,Близнецы,Рак,Лев,Дева,Весы,Скорпион,Стрелец",
+	zodiac_signs: [ "Козерог", "Водолей", "Рыбы", "Овен", "Телец",
+		"Близнецы", "Рак", "Лев", "Дева", "Весы", "Скорпион", "Стрелец" ],
 	Zoom: "Увеличить"
 };
 
@@ -1684,7 +1685,8 @@ vk_lang_ua = {
 	Yes: "Так",
 	YIV: "Ви встановили happy v",
 	YouTube: "YouTube",
-	zodiac_signs: "Козеріг,Водолій,Риби,Овен,Телець,Близнюки,Рак,Лев,Діва,Терези,Скорпіон,Стрілець",
+	zodiac_signs: [ "Козеріг", "Водолій", "Риби", "Овен", "Телець",
+		"Близнюки", "Рак", "Лев", "Діва", "Терези", "Скорпіон", "Стрілець" ],
 	Zoom: "Збільшити"
 };
 
@@ -2337,7 +2339,8 @@ vk_lang_by = {
 	Yes: "Так",
 	YIV: "Вы ўсталявалі happy v",
 	YouTube: "YouTube",
-	zodiac_signs: "Казярог,Вадалей,Рыбы,Авен,Цялец,Блізняты,Рак,Леў,Дзева,Шалі,Скарпіён,Стралец",
+	zodiac_signs: [ "Казярог", "Вадалей", "Рыбы", "Авен", "Цялец",
+		"Блізняты", "Рак", "Леў", "Дзева", "Шалі", "Скарпіён", "Стралец" ],
 	Zoom: "Павялічыць"
 };
 
@@ -3152,7 +3155,8 @@ vk_lang_en = {
 	Yes: "Ok",
 	YIV: "You have been installed happy v",
 	YouTube: "YouTube",
-	zodiac_signs: "Capricorn,Aquarius,Pisces,Aries,Taurus,Gemini,Cancer,Leo,Virgo,Libra,Scorpio,Sagittarius",
+	zodiac_signs: [ "Capricorn", "Aquarius", "Pisces", "Aries", "Taurus",
+		"Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius" ],
 	Zoom: "Zoom"
 };
 
