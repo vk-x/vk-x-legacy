@@ -47,8 +47,6 @@ Private methods are here for testing purposes only (see tests).
 
 		_apiVersion: apiVersion
 
-		_accessToken: null
-
 		_performAuth: ({ callback } = {}) ->
 			callback ||= ->
 			authRequestId = app.util.uniqueId()
@@ -76,15 +74,24 @@ You may use this meta data.
 
 #### app.vkApi.getAccessToken
 
+		_accessToken: null
+		_isAuthing: no
+		_accessTokenCallbackList: []
 		getAccessToken: ({ callback, force } = {}) ->
 			callback ||= ->
 			if @_accessToken and not force
 				callback @_accessToken
 			else
-				context = @
-				@_performAuth callback: ( accessToken ) ->
-					context._accessToken = accessToken
-					callback accessToken
+				@_accessTokenCallbackList.push callback
+				if not @_isAuthing
+					@_isAuthing = yes
+					context = @
+					@_performAuth callback: ( accessToken ) ->
+						context._accessToken = accessToken
+						context._isAuthing = no
+						for callback in context._accessTokenCallbackList
+							callback accessToken
+						context._accessTokenCallbackList = []
 
 #### app.vkApi.request
 

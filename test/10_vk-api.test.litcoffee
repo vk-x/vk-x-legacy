@@ -228,6 +228,44 @@ Let's rock.
 						app.vkApi.getAccessToken callback: ( accessToken ) ->
 							fakeCallback accessToken
 
+#### It doesn't auth multiple times simultaneously.
+
+			it "should auth once at a time", ( done ) ->
+ 
+`_performAuth` should be called only once.
+
+				isFakeAuthCalled = no
+				fakeAuthCallback = null
+				sinon.stub app.vkApi, "_performAuth", ({ callback } = {}) ->
+					isFakeAuthCalled.should.equal no
+					isFakeAuthCalled = yes
+					callback.should.be.a "function"
+					fakeAuthCallback = -> callback "fake token"
+
+`callback` should be called exactly once for each `getAccessToken` call.
+It should also get correct access token as an argument.
+
+				fakeCallbackCalls = 0
+				fakeCallback = ( accessToken ) ->
+					isFakeAuthCalled.should.equal yes
+					fakeCallbackCalls.should.be.lessThan 3
+					fakeCallbackCalls += 1
+					accessToken.should.equal "fake token"
+					if fakeCallbackCalls is 3
+						app.vkApi._performAuth.restore()
+						done()
+
+				app.vkApi.getAccessToken callback: ( accessToken ) ->
+					fakeCallback accessToken
+				# Previous call is still waiting for response.
+				app.vkApi.getAccessToken callback: ( accessToken ) ->
+					fakeCallback accessToken
+				app.vkApi.getAccessToken callback: ( accessToken ) ->
+					fakeCallback accessToken
+
+				# Fire! fakeCallback should be called three times now.
+				fakeAuthCallback()
+
 ## app.vkApi.request
 
 **`app.vkApi.request`** is an async method to make
