@@ -95,6 +95,7 @@ You may use this meta data.
 
 #### app.vkApi.request
 
+		_retryDelay: 1000
 		request: ({ method, data, callback } = {}) ->
 			throw Error "app.vkApi.request - method is missing!" if not method
 
@@ -102,9 +103,17 @@ You may use this meta data.
 			data.v ?= apiVersion
 			callback ?= ->
 			requestUrl = requestBaseUrl + method
+
+			context = @
 			@getAccessToken callback: ( accessToken ) ->
 				data.access_token = accessToken
-				app.ajax.get
-					url: requestUrl
-					data: data
-					callback: ( response ) -> callback JSON.parse response
+				do retry = ->
+					app.ajax.get
+						url: requestUrl
+						data: data
+						callback: ( rawResult ) ->
+							result = JSON.parse rawResult
+							if result.error?.error_code is 6
+								setTimeout retry, context._retryDelay
+							else
+								callback result

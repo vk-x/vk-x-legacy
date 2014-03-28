@@ -338,3 +338,46 @@ Let's rock.
 
 				( -> app.vkApi.request data: {}, callback: -> )
 					.should.throw "app.vkApi.request - method is missing!"
+
+#### It retries in a moment if got "Too many requests per second" error.
+
+			it "should retry when too many requests per second", ( done ) ->
+
+				sinon.stub app.vkApi, "getAccessToken", ({ callback } = {}) ->
+					callback "fake token"
+
+				isFirstTry = yes
+				sinon.stub app.ajax, "get", ({ url, data, callback } = {}) ->
+					url.should.equal "https://api.vk.com/method/users.get"
+					data.should.deep.equal
+						foo: "bar"
+						access_token: "fake token"
+						v: app.vkApi._apiVersion
+					if isFirstTry
+						isFirstTry = no
+						result = error: error_code: 6
+					else
+						result = response: online: 0
+					callback JSON.stringify result
+
+				sinon.stub window, "setTimeout", ( callback, delay ) ->
+					delay.should.equal app.vkApi._retryDelay
+					setTimeout.restore()
+					# Defer callback execution to mimic timeout.
+					setTimeout callback
+
+				isFakeCallbackCalled = no
+				fakeCallback = ( result ) ->
+					isFakeCallbackCalled.should.equal no
+					isFakeCallbackCalled = yes
+					result.should.deep.equal response: online: 0
+					app.vkApi.getAccessToken.should.have.been.calledOnce
+					app.vkApi.getAccessToken.restore()
+					app.ajax.get.should.have.been.calledTwice
+					app.ajax.get.restore()
+					done()
+
+				app.vkApi.request
+					method: "users.get"
+					data: foo: "bar"
+					callback: fakeCallback
