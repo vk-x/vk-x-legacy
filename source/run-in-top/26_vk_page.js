@@ -3622,16 +3622,30 @@ function vk_tag_api(section,url,app_id){
          var like_obj=t.parse_id(obj_id);
          obj_id=like_obj;
          var url=t.page_url+t.section+'/'+obj_id;
-         var code='\
-         var like=API.likes.getList({type:"sitepage",page_url:"'+url+'",owner_id:"'+t.app+'",count:'+count+',offset:'+offset+'});\
-         var users=API.users.get({uids:like.users,fields:"photo_rec"});\
-         return {count:like.count,users:users,uids:like.users};\
-         ';
-         //api_for_dislikes
-         api4dislike.call('execute',{code:code},function(r,t){
-            if (callback) callback(r.response);
+
+         var code = "var dislikeList = API.likes.getList({" +
+               "type: \"sitepage\", page_url: \"" + url + "\"," +
+               "owner_id: \"" + t.app + "\", count: " + count + "," +
+               "offset: " + offset +
+            "});" +
+            "var users = API.users.get({" +
+               "user_ids: dislikeList.items," +
+               "fields: \"photo_200\"" +
+            "});" +
+            "return { count: dislikeList.count, users: users," +
+            "wtf: dislikeList.items };";
+
+         app.vkApi.request({
+            method: "execute",
+            data: { code: code },
+            callback: function( result ) {
+               // Somewhy API denies to return anything in "uids" field.
+               result.response.uids = result.response.wtf;
+               if ( callback ) {
+                  callback( result.response );
+               }
+            }
          });
-         //api4dislike.call('likes.getList',{type:'sitepage', page_url:url,owner_id:t.app},console.log)
       },
       get_tags: function( objectIdList, callback ) {
          normalizedObjectIdList = app.util.without(
