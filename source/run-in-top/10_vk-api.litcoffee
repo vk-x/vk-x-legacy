@@ -51,18 +51,22 @@ Private methods are here for testing purposes only (see tests).
 
 		_performAuth: ({ callback } = {}) ->
 			callback ||= ->
+			authRequestId = app.util.uniqueId()
 			authFrame = vkCe "iframe",
 				src: authUrl
-				id: "#{app.name}-auth-frame-#{app.util.uniqueId()}"
+				id: "#{app.name}-auth-frame-#{authRequestId}"
 				style: "display: none"
 
 			listener = ({ data }) ->
-				if data.oauthMessageOf is app.name
+				if data.oauthMessageOf is app.name and
+				data._requestId is authRequestId
 					callback data.accessToken
 
 			window.addEventListener "message", listener, no
 
 			document.body.appendChild authFrame
+
+			authRequestId
 
 #### Application meta info
 

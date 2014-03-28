@@ -112,13 +112,61 @@ like `vkApi` hasn't been used.
 **`app.vkApi.getAccessToken`** is an async method to get the
 [session access token](http://vk.com/dev/auth_mobile).
 
+#### _performAuth helper
+
+		describe "_performAuth", ->
+
+			it "should create an iframe and listen for the token", ( done ) ->
+
+`vkCe` is a function used to *Create element* - iframe in our case.
+
+				sinon.stub window, "vkCe", ( elementType, attributes ) ->
+					elementType.should.equal "iframe"
+					attributes.src.should.be.a "string"
+					attributes.id.should.be.a "string"
+					attributes.style.should.equal "display: none"
+					"fake element"
+
+				sinon.stub document.body, "appendChild", ( element ) ->
+					element.should.equal "fake element"
+
+				authRequestId = app.vkApi._performAuth
+					callback: ( accessToken ) ->
+						accessToken.should.equal "fake token"
+						done()
+
+				authRequestId.should.be.a "string"
+
+				window.postMessage
+					oauthMessageOf: app.name
+					_requestId: "#{authRequestId}-incorrect"
+					accessToken: "icorrect fake token"
+				, "*"
+
+				window.postMessage
+					oauthMessageOf: app.name
+					accessToken: "icorrect fake token"
+				, "*"
+
+				window.postMessage
+					_requestId: authRequestId
+					accessToken: "icorrect fake token"
+				, "*"
+
+				window.postMessage
+					oauthMessageOf: app.name
+					_requestId: authRequestId
+					accessToken: "fake token"
+				, "*"
+
+#### app.vkApi.getAccessToken itself
+
 		describe "getAccessToken", ->
 
 #### It fetches access token and passes it to callback.
 
 			it "should fetch token and pass it to callback", ( done ) ->
 
-We use [Sinon](http://sinonjs.org/) stubs to spy on `_performAuth`.  
 `_performAuth` should be called only once as the result should be cached.
 
 				isFakeAuthCalled = no
