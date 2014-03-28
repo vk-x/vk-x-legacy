@@ -325,6 +325,8 @@ Let's rock.
 					data.should.deep.equal
 						access_token: "fake token"
 						v: app.vkApi._apiVersion
+					app.vkApi.getAccessToken.restore()
+					app.ajax.get.restore()
 					done()
 
 				app.vkApi.request
