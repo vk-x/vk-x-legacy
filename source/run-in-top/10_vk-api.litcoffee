@@ -48,7 +48,7 @@ Private methods are here for testing purposes only (see tests).
 		_apiVersion: apiVersion
 
 		_performAuth: ({ callback } = {}) ->
-			callback ||= ->
+			callback ?= ->
 			authRequestId = app.util.uniqueId()
 			authFrame = vkCe "iframe",
 				src: authUrl
@@ -78,7 +78,7 @@ You may use this meta data.
 		_isAuthing: no
 		_accessTokenCallbackList: []
 		getAccessToken: ({ callback, force } = {}) ->
-			callback ||= ->
+			callback ?= ->
 			if @_accessToken and not force
 				callback @_accessToken
 			else
