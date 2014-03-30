@@ -2198,7 +2198,7 @@ function vkMakeMsgHistory(uid,show_format){
         result=res+result;
         if (offset<count){
           offset+=100;
-          setTimeout(function(){collect(callback);},300);
+          collect(callback);
         } else {
           //alert(result);
           callback(result);
