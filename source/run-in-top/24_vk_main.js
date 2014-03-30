@@ -1076,7 +1076,7 @@ vk_messages={
    },
    get_history:function(uid){
       if (!uid) uid=cur.thread.id;
-      var PER_REQ=100;
+      var PER_REQ=200;
       var offset=0;
       var messages = [];
       var users_ids = [];
@@ -1103,7 +1103,7 @@ vk_messages={
 
          var code=[];
          var rcode=[];
-         for (var i=0; i<10; i++){
+         for (var i=0; i<20; i++){
             code.push('API.messages.getHistory({user_id:'+uid+', count:'+PER_REQ+', offset:'+offset+', rev:1}).items');//
             offset+=PER_REQ;
          }
@@ -1123,7 +1123,7 @@ vk_messages={
 
             messages = messages.concat(msgs);
             if (msgs.length>0){
-               setTimeout(scan,350);
+               scan();
             } else {
                collect_users(messages);
                ge('saveldr').innerHTML=vkProgressBar(0,100,w,'Users data... %');
