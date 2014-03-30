@@ -2129,9 +2129,9 @@ function vkMakeMsgHistory(uid,show_format){
         offset: offset,
         count: 100
       },
-      callback: function( result ) {
-        var msgs = result.response.items,
-            count = result.response.count;
+      callback: function( requestResult ) {
+        var msgs = requestResult.response.items,
+            count = requestResult.response.count;
         ge( "saveldr" ).innerHTML = vkProgressBar( offset, count, w );
         msgs.reverse();
         var msg=null;
