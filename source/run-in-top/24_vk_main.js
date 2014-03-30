@@ -2130,9 +2130,9 @@ function vkMakeMsgHistory(uid,show_format){
         count: 100
       },
       callback: function( result ) {
-        ge('saveldr').innerHTML=vkProgressBar(offset,result.response[0],w);
-        var msgs=result.response;
-        var count=msgs.shift();
+        var msgs = result.response.items,
+            count = result.response.count;
+        ge( "saveldr" ).innerHTML = vkProgressBar( offset, count, w );
         msgs.reverse();
         var msg=null;
         var res=''
