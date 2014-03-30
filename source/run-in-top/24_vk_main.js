@@ -2127,7 +2127,7 @@ function vkMakeMsgHistory(uid,show_format){
       data: {
         user_id: uid,
         offset: offset,
-        count: 100
+        count: 200
       },
       callback: function( requestResult ) {
         var msgs = requestResult.response.items,
@@ -2197,7 +2197,7 @@ function vkMakeMsgHistory(uid,show_format){
         }
         result=res+result;
         if (offset<count){
-          offset+=100;
+          offset+=200;
           collect(callback);
         } else {
           //alert(result);
