@@ -345,7 +345,7 @@ function vkStyles(){
       .narrow_column .audio_title_wrap { width: 115px !important;}\
       #profile_audios .audio_title_wrap { width: auto;}\
       .im_fwd_log_row .audio .title_wrap, .im_fwd_log_row .post_media .audio .title_wrap { width: 210px;}\
-      /*.audios_module .audio .title_wrap { width: 318px !important;}*/\
+      .audios_module .audio .title_wrap { width: 310px !important; }\
       #vk_audio_fr_refresh{float:right; font-size:19px; border-left:1px solid #DDD; padding:0 5px;}\
 	';
    main_css+=vk_audio_player.gpCtrlsStyle;
