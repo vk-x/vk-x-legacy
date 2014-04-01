@@ -284,6 +284,11 @@ function vkStyles(){
       .audio .area {margin-bottom: 0px !important;}\
       .choose_audio_row {height:auto !important;}\
       .choose_audio_row a.choose{margin-top: 0px !important; padding-bottom: 2px !important; padding-top:2px !important; height: auto !important; line-height: normal !important;}\
+      .choose_audio_row .audio_choose_added {\
+      	height: auto;\
+      	line-height: normal;\
+		padding: 2px 6px;\
+      }\
 	";
 
 	//additional audio styles
