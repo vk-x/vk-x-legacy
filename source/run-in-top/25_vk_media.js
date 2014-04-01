@@ -2966,6 +2966,21 @@ vk_audio={
       .album_choose{display: block;float: left; padding: 6px 10px; min-width: 175px;}\
       #vk_links_to_audio_on_page{padding: 10px; text-align:center; display:block;}\
      #albumBanned .post_dislike_icon{opacity: 1;}\
+     .title_wrap { position: relative; }\
+     .title_wrap .size {\
+        display: none;\
+        position: absolute;\
+        height: 12px;\
+        top: 50%;\
+        margin-top: -6px;\
+        right: 0;\
+        padding: 1px 1px 1px 5px;\
+        background: #edf1f5;\
+        color: #777;\
+        font-size: 0.9em;\
+      }\
+     .audio.over .size { display: block; }\
+     .audio_list .audio.current .size { background: #5f7fa2; color: #b1bfcf; }\
    ',
    album_cache:{},
    inj_common:function(){
@@ -3039,7 +3054,7 @@ vk_audio={
                   //searcher.showMore
              }
              //vklog('Audio: id'+id+' '+ge('title'+id));
-             (geByClass('title_wrap',el.parentNode)[0] || el.parentNode).appendChild(vkCe('small',{"class":"duration_ fl_r",id:"vk_asize"+id, "url":url, dur:data[1]}));
+             (geByClass('title_wrap',el.parentNode)[0] || el.parentNode).appendChild(vkCe('small',{"class":"size fl_r",id:"vk_asize"+id, "url":url, dur:data[1]}));
 
               var name=el.parentNode.getElementsByTagName('b')[0].innerText+' - '+(span_title || ge('title'+id) || spans[1] || spans[0]).innerText;
               name=vkCleanFileName(name);
@@ -3051,8 +3066,29 @@ vk_audio={
                window.vk_au_down && vk_au_down.make_d_btn(url,divs[i],id,name+'.mp3');
             }
             var btn=geByClass('down_btn',anode)[0] || geByClass('play_new',anode)[0];
+
+            // http://stackoverflow.com/a/14234618/1619166
+            function findParentByClass(elm, className) {
+                var cur = elm.parentNode;
+                // Keep going up until you find a match.
+                while ( cur && !cur.classList.contains( className ) ) {
+                    // Go up.
+                    cur = cur.parentNode;
+                }
+                // Will return null if not found.
+                return cur;
+            }
+
             if (!btn) continue;
-            btn.setAttribute('onmouseover',"vkGetAudioSize('"+id+"',this);");
+
+            // Show bitrate and size of track.
+            if ( getSet( 43 ) === "y" ) {
+              ( findParentByClass( btn, "audio" ) || anode )
+                .setAttribute( "onmouseenter", "vkAudioShowOnlySize( '" + id +
+                  "' );" );
+            }
+
+            btn.setAttribute('onmouseover',"vkShowAddAudioTip(this,'"+id+"');");
          }
      }
 
@@ -3798,8 +3834,7 @@ function vkShowAddAudioTip(el,id){
 	}
 }
 
-function vkGetAudioSize(id,el){
-   vkShowAddAudioTip(el,id);
+function vkAudioShowOnlySize ( id ) {
 	if (getSet(43)!='y') return;
 	var WAIT_TIME=4000;
 	var el=ge("vk_asize"+id);
@@ -3827,6 +3862,11 @@ function vkGetAudioSize(id,el){
 
 		},true);
 	}
+}
+
+function vkGetAudioSize(id,el){
+   vkShowAddAudioTip(el,id);
+	vkAudioShowOnlySize( id );
 }
 function vkDownloadPostfix(){
 	return '';
