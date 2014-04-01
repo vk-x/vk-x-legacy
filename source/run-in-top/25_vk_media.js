@@ -3055,6 +3055,16 @@ vk_audio={
             btn.setAttribute('onmouseover',"vkGetAudioSize('"+id+"',this);");
          }
      }
+
+    // Update sortable markup after DOMContentLoaded to apply custom
+    // audio element height. Fixes #29.
+    if ( divs[ 0 ].id && !vk_audio._hasUpdatedAudioMarkup && window.sorter ) {
+      var firstAudioId = divs[ 0 ].id.split( "play" )[ 1 ];
+      sorter.update( ge( "audio" + firstAudioId ) );
+    }
+    // Only do it once on load. Mark as done on first audio_node() run.
+    vk_audio._hasUpdatedAudioMarkup = true;
+
    },
 
 
