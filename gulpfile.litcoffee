@@ -256,7 +256,7 @@ Distributable Maxthon extension created using `maxthon-packager.exe`
 		execFile pathToBuilder, [ pathToSource, pathToResult ], null,
 			( error ) ->
 				if error
-					console.log "Maxthon packager exitted with error:".red,
+					console.log "Maxthon packager exitted with error:".yellow,
 						error
 				else unless isWindows
 					console.log ( "Looks like Maxthon packager finished " +
