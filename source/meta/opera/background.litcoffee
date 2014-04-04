@@ -4,12 +4,12 @@ See: `source/meta/opera/index.html`.
 
 	app = require "../../app"
 	superagent = require "superagent"
+	uri = require "../uri"
 
 	handleAjax = ({ data, source }) ->
 		return unless data.requestOf is app.name
 
-		# https://gist.github.com/Yaffle/1088850 in absolute-url.js
-		absoluteUrl = absolutizeURI data.sourceUrl, data.url
+		absoluteUrl = uri.relativeToAbsolute data.sourceUrl, data.url
 
 		req = superagent data.method, absoluteUrl
 			.set data.headers

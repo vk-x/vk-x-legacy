@@ -1,5 +1,6 @@
 	app = require "../../../../app"
 	superagent = require "superagent"
+	uri = require "../../../uri"
 
 	inject = ( target, script, { isSource } = {}) ->
 		tag = target.createElement "script"
@@ -13,8 +14,7 @@
 	handleAjax = ( win ) -> ({ data }) ->
 		return unless data.requestOf is app.name
 
-		# https://gist.github.com/Yaffle/1088850 in absolute-url.js
-		absoluteUrl = absolutizeURI win.location.href, data.url
+		absoluteUrl = uri.relativeToAbsolute win.location.href, data.url
 
 		req = superagent data.method, absoluteUrl
 			.set data.headers

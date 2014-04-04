@@ -42,3 +42,8 @@ function absolutizeURI(base, href) {// RFC 3986
          (href.protocol || href.authority || href.pathname ? href.search : (href.search || base.search)) +
          href.hash;
 }
+
+module.exports = {
+  parse: parseURI,
+  relativeToAbsolute: absolutizeURI
+};
