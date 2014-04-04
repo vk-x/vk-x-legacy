@@ -1,11 +1,7 @@
 	handleAjax = require "../handle-ajax"
+	inject = require "../inject"
 
 	window.addEventListener "message", handleAjax, no
-
-	inject = ( script ) ->
-		tag = document.createElement "script"
-		tag.textContent = script
-		( document.head ? document.documentElement ).appendChild tag
 
 Maxthon 4 does not allow to access files from web, so
 script file injection is impossible.
@@ -20,10 +16,10 @@ Now we use gulp to concat source code and inject it below.
 	sourceForFrames = "This will be replaced with the source"
 
 	# See: content_script.js:23
-	inject "window._ext_ldr_vkopt_loader = true"
+	inject "window._ext_ldr_vkopt_loader = true", isSource: yes
 
 	# See: background.js:10
 	if window is window.top
-		inject sourceForTop
+		inject sourceForTop, isSource: yes
 	else
-		inject sourceForFrames
+		inject sourceForFrames, isSource: yes

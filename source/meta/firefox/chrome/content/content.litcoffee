@@ -1,14 +1,6 @@
 	app = require "../../../../app"
 	handleAjax = require "../../../handle-ajax"
-
-	inject = ( target, script, { isSource } = {}) ->
-		tag = target.createElement "script"
-		if isSource
-			tag.textContent = script
-		else
-			tag.src = "resource://#{app.name}/#{script}"
-			tag.charset = "UTF-8"
-		( target.head ? target.documentElement ).appendChild tag
+	inject = require "../../../inject"
 
 	processOpenedWindow = ({ doc, win, url }) ->
 		return unless /^http(s)?:\/\/([a-z0-9\.]+\.)?vk\.com\//.test url
@@ -16,12 +8,12 @@
 		win.addEventListener "message", handleAjax, no
 
 		# See: content_script.js:23
-		inject doc, "window._ext_ldr_vkopt_loader = true", isSource: yes
+		inject "window._ext_ldr_vkopt_loader = true", target: doc, isSource: yes
 
 		# See: background.js:10 and gulpfile.js
-		inject doc, "run-in-top.js" if win is win.top
+		inject "run-in-top.js", target: doc if win is win.top
 
-		inject doc, "run-in-frames.js" if win isnt win.top
+		inject "run-in-frames.js", target: doc if win isnt win.top
 
 	Components.classes[ "@mozilla.org/observer-service;1" ]
 		.getService Components.interfaces.nsIObserverService
