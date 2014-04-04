@@ -3609,12 +3609,6 @@ function vk_tag_api(section,url,app_id){
 
 (function(){
    dk={
-      app_id: app.vkApi.APP_ID,
-      server:'http://dislike.server/like.php',
-      ls_val:'dislike_auth',
-      ids_per_req:5,//10,//20,
-      delay:1000,
-      cache_time:3 * 60 * 1000,// 3 min
       is_enabled:function(set){
          if (document.location.href.indexOf('vk_dislikes_enabled')>0) vkSetVal('vk_dislikes_enabled','true');
 
@@ -3648,51 +3642,9 @@ function vk_tag_api(section,url,app_id){
          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAWCAYAAAAW5GZjAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAStJREFUeNqUka1OQ0EQhbeAbIKpaECQkPQ1EDhCgq7kx5D0DapQvAEEA0gkJS19ALjVrQGDwBEEoj+yheUbOLssN0C4k3yZO3POnbt7p+S9d82zG0dU4BQ2YR5e4Rr24OVwd80tuM+owgOU3VfYC1vwCDV4npNwkjOmUZbugtk+PYBl6KnXUz2QHs12nC48QaZeprorPZ75HpqwChvq7cMK1KXHycfKJizCjnI91YP5CDrJpc6T5470aLa4VD7I5dD/ZraLjOEWvPJY/Y8o2Qb/G+lkW/cVzDR5proSHTYZqjDxP8dEejS3/N/RSs1T6MMSZDJkqvvSi607TL7TtAsY6nmo2kuP5kbujNu5upGajfYvl2sHT6F1p5PtX45gHd6UR+EfG4XW/S7AABuBTwpSct69AAAAAElFTkSuQmCC'
       ],
       icon_index:3,
-      auth_key:'',
-      api_id:'',
-      viewer_id:'',
-      queue:[],
-      last_req_ts:0,
-      cache:{},
       init:function(){
-         //dk.auth();
          if (!dk.is_enabled()) return;
          dk.storage=new vk_tag_api('dislike','http://vk.dislike.server/',app.dislike.APP_ID);
-      },
-      auth:function(callback){
-         var auth_data=localStorage[dk.ls_val] || '{}';
-         var auth_obj=null;
-         try {
-            auth_obj=JSON.parse(auth_data);
-            if (auth_data.auth_key && auth_data.api_id && auth_data.viewer_id){
-               dk.auth_key=auth_data.auth_key;
-               dk.api_id=auth_data.api_id;
-               dk.viewer_id=auth_data.viewer_id;
-               if (callback) callback();
-            } else {
-               auth_obj=null;
-            }
-         } catch (e) {}
-         dk.post('/app'+dk.app_id,{},function(t){
-            var data=(t.match(/var params = (\{[^\}]+\})/)||[])[1]; // parse flash params
-            var obj=JSON.parse(data);
-            var auth_data={
-               auth_key:obj.auth_key,
-               api_id:obj.api_id,
-               viewer_id:obj.viewer_id
-            };
-            dk.auth_key=auth_data.auth_key;
-            dk.api_id=auth_data.api_id;
-            dk.viewer_id=auth_data.viewer_id;
-            localStorage[dk.ls_val]=JSON.stringify(auth_data);
-            if (callback) callback();
-         });
-      },
-
-      post:function(url,params,callback){
-         AjPost(url,params,function(r,t){
-            if (callback) callback(t);
-         });
       },
       users_info:function(uids,callback){
          var res=[];
