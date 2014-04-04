@@ -3697,21 +3697,23 @@ function vk_tag_api(section,url,app_id){
       users_info:function(uids,callback){
          var res=[];
          var scan=function(){
-            var ids=uids.splice(0,1000);// max 1000 uids in one request
-            var params={
-               oauth:1,
-               method:'users.get',
-               uids:ids.join(','),
-               fields:'first_name,last_name,photo_rec'
-            }
+            var ids=uids.splice(0,100);// max 100 uids in one request
             if (ids.length>0)
-               dk.post('/api.php',params,function(t){
-                  var r=JSON.parse(t);
-                  res=res.concat(r.response);
-                  if (uids.length>0)
-                     setTimeout(scan,340);
-                  else
-                     callback(res);
+               app.vkApi.request({
+                  method: "users.get",
+                  data: {
+                     uids: ids.join( "," ),
+                     fields: "first_name,last_name,photo_rec",
+                     v: "3.0"
+                  },
+                  callback: function( result ) {
+                     res = res.concat( result.response )
+                     if ( uids.length > 0 ) {
+                        scan();
+                     } else {
+                        callback( res );
+                     }
+                  }
                });
             else
                callback(res);
