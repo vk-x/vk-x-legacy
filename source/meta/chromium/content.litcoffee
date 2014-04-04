@@ -1,4 +1,5 @@
 	app = require "../../app"
+	superagent = require "superagent"
 
 	# http://stackoverflow.com/a/9517879
 	inject = ( script, { isSource } = {}) ->

@@ -1,4 +1,5 @@
 	app = require "../../../../app"
+	superagent = require "superagent"
 
 	inject = ( target, script, { isSource } = {}) ->
 		tag = target.createElement "script"

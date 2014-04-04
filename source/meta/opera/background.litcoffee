@@ -3,6 +3,7 @@ to do cross-origin ajax requests.
 See: `source/meta/opera/index.html`.
 
 	app = require "../../app"
+	superagent = require "superagent"
 
 	handleAjax = ({ data, source }) ->
 		return unless data.requestOf is app.name

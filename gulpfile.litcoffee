@@ -31,7 +31,6 @@ See `package.json` for a full list of dependencies.
 - Install [gulp](http://gulpjs.com) command line utility:
 `$ npm install -g gulp`
 - Install dev dependencies: `$ npm install`
-- Install source dependencies: `$ gulp bower`
 
 **Note**: run all these commands inside project directory.
 
@@ -97,15 +96,6 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 	distPrefix = "#{config.name}-#{config.version}"
 	browserifyConfig = require "./build/browserify-config"
 
-#### bower
-
-	bowerBackgroundDeps =
-		"superagent": "bower_components/superagent/superagent.js"
-
-	gulp.task "bower", ->
-		bower = require "bower"
-		bower.commands.install _.keys bowerBackgroundDeps
-
 #### test
 See `test/karma-config.litcoffee` file for docs on tests.
 
@@ -162,20 +152,13 @@ See `test/karma-config.litcoffee` file for docs on tests.
 			.pipe plugins.if /\.js$/, plugins.header noticeTemplate, config
 			.pipe gulp.dest "build"
 
-		bowerBackgroundDepsStream = gulp.src _.values bowerBackgroundDeps
-			.pipe plugins.concat "helpers.js"
-			.pipe gulp.dest "build/chromium"
-			.pipe gulp.dest "build/firefox/chrome/content"
-			.pipe gulp.dest "build/maxthon"
-			.pipe gulp.dest "build/opera"
-
 		licenseStream = gulp.src "LICENSE.md"
 			.pipe gulp.dest "build/chromium"
 			.pipe gulp.dest "build/firefox"
 			.pipe gulp.dest "build/maxthon"
 			.pipe gulp.dest "build/opera"
 
-		es.concat metaStream, licenseStream, bowerBackgroundDepsStream
+		es.concat metaStream, licenseStream
 
 #### scripts
 

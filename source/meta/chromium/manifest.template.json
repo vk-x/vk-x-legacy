@@ -7,7 +7,7 @@
 	"author": "<%= author.name %>",
 	"default_locale": "en",
 	"content_scripts": [{
-		"js": [ "helpers.js", "content.js" ],
+		"js": [ "content.js" ],
 		"run_at": "document_start",
 		"all_frames": true,
 		"matches": [ "*://vk.com/*", "*://*.vk.com/*" ]
