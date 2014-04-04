@@ -213,7 +213,8 @@ See `test/karma-config.litcoffee` file for docs on tests.
 				escapeString = require "js-string-escape"
 				escapeString file.contents
 
-		userscriptHeader = fs.readFileSync "./source/meta/userscript-header.js"
+		userscriptHeader = fs.readFileSync "./source/meta/opera/" +
+			"userscript-header.js"
 		noticeTemplate = fs.readFileSync "./source/meta/notice.template.js"
 
 		injectStream = gulp.src "source/meta/**/inject.ignore.*"
