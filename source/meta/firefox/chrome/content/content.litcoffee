@@ -15,6 +15,10 @@
 
 		inject "run-in-frames.js", target: doc if win isnt win.top
 
+Magic and all the Mozilla-fu taken from VkOpt.
+This is done intentionally to handle new windows before load,
+i.e. before `onload` and `DOMContentLoaded`.
+
 	Components.classes[ "@mozilla.org/observer-service;1" ]
 		.getService Components.interfaces.nsIObserverService
 		.addObserver observe: ( obj, eventType ) ->
