@@ -7,6 +7,4 @@
 			patch: <%= version.split( "." )[ 2 ] %>
 		homepage: "<%= homepage %>"
 
-	<%= name %> = app
-
-	app.util = _.noConflict()
+	module.exports = app

@@ -1,9 +1,11 @@
 **Note**: see tests for API documentation. This file only contains notes
 on internal details.
 
-# app.vkApi
+# `vkApi` module
 
-	app.vkApi = do ->
+	_ = require "lodash"
+
+	vkApi = ( app, ajax ) ->
 
 ## Private API
 
@@ -49,8 +51,8 @@ Private methods are here for testing purposes only (see tests).
 
 		_performAuth: ({ callback } = {}) ->
 			callback ?= ->
-			authRequestId = app.util.uniqueId()
-			authFrame = vkCe "iframe",
+			authRequestId = _.uniqueId()
+			authFrame = window.vkCe "iframe",
 				src: authUrl
 				id: "#{app.name}-auth-frame-#{authRequestId}"
 				style: "display: none"
@@ -62,7 +64,7 @@ Private methods are here for testing purposes only (see tests).
 
 			window.addEventListener "message", listener, no
 
-			document.body.appendChild authFrame
+			window.document.body.appendChild authFrame
 
 			authRequestId
 
@@ -72,7 +74,7 @@ You may use this meta data.
 
 		APP_ID: apiAppInfo.id
 
-#### app.vkApi.getAccessToken
+#### vkApi.getAccessToken
 
 		_accessToken: null
 		_isAuthing: no
@@ -93,11 +95,11 @@ You may use this meta data.
 							callback accessToken
 						context._accessTokenCallbackList = []
 
-#### app.vkApi.request
+#### vkApi.request
 
 		_retryDelay: 1000
 		request: ({ method, data, callback } = {}) ->
-			throw Error "app.vkApi.request - method is missing!" if not method
+			throw Error "vkApi.request - method is missing!" if not method
 
 			data ?= {}
 			data.v ?= apiVersion
@@ -108,7 +110,7 @@ You may use this meta data.
 			@getAccessToken callback: ( accessToken ) ->
 				data.access_token = accessToken
 				do retry = ->
-					app.ajax.get
+					ajax.get
 						url: requestUrl
 						data: data
 						callback: ( rawResult ) ->
@@ -117,3 +119,5 @@ You may use this meta data.
 								setTimeout retry, context._retryDelay
 							else
 								callback result
+
+	module.exports = vkApi

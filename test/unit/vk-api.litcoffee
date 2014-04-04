@@ -1,10 +1,15 @@
-# app.vkApi
+# `vkApi` module
 
-	describe "app.vkApi", ->
+	describe "vkApi", ->
+
+		app = require "../../source/app"
+		ajax = require( "../../source/ajax" ) app
+		vkApi = null
+		beforeEach -> vkApi = require( "../../source/vk-api" ) app, ajax
 
 ## What?
 
-**`app.vkApi`** provides interface for
+**`vkApi`** module provides interface for
 **[VK application API](http://vk.com/dev/methods)**.
 
 ## Why?
@@ -24,7 +29,11 @@ without throwing him into online.
 All options are required.
 
 ```CoffeeScript
-app.vkApi.getAccessToken callback: ( accessToken ) -> alert accessToken
+app = require "./app"
+ajax = require( "./ajax" ) app
+vkApi = require( "./vk-api" ) app, ajax
+
+vkApi.getAccessToken callback: ( accessToken ) -> alert accessToken
 ```
 
 [**`request`**](http://vk.com/dev/auth_mobile)
@@ -32,7 +41,7 @@ app.vkApi.getAccessToken callback: ( accessToken ) -> alert accessToken
 All options are required.
 
 ```CoffeeScript
-app.vkApi.request
+vkApi.request
 	method: "users.get"
 	data: fields: "online"
 	callback: ({ online }) -> alert if online then "Online" else "Offline"
@@ -67,7 +76,7 @@ and injected to top window script captures it.
 
 #### Request iframe
 
-**`app.vkApi.*`** if needed creates **`<iframe>`** tag and appends in to
+**`vkApi.*`** if needed creates **`<iframe>`** tag and appends in to
 **`document.body`** element like so:
 **`document.body.appendChild authFrame`**.
 
@@ -100,16 +109,14 @@ equal to `id` attribute specified on `authFrame` element
 `vkApi` should cache access token. Reset it to `null` so that everything looks
 like `vkApi` hasn't been used.
 
-		beforeEach -> app.vkApi._accessToken = null
-
 ## Application meta info
 
 		it "should have APP_ID", ->
-			app.vkApi.APP_ID.should.be.a "number"
+			vkApi.APP_ID.should.be.a "number"
 
-## app.vkApi.getAccessToken
+## vkApi.getAccessToken
 
-**`app.vkApi.getAccessToken`** is an async method to get the
+**`vkApi.getAccessToken`** is an async method to get the
 [session access token](http://vk.com/dev/auth_mobile).
 
 #### _performAuth helper
@@ -119,6 +126,10 @@ like `vkApi` hasn't been used.
 			it "should create an iframe and listen for the token", ( done ) ->
 
 `vkCe` is a function used to *Create element* - iframe in our case.
+
+				# A workaround for sinon.wrapMethod until
+				# https://github.com/cjohansen/Sinon.JS/pull/449 is merged.
+				window.vkCe = ( -> ) unless window.vkCe
 
 				sinon.stub window, "vkCe", ( elementType, attributes ) ->
 					elementType.should.equal "iframe"
@@ -130,9 +141,11 @@ like `vkApi` hasn't been used.
 				sinon.stub document.body, "appendChild", ( element ) ->
 					element.should.equal "fake element"
 
-				authRequestId = app.vkApi._performAuth
+				authRequestId = vkApi._performAuth
 					callback: ( accessToken ) ->
 						accessToken.should.equal "fake token"
+						window.vkCe.restore()
+						document.body.appendChild.restore()
 						done()
 
 				authRequestId.should.be.a "string"
@@ -159,7 +172,7 @@ like `vkApi` hasn't been used.
 					accessToken: "fake token"
 				, "*"
 
-#### app.vkApi.getAccessToken itself
+#### vkApi.getAccessToken itself
 
 		describe "getAccessToken", ->
 
@@ -170,7 +183,7 @@ like `vkApi` hasn't been used.
 `_performAuth` should be called only once as the result should be cached.
 
 				isFakeAuthCalled = no
-				sinon.stub app.vkApi, "_performAuth", ({ callback } = {}) ->
+				sinon.stub vkApi, "_performAuth", ({ callback } = {}) ->
 					isFakeAuthCalled.should.equal no
 					isFakeAuthCalled = yes
 					# Defer callback execution to mimic async process.
@@ -184,12 +197,12 @@ as an argument.
 					isFakeCallbackCalled.should.equal no
 					isFakeCallbackCalled = yes
 					accessToken.should.equal "fake token"
-					app.vkApi._performAuth.restore()
+					vkApi._performAuth.restore()
 					done()
 
 Let's rock.
 
-				app.vkApi.getAccessToken callback: fakeCallback
+				vkApi.getAccessToken callback: fakeCallback
 
 #### It caches the token.
 
@@ -199,7 +212,7 @@ Let's rock.
 
 				isFakeAuthCalled = no
 				fakeAuth =
-				sinon.stub app.vkApi, "_performAuth", ({ callback } = {}) ->
+				sinon.stub vkApi, "_performAuth", ({ callback } = {}) ->
 					isFakeAuthCalled.should.equal no
 					isFakeAuthCalled = yes
 					callback.should.be.a "function"
@@ -221,11 +234,11 @@ It should also get correct access token as an argument.
 
 Let's rock.
 
-				app.vkApi.getAccessToken callback: ( accessToken ) ->
+				vkApi.getAccessToken callback: ( accessToken ) ->
 					fakeCallback accessToken
-					app.vkApi.getAccessToken callback: ( accessToken ) ->
+					vkApi.getAccessToken callback: ( accessToken ) ->
 						fakeCallback accessToken
-						app.vkApi.getAccessToken callback: ( accessToken ) ->
+						vkApi.getAccessToken callback: ( accessToken ) ->
 							fakeCallback accessToken
 
 #### It doesn't auth multiple times simultaneously.
@@ -236,7 +249,7 @@ Let's rock.
 
 				isFakeAuthCalled = no
 				fakeAuthCallback = null
-				sinon.stub app.vkApi, "_performAuth", ({ callback } = {}) ->
+				sinon.stub vkApi, "_performAuth", ({ callback } = {}) ->
 					isFakeAuthCalled.should.equal no
 					isFakeAuthCalled = yes
 					callback.should.be.a "function"
@@ -252,44 +265,44 @@ It should also get correct access token as an argument.
 					fakeCallbackCalls += 1
 					accessToken.should.equal "fake token"
 					if fakeCallbackCalls is 3
-						app.vkApi._performAuth.restore()
+						vkApi._performAuth.restore()
 						done()
 
-				app.vkApi.getAccessToken callback: ( accessToken ) ->
+				vkApi.getAccessToken callback: ( accessToken ) ->
 					fakeCallback accessToken
 				# Previous call is still waiting for response.
-				app.vkApi.getAccessToken callback: ( accessToken ) ->
+				vkApi.getAccessToken callback: ( accessToken ) ->
 					fakeCallback accessToken
-				app.vkApi.getAccessToken callback: ( accessToken ) ->
+				vkApi.getAccessToken callback: ( accessToken ) ->
 					fakeCallback accessToken
 
 				# Fire! fakeCallback should be called three times now.
 				fakeAuthCallback()
 
-## app.vkApi.request
+## vkApi.request
 
-**`app.vkApi.request`** is an async method to make
+**`vkApi.request`** is an async method to make
 [a request to VK API](http://vk.com/dev/api_requests).
 
-It is actually just a wrapper for `app.vkApi.getAccessToken`
-and `app.ajax.get`.
+It is actually just a wrapper for `vkApi.getAccessToken`
+and `ajax.get`.
 
 		describe "request", ->
 
-#### It gets access token and calls `app.ajax.get`.
+#### It gets access token and calls `ajax.get`.
 
-			it "should fetch token and call app.ajax.get", ( done ) ->
+			it "should fetch token and call ajax.get", ( done ) ->
 
-				sinon.stub app.vkApi, "getAccessToken", ({ callback } = {}) ->
+				sinon.stub vkApi, "getAccessToken", ({ callback } = {}) ->
 					# Defer callback execution to mimic async process.
 					setTimeout -> callback "fake token"
 
-				sinon.stub app.ajax, "get", ({ url, data, callback } = {}) ->
+				sinon.stub ajax, "get", ({ url, data, callback } = {}) ->
 					url.should.equal "https://api.vk.com/method/users.get"
 					data.should.deep.equal
 						foo: "bar"
 						access_token: "fake token"
-						v: app.vkApi._apiVersion
+						v: vkApi._apiVersion
 					# Defer callback execution to mimic async process.
 					setTimeout -> callback "{\"online\":0}", {}
 
@@ -301,13 +314,13 @@ as an argument.
 					isFakeCallbackCalled.should.equal no
 					isFakeCallbackCalled = yes
 					result.should.deep.equal online: 0
-					app.vkApi.getAccessToken.restore()
-					app.ajax.get.restore()
+					vkApi.getAccessToken.restore()
+					ajax.get.restore()
 					done()
 
 Let's rock.
 
-				app.vkApi.request
+				vkApi.request
 					method: "users.get"
 					data: foo: "bar"
 					callback: fakeCallback
@@ -316,43 +329,43 @@ Let's rock.
 
 			it "should have \"data\" and \"callback\" optional", ( done ) ->
 
-				sinon.stub app.vkApi, "getAccessToken", ({ callback } = {}) ->
+				sinon.stub vkApi, "getAccessToken", ({ callback } = {}) ->
 					# Defer callback execution to mimic async process.
 					setTimeout -> callback "fake token"
 
-				sinon.stub app.ajax, "get", ({ url, data, callback } = {}) ->
+				sinon.stub ajax, "get", ({ url, data, callback } = {}) ->
 					url.should.equal "https://api.vk.com/method/users.get"
 					data.should.deep.equal
 						access_token: "fake token"
-						v: app.vkApi._apiVersion
-					app.vkApi.getAccessToken.restore()
-					app.ajax.get.restore()
+						v: vkApi._apiVersion
+					vkApi.getAccessToken.restore()
+					ajax.get.restore()
 					done()
 
-				app.vkApi.request
+				vkApi.request
 					method: "users.get"
 
 #### It throws when `method` is missing.
 
 			it "should throw when \"method\" is missing", ->
 
-				( -> app.vkApi.request data: {}, callback: -> )
-					.should.throw "app.vkApi.request - method is missing!"
+				( -> vkApi.request data: {}, callback: -> )
+					.should.throw "vkApi.request - method is missing!"
 
 #### It retries in a moment if got "Too many requests per second" error.
 
 			it "should retry when too many requests per second", ( done ) ->
 
-				sinon.stub app.vkApi, "getAccessToken", ({ callback } = {}) ->
+				sinon.stub vkApi, "getAccessToken", ({ callback } = {}) ->
 					callback "fake token"
 
 				isFirstTry = yes
-				sinon.stub app.ajax, "get", ({ url, data, callback } = {}) ->
+				sinon.stub ajax, "get", ({ url, data, callback } = {}) ->
 					url.should.equal "https://api.vk.com/method/users.get"
 					data.should.deep.equal
 						foo: "bar"
 						access_token: "fake token"
-						v: app.vkApi._apiVersion
+						v: vkApi._apiVersion
 					if isFirstTry
 						isFirstTry = no
 						result = error: error_code: 6
@@ -361,7 +374,7 @@ Let's rock.
 					callback JSON.stringify result
 
 				sinon.stub window, "setTimeout", ( callback, delay ) ->
-					delay.should.equal app.vkApi._retryDelay
+					delay.should.equal vkApi._retryDelay
 					setTimeout.restore()
 					# Defer callback execution to mimic timeout.
 					setTimeout callback
@@ -371,13 +384,13 @@ Let's rock.
 					isFakeCallbackCalled.should.equal no
 					isFakeCallbackCalled = yes
 					result.should.deep.equal response: online: 0
-					app.vkApi.getAccessToken.should.have.been.calledOnce
-					app.vkApi.getAccessToken.restore()
-					app.ajax.get.should.have.been.calledTwice
-					app.ajax.get.restore()
+					vkApi.getAccessToken.should.have.been.calledOnce
+					vkApi.getAccessToken.restore()
+					ajax.get.should.have.been.calledTwice
+					ajax.get.restore()
 					done()
 
-				app.vkApi.request
+				vkApi.request
 					method: "users.get"
 					data: foo: "bar"
 					callback: fakeCallback

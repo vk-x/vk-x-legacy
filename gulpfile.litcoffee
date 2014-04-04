@@ -98,48 +98,53 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 
 #### bower
 
-	bowerDeps =
-		"lodash": "bower_components/lodash/dist/lodash.min.js"
-
 	bowerBackgroundDeps =
 		"superagent": "bower_components/superagent/superagent.js"
 
-	sourceListForTop = _.union ( _.values bowerDeps ), [ "source/*.*",
-	"source/run-in-top/*.*" ]
-
-	sourceListForFrames = _.union ( _.values bowerDeps ), [ "source/*.*",
-	"source/run-in-frames/*.*" ]
-
 	gulp.task "bower", ->
 		bower = require "bower"
-		bower.commands.install _.keys _.merge bowerDeps, bowerBackgroundDeps
+		bower.commands.install _.keys bowerBackgroundDeps
 
 #### test
 See `test/karma-config.litcoffee` file for docs on tests.
 
 	gulp.task "test", ->
-		gulp.src _.union sourceListForTop, [ "test/*.test.litcoffee" ]
+		gulp.src [ "./test/unit/index.litcoffee" ]
 			.pipe plugins.karma
 				configFile: "test/karma-config.litcoffee"
 
 #### clean-build and clean-dist
 
-	for folder in [ "build", "dist" ]
-		do ( folder ) -> gulp.task "clean-#{folder}", ( done ) ->
-			busyFiles = []
-			retryInterval = 50
-			tryRemove = ->
-				fs.remove folder, ( error ) ->
-					if error
-						if error.path not in busyFiles
-							busyFiles.push error.path
-							relativePath = path.relative cwd, error.path
-							errorMessage = "Can't remove #{relativePath}, " +
-							"will retry each #{retryInterval}ms until success."
-							console.log errorMessage.yellow
-						setTimeout tryRemove, retryInterval
-					else done()
-			tryRemove()
+	removeFolder = ( folder, callback ) ->
+		busyFiles = []
+		retryInterval = 50
+		tryRemove = ->
+			fs.remove folder, ( error ) ->
+				if error
+					if error.path not in busyFiles
+						busyFiles.push error.path
+						relativePath = path.relative cwd, error.path
+						errorMessage = "Can't remove #{relativePath}, " +
+						"will retry each #{retryInterval}ms until success."
+						console.log errorMessage.yellow
+					setTimeout tryRemove, retryInterval
+				else callback()
+		tryRemove()
+
+	gulp.task "clean-dist", ( done ) ->
+		removeFolder "dist", done
+
+	for folder in [ "chromium", "firefox", "maxthon", "opera" ]
+		do ( folder ) ->
+			gulp.task "clean-#{folder}", ( done ) ->
+				removeFolder "build/#{folder}", done
+
+	gulp.task "clean-build", [
+		"clean-chromium"
+		"clean-firefox"
+		"clean-maxthon"
+		"clean-opera"
+	]
 
 #### meta
 
@@ -174,17 +179,25 @@ See `test/karma-config.litcoffee` file for docs on tests.
 #### scripts
 
 	gulp.task "scripts", [ "clean-build" ], ->
+		browserifyConfig = require "./build/browserify-config"
+
 		sourceForTopStream = ->
-			gulp.src sourceListForTop
-				.pipe plugins.if /\.template\./, plugins.template config
-				.pipe plugins.if /\.litcoffee$/, plugins.coffee bare: yes
+			legacyStream =
+				gulp.src "source/legacy/*.js"
+					.pipe plugins.concat "legacy.js"
+
+			browserifyStream = gulp.src "source/index-top.litcoffee", read: no
+				.pipe plugins.browserify browserifyConfig
+				.pipe plugins.rename "bundle.js"
+
+			es.concat browserifyStream, legacyStream
+				.pipe plugins.order [ "bundle.js", "legacy.js" ]
 				.pipe plugins.concat "run-in-top.js"
 
 		sourceForFramesStream = ->
-			gulp.src sourceListForFrames
-				.pipe plugins.if /\.template\./, plugins.template config
-				.pipe plugins.if /\.litcoffee$/, plugins.coffee bare: yes
-				.pipe plugins.concat "run-in-frames.js"
+			gulp.src "source/index-frames.litcoffee", read: no
+				.pipe plugins.browserify browserifyConfig
+				.pipe plugins.rename "run-in-frames.js"
 
 		injectSourceForTop = plugins.inject sourceForTopStream(),
 			starttag: "sourceForTop = \""

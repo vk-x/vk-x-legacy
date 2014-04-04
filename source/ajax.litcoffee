@@ -1,25 +1,22 @@
 **Note**: see tests for API documentation. This file only contains notes
 on internal details.
 
-# app.ajax
-`do` keyword just runs provided function.
-[`do ->`](http://coffeescript.org/#try:do -> alert document.title)
-is a convenient way to create an
-[IIFE](http://en.wikipedia.org/wiki/Immediately-invoked_function_expression)
-in CoffeeScript.
+# `ajax` module
 
-	app.ajax = do ->
+	_ = require "lodash"
 
-## app.ajax.request
+	ajax = ( app ) ->
+
+## ajax.request
 
 		request = ( options = {}) ->
 			# Keep callback private, do not pass it with request settings.
 			callback = options.callback ? ->
 			delete options.callback if options.callback
 
-			requestId = app.util.uniqueId app.name
+			requestId = _.uniqueId app.name
 
-			settings = app.util.defaults options,
+			settings = _.defaults options,
 				method: "GET"
 				url: ""
 				data: {}
@@ -65,3 +62,5 @@ property to message data with a value of `_requestId` property like so:
 		get: shortcut.get
 		head: shortcut.head
 		post: shortcut.post
+		
+	module.exports = ajax

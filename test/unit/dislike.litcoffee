@@ -1,10 +1,16 @@
-# app.dislike
+# `dislike` module
 
-	describe "app.dislike", ->
+	describe "dislike", ->
+
+		app = require "../../source/app"
+		ajax = require( "../../source/ajax" ) app
+		vkApi = require( "../../source/vk-api" ) app, ajax
+		dislike = null
+		beforeEach -> dislike = require( "../../source/dislike" ) ajax, vkApi
 
 ## What?
 
-**`app.dislike`** provides interface for... suddenly, **dislike** management.
+**`dislike`** module provides interface for, suddenly, **dislike** management.
 
 ## Why?
 
@@ -15,19 +21,24 @@ Why not? Many VkOpt users use dislikes.
 #### API
 
 ```CoffeeScript
+app = require "./app"
+ajax = require( "./ajax" ) app
+vkApi = require( "./vk-api" ) app, ajax
+dislike = require( "./dislike" ) ajax, vkApi
+
 # Just any unique string you prefer for current object.
 objectUniqueId = "photo12345_12345"
 
-app.dislike.request
+dislike.request
 	target: objectUniqueId
 	dislike: yes # "yes" by default. Pass "no" to undo dislike.
 	callback: -> alert "Dislike set successfully!"
 
-app.dislike.count
+dislike.count
 	target: objectUniqueId
 	callback: ({ count, isDisliked }) -> alert "Dislikes: #{count}."
 
-app.dislike.list
+dislike.list
 	target: objectUniqueId
 	limit: 6 # default is 6
 	offset: 0 # default is 0
@@ -38,8 +49,8 @@ app.dislike.list
 
 There're shortcuts:
 ```CoffeeScript
-app.dislike.add target: "object_id", callback: ->
-app.dislike.remove target: "object_id", callback: ->
+dislike.add target: "object_id", callback: ->
+dislike.remove target: "object_id", callback: ->
 ```
 
 Only `target` is required in all methods.
@@ -88,17 +99,17 @@ To get dislikes we can use regular
 ## Application meta info
 
 		it "should have APP_ID", ->
-			app.dislike.APP_ID.should.be.a "number"
+			dislike.APP_ID.should.be.a "number"
 
-## app.dislike.request
-**`app.dislike.request`** is the main dislike method.
+## dislike.request
+**`dislike.request`** is the main dislike method.
 
 #### _fetchWidgetHtml helper
 
 		describe "_fetchWidgetHtml", ->
 
 			it "should fetch widget html and pass it to callback", ( done ) ->
-				sinon.stub app.ajax, "post", ({ url, data, callback } = {}) ->
+				sinon.stub ajax, "post", ({ url, data, callback } = {}) ->
 					url.should.equal "https://vk.com/widget_like.php"
 					data.should.deep.equal
 						app: "foo"
@@ -106,12 +117,12 @@ To get dislikes we can use regular
 					# Defer callback execution to mimic async process.
 					setTimeout -> callback "bar"
 
-				app.dislike._fetchWidgetHtml
+				dislike._fetchWidgetHtml
 					appId: "foo"
 					targetUrl: "target/for/dislike"
 					callback: ( html ) ->
 						html.should.equal "bar"
-						app.ajax.post.restore()
+						ajax.post.restore()
 						done()
 
 #### _parseHashValues helper
@@ -120,21 +131,19 @@ To get dislikes we can use regular
 
 			it "should extract hashes and return them", ->
 				html = "_pageQuery = '123abc'; likeHash = '456def'"
-				hashes = app.dislike._parseHashValues html
+				hashes = dislike._parseHashValues html
 				hashes.should.deep.equal
 					pageQuery: "123abc"
 					likeHash: "456def"
 
 			it "should throw on invalid html", ->
 				html = "_pageQuery = 'lolwtf'; likeHash = 5"
-				( -> app.dislike._parseHashValues html )
-					.should.throw "app.dislike.request - invalid widget html!"
+				( -> dislike._parseHashValues html )
+					.should.throw "dislike.request - invalid widget html!"
 
 #### _getHashValues helper
 
 		describe "_getHashValues", ->
-
-			beforeEach -> app.dislike._hashValuesCache = {}
 
 			it "should _fetchWidgetHtml, _parseHashValues, and cache results",
 				( done ) ->
@@ -145,39 +154,39 @@ To get dislikes we can use regular
 						pageQuery: "fake pageQuery"
 						likeHash: "fake hash"
 
-					sinon.stub app.dislike, "_fetchWidgetHtml",
+					sinon.stub dislike, "_fetchWidgetHtml",
 						({ appId, targetUrl, callback } = {}) ->
 							appId.should.equal fakeAppId
 							targetUrl.should.equal fakeTargetUrl
 							# Defer callback execution to mimic async process.
 							setTimeout -> callback fakeWidgetHtml
 
-					sinon.stub app.dislike, "_parseHashValues", ( html ) ->
+					sinon.stub dislike, "_parseHashValues", ( html ) ->
 						html.should.equal fakeWidgetHtml
 						fakeHashValues
 
-					app.dislike._getHashValues
+					dislike._getHashValues
 						appId: fakeAppId
 						targetUrl: fakeTargetUrl
 						callback: ( hashValues ) ->
 							hashValues.should.deep.equal fakeHashValues
-							app.dislike._fetchWidgetHtml
+							dislike._fetchWidgetHtml
 								.should.have.been.calledOnce
-							app.dislike._parseHashValues
+							dislike._parseHashValues
 								.should.have.been.calledOnce
 							
 							# Second call, should use cache.
-							app.dislike._getHashValues
+							dislike._getHashValues
 								appId: fakeAppId
 								targetUrl: fakeTargetUrl
 								callback: ( hashValues ) ->
 									hashValues.should.deep.equal fakeHashValues
-									app.dislike._fetchWidgetHtml
+									dislike._fetchWidgetHtml
 										.should.have.been.calledOnce
-									app.dislike._parseHashValues
+									dislike._parseHashValues
 										.should.have.been.calledOnce
-									app.dislike._fetchWidgetHtml.restore()
-									app.dislike._parseHashValues.restore()
+									dislike._fetchWidgetHtml.restore()
+									dislike._parseHashValues.restore()
 									done()
 
 #### _performLikeRequest helper
@@ -186,7 +195,7 @@ To get dislikes we can use regular
 
 			it "should make correct request and then invoke callback",
 			( done ) ->
-				sinon.stub app.ajax, "post",
+				sinon.stub ajax, "post",
 					({ url, data, callback, query } = {}) ->
 						url.should.equal "https://vk.com/widget_like.php"
 						query.should.deep.equal act: "a_like"
@@ -198,17 +207,17 @@ To get dislikes we can use regular
 						# Defer callback execution to mimic async process.
 						setTimeout -> callback "weird redirected page html"
 
-				app.dislike._performLikeRequest
+				dislike._performLikeRequest
 					appId: "foo"
 					hashValues:
 						pageQuery: "fake pageQuery"
 						likeHash: "fake hash"
 					dislike: 1
 					callback: ->
-						app.ajax.post.restore()
+						ajax.post.restore()
 						done()
 
-#### app.dislike.request itself
+#### dislike.request itself
 
 		describe "request", ->
 
@@ -216,19 +225,20 @@ To get dislikes we can use regular
 
 			it "should use helpers to apply dislike", ( done ) ->
 
-				sinon.stub app.dislike, "_getHashValues",
+				sinon.stub dislike, "_getHashValues",
 					({ appId, targetUrl, callback } = {}) ->
-						appId.should.equal app.dislike.APP_ID
-						targetUrl.should.equal app.dislike.BASE_URL +
+						appId.should.equal dislike.APP_ID
+						targetUrl.should.equal dislike.BASE_URL +
 							"fake object"
 						# Defer callback execution to mimic async process.
 						setTimeout -> callback
 							pageQuery: "fake pageQuery"
 							likeHash: "fake hash"
 
-				sinon.stub app.dislike, "_performLikeRequest",
+				dislikeModule = dislike
+				sinon.stub dislike, "_performLikeRequest",
 					({ appId, hashValues, dislike, callback }) ->
-						appId.should.equal app.dislike.APP_ID
+						appId.should.equal dislikeModule.APP_ID
 						hashValues.should.deep.equal
 							pageQuery: "fake pageQuery"
 							likeHash: "fake hash"
@@ -236,64 +246,67 @@ To get dislikes we can use regular
 						# Defer callback execution to mimic async process.
 						setTimeout callback
 
-				app.dislike.request
+				dislike.request
 					target: "fake object"
 					dislike: yes
 					callback: ->
-						app.dislike._getHashValues.should.have.been.called
-						app.dislike._getHashValues.restore()
-						app.dislike._performLikeRequest.should.have.been.called
-						app.dislike._performLikeRequest.restore()
+						dislike._getHashValues.should.have.been.called
+						dislike._getHashValues.restore()
+						dislike._performLikeRequest.should.have.been.called
+						dislike._performLikeRequest.restore()
 						done()
 
 #### It assumes `dislike` is `true` by default.
 
 			it "should use \"dislike: yes\" by default", ( done ) ->
-				sinon.stub app.dislike, "_fetchWidgetHtml", ({ callback }) ->
+				sinon.stub dislike, "_fetchWidgetHtml", ({ callback }) ->
 					callback "_pageQuery = '123abc'; likeHash = '456def'"
 
-				sinon.stub app.dislike, "_performLikeRequest", ({ dislike }) ->
+				dislikeModule = dislike
+				sinon.stub dislike, "_performLikeRequest", ({ dislike }) ->
 						dislike.should.equal 1
-						app.dislike._fetchWidgetHtml.restore()
-						app.dislike._performLikeRequest.restore()
+						dislikeModule._fetchWidgetHtml.restore()
+						dislikeModule._performLikeRequest.restore()
 						done()
 
-				app.dislike.request target: "fake object"
+				dislike.request target: "fake object"
 
 #### It requires `target` to be specified.
 
 			it "should throw when no target specified", ->
-				app.dislike.request.should.throw "Dislike target not specified!"
+				dislike.request.should.throw "Dislike target not specified!"
 
-## app.dislike.add
-**`app.dislike.add`** is an alias for `app.dislike.request dislike: yes`
+## dislike.add
+**`dislike.add`** is an alias for `dislike.request dislike: yes`
 
 		describe "add", ->
 			it "should set dislike to yes", ( done ) ->
-				sinon.stub app.dislike, "request", ({ dislike, target }) ->
+				dislikeModule = dislike
+				sinon.stub dislike, "request", ({ dislike, target }) ->
 						dislike.should.equal yes
 						target.should.equal "fake object"
-						app.dislike.request.restore()
+						dislikeModule.request.restore()
 						done()
 
-				app.dislike.add target: "fake object"
+				dislike.add target: "fake object"
 
 
-## app.dislike.remove
-**`app.dislike.remove`** is an alias for `app.dislike.request dislike: no`
+## dislike.remove
+**`dislike.remove`** is an alias for `dislike.request dislike: no`
 
 		describe "remove", ->
 			it "should set dislike to no", ( done ) ->
-				sinon.stub app.dislike, "request", ({ dislike, target }) ->
-						dislike.should.equal no
-						target.should.equal "fake object"
-						app.dislike.request.restore()
-						done()
+				dislikeModule = dislike
+				sinon.stub dislike, "request", ({ dislike, target }) ->	
+					dislike.should.equal no
+					target.should.equal "fake object"
+					dislikeModule.request.restore()
+					done()
 
-				app.dislike.remove target: "fake object"
+				dislike.remove target: "fake object"
 
-## app.dislike.count
-**`app.dislike.count`** is a shortcut for the corresponding `app.vkApi` call.
+## dislike.count
+**`dislike.count`** is a shortcut for the corresponding `vkApi` call.
 
 This is the source code of `execute.dislikeSummary` stored function:
 ```JavaScript
@@ -323,46 +336,46 @@ Back to tests.
 
 		describe "count", ->
 
-			beforeEach -> app.dislike._dislikeCountCache = {}
+			beforeEach -> dislike._dislikeCountCache = {}
 
-			it "should make correct app.vkApi.request call", ( done ) ->
-				sinon.stub app.vkApi, "request", ({ method, data, callback }) ->
+			it "should make correct vkApi.request call", ( done ) ->
+				sinon.stub vkApi, "request", ({ method, data, callback }) ->
 						method.should.equal "execute.dislikeSummary"
 						data.should.deep.equal
-							appId: app.dislike.APP_ID
-							targetUrl: app.dislike.BASE_URL + "fake object"
+							appId: dislike.APP_ID
+							targetUrl: dislike.BASE_URL + "fake object"
 
 						# Defer callback execution to mimic async process.
 						setTimeout callback response: count: 5, isDisliked: yes
 
-				app.dislike.count
+				dislike.count
 					target: "fake object"
 					callback: ({ count, isDisliked }) ->
-						app.vkApi.request.should.have.been.called
-						app.vkApi.request.restore()
+						vkApi.request.should.have.been.called
+						vkApi.request.restore()
 						count.should.equal 5
 						isDisliked.should.equal yes
 						done()
 
 			it "should cache results", ( done ) ->
-				sinon.stub app.vkApi, "request", ({ method, data, callback }) ->
+				sinon.stub vkApi, "request", ({ method, data, callback }) ->
 
 						# Defer callback execution to mimic async process.
 						setTimeout callback response: count: 5, isDisliked: yes
 
-				app.dislike.count
+				dislike.count
 					target: "fake object"
 					callback: ({ count, isDisliked }) ->
-						app.vkApi.request.should.have.been.called
+						vkApi.request.should.have.been.called
 						count.should.equal 5
 						isDisliked.should.equal yes
 
 						# Second call, should use cache.
-						app.dislike.count
+						dislike.count
 							target: "fake object"
 							callback: ({ count, isDisliked }) ->
-								app.vkApi.request.should.have.been.calledOnce
-								app.vkApi.request.restore()
+								vkApi.request.should.have.been.calledOnce
+								vkApi.request.restore()
 								count.should.equal 5
 								isDisliked.should.equal yes
 								done()
@@ -370,20 +383,20 @@ Back to tests.
 #### It requires `target` to be specified.
 
 			it "should throw when no target specified", ->
-				app.dislike.count.should.throw "Dislike target not specified!"
+				dislike.count.should.throw "Dislike target not specified!"
 
-## app.dislike.list
-**`app.dislike.list`** is a shortcut for the corresponding `app.vkApi` call.
+## dislike.list
+**`dislike.list`** is a shortcut for the corresponding `app.vkApi` call.
 
 		describe "list", ->
 
-			it "should make correct app.vkApi.request call", ( done ) ->
-				sinon.stub app.vkApi, "request", ({ method, data, callback }) ->
+			it "should make correct vkApi.request call", ( done ) ->
+				sinon.stub vkApi, "request", ({ method, data, callback }) ->
 					method.should.equal "likes.getList"
 					data.should.deep.equal
 						type: "sitepage"
-						page_url: app.dislike.BASE_URL + "fake target"
-						owner_id: app.dislike.APP_ID
+						page_url: dislike.BASE_URL + "fake target"
+						owner_id: dislike.APP_ID
 						count: "fake count"
 						offset: "fake offset"
 
@@ -392,24 +405,24 @@ Back to tests.
 						count: "fake count"
 						items: [ 10, 20, 30 ]
 
-				app.dislike.list
+				dislike.list
 					target: "fake target"
 					limit: "fake count"
 					offset: "fake offset"
 					callback: ({ count, users }) ->
-						app.vkApi.request.should.have.been.called
-						app.vkApi.request.restore()
+						vkApi.request.should.have.been.called
+						vkApi.request.restore()
 						count.should.equal "fake count"
 						users.should.deep.equal [ 10, 20, 30 ]
 						done()
 
 			it "should use sane defaults", ( done ) ->
-				sinon.stub app.vkApi, "request", ({ method, data, callback }) ->
+				sinon.stub vkApi, "request", ({ method, data, callback }) ->
 					method.should.equal "likes.getList"
 					data.should.deep.equal
 						type: "sitepage"
-						page_url: app.dislike.BASE_URL + "fake target"
-						owner_id: app.dislike.APP_ID
+						page_url: dislike.BASE_URL + "fake target"
+						owner_id: dislike.APP_ID
 						count: 6
 						offset: 0
 
@@ -418,36 +431,36 @@ Back to tests.
 						count: "fake count"
 						items: [ 10, 20, 30 ]
 
-				app.dislike.list
+				dislike.list
 					target: "fake target"
 					callback: ({ count, users }) ->
-						app.vkApi.request.should.have.been.called
-						app.vkApi.request.restore()
+						vkApi.request.should.have.been.called
+						vkApi.request.restore()
 						count.should.equal "fake count"
 						users.should.deep.equal [ 10, 20, 30 ]
 						done()
 
 			it "should throw when no target specified", ->
-				app.dislike.list.should.throw "Dislike target not specified!"
+				dislike.list.should.throw "Dislike target not specified!"
 
 			it "should return safe defaults to callback", ( done ) ->
-				sinon.stub app.vkApi, "request", ({ method, data, callback }) ->
+				sinon.stub vkApi, "request", ({ method, data, callback }) ->
 					method.should.equal "likes.getList"
 					data.should.deep.equal
 						type: "sitepage"
-						page_url: app.dislike.BASE_URL + "fake target"
-						owner_id: app.dislike.APP_ID
+						page_url: dislike.BASE_URL + "fake target"
+						owner_id: dislike.APP_ID
 						count: 6
 						offset: 0
 
 					# Defer callback execution to mimic async process.
 					setTimeout callback error: "wrong target url, silly you"
 
-				app.dislike.list
+				dislike.list
 					target: "fake target"
 					callback: ({ count, users }) ->
-						app.vkApi.request.should.have.been.called
-						app.vkApi.request.restore()
+						vkApi.request.should.have.been.called
+						vkApi.request.restore()
 						count.should.equal 0
 						users.should.deep.equal []
 						done()

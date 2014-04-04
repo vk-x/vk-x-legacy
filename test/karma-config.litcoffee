@@ -27,22 +27,22 @@ Also see `package.json` file for a list of dependencies.
 
 	module.exports = ( config ) ->
 		config.set
-			basePath: "../"
 
 			logLevel: config.LOG_WARN
 
-			files: [
-				"source/*.*"
-				"source/run-in-top/*.*"
-				"test/*.test.litcoffee" ]
+			files: [ "./unit/index.litcoffee" ]
 
-			frameworks: [ "mocha", "sinon-chai" ]
+			frameworks: [ "mocha", "sinon-chai", "browserify" ]
 
 			preprocessors:
 				"**/*.template.*": [ "lodash" ]
 				"**/*.litcoffee": [ "coffee" ]
+				"./unit/**/*.*": [ "browserify" ]
 
-			lodashPreprocessor:
-				data: require "../package.json"
+			lodashPreprocessor: data: require "../package.json"
+
+			browserify: require "../build/browserify-config"
 
 			browsers: [ "PhantomJS" ]
+
+			singleRun: yes

@@ -1,9 +1,9 @@
 **Note**: see tests for API documentation. This file only contains notes
 on internal details.
 
-# app.dislike
+# `dislike` module
 
-	app.dislike = do ->
+	dislike = ( ajax, vkApi ) ->
 
 ## Private API
 
@@ -16,7 +16,7 @@ use those without an undersore (`_`).
 Private methods are here for testing purposes only (see tests).
 
 		_fetchWidgetHtml: ({ appId, targetUrl, callback }) ->
-			app.ajax.post
+			ajax.post
 				url: widgetUrl
 				data:
 					app: appId
@@ -28,7 +28,7 @@ Private methods are here for testing purposes only (see tests).
 				_pageQuery = html.match( /_pageQuery = '([a-f0-9]+)'/ )[ 1 ]
 				likeHash = html.match( /likeHash = '([a-f0-9]+)'/ )[ 1 ]
 			catch
-				throw Error "app.dislike.request - invalid widget html!"
+				throw Error "dislike.request - invalid widget html!"
 
 			pageQuery: _pageQuery
 			likeHash: likeHash
@@ -49,7 +49,7 @@ Private methods are here for testing purposes only (see tests).
 						callback hashValues
 
 		_performLikeRequest: ({ appId, hashValues, dislike, callback }) ->
-			app.ajax.post
+			ajax.post
 				url: widgetUrl
 				query: act: "a_like"
 				data:
@@ -87,7 +87,7 @@ You may use this meta data.
 		# VkOpt original dislike base URL.
 		BASE_URL: "http://vk.dislike.server/dislike/"
 
-#### app.dislike.request
+#### dislike.request
 
 		request: ({ target, dislike, callback } = {}) ->
 			throw Error "Dislike target not specified!" if not target
@@ -115,7 +115,7 @@ You may use this meta data.
 		remove: ({ target, callback } = {}) ->
 			@request target: target, dislike: no, callback: callback
 
-#### app.dislike.count
+#### dislike.count
 
 		_dislikeCountCache: {}
 		count: ({ target, callback } = {}) ->
@@ -127,7 +127,7 @@ You may use this meta data.
 				callback @_dislikeCountCache[ normalizedTarget ]
 			else
 				context = @
-				app.vkApi.request
+				vkApi.request
 					method: "execute.dislikeSummary"
 					data:
 						appId: @APP_ID
@@ -137,7 +137,7 @@ You may use this meta data.
 							response
 						callback response
 
-#### app.dislike.list
+#### dislike.list
 
 		list: ({ target, limit, offset, callback } = {}) ->
 			throw Error "Dislike target not specified!" unless target
@@ -147,7 +147,7 @@ You may use this meta data.
 			normalizedTarget = @_normalizeObjectId target
 
 			context = @
-			app.vkApi.request
+			vkApi.request
 				method: "likes.getList"
 				data:
 					type: "sitepage"
@@ -159,3 +159,5 @@ You may use this meta data.
 					callback
 						count: response?.count ? 0
 						users: response?.items ? []
+
+	module.exports = dislike
