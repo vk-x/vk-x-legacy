@@ -13,6 +13,7 @@
 		req = superagent data.method, absoluteUrl
 			.set data.headers
 			.query data.query
+			.type "form"
 
 		if data.method is "POST"
 			req.send data.data
