@@ -1,6 +1,5 @@
 	app = require "../../../../app"
-	superagent = require "superagent"
-	uri = require "../../../uri"
+	handleAjax = require "../../../handle-ajax"
 
 	inject = ( target, script, { isSource } = {}) ->
 		tag = target.createElement "script"
@@ -11,62 +10,10 @@
 			tag.charset = "UTF-8"
 		( target.head ? target.documentElement ).appendChild tag
 
-	handleAjax = ( win ) -> ({ data }) ->
-		return unless data.requestOf is app.name
-
-		absoluteUrl = uri.relativeToAbsolute win.location.href, data.url
-
-		req = superagent data.method, absoluteUrl
-			.set data.headers
-			.query data.query
-
-		if data.method is "POST"
-			req.send data.data
-		else
-			req.query data.data
-
-		req.end ( response ) ->
-			# postMessage() clones data for security reasons.
-			# Let's prepare safe clonable properties.
-			responseData =
-				url: data.url
-				method: data.method
-				responseOf: app.name
-				_requestId: data._requestId
-
-			responseData.response = {}
-			safeProperties = [
-				"accepted"
-				"badRequest"
-				"body"
-				"charset"
-				"clientError"
-				"error"
-				"forbidden"
-				"header"
-				"info"
-				"noContent"
-				"notAcceptable"
-				"notFound"
-				"ok"
-				"serverError"
-				"status"
-				"statusType"
-				"text"
-				"type"
-				"unauthorized"
-			]
-			for prop in safeProperties
-				responseData.response[ prop ] = response[ prop ]
-			# P.S. There're other properties like "xhr"
-			# (raw XMLHttpRequest) which can't be cloned.
-
-			win.postMessage responseData, "*"
-
 	processOpenedWindow = ({ doc, win, url }) ->
 		return unless /^http(s)?:\/\/([a-z0-9\.]+\.)?vk\.com\//.test url
 
-		win.addEventListener "message", ( handleAjax win ), no
+		win.addEventListener "message", handleAjax, no
 
 		# See: content_script.js:23
 		inject doc, "window._ext_ldr_vkopt_loader = true", isSource: yes
