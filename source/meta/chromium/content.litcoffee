@@ -1,10 +1,17 @@
-	inject = ( script ) ->
+	app = require "../../app"
+
+	# http://stackoverflow.com/a/9517879
+	inject = ( script, { isSource } = {}) ->
 		tag = document.createElement "script"
-		tag.textContent = script
+		if isSource
+			tag.textContent = script
+		else
+			tag.src = chrome.extension.getURL script
+		tag.charset = "UTF-8"
 		( document.head ? document.documentElement ).appendChild tag
 
 	handleAjax = ({ data }) ->
-		return unless data.requestOf is "<%= name %>"
+		return unless data.requestOf is app.name
 
 		req = superagent data.method, data.url
 			.set data.headers
@@ -12,12 +19,13 @@
 
 		if data.method is "POST"
 			req.send data.data
+				.type "form"
 		else
 			req.query data.data
 
 		req.end ( response ) ->
 			delete data.requestOf
-			data.responseOf = "<%= name %>"
+			data.responseOf = app.name
 
 			# postMessage() clones data for security reasons.
 			# Let's prepare safe clonable properties.
@@ -52,23 +60,10 @@
 
 	window.addEventListener "message", handleAjax, no
 
-Maxthon 4 does not allow to access files from web, so
-script file injection is impossible.
-
-Originally VkOpt used external scripts hosted on VkOpt site,
-this file injected them using `<script src="external url">` tag.
-
-Now we use gulp to concat source code and inject it below.
-
-	# See: gulpfile.litcoffee
-	sourceForTop = "This will be replaced with the source"
-	sourceForFrames = "This will be replaced with the source"
-
 	# See: content_script.js:23
-	inject "window._ext_ldr_vkopt_loader = true"
+	inject "window._ext_ldr_vkopt_loader = true", isSource: yes
 
-	# See: background.js:10
-	if window is window.top
-		inject sourceForTop
-	else
-		inject sourceForFrames
+	# See: background.js:10 and gulpfile.litcoffee
+	inject "run-in-top.js" if window is window.top
+
+	inject "run-in-frames.js" if window isnt window.top

@@ -2,8 +2,10 @@ This script runs in background and has a permission
 to do cross-origin ajax requests.
 See: `source/meta/opera/index.html`.
 
+	app = require "../../app"
+
 	handleAjax = ({ data, source }) ->
-		return unless data.requestOf is "<%= name %>"
+		return unless data.requestOf is app.name
 
 		# https://gist.github.com/Yaffle/1088850 in absolute-url.js
 		absoluteUrl = absolutizeURI data.sourceUrl, data.url
@@ -23,7 +25,7 @@ See: `source/meta/opera/index.html`.
 			responseData =
 				url: data.url
 				method: data.method
-				responseOf: "<%= name %>"
+				responseOf: app.name
 				_requestId: data._requestId
 
 			responseData.response = {}

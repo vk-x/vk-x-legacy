@@ -1,14 +1,16 @@
+	app = require "../../../../app"
+
 	inject = ( target, script, { isSource } = {}) ->
 		tag = target.createElement "script"
 		if isSource
 			tag.textContent = script
 		else
-			tag.src = "resource://<%= name %>/#{script}"
+			tag.src = "resource://#{app.name}/#{script}"
 			tag.charset = "UTF-8"
 		( target.head ? target.documentElement ).appendChild tag
 
 	handleAjax = ( win ) -> ({ data }) ->
-		return unless data.requestOf is "<%= name %>"
+		return unless data.requestOf is app.name
 
 		# https://gist.github.com/Yaffle/1088850 in absolute-url.js
 		absoluteUrl = absolutizeURI win.location.href, data.url
@@ -28,7 +30,7 @@
 			responseData =
 				url: data.url
 				method: data.method
-				responseOf: "<%= name %>"
+				responseOf: app.name
 				_requestId: data._requestId
 
 			responseData.response = {}

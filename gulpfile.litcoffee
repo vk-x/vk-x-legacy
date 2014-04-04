@@ -95,6 +95,7 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 	plugins = ( require "gulp-load-plugins" )()
 	cwd = process.cwd()
 	distPrefix = "#{config.name}-#{config.version}"
+	browserifyConfig = require "./build/browserify-config"
 
 #### bower
 
@@ -153,11 +154,11 @@ See `test/karma-config.litcoffee` file for docs on tests.
 		
 		metaStream = gulp.src "source/meta/*/**/*"
 			.pipe plugins.filter "!**/*.ignore.*"
+			.pipe plugins.filter "!**/*.litcoffee"
 			.pipe plugins.if /\.template\./, plugins.template config
 			.pipe plugins.if /\.template\./, plugins.rename ( path ) ->
 				path.basename = path.basename.replace /\.template$/, ""
 				return
-			.pipe plugins.if /\.litcoffee$/, plugins.coffee bare: yes
 			.pipe plugins.if /\.js$/, plugins.header noticeTemplate, config
 			.pipe gulp.dest "build"
 
@@ -179,8 +180,6 @@ See `test/karma-config.litcoffee` file for docs on tests.
 #### scripts
 
 	gulp.task "scripts", [ "clean-build" ], ->
-		browserifyConfig = require "./build/browserify-config"
-
 		sourceForTopStream = ->
 			legacyStream =
 				gulp.src "source/legacy/*.js"
@@ -217,25 +216,25 @@ See `test/karma-config.litcoffee` file for docs on tests.
 			"userscript-header.js"
 		noticeTemplate = fs.readFileSync "./source/meta/notice.template.js"
 
-		injectStream = gulp.src "source/meta/**/inject.ignore.*"
-			.pipe plugins.if /\.template\./, plugins.template config
-			.pipe plugins.if /\.template\./, plugins.rename ( path ) ->
-				path.basename = path.basename.replace /\.template$/, ""
-				return
-			.pipe plugins.if /\.litcoffee$/, plugins.coffee bare: yes
-			.pipe injectSourceForTop
-			.pipe injectSourceForFrames
-			.pipe plugins.header noticeTemplate, config
-			.pipe plugins.if /opera/, plugins.header userscriptHeader
-			.pipe plugins.rename basename: "inject"
-			.pipe gulp.dest "build"
+		contentScriptStream =
+			gulp.src [
+				"source/meta/*/**/content.litcoffee"
+				"source/meta/*/**/background.litcoffee"
+			], read: no
+				.pipe plugins.browserify browserifyConfig
+				.pipe plugins.rename extname: ".js"
+				.pipe plugins.header noticeTemplate, config
+				.pipe injectSourceForTop
+				.pipe injectSourceForFrames
+				.pipe plugins.if /opera/, plugins.header userscriptHeader
+				.pipe gulp.dest "build"
 
 		distStream = es.concat sourceForTopStream(), sourceForFramesStream()
 			.pipe plugins.header noticeTemplate, config
 			.pipe gulp.dest "build/chromium"
 			.pipe gulp.dest "build/firefox/scripts"
 
-		es.concat injectStream, distStream
+		es.concat contentScriptStream, distStream
 
 #### dist-maxthon
 Distributable Maxthon extension created using `maxthon-packager.exe`

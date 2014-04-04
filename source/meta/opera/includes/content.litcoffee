@@ -10,13 +10,15 @@ These two event handlers and `index.html` provide an interface
 for same-origin and cross-origin ajax.  
 See: `test/ajax.test.litcoffee`.
 
+	app = require "../../../app"
+
 	opera.extension.addEventListener "message", ({ data }) ->
 		# Pass response from background.litcoffee to injected script.
 		window.postMessage data, "*"
 	, false
 
 	window.addEventListener "message", ({ data }) ->
-		return unless data.requestOf is "<%= name %>"
+		return unless data.requestOf is app.name
 		# Pass request to background.litcoffee
 		data.sourceUrl = window.location.href
 		opera.extension.postMessage data
