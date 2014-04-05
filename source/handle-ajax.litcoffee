@@ -1,11 +1,11 @@
-	app = require "../app"
+	app = require "./app"
 	superagent = require "superagent"
 	uri = require "./uri"
 
 	handleAjax = ({ data, source }) ->
 		return unless data.requestOf is app.name
 
-		# Opera 12 denies to access source.location
+		# Opera 12 denies to access source.location in background
 		# See: source/meta/opera/includes/content.litcoffee
 		sourceUrl = source.location?.href ? data.sourceUrl
 		absoluteUrl = uri.relativeToAbsolute sourceUrl, data.url
@@ -56,9 +56,10 @@
 			# P.S. There're other properties like "xhr"
 			# (raw XMLHttpRequest) which can't be cloned.
 
-			if opera?
-				source.postMessage responseData
-			else
+			try
 				source.postMessage responseData, "*"
+			catch
+				# Opera background script shouldn't use second argument.
+				source.postMessage responseData
 
 	module.exports = handleAjax

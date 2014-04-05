@@ -4,12 +4,14 @@ on internal details.
 # `ajax` module
 
 	_ = require "lodash"
+	handleAjax = require "./handle-ajax"
+	uri = require "./uri"
 
 	ajax = ( app ) ->
 
 ## ajax.request
 
-		request = ( options = {}) ->
+		request: ( options = {}) ->
 			# Keep callback private, do not pass it with request settings.
 			callback = options.callback ? ->
 			delete options.callback if options.callback
@@ -43,24 +45,30 @@ property to message data with a value of `_requestId` property like so:
 			# Listen for response.
 			window.addEventListener "message", listener, no
 
-			# Send a request, wait for response.
-			window.postMessage settings, "*"
+			absoluteUrl = uri.relativeToAbsolute location.href, settings.url
+			isSameOrigin =
+				uri.parse( absoluteUrl ).hostname is
+				uri.parse( location.href ).hostname
+
+			if isSameOrigin
+				# Handle request in current context.
+				handleAjax data: settings, source: window
+			else
+				# Send a request to background, wait for response.
+				window.postMessage settings, "*"
 
 ## Shortcut methods
 
-		shortcut = {}
+		get: ( options = {}) ->
+			options.method = "GET"
+			@request options
 
-		for method in [ "get", "head", "post" ]
-			do ( method ) ->
-				shortcut[ method ] = ( options = {}) ->
-					options.method = method.toUpperCase()
-					request options
+		head: ( options = {}) ->
+			options.method = "HEAD"
+			@request options
 
-## Public interface
+		post: ( options = {}) ->
+			options.method = "POST"
+			@request options
 
-		request: request
-		get: shortcut.get
-		head: shortcut.head
-		post: shortcut.post
-		
 	module.exports = ajax

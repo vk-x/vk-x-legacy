@@ -1,4 +1,4 @@
-	handleAjax = require "../handle-ajax"
+	handleAjax = require "../../handle-ajax"
 	inject = require "../inject"
 
 	window.addEventListener "message", handleAjax, no

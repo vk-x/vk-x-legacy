@@ -3,6 +3,7 @@
 	describe "ajax", ->
 
 		app = require "../../source/app"
+		uri = require "../../source/uri"
 		ajax = null
 		beforeEach -> ajax = require( "../../source/ajax" ) app
 
@@ -13,7 +14,7 @@
 
 ## Why?
 
-Some features rely on cross-origin requests.
+Many features rely on ajax requests.
 
 E.g. to get audio file size we need to make a `HEAD` request to `cs*.vk.me/*`
 where the file is stored.
@@ -57,8 +58,12 @@ permissions. See `source/meta/**/*.js` for the background scripts.
 **Note**: here "background script" means any sandboxed extension script, that
 may be content script, user script, or background script.
 
-To keep it simple and DRY let's handle same-origin requests in
-background scripts too since there is no difference for them.
+Because some ajax requests need correct cookies and Opera 12
+(possibly Firefox too) doesn't pass them when making requests from
+background script (it has a different context with a different `document`
+and with disabled cookies), we have to split ajax handling:
+same-origin requests - in ordinary target window with injected scripts,
+cross-origin requests - in background context.
 
 #### Talk with that script via `message` event on `window`.
 
@@ -134,30 +139,73 @@ It just checks that request is correct and calls provided function
 
 		describe "request", ->
 
-#### It sends request data to background script:
+#### Mock up XMLHttpRequest for each test.
+You can look into `requests` to see all requests made from the start
+of current test.
 
-			it "should pass request data via 'message' event", ( done ) ->
-				# Set up a background listener.
-				mimicBackgroundListener ( -> done() ),
-					method: "POST"
-					url: "http://example.com/"
-					data: "bar"
+			xhr = null
+			requests = null
 
-				# Send request to background.
+			beforeEach ->
+				requests = []
+				xhr = sinon.useFakeXMLHttpRequest()
+				xhr.onCreate = ( xhr ) -> requests.push xhr
+
+			afterEach -> xhr.restore()
+
+#### It uses xhr for same-origin requests:
+
+			it "should use xhr for same-origin request", ( done ) ->
+				requestUrl = "/some?same-origin=path"
+				absoluteUrl = uri.relativeToAbsolute location.href, requestUrl
+
+				# Will be called by the ajax module as a callback.
+				callback = ( response, requestData ) ->
+					response.should.equal "foo"
+					requestData.response.text.should.equal "foo"
+					requestData.method.should.equal "POST"
+					requestData.url.should.equal requestUrl
+					done()
+
 				ajax.request
 					method: "POST"
-					url: "http://example.com/"
+					url: requestUrl
 					data: "bar"
+					callback: callback
 
-			it "should use sane defaults", ( done ) ->
-				mimicBackgroundListener ( -> done() ),
-					method: "GET"
-					url: ""
-					data: {}
-					query: {}
-					headers: {}
+				requests.length.should.equal 1
+				requests[ 0 ].url.should.equal absoluteUrl
+				requests[ 0 ].method.should.equal "POST"
+				requests[ 0 ].requestBody.should.equal "bar"
 
+				requests[ 0 ].respond 200,
+					"Content-Type": "application/text"
+				, "foo"
+
+			it "should use sane defaults", ->
 				ajax.request()
+
+				requests.length.should.equal 1
+				requests[ 0 ].url.should.equal location.href
+				requests[ 0 ].method.should.equal "GET"
+
+#### It sends cross-origin request data to background script:
+
+			it "should pass cross-origin request data via 'message' event",
+				( done ) ->
+					requestData =
+						method: "POST"
+						url: "http://example.com/"
+						data: "bar"
+
+					# Set up a background listener.
+					mimicBackgroundListener ->
+						requests.length.should.equal 0
+						done()
+					, requestData
+
+					# Send request to background.
+					ajax.request requestData
 
 #### And listens for event with response data:
 
@@ -187,11 +235,12 @@ It just checks that request is correct and calls provided function
 
 		describe "get", ->
 			it "should set method to GET", ( done ) ->
-				# Set up a background listener.
-				mimicBackgroundListener ( -> done() ),
-					# method should be changed to GET.
-					method: "GET"
-					url: "http://example.com/"
+				sinon.stub ajax, "request", ({ url, method } = {}) ->
+					# Method should be changed.
+					method.should.equal "GET"
+					url.should.equal "http://example.com/"
+					ajax.request.restore()
+					done()
 
 				# Send request to background.
 				ajax.get
@@ -203,11 +252,12 @@ It just checks that request is correct and calls provided function
 
 		describe "post", ->
 			it "should set method to post", ( done ) ->
-				# Set up a background listener.
-				mimicBackgroundListener ( -> done() ),
-					# method should be changed to POST.
-					method: "POST"
-					url: "http://example.com/"
+				sinon.stub ajax, "request", ({ url, method } = {}) ->
+					# Method should be changed.
+					method.should.equal "POST"
+					url.should.equal "http://example.com/"
+					ajax.request.restore()
+					done()
 
 				# Send request to background.
 				ajax.post
@@ -219,11 +269,12 @@ It just checks that request is correct and calls provided function
 
 		describe "head", ->
 			it "should set method to HEAD", ( done ) ->
-				# Set up a background listener.
-				mimicBackgroundListener ( -> done() ),
-					# method should be changed to HEAD.
-					method: "HEAD"
-					url: "http://example.com/"
+				sinon.stub ajax, "request", ({ url, method } = {}) ->
+					# Method should be changed.
+					method.should.equal "HEAD"
+					url.should.equal "http://example.com/"
+					ajax.request.restore()
+					done()
 
 				# Send request to background.
 				ajax.head

@@ -1,5 +1,5 @@
 	app = require "../../../../app"
-	handleAjax = require "../../../handle-ajax"
+	handleAjax = require "../../../../handle-ajax"
 	inject = require "../../../inject"
 
 	processOpenedWindow = ({ doc, win, url }) ->
