@@ -76,7 +76,7 @@ that widget, it only performs one request.
 Here's how:
 
 - **Fetch Like widget html**:  
-	Make a POST request to https://vk.com/widget_like.php, include POST data:
+	Make a POST request to http://vk.com/widget_like.php, include POST data:
 	- `url` - unique url which identifies object being disliked
 	- `app` - VK application ID. This app must be of "site" type, and its
 	base url must be set and prepended to `url` param
@@ -86,7 +86,7 @@ Here's how:
 	required for the final request which applies like for the fake page.
 
 - **Perform exactly the same request as the widget does**:  
-	Make a POST request to https://vk.com/widget_like.php?act=a_like,
+	Make a POST request to http://vk.com/widget_like.php?act=a_like,
 	include POST data:
 	- `app` - the same app ID as in the first request
 	- `hash` - value of `likeHash`
@@ -110,7 +110,7 @@ To get dislikes we can use regular
 
 			it "should fetch widget html and pass it to callback", ( done ) ->
 				sinon.stub ajax, "post", ({ url, data, callback } = {}) ->
-					url.should.equal "https://vk.com/widget_like.php"
+					url.should.equal "/widget_like.php"
 					data.should.deep.equal
 						app: "foo"
 						url: "target/for/dislike"
@@ -197,7 +197,7 @@ To get dislikes we can use regular
 			( done ) ->
 				sinon.stub ajax, "post",
 					({ url, data, callback, query } = {}) ->
-						url.should.equal "https://vk.com/widget_like.php"
+						url.should.equal "/widget_like.php"
 						query.should.deep.equal act: "a_like"
 						data.should.deep.equal
 							app: "foo"

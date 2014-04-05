@@ -7,7 +7,7 @@ on internal details.
 
 ## Private API
 
-		widgetUrl = "https://vk.com/widget_like.php"
+		widgetUrl = "/widget_like.php"
 
 ## "Public" API
 
