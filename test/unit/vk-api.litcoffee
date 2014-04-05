@@ -135,6 +135,7 @@ like `vkApi` hasn't been used.
 					elementType.should.equal "iframe"
 					attributes.src.should.be.a "string"
 					attributes.id.should.be.a "string"
+					attributes.name.should.be.a "string"
 					attributes.style.should.equal "display: none"
 					"fake element"
 

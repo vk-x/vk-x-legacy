@@ -54,7 +54,10 @@ Private methods are here for testing purposes only (see tests).
 			authRequestId = _.uniqueId()
 			authFrame = window.vkCe "iframe",
 				src: authUrl
+				# Chrome, Opera and Maxthon read window.name from id.
 				id: "#{app.name}-auth-frame-#{authRequestId}"
+				# Firefox reads window.name from name.
+				name: "#{app.name}-auth-frame-#{authRequestId}"
 				style: "display: none"
 
 			listener = ({ data }) ->
