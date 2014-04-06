@@ -1,8 +1,7 @@
-	app = require "./app"
 	superagent = require "superagent"
-	uri = require "./uri"
+	uri = require "../uri"
 
-	handleAjax = ({ data, source }) ->
+	performRequest = ( app ) -> ({ data, source }) ->
 		return unless data.requestOf is app.name
 
 		# Opera 12 denies to access source.location in background
@@ -62,4 +61,4 @@
 				# Opera background script shouldn't use second argument.
 				source.postMessage responseData
 
-	module.exports = handleAjax
+	module.exports = performRequest

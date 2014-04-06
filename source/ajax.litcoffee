@@ -4,10 +4,11 @@ on internal details.
 # `ajax` module
 
 	_ = require "lodash"
-	handleAjax = require "./handle-ajax"
+	performRequestFactory = require "./ajax/perform-request"
 	uri = require "./uri"
 
 	ajax = ( app ) ->
+		performRequest = performRequestFactory app
 
 ## ajax.request
 
@@ -26,6 +27,9 @@ on internal details.
 				headers: {}
 			settings._requestId = requestId
 			settings.requestOf = app.name
+
+			# TODO: Refactor performRequest so that it accepts callback
+			# instead of sending "message" event on window object.
 
 			listener = ({ data }) ->
 
@@ -52,7 +56,7 @@ property to message data with a value of `_requestId` property like so:
 
 			if isSameOrigin
 				# Handle request in current context.
-				handleAjax data: settings, source: window
+				performRequest data: settings, source: window
 			else
 				# Send a request to background, wait for response.
 				window.postMessage settings, "*"

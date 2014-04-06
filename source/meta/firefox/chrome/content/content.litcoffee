@@ -1,11 +1,11 @@
 	app = require "../../../../app"
-	handleAjax = require "../../../../handle-ajax"
+	performRequest = require( "../../../../ajax/perform-request" ) app
 	inject = require "../../../inject"
 
 	processOpenedWindow = ({ doc, win, url }) ->
 		return unless /^http(s)?:\/\/([a-z0-9\.]+\.)?vk\.com\//.test url
 
-		win.addEventListener "message", handleAjax, no
+		win.addEventListener "message", performRequest, no
 
 		# See: content_script.js:23
 		inject "window._ext_ldr_vkopt_loader = true", target: doc, isSource: yes

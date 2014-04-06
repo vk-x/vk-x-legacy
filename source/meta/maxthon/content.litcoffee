@@ -1,7 +1,8 @@
-	handleAjax = require "../../handle-ajax"
+	app = require "../../app"
+	performRequest = require( "../../ajax/perform-request" ) app
 	inject = require "../inject"
 
-	window.addEventListener "message", handleAjax, no
+	window.addEventListener "message", performRequest, no
 
 Maxthon 4 does not allow to access files from web, so
 script file injection is impossible.
