@@ -3083,9 +3083,11 @@ vk_audio={
 
             // Show bitrate and size of track.
             if ( getSet( 43 ) === "y" ) {
-              ( findParentByClass( btn, "audio" ) || anode )
-                .setAttribute( "onmouseenter", "vkAudioShowOnlySize( '" + id +
-                  "' );" );
+              var audioElement = findParentByClass( btn, "audio" ) || anode,
+                  originalMouseover = audioElement
+                    .getAttribute( "onmouseover" );
+              audioElement.setAttribute( "onmouseover",
+                "vkAudioShowOnlySize( '" + id + "' ); " + originalMouseover );
             }
 
             btn.setAttribute('onmouseover',"vkShowAddAudioTip(this,'"+id+"');");
