@@ -1,3 +1,3 @@
 	app = require "./app"
 
-	require( "./vk-api-auth-helper" ) app
+	require( "./vk-api/iframe-auth-helper" ) app
