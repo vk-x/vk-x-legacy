@@ -24,7 +24,7 @@ function vkInj(file){
    case 'audioplayer.js':	vkAudioPlayer();		break;
 	case 'feed.js':			vk_feed.inj(); break;
 	case 'search.js':		   vk_search.inj();		break;
-	case 'profile.js':		vkProfile();	break;
+	case 'profile.js':		vk_profile.inj();	 break;
 	case 'wall.js':			vkWall();		break;
 	case 'page.js':			vk_pages.inj();		break;
 	case 'friends.js':		vkFriends();	break;
@@ -33,6 +33,7 @@ function vkInj(file){
 	case 'im.js': 			   vkIM(); 	      break;
    case 'mail.js': 			vkMail(); 	   break;
    case 'groups_list.js':  vkGroupsList(); break;
+   case 'groups_edit.js':  vk_groups.group_edit_inj(); break;
    case 'fave.js':         vk_fave.inj(); break;
    case 'photos.js':       vk_photos.inj_photos(); break;
    case 'emoji.js':        vk_features.emoji_inj(); break;
@@ -61,6 +62,7 @@ function vkProcessNode(node){
       vk_feed.process_node(node);
       vk_photos.process_node(node);
       vk_search.process_node(node);
+      vk_search.process_node_gr_req(node);
       //vk_photos.album_process_node(node);
       vk_highlinghts.process_node(node);
 		vk_plugins.processnode(node);
@@ -117,7 +119,7 @@ function vkOnNewLocation(startup){
          if (!cur.oid) cur.oid=obj[1];
          if (!cur.pid) cur.pid=obj[2];
 
-      } else if (nav.objLoc['act']=='users' && (cur.tab || "").match(/^(members|invites|admins)$/) && cur.oid<0){
+      } else if (nav.objLoc['act']=='users' && (cur.tab || "").match(/^(members|invites|admins|requests)$/) && cur.oid<0){
          cur.module='groups_edit';
       } else {
          switch(nav.objLoc[0]){
@@ -155,8 +157,8 @@ function vkOnNewLocation(startup){
 	if (cur.module){
 		vklog(cur.module+'|'+print_r(nav.objLoc).replace(/\n/g,','));
 		switch(cur.module){
-			case 'profile':vkProfilePage(); break;
-         case 'profileEdit':vkProfileEditPage(); break;
+			case 'profile':vk_profile.page(); break;
+         case 'profileEdit':vk_profile.edit_page(); break;
 			case 'groups' :vkGroupPage(); break;
          case 'groups_edit':vk_groups.group_edit_page(); break;
 			case 'event'  :vkEventPage(); break;
@@ -352,7 +354,6 @@ function vkPublicPage(){
 	vk_graff.upload_graff_item();
    vk_photos.pz_item();
    vkWallAlbumLink();
-   vkSwitchPublicToGroup();
    vkWikiPagesList(true);
    vkGroupStatsBtn();
    vkUpdWallBtn();
@@ -485,14 +486,14 @@ function vkGetWikiCode( pageTitleOrId, ownerId ) {
   return false;
 }
 
-
+/*
 function vkSwitchPublicToGroup(){
    var p=ge('page_actions');
    if (!ge('vkpubtogroup') && p && p.innerHTML.indexOf('?act=edit')!=-1){
       var a=vkCe('a',{id:'vkpubtogroup', onclick:"showBox('al_public.php', {act:'a_switch_to_group_box',gid:Math.abs(cur.oid)}); return false;"},IDL('PublicToGroup'));
       p.appendChild(a);
    }
-}
+}*/
 function vkGetGid(){
 	if (!window.cur || cur.oid>0) return false;
 	var gid=null;
@@ -915,11 +916,11 @@ vk_messages={
    </html>',
    make_html: function(msg,user){
       var html='';
-      t2d = function(unix){
+      var t2d = function(unix){
          time = new Date(unix*1000);
          return time.getFullYear()+'.'+('0'+(time.getMonth()+1)).slice(-2)+'.'+('0'+time.getDate()).slice(-2)+' '+('0'+time.getHours()).slice(-2)+':'+('0'+time.getMinutes()).slice(-2)+':'+('0'+time.getSeconds()).slice(-2);
       }
-      t2m = function(inputText) {
+      var t2m = function(inputText) {
          var replacedText,replacePattern2,replacePattern3;
          //add break
          replacedText = replaceEntities(inputText).replace(/</g, '&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br />').replace(/"/g, '&quot;').replace(/&/g,'&amp;');
@@ -942,16 +943,28 @@ vk_messages={
 
           return replacedText;
       }
-		doc2text=function(t){
+		var doc2text=function(t){
 			// проверка < и > в именах документов
 			t2 = t.replace(/</g, '&lt;').replace(/>/g,'&gt;').replace(/"/g, '&quot;').replace(/&/g,'&amp;');
 			return t2;
 		}
-      a2t = function(sec){
+      var a2t = function(sec){
          return Math.floor(sec/60)+':'+('0'+(sec%60)).slice(-2);
       }
-
-      make_attach=function(attach){
+      var chatAction=function(action_name){
+         switch(action_name){
+            case 'chat_photo_update':
+               html='<div style="color:#888888;">'+IDL('HistMsgChatAvaUpd')+'</div>';
+               break;
+            case 'chat_photo_remove':
+               html='<div style="color:#888888;">'+IDL('HistMsgChatAvaDel')+'</div>';
+               break;
+            default:
+               html='<div>action "<b>'+action_name+'"</b>" is unknown</div>'
+         }
+         return html;
+      }
+      var make_attach=function(attach){
          var html='';
          if (!attach[attach.type]){
             console.log('Attach broken?', attach);
@@ -964,7 +977,11 @@ vk_messages={
                html+='<div class="attacment"> <div class="att_ico att_photo"></div> <a target="_blank" href="'+photolink+'">[photo'+attach.photo["owner_id"]+'_'+attach.photo["id"]+']'+photo_size+'</a> </div>';
                break;
             case 'audio':
-               html+='<div class="attacment"> <div class="att_ico att_audio"></div> <a target="_blank" href="'+attach.audio["url"]+'">[audio'+attach.audio["owner_id"]+'_'+attach.audio["id"]+'] '+doc2text(attach.audio["artist"])+' - '+doc2text(attach.audio["title"])+' ('+a2t(attach.audio["duration"])+')</a></div>';
+               var url = attach.audio["url"];
+               if (!url){
+                  url = 'http://vk.com/audio?q='+encodeURIComponent(attach.audio["artist"]+' - '+attach.audio["title"]);
+               }
+               html+='<div class="attacment"> <div class="att_ico att_audio"></div> <a target="_blank" href="'+url+'">[audio'+attach.audio["owner_id"]+'_'+attach.audio["id"]+'] '+doc2text(attach.audio["artist"])+' - '+doc2text(attach.audio["title"])+' ('+a2t(attach.audio["duration"])+')</a></div>';
                break;
             case 'video':
                html+='<div class="attacment"> <div class="att_ico att_video"></div> <a href="http://vk.com/video'+attach.video["owner_id"]+'_'+attach.video["id"]+'" target="_blank">[video'+attach.video["owner_id"]+'_'+attach.video["id"]+'] '+doc2text(attach.video["title"])+' ('+a2t(attach.video["duration"])+')</a></div>';
@@ -990,7 +1007,7 @@ vk_messages={
          }
          return html;
       }
-		make_geo=function(m){
+		var make_geo=function(m){
 			var html='';
          html+='<div class="attacment"> <div class="att_ico att_geo"></div> <a href="https://maps.google.ru/maps?q='+m.geo['coordinates']+'" target="_blank">'+IDL('HistMsgGeoAttach')+' '+(m.geo['place'] || {'title':'---'})['title']+'</a></div>';
 			return html;
@@ -1020,6 +1037,9 @@ vk_messages={
          html+='<div class="from"> <b> <a href="http://vk.com/id'+msg[i].from_id+'" target="_blank">'+u.first_name+' '+u.last_name+'</a></b> @ <a href="#msg'+msg[i].id+'">'+t2d(msg[i].date)+'</a></div>';
          if(msg[i].body != ""){
                html+='<div class="msg_body">'+t2m(msg[i].body)+'</div>';
+         }
+         if(msg[i].action){
+            html+=chatAction(msg[i].action);
          }
          if(msg[i].attachments !== undefined){
             html+='<div class="attacments"> <b>'+IDL('HistMsgAttachments')+'</b> </div>';
