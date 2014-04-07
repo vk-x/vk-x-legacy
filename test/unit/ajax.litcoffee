@@ -3,9 +3,11 @@
 	describe "ajax", ->
 
 		app = require "../../source/app"
+		performRequest = require( "../../source/ajax/perform-request" ) app
 		uri = require "../../source/uri"
+		ajaxFactory = require "../../source/ajax"
 		ajax = null
-		beforeEach -> ajax = require( "../../source/ajax" ) app
+		beforeEach -> ajax = ajaxFactory app, performRequest
 
 ## What?
 
@@ -25,7 +27,8 @@ where the file is stored.
 
 ```CoffeeScript
 app = require "./app"
-ajax = require( "./ajax" ) app
+performRequest = require( "./ajax/perform-request" ) app
+ajax = require( "./ajax" ) app, performRequest
 
 callback = ( response, meta ) -> if meta.status is 200 then alert response
 
@@ -48,6 +51,7 @@ ajax.head url: "/"
 ajax.post url: "/"
 ```
 Requests are done using http://visionmedia.github.io/superagent internally.
+See `test/unit/ajax/perform-request.litcoffee` for more information.
 
 #### Use extension sandboxed script with elevated permissions.
 
@@ -139,55 +143,45 @@ It just checks that request is correct and calls provided function
 
 		describe "request", ->
 
-#### Mock up XMLHttpRequest for each test.
-You can look into `requests` to see all requests made from the start
-of current test.
+#### It uses `performRequest` for same-origin requests:
 
-			xhr = null
-			requests = null
-
-			beforeEach ->
-				requests = []
-				xhr = sinon.useFakeXMLHttpRequest()
-				xhr.onCreate = ( xhr ) -> requests.push xhr
-
-			afterEach -> xhr.restore()
-
-#### It uses xhr for same-origin requests:
-
-			it "should use xhr for same-origin request", ( done ) ->
-				requestUrl = "/some?same-origin=path"
-				absoluteUrl = uri.relativeToAbsolute location.href, requestUrl
-
+			it "should use performRequest for same-origin requests", ( done ) ->
 				# Will be called by the ajax module as a callback.
 				callback = ( response, requestData ) ->
 					response.should.equal "foo"
 					requestData.response.text.should.equal "foo"
 					requestData.method.should.equal "POST"
-					requestData.url.should.equal requestUrl
+					requestData.url.should.equal "/some?same-origin=path"
 					done()
+
+				fakePerformRequest = sinon.spy ({ data, source, callback }) ->
+					data.should.deep.equal
+						method: "POST"
+						url: "/some?same-origin=path"
+						data: "bar"
+						query: {}
+						headers: {}
+						requestOf: app.name
+						# _requestId is generated using lodash.uniqueId
+						# which has a separate instance for each "ajax"
+						# instance, so ID is guaranteed to be 1.
+						_requestId: "#{app.name}1"
+
+					callback
+						method: "POST"
+						url: "/some?same-origin=path"
+						response: text: "foo"
+
+				ajax = ajaxFactory app, fakePerformRequest
 
 				ajax.request
 					method: "POST"
-					url: requestUrl
+					url: "/some?same-origin=path"
 					data: "bar"
 					callback: callback
 
-				requests.length.should.equal 1
-				requests[ 0 ].url.should.equal absoluteUrl
-				requests[ 0 ].method.should.equal "POST"
-				requests[ 0 ].requestBody.should.equal "bar"
-
-				requests[ 0 ].respond 200,
-					"Content-Type": "application/text"
-				, "foo"
-
 			it "should use sane defaults", ->
-				ajax.request()
-
-				requests.length.should.equal 1
-				requests[ 0 ].url.should.equal location.href
-				requests[ 0 ].method.should.equal "GET"
+				# ajax.request()
 
 #### It sends cross-origin request data to background script:
 
@@ -198,9 +192,13 @@ of current test.
 						url: "http://example.com/"
 						data: "bar"
 
+					xhr = sinon.useFakeXMLHttpRequest()
+					xhr.onCreate = ( xhr ) ->
+						throw Error "Trying to create xhr!"
+
 					# Set up a background listener.
 					mimicBackgroundListener ->
-						requests.length.should.equal 0
+						xhr.restore()
 						done()
 					, requestData
 

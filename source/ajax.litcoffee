@@ -4,11 +4,9 @@ on internal details.
 # `ajax` module
 
 	_ = require "lodash"
-	performRequestFactory = require "./ajax/perform-request"
 	uri = require "./uri"
 
-	ajax = ( app ) ->
-		performRequest = performRequestFactory app
+	ajax = ( app, performRequest ) ->
 
 ## ajax.request
 
