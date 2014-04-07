@@ -1,4 +1,5 @@
 	require "./init"
 	require "./ajax"
+	require "./ajax/perform-request"
 	require "./vk-api"
 	require "./dislike"

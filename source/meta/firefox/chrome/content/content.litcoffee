@@ -2,10 +2,15 @@
 	performRequest = require( "../../../../ajax/perform-request" ) app
 	inject = require "../../../inject"
 
+	handleBackgroundAjax = ({ data, source }) ->
+		callback = ( responseData ) ->
+			source.postMessage responseData, "*"
+		performRequest { data, source, callback }
+
 	processOpenedWindow = ({ doc, win, url }) ->
 		return unless /^http(s)?:\/\/([a-z0-9\.]+\.)?vk\.com\//.test url
 
-		win.addEventListener "message", performRequest, no
+		win.addEventListener "message", handleBackgroundAjax, no
 
 		# See: content_script.js:23
 		inject "window._ext_ldr_vkopt_loader = true", target: doc, isSource: yes

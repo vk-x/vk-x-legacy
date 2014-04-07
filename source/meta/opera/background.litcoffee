@@ -5,4 +5,9 @@ See: `source/meta/opera/index.html`.
 	app = require "../../app"
 	performRequest = require( "../../ajax/perform-request" ) app
 
-	opera.extension.onmessage = performRequest
+	handleBackgroundAjax = ({ data, source }) ->
+		callback = ( responseData ) ->
+			source.postMessage responseData
+		performRequest { data, source, callback }
+
+	opera.extension.onmessage = handleBackgroundAjax

@@ -28,27 +28,6 @@ on internal details.
 			settings._requestId = requestId
 			settings.requestOf = app.name
 
-			# TODO: Refactor performRequest so that it accepts callback
-			# instead of sending "message" event on window object.
-
-			listener = ({ data }) ->
-
-**Important**: in order to distinguish requests from responses
-(both sent via `message` event) background script must add `_responseId`
-property to message data with a value of `_requestId` property like so:
-`message.data._responseId = message.data._requestId`.
-
-				return unless data.responseOf is app.name
-				return unless data._requestId is requestId
-
-				# Don't listen anymore when the response arrives.
-				window.removeEventListener "message", listener
-
-				callback data.response.text, data
-
-			# Listen for response.
-			window.addEventListener "message", listener, no
-
 			absoluteUrl = uri.relativeToAbsolute location.href, settings.url
 			isSameOrigin =
 				uri.parse( absoluteUrl ).hostname is
@@ -56,8 +35,29 @@ property to message data with a value of `_requestId` property like so:
 
 			if isSameOrigin
 				# Handle request in current context.
-				performRequest data: settings, source: window
+				performRequest
+					data: settings
+					source: window
+					callback: ( data ) -> callback data.response.text, data
 			else
+				# Handle request in background script.
+				listener = ({ data }) ->
+
+**Important**: in order to distinguish requests from responses
+(both sent via `message` event) background script must add `_responseId`
+property to message data with a value of `_requestId` property like so:
+`message.data._responseId = message.data._requestId`.
+
+					return unless data.responseOf is app.name
+					return unless data._requestId is requestId
+
+					# Don't listen anymore when the response arrives.
+					window.removeEventListener "message", listener
+
+					callback data.response.text, data
+
+				# Listen for response.
+				window.addEventListener "message", listener, no
 				# Send a request to background, wait for response.
 				window.postMessage settings, "*"
 

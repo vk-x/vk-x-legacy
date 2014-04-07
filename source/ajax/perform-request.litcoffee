@@ -1,7 +1,7 @@
 	superagent = require "superagent"
 	uri = require "../uri"
 
-	performRequest = ( app ) -> ({ data, source }) ->
+	performRequest = ( app ) -> ({ data, source, callback }) ->
 		return unless data.requestOf is app.name
 
 		# Opera 12 denies to access source.location in background
@@ -55,10 +55,6 @@
 			# P.S. There're other properties like "xhr"
 			# (raw XMLHttpRequest) which can't be cloned.
 
-			try
-				source.postMessage responseData, "*"
-			catch
-				# Opera background script shouldn't use second argument.
-				source.postMessage responseData
+			callback responseData
 
 	module.exports = performRequest

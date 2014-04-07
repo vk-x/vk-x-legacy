@@ -2,7 +2,12 @@
 	performRequest = require( "../../ajax/perform-request" ) app
 	inject = require "../inject"
 
-	window.addEventListener "message", performRequest, no
+	handleBackgroundAjax = ({ data, source }) ->
+		callback = ( responseData ) ->
+			source.postMessage responseData, "*"
+		performRequest { data, source, callback }
+
+	window.addEventListener "message", handleBackgroundAjax, no
 
 Maxthon 4 does not allow to access files from web, so
 script file injection is impossible.

@@ -2,7 +2,12 @@
 	performRequest = require( "../../ajax/perform-request" ) app
 	inject = require "../inject"
 
-	window.addEventListener "message", performRequest, no
+	handleBackgroundAjax = ({ data, source }) ->
+		callback = ( responseData ) ->
+			source.postMessage responseData, "*"
+		performRequest { data, source, callback }
+
+	window.addEventListener "message", handleBackgroundAjax, no
 
 	# See: content_script.js:23
 	inject "window._ext_ldr_vkopt_loader = true", isSource: yes
