@@ -1,4 +1,4 @@
-	require "./init"
+	require "./app"
 	require "./ajax"
 	require "./ajax/perform-request"
 	require "./vk-api"
