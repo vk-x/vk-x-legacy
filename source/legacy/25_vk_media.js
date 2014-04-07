@@ -1011,7 +1011,6 @@ function vkPVSaveAndMover(){
    if (_vk_albums_list_cache['move'+oid])
       sel();
    else
-      params.v = "3.0";
       app.vkApi.request({
         method: "photos.getAlbums",
         data: {uid:vk.id, v: "3.0" },
