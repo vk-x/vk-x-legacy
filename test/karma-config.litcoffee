@@ -25,7 +25,7 @@ convenience.
 
 ## Config
 
-See: http://karma-runner.github.io/0.10/config/configuration-file.html.  
+See: http://karma-runner.github.io/0.12/config/configuration-file.html.  
 Also see `package.json` file for a list of dependencies.
 
 	module.exports = ( config ) ->
