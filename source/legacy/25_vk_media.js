@@ -3097,7 +3097,13 @@ vk_audio={
     // audio element height. Fixes #29.
     if ( divs[ 0 ].id && !vk_audio._hasUpdatedAudioMarkup && window.sorter ) {
       var firstAudioId = divs[ 0 ].id.split( "play" )[ 1 ];
-      sorter.update( ge( "audio" + firstAudioId ) );
+      // Catch errors when sorter.update() can't read s.elems
+      // Fixes #96.
+      try {
+        sorter.update( ge( "audio" + firstAudioId ) );
+      } catch ( e ) {
+        // TODO: Log exceptions.
+      }
     }
     // Only do it once on load. Mark as done on first audio_node() run.
     vk_audio._hasUpdatedAudioMarkup = true;
