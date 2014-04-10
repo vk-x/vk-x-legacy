@@ -14,9 +14,7 @@ function InstallRelease(){
       window.IDNewsObzor || window.AjMsgFormTo || window.IDAddFriend || window.IDAdmDelTopic || window.IDpostMatch || window.IDAppsProf)
       err.push(IDL('ErrOldVkoptFound'));
 
-  // TODO: Rename cookie or make this file a template. Do not use
-  // extension name in source code.
-  var lastUsedVersion = vkgetCookie( "happy" );
+  var lastUsedVersion = vkgetCookie( app.name );
 
   if ( lastUsedVersion !== app.version.full ) {
     if ( lastUsedVersion != null ) {
@@ -35,9 +33,7 @@ function InstallRelease(){
       vksetCookie( "remixbit", DefSetBits );
     }
 
-    // TODO: Rename cookie or make this file a template. Do not use
-    // extension name in source code.
-	  vksetCookie( "happy", app.version.full );
+	  vksetCookie( app.name, app.version.full );
 
 	  vksetCookie('vkplayer','00-0_0');
 	  if (!vkgetCookie('remixbit')) vksetCookie('remixbit',DefSetBits);
