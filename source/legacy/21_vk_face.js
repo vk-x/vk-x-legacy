@@ -1121,8 +1121,7 @@ function vkMenu(){//vkExLeftMenu
       ['notes?act=comments',IDL("mNoC")]
 	],
     'vkopt':[
-         [["#","UpdateCounters(); return false;"],IDL("updateLMenu")],
-         ["http://vkopt.net/",'<b>VkOpt Forum</b>']
+         [["#","UpdateCounters(); return false;"],IDL("updateLMenu")]
     ]
   };
   ExMenu['im']=ExMenu['mail'];
