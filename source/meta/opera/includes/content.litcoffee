@@ -6,9 +6,9 @@ and passed them to this script as strings. They were then
 `eval`ed here.
 Now we use **gulp** to concat source code and inject it below.
 
-These two event handlers and `index.html` provide an interface
+These two event handlers and [`index.html`](../index.html) provide an interface
 for same-origin and cross-origin ajax.  
-See: `test/ajax.test.litcoffee`.
+See: [`test/ajax.litcoffee`](../../../../test/unit/ajax.litcoffee).
 
 	app = require "../../../app"
 

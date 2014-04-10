@@ -75,11 +75,11 @@ Then go change some code and see it rebuilding automatically.
 # Tasks specification
 
 #### gulpfile.js
-[gulp](http://gulpjs.com) uses `gulpfile.js` as a place
+[gulp](http://gulpjs.com) uses [`gulpfile.js`](gulpfile.js) as a place
 for tasks specification.  
 It doesn't support CoffeeScript out-of-the-box,
-so we use `gulpfile.js` to load runtime CoffeeScript compiler and then load
-this `gulpfile.litcoffee` file.
+so we use [`gulpfile.js`](gulpfile.js) to load runtime CoffeeScript compiler
+and then load this `gulpfile.litcoffee` file.
 
 #### Loading dependencies
 See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
@@ -97,7 +97,8 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 	browserifyConfig = require "./build/browserify-config"
 
 #### test
-See `test/karma-config.litcoffee` file for docs on tests.
+See [`test/karma-config.litcoffee`](test/karma-config.litcoffee) file
+for docs on tests.
 
 	gulp.task "test", ->
 		gulp.src [ "./test/unit/index.litcoffee" ]
@@ -221,7 +222,8 @@ See `test/karma-config.litcoffee` file for docs on tests.
 		es.concat contentScriptStream, distStream
 
 #### dist-maxthon
-Distributable Maxthon extension created using `maxthon-packager.exe`
+Distributable Maxthon extension created using
+[`build/maxthon-packager.exe`](build)
 ([Extension/Skin Package Tool](http://forum.maxthon.com/thread-801-1-1.html)).
 
 	gulp.task "dist-maxthon", [ "meta", "scripts", "clean-dist" ], ( done ) ->

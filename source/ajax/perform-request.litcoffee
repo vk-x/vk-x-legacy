@@ -1,3 +1,8 @@
+[tests]: ../../test/unit/ajax/perform-request.litcoffee
+
+**Note**: see [tests][tests] for API documentation.
+This file only contains notes on internal details.
+
 	superagent = require "superagent"
 	uri = require "../uri"
 

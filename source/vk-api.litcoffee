@@ -1,5 +1,7 @@
-**Note**: see tests for API documentation. This file only contains notes
-on internal details.
+[tests]: ../test/unit/vk-api.litcoffee
+
+**Note**: see [tests][tests] for API documentation.
+This file only contains notes on internal details.
 
 # `vkApi` module
 
@@ -45,7 +47,7 @@ on internal details.
 
 Although these fields are exposed as public, it is strongly recommended to only
 use those without an undersore (`_`).
-Private methods are here for testing purposes only (see tests).
+Private methods are here for testing purposes only (see [tests][tests]).
 
 		_apiVersion: apiVersion
 

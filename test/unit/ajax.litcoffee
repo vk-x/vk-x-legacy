@@ -51,13 +51,15 @@ ajax.head url: "/"
 ajax.post url: "/"
 ```
 Requests are done using http://visionmedia.github.io/superagent internally.
-See `test/unit/ajax/perform-request.litcoffee` for more information.
+See [`test/unit/ajax/perform-request.litcoffee`](ajax/perform-request.litcoffee)
+for more information.
 
 #### Use extension sandboxed script with elevated permissions.
 
 Injected scripts (which we are testing here) can't make cross-origin requests
 so we pass request data to some sort of background script which has enough
-permissions. See `source/meta/**/*.js` for the background scripts.
+permissions. See [`source/meta/**/*.js`](../../source/meta)
+for the background scripts.
 
 **Note**: here "background script" means any sandboxed extension script, that
 may be content script, user script, or background script.

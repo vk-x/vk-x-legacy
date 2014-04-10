@@ -1,5 +1,7 @@
-**Note**: see tests for API documentation. This file only contains notes
-on internal details.
+[tests]: ../test/unit/ajax.litcoffee
+
+**Note**: see [tests][tests] for API documentation.
+This file only contains notes on internal details.
 
 # `ajax` module
 

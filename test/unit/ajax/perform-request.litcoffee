@@ -18,7 +18,7 @@ This function lives in a separate module to keep things DRY: it's used in
 `ajax` module (for same-origin requests) and in background scripts
 (for cross-origin requests).
 
-This is an internal module. Use `ajax` module instead.
+This is an internal module. Use [`ajax`](../ajax.litcoffee) module instead.
 
 ## How?
 
@@ -44,7 +44,8 @@ performRequest
 ```
 
 All options are required.  
-See `test/unit/ajax.litcoffee` for more information about the options.
+See [`test/unit/ajax.litcoffee`](../ajax.litcoffee) for more information
+about the options.
 
 Requests are done using http://visionmedia.github.io/superagent internally.
 

@@ -36,7 +36,7 @@ vkApi = require( "./vk-api" ) app, ajax
 vkApi.getAccessToken callback: ( accessToken ) -> alert accessToken
 ```
 
-[**`request`**](http://vk.com/dev/auth_mobile)
+[**`request`**](http://vk.com/dev/api_requests)
 
 All options are required.
 
@@ -61,8 +61,8 @@ to send **access token** back to main window.
 
 I promise to put a notice about VK app being authorizated without asking.
 
-See `gulpfile.litcoffee` for more on which scripts run in top windows and
-which run in frames.
+See [`gulpfile.litcoffee`](../../gulpfile.litcoffee) for more
+on which scripts run in top windows and which run in frames.
 
 **P.S.** Yes, I've tried to do it with ajax and without iframes,
 it doesn't work.
@@ -91,7 +91,8 @@ The `authFrame` element is guaranteed to have the following attributes:
 #### Response message
 
 Browser extensions are configured to run needed scripts in frames.  
-**`source/run-in-frames/vk-api-auth.litcoffee`** triggers **`message`**
+**[`source/vk-api/iframe-auth-helper.litcoffee`]
+(../../source/vk-api/iframe-auth-helper.litcoffee)** triggers **`message`**
 event on **`window`** object like so:
 **`window.postMessage settings, "*"`**.
 
