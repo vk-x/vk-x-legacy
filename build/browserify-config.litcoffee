@@ -1,10 +1,11 @@
 	templateTransform = require "./template-transform"
 
 	module.exports =
-		transform: [ templateTransform, "coffeeify" ]
+		transform: [ templateTransform, "coffeeify", "jadeify" ]
 		extensions: [
 			".litcoffee", ".template.litcoffee"
 			".js", ".template.js"
+			".jade", ".template.jade"
 		]
 
 	# Workaround for karma-browserify 0.0.6
