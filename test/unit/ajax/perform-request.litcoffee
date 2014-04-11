@@ -1,4 +1,4 @@
-# ajax/performRequest function
+# `ajax/performRequest` module
 
 	describe "ajax/performRequest", ->
 
@@ -10,7 +10,7 @@
 
 ## What?
 
-**`ajax/performRequest`** module **performs ajax requests**.
+C.O.: **`ajax/performRequest`** module **performs ajax requests**.
 
 ## Why?
 
@@ -49,7 +49,7 @@ about the options.
 
 Requests are done using http://visionmedia.github.io/superagent internally.
 
-#### Mock up XMLHttpRequest for each test.
+#### Mock up `XMLHttpRequest` for each test.
 You can look into `requests` to see all requests made from the start
 of current test.
 

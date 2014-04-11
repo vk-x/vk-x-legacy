@@ -79,7 +79,7 @@ You may use this meta data.
 
 		APP_ID: apiAppInfo.id
 
-#### vkApi.getAccessToken
+#### `vkApi.getAccessToken`
 
 		_accessToken: null
 		_isAuthing: no
@@ -100,7 +100,7 @@ You may use this meta data.
 							callback accessToken
 						context._accessTokenCallbackList = []
 
-#### vkApi.request
+#### `vkApi.request`
 
 		_retryDelay: 1000
 		request: ({ method, data, callback } = {}) ->

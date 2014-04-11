@@ -101,10 +101,10 @@ To get dislikes we can use regular
 		it "should have APP_ID", ->
 			dislike.APP_ID.should.be.a "number"
 
-## dislike.request
+## `dislike.request`
 **`dislike.request`** is the main dislike method.
 
-#### _fetchWidgetHtml helper
+#### `_fetchWidgetHtml` helper
 
 		describe "_fetchWidgetHtml", ->
 
@@ -125,7 +125,7 @@ To get dislikes we can use regular
 						ajax.post.restore()
 						done()
 
-#### _parseHashValues helper
+#### `_parseHashValues` helper
 
 		describe "_parseHashValues", ->
 
@@ -141,7 +141,7 @@ To get dislikes we can use regular
 				( -> dislike._parseHashValues html )
 					.should.throw "dislike.request - invalid widget html!"
 
-#### _getHashValues helper
+#### `_getHashValues` helper
 
 		describe "_getHashValues", ->
 
@@ -189,7 +189,7 @@ To get dislikes we can use regular
 									dislike._parseHashValues.restore()
 									done()
 
-#### _performLikeRequest helper
+#### `_performLikeRequest` helper
 
 		describe "_performLikeRequest", ->
 
@@ -217,7 +217,7 @@ To get dislikes we can use regular
 						ajax.post.restore()
 						done()
 
-#### dislike.request itself
+#### `dislike.request` itself
 
 		describe "request", ->
 
@@ -276,7 +276,7 @@ To get dislikes we can use regular
 			it "should throw when no target specified", ->
 				dislike.request.should.throw "Dislike target not specified!"
 
-## dislike.add
+## `dislike.add`
 **`dislike.add`** is an alias for `dislike.request dislike: yes`
 
 		describe "add", ->
@@ -291,7 +291,7 @@ To get dislikes we can use regular
 				dislike.add target: "fake object"
 
 
-## dislike.remove
+## `dislike.remove`
 **`dislike.remove`** is an alias for `dislike.request dislike: no`
 
 		describe "remove", ->
@@ -305,7 +305,7 @@ To get dislikes we can use regular
 
 				dislike.remove target: "fake object"
 
-## dislike.count
+## `dislike.count`
 **`dislike.count`** is a shortcut for the corresponding `vkApi` call.
 
 This is the source code of `execute.dislikeSummary` stored function:
@@ -385,7 +385,7 @@ Back to tests.
 			it "should throw when no target specified", ->
 				dislike.count.should.throw "Dislike target not specified!"
 
-## dislike.list
+## `dislike.list`
 **`dislike.list`** is a shortcut for the corresponding `app.vkApi` call.
 
 		describe "list", ->

@@ -1,3 +1,7 @@
+# `app` module
+
+This is the base module with meta project information.
+
 	describe "app", ->
 		app = null
 		beforeEach -> app = require "../../source/app"

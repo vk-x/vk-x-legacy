@@ -115,12 +115,12 @@ like `vkApi` hasn't been used.
 		it "should have APP_ID", ->
 			vkApi.APP_ID.should.be.a "number"
 
-## vkApi.getAccessToken
+## `vkApi.getAccessToken`
 
 **`vkApi.getAccessToken`** is an async method to get the
 [session access token](http://vk.com/dev/auth_mobile).
 
-#### _performAuth helper
+#### `_performAuth` helper
 
 		describe "_performAuth", ->
 
@@ -174,7 +174,7 @@ like `vkApi` hasn't been used.
 					accessToken: "fake token"
 				, "*"
 
-#### vkApi.getAccessToken itself
+#### `vkApi.getAccessToken` itself
 
 		describe "getAccessToken", ->
 
@@ -281,7 +281,7 @@ It should also get correct access token as an argument.
 				# Fire! fakeCallback should be called three times now.
 				fakeAuthCallback()
 
-## vkApi.request
+## `vkApi.request`
 
 **`vkApi.request`** is an async method to make
 [a request to VK API](http://vk.com/dev/api_requests).

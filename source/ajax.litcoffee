@@ -10,7 +10,7 @@ This file only contains notes on internal details.
 
 	ajax = ( app, performRequest ) ->
 
-## ajax.request
+## `ajax.request`
 
 		request: ( options = {}) ->
 			# Keep callback private, do not pass it with request settings.

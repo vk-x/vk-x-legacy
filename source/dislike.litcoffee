@@ -89,7 +89,7 @@ You may use this meta data.
 		# VkOpt original dislike base URL.
 		BASE_URL: "http://vk.dislike.server/dislike/"
 
-#### dislike.request
+#### `dislike.request`
 
 		request: ({ target, dislike, callback } = {}) ->
 			throw Error "Dislike target not specified!" if not target
@@ -117,7 +117,7 @@ You may use this meta data.
 		remove: ({ target, callback } = {}) ->
 			@request target: target, dislike: no, callback: callback
 
-#### dislike.count
+#### `dislike.count`
 
 		_dislikeCountCache: {}
 		count: ({ target, callback } = {}) ->
@@ -139,7 +139,7 @@ You may use this meta data.
 							response
 						callback response
 
-#### dislike.list
+#### `dislike.list`
 
 		list: ({ target, limit, offset, callback } = {}) ->
 			throw Error "Dislike target not specified!" unless target

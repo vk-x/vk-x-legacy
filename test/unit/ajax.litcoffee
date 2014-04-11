@@ -140,7 +140,7 @@ It just checks that request is correct and calls provided function
 
 			window.addEventListener "message", listener, no
 
-## ajax.request
+## `ajax.request`
 **`ajax.request`** is the central ajax method like `jQuery.ajax`.
 
 		describe "request", ->
@@ -230,7 +230,7 @@ It just checks that request is correct and calls provided function
 					url: "http://example.com/"
 					callback: callback
 
-## ajax.get
+## `ajax.get`
 **`ajax.get`** is an alias for `ajax.request method: "GET"`
 
 		describe "get", ->
@@ -247,7 +247,7 @@ It just checks that request is correct and calls provided function
 					method: "POST"
 					url: "http://example.com/"
 
-## ajax.post
+## `ajax.post`
 **`ajax.post`** is an alias for `ajax.request method: "POST"`
 
 		describe "post", ->
@@ -264,7 +264,7 @@ It just checks that request is correct and calls provided function
 					method: "GET"
 					url: "http://example.com/"
 
-## ajax.head
+## `ajax.head`
 **`ajax.head`** is an alias for `ajax.request method: "HEAD"`
 
 		describe "head", ->

@@ -74,7 +74,7 @@ Then go change some code and see it rebuilding automatically.
 
 # Tasks specification
 
-#### gulpfile.js
+#### `gulpfile.js`
 [gulp](http://gulpjs.com) uses [`gulpfile.js`](gulpfile.js) as a place
 for tasks specification.  
 It doesn't support CoffeeScript out-of-the-box,
@@ -96,7 +96,7 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 	distPrefix = "#{config.name}-#{config.version}"
 	browserifyConfig = require "./build/browserify-config"
 
-#### test
+#### `test`
 See [`test/karma-config.litcoffee`](test/karma-config.litcoffee) file
 for docs on tests.
 
@@ -105,7 +105,7 @@ for docs on tests.
 			.pipe plugins.karma
 				configFile: "test/karma-config.litcoffee"
 
-#### clean-build and clean-dist
+#### `clean-build` and `clean-dist`
 
 	removeFolder = ( folder, callback ) ->
 		busyFiles = []
@@ -138,7 +138,7 @@ for docs on tests.
 		"clean-opera"
 	]
 
-#### meta
+#### `meta`
 
 	gulp.task "meta", [ "clean-build" ], ->
 		noticeTemplate = fs.readFileSync "./source/meta/notice.template.js"
@@ -162,7 +162,7 @@ for docs on tests.
 
 		es.concat metaStream, licenseStream
 
-#### scripts
+#### `scripts`
 
 	gulp.task "scripts", [ "clean-build" ], ->
 		sourceForTopStream = ->
@@ -221,7 +221,7 @@ for docs on tests.
 
 		es.concat contentScriptStream, distStream
 
-#### dist-maxthon
+#### `dist-maxthon`
 Distributable Maxthon extension created using
 [`build/maxthon-packager.exe`](build)
 ([Extension/Skin Package Tool](http://forum.maxthon.com/thread-801-1-1.html)).
@@ -248,7 +248,7 @@ Distributable Maxthon extension created using
 						"successfully." ).green
 				done()
 
-#### dist-zip
+#### `dist-zip`
 Distributable extensions created using ZIP archivation.
 
 	gulp.task "dist-zip", [ "meta", "scripts", "clean-dist" ], ->
