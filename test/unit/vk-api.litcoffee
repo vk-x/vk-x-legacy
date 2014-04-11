@@ -105,11 +105,6 @@ name: `return unless message.data.oauthMessageOf is app.name`
 - **`_requestId`** - `string` - unique response identifier
 equal to `id` attribute specified on `authFrame` element
 
-## Reset state before each test
-
-`vkApi` should cache access token. Reset it to `null` so that everything looks
-like `vkApi` hasn't been used.
-
 ## Application meta info
 
 		it "should have APP_ID", ->
