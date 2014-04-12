@@ -1274,5 +1274,3 @@ function vkLoadSoundsFromFile(){
     }
   },["VkOpt Sounds Theme (*.vksnd)","*.vksnd"]);
 }
-
-if (!window.vkscripts_ok) window.vkscripts_ok=1; else window.vkscripts_ok++;

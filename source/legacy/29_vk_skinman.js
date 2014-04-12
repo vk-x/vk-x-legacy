@@ -685,5 +685,3 @@ function vkCheckInstallCss(){
 (function(){
   document.addEventListener('DOMContentLoaded',vkSkinManInit, false);
 })();*/
-
-if (!window.vkscripts_ok) vkscripts_ok=1; else vkscripts_ok++;

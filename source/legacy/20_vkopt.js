@@ -84,7 +84,6 @@ var vkLdrMiniImg='<img src="/images/upload_inv_mini.gif">';
 var vkBigLdrImg='<center><img src="/images/progress7.gif"></center>';
 var SettBit=false;
 var vkopt_disabled_ad=false;
-var vkOpt_js_count=11; // Count of vkopt files
 
 var FriendsNid=[];
 
@@ -500,7 +499,7 @@ function VkOptInit(ignore_login){
       }
    }
 
-  if (!window.vkscripts_ok || window.vkscripts_ok<vkOpt_js_count || !allow_init) {setTimeout(VkOptInit,10); return;}
+  if (!allow_init) {setTimeout(VkOptInit,10); return;}
 
 	if (window._vkopt_started) return;
 

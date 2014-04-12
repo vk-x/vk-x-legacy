@@ -2520,13 +2520,3 @@ setTimeout(oApi.check,10);
 
 //}
 /*if(!(dloc.indexOf('vk.com')!=-1 || dloc.indexOf('vkontakte.ru')!=-1)) {*/setTimeout(XFR2.check,800);//}
-
-//////////////////////
-
-
-//////////////////////
-/////////////////////
-
-if (!window.vkscripts_ok) window.vkscripts_ok=1; else window.vkscripts_ok++;
-
-

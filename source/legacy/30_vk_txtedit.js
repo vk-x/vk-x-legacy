@@ -442,6 +442,3 @@ if(vk_EnableSwichText){
     return false;
   }
 }}
-///////////////////
-
-if (!window.vkscripts_ok) vkscripts_ok=1; else vkscripts_ok++;

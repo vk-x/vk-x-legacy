@@ -1952,6 +1952,3 @@ function SmileNode(mainNode,childItem,searchWord){
   return childItem;
 }
 /* END OF SMILES */
-
-
-if (!window.vkscripts_ok) window.vkscripts_ok=1; else window.vkscripts_ok++;

@@ -4221,9 +4221,3 @@ vk_lang_ua[ "keyboard_lang" ] = [
 VK_LANGS = [ vk_lang_ru, vk_lang_ua, vk_lang_by, vk_lang_en, vk_lang_it,
 	vk_lang_tat
 ];
-
-if ( "vkscripts_ok" in window ) {
-	vkscripts_ok += 1;
-} else {
-	vkscripts_ok = 1;
-}

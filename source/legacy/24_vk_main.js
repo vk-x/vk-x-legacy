@@ -2530,5 +2530,3 @@ function vkTopicSubscribe(add_link){
 }
 
 var vkstarted = (new Date().getTime());
-
-if (!window.vkscripts_ok) window.vkscripts_ok=1; else window.vkscripts_ok++;

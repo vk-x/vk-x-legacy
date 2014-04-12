@@ -4250,6 +4250,3 @@ if (!window.vkopt_plugins) vkopt_plugins={};
    if (window.vkopt_ready) vkopt_plugin_run('vk_anonim_gift');
 })();
 */
-
-
-if (!window.vkscripts_ok) window.vkscripts_ok=1; else window.vkscripts_ok++;

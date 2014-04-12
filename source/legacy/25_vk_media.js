@@ -6173,5 +6173,3 @@ vk_au_down={
 ///////////////////////////
 // END OF DOWNLOAD CODE //
 /////////////////////////
-
-if (!window.vkscripts_ok) window.vkscripts_ok=1; else window.vkscripts_ok++;
