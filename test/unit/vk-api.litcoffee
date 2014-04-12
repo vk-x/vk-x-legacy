@@ -278,15 +278,19 @@ It should also get correct access token as an argument.
 
 ## `vkApi.request`
 
+It is actually a wrapper for `vkApi.getAccessToken` and `ajax.get`
+which uses a queue internally in order to make requests sequentially.
+
 **`vkApi.request`** is an async method to make
 [a request to VK API](http://vk.com/dev/api_requests).
 
-It is actually just a wrapper for `vkApi.getAccessToken`
-and `ajax.get`.
+#### `_request` helper
 
-		describe "request", ->
+This is the thin wrapper for `vkApi.getAccessToken` and `ajax.get`.
 
-#### It gets access token and calls `ajax.get`.
+		describe "_request", ->
+
+It gets access token and calls `ajax.get`, then invokes callback.
 
 			it "should fetch token and call ajax.get", ( done ) ->
 
@@ -299,7 +303,6 @@ and `ajax.get`.
 					data.should.deep.equal
 						foo: "bar"
 						access_token: "fake token"
-						v: vkApi._apiVersion
 					# Defer callback execution to mimic async process.
 					setTimeout -> callback "{\"online\":0}", {}
 
@@ -317,39 +320,12 @@ as an argument.
 
 Let's rock.
 
-				vkApi.request
+				vkApi._request
 					method: "users.get"
 					data: foo: "bar"
 					callback: fakeCallback
 
-#### It allows to omit `data` and `callback` options.
-
-			it "should have \"data\" and \"callback\" optional", ( done ) ->
-
-				sinon.stub vkApi, "getAccessToken", ({ callback } = {}) ->
-					# Defer callback execution to mimic async process.
-					setTimeout -> callback "fake token"
-
-				sinon.stub ajax, "get", ({ url, data, callback } = {}) ->
-					url.should.equal "https://api.vk.com/method/users.get"
-					data.should.deep.equal
-						access_token: "fake token"
-						v: vkApi._apiVersion
-					vkApi.getAccessToken.restore()
-					ajax.get.restore()
-					done()
-
-				vkApi.request
-					method: "users.get"
-
-#### It throws when `method` is missing.
-
-			it "should throw when \"method\" is missing", ->
-
-				( -> vkApi.request data: {}, callback: -> )
-					.should.throw "vkApi.request - method is missing!"
-
-#### It retries in a moment if got "Too many requests per second" error.
+It retries in a moment if got "Too many requests per second" error.
 
 			it "should retry when too many requests per second", ( done ) ->
 
@@ -362,7 +338,6 @@ Let's rock.
 					data.should.deep.equal
 						foo: "bar"
 						access_token: "fake token"
-						v: vkApi._apiVersion
 					if isFirstTry
 						isFirstTry = no
 						result = error: error_code: 6
@@ -387,7 +362,145 @@ Let's rock.
 					ajax.get.restore()
 					done()
 
-				vkApi.request
+				vkApi._request
 					method: "users.get"
 					data: foo: "bar"
 					callback: fakeCallback
+
+#### `_enqueue` helper
+
+		describe "_enqueue", ->
+
+It adds request data to the queue.
+If the module is not busy (no request is currently performed and the queue is
+empty), `_enqueue` also calls `_next` and sets `_isBusy` flag to `yes`.
+
+			it "should enqueues request and calls \"_next\" helper on first
+				call", ( done ) ->
+
+					fakeRequestData =
+						method: "fake API method"
+						data: fake: "API arguments"
+						callback: ->
+
+					sinon.stub vkApi, "_next", ->
+						vkApi._isBusy.should.equal yes
+						vkApi._requestQueue
+							.should.deep.equal [ fakeRequestData ]
+						vkApi._next.restore()
+						done()
+
+					vkApi._enqueue fakeRequestData
+
+It only enqueues request data if `_isBusy` is already `yes`.
+
+			it "should enqueue request when busy", ->
+
+				fakeRequestData =
+					method: "fake API method"
+					data: fake: "API arguments"
+					callback: ->
+
+				vkApi._next = -> throw Error "Called '_next'!"
+
+				vkApi._isBusy = yes
+				vkApi._enqueue fakeRequestData
+
+				vkApi._requestQueue.should.deep.equal [ fakeRequestData ]
+
+#### `_next` helper
+
+		describe "_next", ->
+
+It gets the first request in the queue using `_requestQueue.shift()` and
+passes it to `_request`.  
+It also patches callback so that it recursively calls `_next` in the end
+to continue sequential queue processing.
+
+			it "should process requests in FIFO style", ( done ) ->
+
+				vkApi._isBusy = yes
+				vkApi._requestQueue = [
+					{
+						method: 1
+						data: "fake data"
+						callback: ( result ) ->
+							result.should.equal 101
+					}
+					{
+						method: 2
+						data: "fake data"
+						callback: ( result ) ->
+							result.should.equal 102
+							done()
+					}
+				]
+
+				expectedRequestNumber = 1
+				sinon.stub vkApi, "_request", ({ method, data, callback }) ->
+					method.should.equal expectedRequestNumber
+
+					if expectedRequestNumber is 1
+						vkApi._requestQueue.length.should.equal 1
+					else
+						vkApi._requestQueue.length.should.equal 0
+
+					data.should.equal "fake data"
+
+					result = 100 + expectedRequestNumber
+
+					expectedRequestNumber += 1
+
+					# Defer callback execution to mimic timeout.
+					setTimeout callback result
+
+				vkApi._next()
+
+It just sets `_isBusy` to `no` if the queue is finally empty.
+
+			it "sets \"_isBusy\" to \"no\" when queue is empty", ->
+
+				vkApi._isBusy = yes
+				vkApi._request = -> throw Error "Called '_request'!"
+				vkApi._next()
+				vkApi._isBusy.should.equal no
+
+#### `vkApi.request` itself
+
+		describe "request", ->
+
+It passes request data to `_enqueue`.
+
+			it "passes request data to \"_enqueue\" helper", ( done ) ->
+
+				fakeRequestData =
+					method: "fake API method"
+					data: fake: "API arguments"
+					callback: ->
+
+				sinon.stub vkApi, "_enqueue", ( requestData ) ->
+					requestData.should.deep.equal fakeRequestData
+					vkApi._enqueue.restore()
+					done()
+
+				vkApi.request fakeRequestData
+
+It allows to omit `data` and `callback` options.
+
+			it "should have \"data\" and \"callback\" optional", ( done ) ->
+
+				sinon.stub vkApi, "_enqueue", ( requestData ) ->
+					requestData.method.should.equal "fake API method"
+					requestData.data.should.deep.equal v: vkApi._apiVersion
+					requestData.callback.should.be.a "function"
+					vkApi._enqueue.restore()
+					done()
+
+				vkApi.request method: "fake API method"
+
+It throws when `method` is missing.
+
+			it "should throw when \"method\" is missing", ->
+
+				( -> vkApi.request data: {}, callback: -> )
+					.should.throw "vkApi.request - method is missing!"

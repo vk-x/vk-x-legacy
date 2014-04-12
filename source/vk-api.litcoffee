@@ -102,13 +102,28 @@ You may use this meta data.
 
 #### `vkApi.request`
 
-		_retryDelay: 1000
-		request: ({ method, data, callback } = {}) ->
-			throw Error "vkApi.request - method is missing!" if not method
+		_requestQueue: []
+		_isBusy: no
+		_enqueue: ( requestData ) ->
+			@_requestQueue.push requestData
+			if not @_isBusy
+				@_isBusy = yes
+				@_next()
 
-			data ?= {}
-			data.v ?= apiVersion
-			callback ?= ->
+		_next: ->
+			if @_requestQueue.length > 0
+				req = @_requestQueue.shift()
+				originalCallback = req.callback
+				context = @
+				req.callback = ( args... ) ->
+					originalCallback args...
+					context._next()
+				@_request req
+			else
+				@_isBusy = no
+
+		_retryDelay: 1000
+		_request: ({ method, data, callback }) ->
 			requestUrl = requestBaseUrl + method
 
 			context = @
@@ -124,5 +139,14 @@ You may use this meta data.
 								setTimeout retry, context._retryDelay
 							else
 								callback result
+
+		request: ({ method, data, callback } = {}) ->
+			throw Error "vkApi.request - method is missing!" if not method
+
+			data ?= {}
+			data.v ?= apiVersion
+			callback ?= ->
+
+			@_enqueue { method, data, callback }
 
 	module.exports = vkApi
