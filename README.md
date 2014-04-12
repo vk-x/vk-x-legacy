@@ -13,7 +13,5 @@ You can **get the source and build** it using a **simple short manual** in
 **Dev documentation** is in [`gulpfile.litcoffee`](gulpfile.litcoffee).
 
 ## License
-Licensed under **[GPLv3](http://choosealicense.com/licenses/gpl-v3/)**
-as is **VkOpt**.  
-See [`LICENSE.md`](LICENSE.md) or https://www.gnu.org/copyleft/gpl.html for full
-license text.
+[GPLv3](http://choosealicense.com/licenses/gpl-v3/), as
+[VkOpt](https://code.google.com/p/vkopt/).
