@@ -2455,7 +2455,7 @@ vk_lang_en = {
 	ConfigBackupRestore: "Save/restore settings backup:",
 	ConfigError: "Error while loading settings. File may be broken.",
 	ConfigLoaded: "Settings loaded!",
-	ConfigOnServer: "Settings' storage on server",
+	ConfigOnServer: "Remote settings backup",
 	Country: "Country",
 	CSSCode: "User styles",
 	Date: "Date",
