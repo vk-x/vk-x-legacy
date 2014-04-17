@@ -453,8 +453,8 @@ function vkStyles(){
 	var shut='\
 		.shut .module_body, .shut #profile_photos_upload_wrap{	display: none !important;}\
 		.shut { padding-bottom: 3px !important; }\
-      .vk_shut_btn{ display:block; background:url("http://vkontakte.ru/images/flex_arrow_open.gif") no-repeat -6px 2px; width:20px; height:20px; margin:-4px 0; }\
-      .shut .vk_shut_btn{ background-image:url("http://vkontakte.ru/images/flex_arrow_shut.gif");}\
+      .vk_shut_btn{ display:block; background:url("//vk.com/images/flex_arrow_open.gif") no-repeat -6px 2px; width:20px; height:20px; margin:-4px 0; }\
+      .shut .vk_shut_btn{ background-image:url("//vk.com/images/flex_arrow_shut.gif");}\
 		#profile_wall.shut div,#profile_photos_module.shut #profile_photos{display: none !important;}\
 		#profile_wall.shut div.module_header, #profile_photos_module.shut div.module_header {display: block !important;}\
 		.module_header.shutable .header_top{ background: #e1e7ed;	}\
