@@ -4,10 +4,6 @@ function InstallRelease(){
       setTimeout(InstallRelease,50);
       return;
   }
-  var err=[];
-  if (window.IDNamesInColsV || window.IDEnterGroup || window.sync_plctrl_timeout || window.SyncPctrls || window.vk100Photos ||
-      window.IDNewsObzor || window.AjMsgFormTo || window.IDAddFriend || window.IDAdmDelTopic || window.IDpostMatch || window.IDAppsProf)
-      err.push(app.i18n.IDL('ErrOldVkoptFound'));
 
   var lastUsedVersion = vkgetCookie( app.name );
 
@@ -52,7 +48,6 @@ function InstallRelease(){
 	  vkMsg_Box.content(cont).show();
 
   }
-  if (err.length) vkAlertBox(app.i18n.IDL('Error'),err.join('<br>'));
   return false;
 }
 
