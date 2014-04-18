@@ -1305,7 +1305,6 @@ vk_ph_comms = {
                make_comments();
                return;
             }
-            params.v = "3.0";
             app.vkApi.request({
               method: "photos.getById",
               data: {photos:pids.join(','), v: "3.0" },
@@ -1322,7 +1321,6 @@ vk_ph_comms = {
                photos_load();
                return;
             }
-            params.v = "3.0";
             app.vkApi.request({
               method: "users.get",
               data: {uids:uids.join(','),fields:'photo_50', v: "3.0"},
