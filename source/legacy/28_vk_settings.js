@@ -1,9 +1,4 @@
 function InstallRelease(){
-  if (window.vkopt_plugins && vkopt_plugins['vkdislikes']){
-      alert('Please uninstall old vkopt dislike plugin');
-      return;
-  }
-
   if (!window.vk || !vk.id) return;
   if (isNewLib() && !window.lastWindowWidth){
       setTimeout(InstallRelease,50);
