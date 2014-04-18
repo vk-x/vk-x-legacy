@@ -108,9 +108,9 @@ vk_users = {
       ops = ops || {};
       var age=min;
       if (!ops.el){
-         box=new MessageBox({title: IDL('Scaning'),closeButton:true,width:"350px"});
+         box=new MessageBox({title: app.i18n.IDL('Scaning'),closeButton:true,width:"350px"});
          box.removeButtons();
-         box.addButton(IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+         box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
       }
       var html='<div id="vk_scan_bar" style="padding-bottom:10px;">'+vkBigLdrImg+'</div>';
       if (!ops.el) box.content(html).show();
@@ -171,30 +171,30 @@ function GetUserMenuSett() {
         return '<input type="checkbox" onclick="ChangeUserMenuSet();" id="ums' + idx + '" ' + cb + ' value=""> ' + name + '<br>';
     }
     var ItemNames = [
-                     IDL("Page"),
-                     IDL('txMessage'),
-                     IDL("clWa"),
-                     IDL("clPhW"),
-                     IDL("clViW"),
-                     IDL("clPh"),
-                     IDL("clAu"),
-                     'player ' + IDL("clAu"),
-                     IDL("clVi"),
-                     IDL("clGr"),
-                     IDL("fris"),
-                     //IDL("clQu"),
-                     //IDL("clAp"),
-                     //IDL("clEv"),
-                     IDL("clNo"),
-                     IDL("clGi"),
-                     //IDL("clRa"),
-                     IDL("mNeP"),
-                     IDL("clNews"),
-                     IDL("clAddFr"),
-                     IDL("clAddToFav"),
-                     IDL("addblack"),
-                     IDL("SendAbuse")
-                     //IDL("AddToSubscribtions")
+                     app.i18n.IDL("Page"),
+                     app.i18n.IDL('txMessage'),
+                     app.i18n.IDL("clWa"),
+                     app.i18n.IDL("clPhW"),
+                     app.i18n.IDL("clViW"),
+                     app.i18n.IDL("clPh"),
+                     app.i18n.IDL("clAu"),
+                     'player ' + app.i18n.IDL("clAu"),
+                     app.i18n.IDL("clVi"),
+                     app.i18n.IDL("clGr"),
+                     app.i18n.IDL("fris"),
+                     //app.i18n.IDL("clQu"),
+                     //app.i18n.IDL("clAp"),
+                     //app.i18n.IDL("clEv"),
+                     app.i18n.IDL("clNo"),
+                     app.i18n.IDL("clGi"),
+                     //app.i18n.IDL("clRa"),
+                     app.i18n.IDL("mNeP"),
+                     app.i18n.IDL("clNews"),
+                     app.i18n.IDL("clAddFr"),
+                     app.i18n.IDL("clAddToFav"),
+                     app.i18n.IDL("addblack"),
+                     app.i18n.IDL("SendAbuse")
+                     //app.i18n.IDL("AddToSubscribtions")
                     ];
 
     var res="";
@@ -285,7 +285,7 @@ function pupShow(event,pid,id,el) {
  /*
  getUserID(id,function(uid){
       if (uid==null) {
-        ge("pupUidLoader").innerHTML='<span style="font-weight:bold; color:#F00;">'+IDL('NotUser')+'</span>'
+        ge("pupUidLoader").innerHTML='<span style="font-weight:bold; color:#F00;">'+app.i18n.IDL('NotUser')+'</span>'
         setStyle("pupMenuBlock", {opacity: 0.8});
       };
       pup_menu.innerHTML=pup_menu.innerHTML.replace(/%uid/g,uid);
@@ -301,8 +301,8 @@ function pupShow(event,pid,id,el) {
    };
   getGidUid(id,function(uid,gid){// getUserID
       if (!uid && !gid) {
-        if (!ge("pupUidLoader")) addldr('<span style="font-weight:bold; color:#F00;">'+IDL('NotUser')+'</span>');
-        else ge("pupUidLoader").innerHTML='<span style="font-weight:bold; color:#F00;">'+IDL('NotUser')+'</span>';
+        if (!ge("pupUidLoader")) addldr('<span style="font-weight:bold; color:#F00;">'+app.i18n.IDL('NotUser')+'</span>');
+        else ge("pupUidLoader").innerHTML='<span style="font-weight:bold; color:#F00;">'+app.i18n.IDL('NotUser')+'</span>';
         setStyle("pupMenuBlock", {opacity: 0.8});
       };
 	  if (uid){
@@ -336,16 +336,16 @@ return str;
 function ExGroupItems(gid,el){
 	var i=0;
 	var uitems='';
-	uitems+=mkExItem(i++,'<a href="/wall-%GID">'+IDL('wall')+'</a>');
-	uitems+=mkExItem(i++,'<a href="/board%GID">'+IDL('board')+'</a>');
-	uitems+=mkExItem(i++,'<a href="/albums-%GID">'+IDL('clPh')+'</a>');
-	uitems+=mkExItem(i++,'<a href="/video?gid=%GID">'+IDL('clVi')+'</a>');
-   uitems+=mkExItem(i++,'<a href="/audio?gid=%GID">'+IDL('clAu')+'</a>');
-	uitems+=mkExItem(i++,'<a href="/photos-%GID">'+IDL('clPhBrowse')+'</a>');
-	uitems+=mkExItem(i++,'<a href="/apps?act=apps&gid=%GID">'+IDL('clAp')+'</a>');
-	uitems+=mkExItem(i++,'<a href="/search?c[section]=people&c[group]=%GID">'+IDL('clGu')+'</a>');
-   uitems+=mkExItem(i++,'<a href="/club%GID?act=edit">'+IDL('mGrAdmin')+'</a>');
-   uitems+=mkExItem(i++,'<a href="#" onclick="return vk_groups.leave(%GID);" class="fl_r">&times;</a><a href="#" onclick="return vk_groups.enter(%GID);">'+IDL('GroupJoin')+'</a>');
+	uitems+=mkExItem(i++,'<a href="/wall-%GID">'+app.i18n.IDL('wall')+'</a>');
+	uitems+=mkExItem(i++,'<a href="/board%GID">'+app.i18n.IDL('board')+'</a>');
+	uitems+=mkExItem(i++,'<a href="/albums-%GID">'+app.i18n.IDL('clPh')+'</a>');
+	uitems+=mkExItem(i++,'<a href="/video?gid=%GID">'+app.i18n.IDL('clVi')+'</a>');
+   uitems+=mkExItem(i++,'<a href="/audio?gid=%GID">'+app.i18n.IDL('clAu')+'</a>');
+	uitems+=mkExItem(i++,'<a href="/photos-%GID">'+app.i18n.IDL('clPhBrowse')+'</a>');
+	uitems+=mkExItem(i++,'<a href="/apps?act=apps&gid=%GID">'+app.i18n.IDL('clAp')+'</a>');
+	uitems+=mkExItem(i++,'<a href="/search?c[section]=people&c[group]=%GID">'+app.i18n.IDL('clGu')+'</a>');
+   uitems+=mkExItem(i++,'<a href="/club%GID?act=edit">'+app.i18n.IDL('mGrAdmin')+'</a>');
+   uitems+=mkExItem(i++,'<a href="#" onclick="return vk_groups.leave(%GID);" class="fl_r">&times;</a><a href="#" onclick="return vk_groups.enter(%GID);">'+app.i18n.IDL('GroupJoin')+'</a>');
 	return uitems;
 }
 
@@ -353,39 +353,39 @@ function ExUserItems(id,el){
 	var i=0;
 	var uitems='';
 	if (isGroupAdmin('-'+vkGetGid())){
-		uitems+=mkExItem(0,'<a href="#" onclick="vkBanUser(\'/id%uid\'); return false;">'+IDL('banit')+'</a>');
+		uitems+=mkExItem(0,'<a href="#" onclick="vkBanUser(\'/id%uid\'); return false;">'+app.i18n.IDL('banit')+'</a>');
 	}
 	if (window.cur && cur.oid>0 && (geByClass('wall_post_text',el.parentNode)[0] || hasClass(el.parentNode,'wall_text'))){
-		uitems+=mkExItem(0,'<a href="/wall'+cur.oid+'?with=%uid" onclick="return nav.go(this, event)">'+IDL('TetAtet')+'</a>');
+		uitems+=mkExItem(0,'<a href="/wall'+cur.oid+'?with=%uid" onclick="return nav.go(this, event)">'+app.i18n.IDL('TetAtet')+'</a>');
 	}
 	if (uitems!='') uitems+='<li><div class="vk_user_menu_divider"></div></li>';
 
 	var fl_pr='<a href="#" onclick_="return false;" onmouseover_="vkPopupAvatar(\'%uid\',this);" onclick="vkPopupAvatar(\'%uid\',this,true); return false;" onmouseout="vkHidePhoto();" class="fl_r">&gt;</a>';
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,fl_pr+'<a href="/id%uid" onclick="return nav.go(this, event);">'+IDL('Page')+'</a>'):i++;// onclick="AlternativeProfile(\'%uid\'); return false;"
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="#" class="fl_r" onclick="TopSearch.writeBox(%uid); return false;">'+IDL("Chat")+'</a><a class="fl_r" href="/im?sel=%uid" onclick="return nav.go(this, event);">'+IDL('Dialog')+'</a><a href="/write%uid" onclick="return showWriteMessageBox(event, %uid);">'+IDL('txMessage')+'</a>'):i++;
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/wall%uid" onclick="return nav.go(this, event);">'+IDL("clWa")+'</a>'):i++;
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/tag%uid" onclick="return nav.go(this, event);">'+IDL("clPhW")+'</a>'):i++;
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/video?id=%uid&section=tagged" onclick="return nav.go(this, event);">'+IDL("clViW")+'</a>'):i++;
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/albums%uid" onclick="return nav.go(this, event);">'+IDL("clPh")+'</a>'):i++;
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/audio?id=%uid" onclick="return nav.go(this, event);">'+IDL("clAu")+'</a>'):i++;
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/app545941_%uid" onclick="return nav.go(this, event);">player '+IDL("clAu")+'</a>'):i++; //audio application
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/videos%uid" onclick="return nav.go(this, event);">'+IDL("clVi")+'</a>'):i++;
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/groups?id=%uid" onclick="return nav.go(this, event);">'+IDL("clGr")+'</a>'):i++;
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/friends?id=%uid" onclick="return nav.go(this, event);">'+IDL("fris")+'</a>'):i++;
-	//(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/questions.php?mid=%uid">'+IDL("clQu")+'</a>'):i++;
-	//(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/apps.php?mid=%uid">'+IDL("clAp")+'</a>'):i++;
-	//(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/events.php?id=%uid">'+IDL("clEv")+'</a>'):i++;
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/notes%uid" onclick="return nav.go(this, event);">'+IDL("clNo")+'</a>'):i++;
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/gifts%uid">'+IDL("clGi")+'</a>'):i++;
-	//(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/rate.php?act=vote&id=%uid">'+IDL("clRa")+'</a>'):i++;
-   (ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/feed?section=source&source=%uid">'+IDL("mNeP")+'</a>'):i++;
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/feed?owner=%uid&section=owner" onClick="return nav.go(this,event);">'+IDL("clNews")+'</a>'):i++;
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="javascript:vkRemoveFriend(%uid);" class="fl_r">&times;</a><a href="javascript:vkAddToFriends(%uid);">'+IDL("clAddFr")+'</a>'):i++;
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="javascript:vkAddToFave(%uid,1);" class="fl_r">&times;</a><a href="javascript:vkAddToFave(%uid);">'+IDL("clAddToFav")+'</a>'):i++;
-	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="#" style="cursor: hand;" onClick="vkAddToBL(%uid); return false;">'+IDL("addblack")+'</a>'):i++;
-   (ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="#" style="cursor: hand;" onClick="vkUserAbuse(%uid); return false;">'+IDL("SendAbuse")+'</a>'):i++;
-   //(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="javascript:vkAddToSubscribtions(%uid,1);" class="fl_r">x</a><a href="#" style="cursor: hand;" onClick="vkAddToSubscribtions(%uid); return false;">'+IDL("AddToSubscribtions")+'</a>'):i++;
-   uitems+=mkExItem(0,'<a href="javascript:vkFavAddDel(%uid,1);" class="fl_r">&times;</a><a href="#" style="cursor: hand;" onClick="vkFavAddDel(%uid); return false;">'+IDL("FavAddUser")+'</a>');
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,fl_pr+'<a href="/id%uid" onclick="return nav.go(this, event);">'+app.i18n.IDL('Page')+'</a>'):i++;// onclick="AlternativeProfile(\'%uid\'); return false;"
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="#" class="fl_r" onclick="TopSearch.writeBox(%uid); return false;">'+app.i18n.IDL("Chat")+'</a><a class="fl_r" href="/im?sel=%uid" onclick="return nav.go(this, event);">'+app.i18n.IDL('Dialog')+'</a><a href="/write%uid" onclick="return showWriteMessageBox(event, %uid);">'+app.i18n.IDL('txMessage')+'</a>'):i++;
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/wall%uid" onclick="return nav.go(this, event);">'+app.i18n.IDL("clWa")+'</a>'):i++;
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/tag%uid" onclick="return nav.go(this, event);">'+app.i18n.IDL("clPhW")+'</a>'):i++;
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/video?id=%uid&section=tagged" onclick="return nav.go(this, event);">'+app.i18n.IDL("clViW")+'</a>'):i++;
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/albums%uid" onclick="return nav.go(this, event);">'+app.i18n.IDL("clPh")+'</a>'):i++;
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/audio?id=%uid" onclick="return nav.go(this, event);">'+app.i18n.IDL("clAu")+'</a>'):i++;
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/app545941_%uid" onclick="return nav.go(this, event);">player '+app.i18n.IDL("clAu")+'</a>'):i++; //audio application
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/videos%uid" onclick="return nav.go(this, event);">'+app.i18n.IDL("clVi")+'</a>'):i++;
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/groups?id=%uid" onclick="return nav.go(this, event);">'+app.i18n.IDL("clGr")+'</a>'):i++;
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/friends?id=%uid" onclick="return nav.go(this, event);">'+app.i18n.IDL("fris")+'</a>'):i++;
+	//(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/questions.php?mid=%uid">'+app.i18n.IDL("clQu")+'</a>'):i++;
+	//(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/apps.php?mid=%uid">'+app.i18n.IDL("clAp")+'</a>'):i++;
+	//(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/events.php?id=%uid">'+app.i18n.IDL("clEv")+'</a>'):i++;
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/notes%uid" onclick="return nav.go(this, event);">'+app.i18n.IDL("clNo")+'</a>'):i++;
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/gifts%uid">'+app.i18n.IDL("clGi")+'</a>'):i++;
+	//(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/rate.php?act=vote&id=%uid">'+app.i18n.IDL("clRa")+'</a>'):i++;
+   (ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/feed?section=source&source=%uid">'+app.i18n.IDL("mNeP")+'</a>'):i++;
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="/feed?owner=%uid&section=owner" onClick="return nav.go(this,event);">'+app.i18n.IDL("clNews")+'</a>'):i++;
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="javascript:vkRemoveFriend(%uid);" class="fl_r">&times;</a><a href="javascript:vkAddToFriends(%uid);">'+app.i18n.IDL("clAddFr")+'</a>'):i++;
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="javascript:vkAddToFave(%uid,1);" class="fl_r">&times;</a><a href="javascript:vkAddToFave(%uid);">'+app.i18n.IDL("clAddToFav")+'</a>'):i++;
+	(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="#" style="cursor: hand;" onClick="vkAddToBL(%uid); return false;">'+app.i18n.IDL("addblack")+'</a>'):i++;
+   (ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="#" style="cursor: hand;" onClick="vkUserAbuse(%uid); return false;">'+app.i18n.IDL("SendAbuse")+'</a>'):i++;
+   //(ExUserMenuCfg[i]==1)?uitems+=mkExItem(i++,'<a href="javascript:vkAddToSubscribtions(%uid,1);" class="fl_r">x</a><a href="#" style="cursor: hand;" onClick="vkAddToSubscribtions(%uid); return false;">'+app.i18n.IDL("AddToSubscribtions")+'</a>'):i++;
+   uitems+=mkExItem(0,'<a href="javascript:vkFavAddDel(%uid,1);" class="fl_r">&times;</a><a href="#" style="cursor: hand;" onClick="vkFavAddDel(%uid); return false;">'+app.i18n.IDL("FavAddUser")+'</a>');
 	return uitems;
 }
 /*
@@ -464,7 +464,7 @@ function vkBanUser_(user_link,gid) {// old
 				var hash=t.split("hash: '")[1];
 				if (!hash){
 					vkLdr.hide();
-					vkMsg(IDL('Error'),2000);
+					vkMsg(app.i18n.IDL('Error'),2000);
 					return;
 				}
 				hash=hash.split("',")[0];
@@ -475,7 +475,7 @@ function vkBanUser_(user_link,gid) {// old
 				});//, showProgress: lockButton.pbind(btn), hideProgress: unlockButton.pbind(btn)
 			});
 		};
-		vkAlertBox(IDL('ban'),IDL('BanConfirm'),ban,true);
+		vkAlertBox(app.i18n.IDL('ban'),app.i18n.IDL('BanConfirm'),ban,true);
 	}
 }
 
@@ -488,7 +488,7 @@ function vkBanUserFunc(user_link,gid,callback) {
 				var hash=t.split("hash: '")[1];
 				if (!hash){
 					//vkLdr.hide();
-					//vkMsg(IDL('Error'),2000);
+					//vkMsg(app.i18n.IDL('Error'),2000);
 					callback(null,true);
 					return;
 				}
@@ -747,7 +747,7 @@ function vkOnlineInfo(p){
    */
    var html='';
    if (p.online!=1) return '';
-   html=IDL('Online');
+   html="Online";
    if (p.online_mobile){
       var link='http://m.vk.com/';
       var title="";
@@ -850,7 +850,7 @@ function vkGetProfile(uid,callback,no_switch_button){
       var relation=profile.relation;
       var sex=profile.sex;
       var verified=profile.verified;
-      var rel=IDL((sex==1?'profile_relation_f_':'profile_relation_m_')+relation);
+      var rel=app.i18n.IDL((sex==1?'profile_relation_f_':'profile_relation_m_')+relation);
       rel=relation>0?rel:'';
       if (profile.relation_partner){
          var rp=profile.relation_partner;
@@ -861,7 +861,7 @@ function vkGetProfile(uid,callback,no_switch_button){
 
 		if (r.response.common){
 			var fr=r.response.common;
-			common='<div class="vk_profile_common_fr_header" onclick="slideToggle(\'vkp_commfr\');">'+IDL('CommonFriends')+' ('+fr.length+')</div>';
+			common='<div class="vk_profile_common_fr_header" onclick="slideToggle(\'vkp_commfr\');">'+app.i18n.IDL('CommonFriends')+' ('+fr.length+')</div>';
 			common+='<div class="vk_profile_common_fr" id="vkp_commfr" style="display:none;">';
 			for (var i=0; i<fr.length;i++){
 				common+='<a href="/id'+fr[i].uid+'" onclick="return nav.go(this, event);">'+fr[i].first_name+' '+fr[i].last_name+'</a>';
@@ -879,17 +879,17 @@ function vkGetProfile(uid,callback,no_switch_button){
       else
          bday_info = null;
       var info_labels=[
-			[bday_info, IDL('Bithday')],
-         [(sex==1?Sex_fm:Sex_m), IDL('Sex')],
-			[country,IDL('Country')],
-			[city,IDL('City')],
-         [rel,IDL('Relation')],
-			[profile.mobile_phone, IDL('Mob_tel')],
-			[profile.home_phone, IDL('Home_tel')],
-         [profile.skype, IDL('Skype')],
-			[profile.university_name,IDL('University_name')],
-			[profile.faculty_name,IDL('Faculty')],
-			[profile.graduation,IDL('Graduation')]
+			[bday_info, app.i18n.IDL('Bithday')],
+         [(sex==1?Sex_fm:Sex_m), app.i18n.IDL('Sex')],
+			[country,app.i18n.IDL('Country')],
+			[city,app.i18n.IDL('City')],
+         [rel,app.i18n.IDL('Relation')],
+			[profile.mobile_phone, app.i18n.IDL('Mob_tel')],
+			[profile.home_phone, app.i18n.IDL('Home_tel')],
+         [profile.skype, app.i18n.IDL('Skype')],
+			[profile.university_name,app.i18n.IDL('University_name')],
+			[profile.faculty_name,app.i18n.IDL('Faculty')],
+			[profile.graduation,app.i18n.IDL('Graduation')]
 		];
       if (profile.deactivated){
          info_labels.push([(profile.deactivated || '').toUpperCase(),'&times;']);
@@ -1019,16 +1019,16 @@ function vkFriendUserInLists(uid,callback,only_cats){
 
           switch(x.status){
              case 0:
-                html=IDL('NotInFriends');
+                html=app.i18n.IDL('NotInFriends');
                 break;
              case 1:
-                html=IDL('OutFriendRequests');
+                html=app.i18n.IDL('OutFriendRequests');
                 break;
              case 2:
-                html=IDL('FriendRequests');
+                html=app.i18n.IDL('FriendRequests');
                 break;
              case 3:
-                html=IDL('UserInFriend')+''+(cats!=''?': ':'')+cats;
+                html=app.i18n.IDL('UserInFriend')+''+(cats!=''?': ':'')+cats;
                 break;
           }
           callback(only_cats?cats:html,x.status);
@@ -1042,7 +1042,7 @@ function vkFriendUserInLists(uid,callback,only_cats){
 function vkCheckFrLink(){
 	if (getSet(9)=='y' && !ge('section_frcheck')){
 		var ref=ge("section_all");//section_suggestions
-		var sec=vkCe('a',{href:'#', onclick:"vkFriendsCheckRun(true);return false;",id:'section_frcheck',"class":"side_filter"},IDL("refreshList"));
+		var sec=vkCe('a',{href:'#', onclick:"vkFriendsCheckRun(true);return false;",id:'section_frcheck',"class":"side_filter"},app.i18n.IDL("refreshList"));
 		ref.parentNode.insertBefore(sec, ref.nextSibling);//
 		return;
 	}
@@ -1051,7 +1051,7 @@ function vkCheckFrLink(){
 
 function vkFriendsCheckRun(cl){
 		if ((getSet(9) == 'y') && (!vkgetCookie('IDFriendsUpd') || cl)) {
-			vkAlertBox(IDL('FriendsListTest'),IDL('RefreshFrListConfirm'),function(){//yes
+			vkAlertBox(app.i18n.IDL('FriendsListTest'),app.i18n.IDL('RefreshFrListConfirm'),function(){//yes
 				vkFriendsCheck();
 			},
 			function(){//no
@@ -1059,7 +1059,7 @@ function vkFriendsCheckRun(cl){
 				else vksetCookie('IDFriendsUpd', '_', 1);
 			});
 			/*
-			if (confirm(IDL('RefreshFrListConfirm'))) //Refresh friendsList NOW ?
+			if (confirm(app.i18n.IDL('RefreshFrListConfirm'))) //Refresh friendsList NOW ?
 			else {
 
 			}*/
@@ -1070,20 +1070,20 @@ function vkFriendsCheck(nid){
   var NID_CFG=2;//sett in - segments
   var FUPD_CFG=1;//days
 
-  if (!window.FrUpdBox || isNewLib()) FrUpdBox = new MessageBox({title: IDL('FriendsListTest'),closeButton:true,width:"350px"});
+  if (!window.FrUpdBox || isNewLib()) FrUpdBox = new MessageBox({title: app.i18n.IDL('FriendsListTest'),closeButton:true,width:"350px"});
   var box=FrUpdBox;
   var addButton=function(_box,label,callback,style){  _box.addButton(!isNewLib()?{onClick: callback, style:'button_'+(style?style:'no'),label:label}:label,callback,style);};
   var html='\
     <div class="vkfrupl">\
     <div id="vkfrupdloader" class="box_loader"></div><br>\
-    <div class="vkcheckbox_off" id="vkfrupdck1"></div><span>'+IDL('FrListLoading')+'</span><br>\
-    <div class="vkcheckbox_off" id="vkfrupdck2"></div><span>'+IDL('FrListLoadingNote')+'</span><br>\
-    <div class="vkcheckbox_off" id="vkfrupdck3"></div><span>'+IDL('FrListSaveNote')+'</span><br><br>\
+    <div class="vkcheckbox_off" id="vkfrupdck1"></div><span>'+app.i18n.IDL('FrListLoading')+'</span><br>\
+    <div class="vkcheckbox_off" id="vkfrupdck2"></div><span>'+app.i18n.IDL('FrListLoadingNote')+'</span><br>\
+    <div class="vkcheckbox_off" id="vkfrupdck3"></div><span>'+app.i18n.IDL('FrListSaveNote')+'</span><br><br>\
     <div id="vkfrupdresult"></div>\
     </div>\
   ';
   box.removeButtons();
-  addButton(box,IDL('Hide'),box.hide,'no');
+  addButton(box,app.i18n.IDL('Hide'),box.hide,'no');
   box.content(html).show();
 
   var UseOldNote=function(){
@@ -1093,7 +1093,7 @@ function vkFriendsCheck(nid){
   };
   var frList=function(callback){ //callback(friendsData,PostData,FriendsCount);
     AjGet('/friends_ajax.php',function(r,t){
-		if (!t || !t.length) {alert(IDL('FrListError')); box.hide(200); return;}
+		if (!t || !t.length) {alert(app.i18n.IDL('FrListError')); box.hide(200); return;}
 		var res=eval('('+t+')');
 		var fr=res.friends;
 		var fids=[];
@@ -1104,9 +1104,9 @@ function vkFriendsCheck(nid){
 	});
   };
   var newNote=function(){
-	box.setOptions({title:IDL("NoteCreating")});
+	box.setOptions({title:app.i18n.IDL("NoteCreating")});
 	box.removeButtons();
-	addButton(box,IDL('Hide'),box.hide,'no');
+	addButton(box,app.i18n.IDL('Hide'),box.hide,'no');
 	box.content('<div class="box_loader"></div>');
 	frList(function(fids,str,cnt){
     app.vkApi.request({
@@ -1137,10 +1137,10 @@ function vkFriendsCheck(nid){
 
         if (note){
           box.removeButtons();
-          addButton(box,IDL('Cancel'),box.hide,'no');
-          addButton(box,IDL('No'),newNote,'no');
-          addButton(box,IDL('Yes'),UseOldNote,'yes');
-          box.content(IDL('FrNoteFound').replace('{note}','<a href="note'+note.uid+'_'+note.nid+'" target="blank">'+note.title+'</a>'));//.show();
+          addButton(box,app.i18n.IDL('Cancel'),box.hide,'no');
+          addButton(box,app.i18n.IDL('No'),newNote,'no');
+          addButton(box,app.i18n.IDL('Yes'),UseOldNote,'yes');
+          box.content(app.i18n.IDL('FrNoteFound').replace('{note}','<a href="note'+note.uid+'_'+note.nid+'" target="blank">'+note.title+'</a>'));//.show();
         } else setTimeout(newNote,300);
       }
     });
@@ -1148,7 +1148,7 @@ function vkFriendsCheck(nid){
 
 	var friends_check=function(){
 		box.removeButtons();
-		addButton(box,IDL('Hide'),box.hide,'no');
+		addButton(box,app.i18n.IDL('Hide'),box.hide,'no');
 		ge('vkfrupdck1').className='vkcheckbox_on';
 		frList(function(fids,PostData,cnt){
       app.vkApi.request({
@@ -1162,7 +1162,7 @@ function vkFriendsCheck(nid){
           ge('vkfrupdck2').className='vkcheckbox_on';
           var text=r.response.text;
           var note=text.match(/[\d-]+/);
-          if (!note) {alert(IDL('FrListNoteError')); searchNote(); return;}
+          if (!note) {alert(app.i18n.IDL('FrListNoteError')); searchNote(); return;}
           var nfids=note[0].split('-');
           if (parseInt(nfids[0])==nfids.length-1) var ncount=nfids.shift();
           var i=0;
@@ -1191,7 +1191,7 @@ function vkFriendsCheck(nid){
               ge('vkfrupdck3').className='vkcheckbox_on';
               hide('vkfrupdloader');
               var remadd=vkShowFriendsUpd(true);
-              if (!remadd) ge('vkfrupdresult').innerHTML='<b>'+IDL('WithoutChanges')+'</b>';
+              if (!remadd) ge('vkfrupdresult').innerHTML='<b>'+app.i18n.IDL('WithoutChanges')+'</b>';
               else {
                 ge('vkfrupdresult').innerHTML='<table width="100%"><tr valign="top"><td>'+remadd.rem+'</td><td valign="top">'+remadd.add+'</td></tr></table>';
                 vkProccessLinks(ge('vkfrupdresult'));
@@ -1232,13 +1232,13 @@ function vkShowFriendsUpd(ret,names){
   var onclick="vkShowFriendsUpd(false,["+idfrupd.join(',').replace(/\+|\-/g,",").replace(/(^,|,$)/g,"")+"])";
   if (idfrupd[0].length){
     var rem=idfrupd[0].split('-');
-    html.rem+='<div class="left_box" style="margin-bottom:10px"><h4 onclick="'+onclick+'"><span class="linkover">'+IDL("delby")+'</span></h4><p><div style="text-align: center">';
+    html.rem+='<div class="left_box" style="margin-bottom:10px"><h4 onclick="'+onclick+'"><span class="linkover">'+app.i18n.IDL("delby")+'</span></h4><p><div style="text-align: center">';
     for (var i=0;i<rem.length;i++)   html.rem+='<a id="'+(ret?'vkfr':'vkfrsb')+rem[i]+'" href="id'+rem[i]+'">'+rem[i]+'</a><br>';
 	  html.rem += '</div></p></div>';
   }
   if (idfrupd[1].length){
     var add=idfrupd[1].split('+');
-    html.add+='<div class="left_box" style="margin-bottom:10px"><h4 onclick="'+onclick+'"><span class="linkover">'+IDL("addby")+'</span></h4><p><div style="text-align: center">';
+    html.add+='<div class="left_box" style="margin-bottom:10px"><h4 onclick="'+onclick+'"><span class="linkover">'+app.i18n.IDL("addby")+'</span></h4><p><div style="text-align: center">';
     for (var i=0;i<add.length;i++)   html.add+='<a id="'+(ret?'vkfr':'vkfrsb')+add[i]+'" href="id'+add[i]+'">'+add[i]+'</a><br>';
 	  html.add += '</div></p></div>';
   }
@@ -1293,7 +1293,7 @@ function vkFriendsBySex(add_link){
 	if (add_link  && !ge('section_slists')){
 		var ref=ge("section_all");//section_suggestions
       if (!ref) return;
-		var sec=vkCe('a',{href:'#', onclick:"vkFriendsBySex();return false;",id:'section_slists',"class":"side_filter"},IDL('FrSexToLists'));
+		var sec=vkCe('a',{href:'#', onclick:"vkFriendsBySex();return false;",id:'section_slists',"class":"side_filter"},app.i18n.IDL('FrSexToLists'));
 		ref.parentNode.insertBefore(sec, ref.nextSibling);//
 		return;
 	}
@@ -1313,14 +1313,14 @@ function vkFriendsBySex(add_link){
           makecat(ge('frcat'+i).value,res[i],i);
         }
         box.removeButtons();
-        box.addButton(IDL('Cancel'),box.hide,'no');
+        box.addButton(app.i18n.IDL('Cancel'),box.hide,'no');
       }
     });
 	};
 
 	var makecat=function(title,friendsList,idx){
 		box.removeButtons();
-		box.addButton(IDL('Cancel'),box.hide,'no');
+		box.addButton(app.i18n.IDL('Cancel'),box.hide,'no');
 		var elem=ge('frcatp'+idx);
 		elem.innerHTML=vkLdrImg;
     app.vkApi.request({
@@ -1336,24 +1336,24 @@ function vkFriendsBySex(add_link){
           AjPost('al_friends.php', {act: 'save_list', title: title, cat_id: listId, friends: friendsList.join(','), hash: hash},function(r, t) {
             elem.innerHTML="<b>OK</b>";
             box.removeButtons();
-            box.addButton(IDL('OK'),box.hide,'yes');
+            box.addButton(app.i18n.IDL('OK'),box.hide,'yes');
           });
         });
       }
     });
 	};
 
-	var box=new MessageBox({title: IDL('ParseFriends'),closeButton:true,width:"350px"});
+	var box=new MessageBox({title: app.i18n.IDL('ParseFriends'),closeButton:true,width:"350px"});
     vkaddcss("\
         .vkfrbx input{width:150px; margin-right:5px; margin-top:3px;}\
     ");
 	box.removeButtons();
-	box.addButton(IDL('Cancel'),box.hide,'no');
-	box.addButton(IDL('OK'),RunMake,'yes');
-	var html='<div class="vkfrbx">'+IDL('FrToCatsBySex')+':<br>'+
+	box.addButton(app.i18n.IDL('Cancel'),box.hide,'no');
+	box.addButton(app.i18n.IDL('OK'),RunMake,'yes');
+	var html='<div class="vkfrbx">'+app.i18n.IDL('FrToCatsBySex')+':<br>'+
 		  '<span id="frcatp1"><input type="text" id="frcat1" value=":-*"></span> -'+Sex_fm+'<br>'+
 		  '<span id="frcatp2"><input type="text" id="frcat2"  value="^_^"></span> -'+Sex_m+'<br>'+
-		  '<span id="frcatp0"><input type="text" id="frcat0"  value="WTF?"></span> -'+IDL('Sex_other')+
+		  '<span id="frcatp0"><input type="text" id="frcat0"  value="WTF?"></span> -'+app.i18n.IDL('Sex_other')+
 		  '</div>';
 	box.content(html).show();
 }//*/
@@ -1445,7 +1445,7 @@ function vkFavDel(uid){
 
 function vkFavAddDel(uid,is_del){
    (is_del?vkFavDel:vkFavAdd)(uid);
-   vkMsg(IDL(is_del?"FavRemoved":"FavAdded"),2000);
+   vkMsg(app.i18n.IDL(is_del?"FavRemoved":"FavAdded"),2000);
    if (ge('vk_fav_users_cont')) vkFavUsersList();
 }
 
@@ -1600,7 +1600,7 @@ function vkFavOnlineChecker(on_storage){
                   var text='<b><a href="/id'+new_onl[i].uid+'" onclick="nav.go(this);">'+new_onl[i].first_name+' '+new_onl[i].last_name+'</a></b>'+time;
                   text+='<br>'+vkOnlineInfo(new_onl[i]);
                   // vkNotifyUserCheckAndShow
-                  vkShowNotify({sound:'On',title:IDL('UserOnline'),text:text,_time:tm,author_photo:new_onl[i].photo_rec,author_link:'id'+new_onl[i].uid,link:'id'+new_onl[i].uid,onclick:"nav.go('id"+new_onl[i].uid+"')"});
+                  vkShowNotify({sound:'On',title:app.i18n.IDL('UserOnline'),text:text,_time:tm,author_photo:new_onl[i].photo_rec,author_link:'id'+new_onl[i].uid,link:'id'+new_onl[i].uid,onclick:"nav.go('id"+new_onl[i].uid+"')"});
                }
             }
             vkCmd('fav_users_statuses','ok');
@@ -1625,8 +1625,8 @@ function vkFavUsersList(add_button){
       p=p[p.length-1];
       if (!p || !users_section) return;
       x=vkCe('div',{"class":'fave_more_button fl_r',id:'vk_fav_users_btn'},
-            '<div class="button_blue"><button onclick="vkFavUsersList();">'+IDL('FavUsers')+'</button></div>'
-            //'<a onclick="return vkFavUsersList();">'+IDL('FavUsers')+'</a>'
+            '<div class="button_blue"><button onclick="vkFavUsersList();">'+app.i18n.IDL('FavUsers')+'</button></div>'
+            //'<a onclick="return vkFavUsersList();">'+app.i18n.IDL('FavUsers')+'</a>'
             );
       insertAfter(x,p)
       return;
@@ -1675,7 +1675,7 @@ function vkFavUsersList(add_button){
            html="Fav Error";
         }
         show('header');
-        ge('title').innerHTML=IDL('FavUsers');
+        ge('title').innerHTML=app.i18n.IDL('FavUsers');
         p.innerHTML='<div id="vk_fav_users_cont" style="padding:10px;">'+html+'</div>';
         vkProcessNode(p);
       }
@@ -1738,7 +1738,7 @@ function vkFaveOnlineChecker(on_storage){
                var text='<b><a href="/id'+new_onl[i].id+'" onclick="nav.go(this);">'+new_onl[i].name+'</a></b>'+time;
                text+='<br>'+vkOnlineInfo(new_onl[i]);
                // vkNotifyUserCheckAndShow
-               vkShowNotify({sound:'On',title:IDL('FaveOnline'),text:text,_time:tm,author_photo:new_onl[i].photo_50,author_link:'id'+new_onl[i].id,link:'id'+new_onl[i].id,onclick:"nav.go('id"+new_onl[i].id+"')"});
+               vkShowNotify({sound:'On',title:app.i18n.IDL('FaveOnline'),text:text,_time:tm,author_photo:new_onl[i].photo_50,author_link:'id'+new_onl[i].id,link:'id'+new_onl[i].id,onclick:"nav.go('id"+new_onl[i].id+"')"});
             }
           }
           vkCmd('fave_users_statuses','ok');
@@ -1757,7 +1757,7 @@ vk_friends={
       if (!ge('section_frnolist')){
          var ref=ge("section_all");//section_suggestions
          if (!ref) return;
-         var sec=vkCe('a',{href:'#', onclick:"vk_friends.not_in_list_show(); Friends.selectSection('frnolist');return false;",id:'section_frnolist',"class":"side_filter"},IDL("FrNotInLists"));
+         var sec=vkCe('a',{href:'#', onclick:"vk_friends.not_in_list_show(); Friends.selectSection('frnolist');return false;",id:'section_frnolist',"class":"side_filter"},app.i18n.IDL("FrNotInLists"));
          ref.parentNode.insertBefore(sec, ref.nextSibling);//
          return;
       }
@@ -1785,7 +1785,7 @@ vk_friends={
       if (!ge('section_'+id)){
          var ref=ge("section_all"); //section_suggestions
          if (!ref) return;
-         var sec=vkCe('a',{href:'#', onclick:"vk_friends.deleted_show(); Friends.selectSection('"+id+"');return false;",id:'section_'+id,"class":"side_filter"},IDL("FrDeleted"));
+         var sec=vkCe('a',{href:'#', onclick:"vk_friends.deleted_show(); Friends.selectSection('"+id+"');return false;",id:'section_'+id,"class":"side_filter"},app.i18n.IDL("FrDeleted"));
          ref.parentNode.insertBefore(sec, ref.nextSibling);//
          return;
       }

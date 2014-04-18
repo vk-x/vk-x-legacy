@@ -213,6 +213,11 @@ function vkLocationCheck(){
 function VkOptMainInit(){
   vk_settings.cfg_override();
   if (vkLocationCheck()) return;
+
+  if ( "lang" in window.vk ) {
+    app.i18n.detectLanguage( window.vk.lang );
+  }
+
   if (InstallRelease()) return;
 
 
@@ -386,7 +391,7 @@ function vkGroupStatsBtn(){
       var p=ge('page_actions') || ge('unsubscribe');
       if (p && !ge('vk_stats_list') && !(ge('page_actions') && ge('page_actions').innerHTML.match(/stats\?gid\=/))){
          var wklink=function(id){
-            return vkCe('a',{id:id, onclick:"return nav.go(this, event)", href:"/stats?gid="+Math.abs(cur.oid)},IDL('Stats',1))
+            return vkCe('a',{id:id, onclick:"return nav.go(this, event)", href:"/stats?gid="+Math.abs(cur.oid)},app.i18n.IDL('Stats',1))
          };
          var a=wklink('vk_stats_list');
          if (p==ge('unsubscribe')) p.appendChild(vkCe('br'));
@@ -403,7 +408,7 @@ function vkWikiPagesList(add_btn){
       var p=ge('page_actions') || ge('unsubscribe');
       if (p && !ge('vk_wiki_pages_list')){
          var wklink=function(id){
-            return vkCe('a',{id:id, onclick:"vkWikiPagesList(); return false;"},IDL('WikiPagesList')+'<span class="fl_r" id="vk_wiki_pages_list_loader" style="display:none;">'+vkLdrImg+'</span>')
+            return vkCe('a',{id:id, onclick:"vkWikiPagesList(); return false;"},app.i18n.IDL('WikiPagesList')+'<span class="fl_r" id="vk_wiki_pages_list_loader" style="display:none;">'+vkLdrImg+'</span>')
          };
          var a=wklink('vk_wiki_pages_list');
          if (p==ge('unsubscribe')) p.appendChild(vkCe('br'));
@@ -440,16 +445,16 @@ function vkWikiPagesList(add_btn){
           "<span class='divider'>|</span>" +
           "<a href='/pages.php?oid=-" + page.group_id + "&p=" +
           encodeURIComponent( page.title ) + "&act=history' target='_blank'>" +
-          IDL( "History" ) + "</a><span class='divider'>|</span>" +
+          app.i18n.IDL( "History" ) + "</a><span class='divider'>|</span>" +
           "<a href='#' onclick='return vkGetWikiCode(" + page.id + "," +
-          page.group_id + ");'>" + IDL( "Code" ) + "</a>" +
+          page.group_id + ");'>" + app.i18n.IDL( "Code" ) + "</a>" +
           "<span class='divider'>|</span>" +
           " <b>" + page.title + "</b> (creator: " + page.creator_name + ")<br>";
       });
 
       vkAlertBox( "Wiki Pages", "<h3>Owner: " + owner +
         "<a class='fl_r' id='vk_add_wiki_page' href='#' " +
-        "onclick='vkWikiNew(); return false;'>" + IDL( "Add" ) + "</a>" +
+        "onclick='vkWikiNew(); return false;'>" + app.i18n.IDL( "Add" ) + "</a>" +
         "</h3><br>" + html ).setOptions({ width: "680px" });
     }
   });
@@ -490,7 +495,7 @@ function vkGetWikiCode( pageTitleOrId, ownerId ) {
 function vkSwitchPublicToGroup(){
    var p=ge('page_actions');
    if (!ge('vkpubtogroup') && p && p.innerHTML.indexOf('?act=edit')!=-1){
-      var a=vkCe('a',{id:'vkpubtogroup', onclick:"showBox('al_public.php', {act:'a_switch_to_group_box',gid:Math.abs(cur.oid)}); return false;"},IDL('PublicToGroup'));
+      var a=vkCe('a',{id:'vkpubtogroup', onclick:"showBox('al_public.php', {act:'a_switch_to_group_box',gid:Math.abs(cur.oid)}); return false;"},app.i18n.IDL('PublicToGroup'));
       p.appendChild(a);
    }
 }*/
@@ -664,7 +669,7 @@ vk_features={
       var t=geByTag('textarea',node)[0];
       if (!t) return;
       t.setAttribute('id','vk_poll_code');
-      var el=se('<div><a href="#" onclick="return vk_features.poll_preview();">'+IDL('Preview',1)+'</a><div id="vk_poll_preview"></div></div>');
+      var el=se('<div><a href="#" onclick="return vk_features.poll_preview();">'+app.i18n.IDL('Preview',1)+'</a><div id="vk_poll_preview"></div></div>');
       node.appendChild(el);
    },
    poll_preview:function(){
@@ -767,7 +772,7 @@ function vkPhChooseProcess(answer,url,q){
 });//*/
 // ['', '', '', '{temp: {x_src: ""}, big: 1}']  ['http://cs5751.vk.com/u13391307/138034142/m_a6b31fd8.jpg', 'http://cs5751.vk.com/u13391307/138034142/s_818dc071.jpg', '9b949405dd303694e1', '{temp: {x_src: "http://cs5751.vk.com/u13391307/138034142/x_c8cae130.jpg"}, big: 1}']
     } else {
-      alert(IDL('IncorrectPhotoLink'))
+      alert(app.i18n.IDL('IncorrectPhotoLink'))
     }
     unlockButton(btn);
   };
@@ -779,19 +784,19 @@ function vkPhChooseProcess(answer,url,q){
      var p=geByClass('photos_choose_header_title',div)[0];
      if (p && !p.innerHTML.match('choose_album')){
       p.innerHTML='';
-      p.appendChild(vkCe('a',{"class":'fl_l_',href:'#',onclick:'return vk_photos.choose_album();'},IDL('mPhM',1)))
+      p.appendChild(vkCe('a',{"class":'fl_l_',href:'#',onclick:'return vk_photos.choose_album();'},app.i18n.IDL('mPhM',1)))
       console.log(q);
       if (q.to_id && q.to_id<0){
          p.appendChild(vkCe('span',{"class":'fl_l_ divider'},'|'));
-         p.appendChild(vkCe('a',{"class":'fl_l_',href:'#',onclick:'return vk_photos.choose_album('+q.to_id+');'},IDL('GroupAlbums',1)))
+         p.appendChild(vkCe('a',{"class":'fl_l_',href:'#',onclick:'return vk_photos.choose_album('+q.to_id+');'},app.i18n.IDL('GroupAlbums',1)))
       }
      }//*/
      if (ref){
        var node=vkCe('div',{"class":'ta_r vk_opa2','style':"height: 25px; padding-left:10px; padding-top:4px;"},'\
        <div class="fl_l">\
-           '+IDL('EnterLinkToPhoto')+': \
+           '+app.i18n.IDL('EnterLinkToPhoto')+': \
          <span><input id="vk_link_to_photo" type="text"  style="width:230px" class="s_search text"></span>\
-         <div id="vk_link_to_photo_button" class="button_blue" style="vertical-align: middle;"><button onclick="vkCheckPhotoLinkToMedia();">'+IDL('OK')+'</button></div>\
+         <div id="vk_link_to_photo_button" class="button_blue" style="vertical-align: middle;"><button onclick="vkCheckPhotoLinkToMedia();">'+app.i18n.IDL('OK')+'</button></div>\
        </div>\
        ');
        ref.parentNode.insertBefore(node,ref);
@@ -799,7 +804,7 @@ function vkPhChooseProcess(answer,url,q){
        answer[1]=div.innerHTML;
      }
 
-     //vk_photos.choose_album();<a class="fl_r">'+IDL('mPhM',1)+'</a>
+     //vk_photos.choose_album();<a class="fl_r">'+app.i18n.IDL('mPhM',1)+'</a>
   }
 }
 
@@ -813,7 +818,7 @@ function vkVidChooseProcess(answer,url,q){
       //cur.chooseMedia('video', val[1]+'_'+val[2], 'http://vk.com/images/video_s.png');
       vk_ch_media.video(val[1]+'_'+val[2]);
     } else {
-      alert(IDL('IncorrectVideoLink'))
+      alert(app.i18n.IDL('IncorrectVideoLink'))
     }
     unlockButton(btn);
   };
@@ -825,19 +830,19 @@ function vkVidChooseProcess(answer,url,q){
    var p=geByClass('choose_close',div)[0];
    if (p && !p.innerHTML.match('choose_album')){
          p.insertBefore(vkCe('span',{"class":'divide'},'|'),p.firstChild)
-         p.insertBefore(vkCe('a',{"class":'',href:'#',onclick:'return vk_videos.choose_album();'},IDL('mPhM',1)),p.firstChild);
+         p.insertBefore(vkCe('a',{"class":'',href:'#',onclick:'return vk_videos.choose_album();'},app.i18n.IDL('mPhM',1)),p.firstChild);
          //console.log(q);
       if (q.to_id && q.to_id<0){
          p.insertBefore(vkCe('span',{"class":'divide'},'|'),p.firstChild)
-         p.insertBefore(vkCe('a',{"class":'',href:'#',onclick:'return vk_videos.choose_album('+q.to_id+');'},IDL('GroupAlbums',1)),p.firstChild)
+         p.insertBefore(vkCe('a',{"class":'',href:'#',onclick:'return vk_videos.choose_album('+q.to_id+');'},app.i18n.IDL('GroupAlbums',1)),p.firstChild)
       }
    }
 
   if (ref){
     var node=vkCe('div',{'style':"height: 25px; padding: 4px 20px; padding-left:0px; margin-top: 33px;","class":'vk_opa2 vk_idattach'},'\
-    <div class="fl_l">'+IDL('EnterLinkToVideo')+':</div>\
+    <div class="fl_l">'+app.i18n.IDL('EnterLinkToVideo')+':</div>\
       <span class="fl_l"><input id="vk_link_to_video" type="text"  style="width:215px" class="s_search text"></span>\
-      <div id="vk_link_to_video_button" class="button_blue fl_r"  style="vertical-align: middle;"><button onclick="vkCheckVideoLinkToMedia();">'+IDL('OK')+'</button></div>\
+      <div id="vk_link_to_video_button" class="button_blue fl_r"  style="vertical-align: middle;"><button onclick="vkCheckVideoLinkToMedia();">'+app.i18n.IDL('OK')+'</button></div>\
     \
     ');
     /*ref.parentNode.insertBefore(node,ref);
@@ -858,7 +863,7 @@ function vkAudioChooseProcess(answer,url,q){
     if (val){
       cur.chooseMedia('audio',  val[1]+'_'+val[2], {performer: val[1], title: val[2], info: ',0', duration: '0:00'});//.chooseMedia('audio', val[1]+'_'+val[2], [val[1], val[2]]);//[artist,name]
     } else {
-      alert(IDL('IncorrectAudioLink'))
+      alert(app.i18n.IDL('IncorrectAudioLink'))
     }
     unlockButton(btn);
   };
@@ -869,19 +874,19 @@ function vkAudioChooseProcess(answer,url,q){
    var p=geByClass('choose_close',div)[0];
    if (p && !p.innerHTML.match('choose_album')){
          p.insertBefore(vkCe('span',{"class":'divide'},'|'),p.firstChild)
-         p.insertBefore(vkCe('a',{"class":'',href:'#',onclick:'return vk_audio.choose_album();'},IDL('mPhM',1)),p.firstChild);
+         p.insertBefore(vkCe('a',{"class":'',href:'#',onclick:'return vk_audio.choose_album();'},app.i18n.IDL('mPhM',1)),p.firstChild);
          //console.log(q);
       if (q.to_id && q.to_id<0){
          p.insertBefore(vkCe('span',{"class":'divide'},'|'),p.firstChild)
-         p.insertBefore(vkCe('a',{"class":'',href:'#',onclick:'return vk_audio.choose_album('+q.to_id+');'},IDL('GroupAlbums',1)),p.firstChild)
+         p.insertBefore(vkCe('a',{"class":'',href:'#',onclick:'return vk_audio.choose_album('+q.to_id+');'},app.i18n.IDL('GroupAlbums',1)),p.firstChild)
       }
    }
 
   if (ref){
     var node=vkCe('div',{'style':"height: 25px; padding: 4px 20px; padding-left:0px; margin-top: 33px;","class":'vk_opa2 vk_idattach'},'\
-    <div class="fl_l" style="line-height:20px">'+IDL('EnterLinkToAudio')+':</div>\
+    <div class="fl_l" style="line-height:20px">'+app.i18n.IDL('EnterLinkToAudio')+':</div>\
       <span class="fl_l"><input id="vk_link_to_audio" type="text" style="width:190px"  class="s_search text"></span>\
-      <div id="vk_link_to_audio_button" class="button_blue fl_r"  style="vertical-align: middle;"><button onclick="vkCheckAudioLinkToMedia();">'+IDL('OK')+'</button></div>\
+      <div id="vk_link_to_audio_button" class="button_blue fl_r"  style="vertical-align: middle;"><button onclick="vkCheckAudioLinkToMedia();">'+app.i18n.IDL('OK')+'</button></div>\
     \
     ');
     //ref.parentNode.insertBefore(node,ref);
@@ -954,10 +959,10 @@ vk_messages={
       var chatAction=function(action_name){
          switch(action_name){
             case 'chat_photo_update':
-               html='<div style="color:#888888;">'+IDL('HistMsgChatAvaUpd')+'</div>';
+               html='<div style="color:#888888;">'+app.i18n.IDL('HistMsgChatAvaUpd')+'</div>';
                break;
             case 'chat_photo_remove':
-               html='<div style="color:#888888;">'+IDL('HistMsgChatAvaDel')+'</div>';
+               html='<div style="color:#888888;">'+app.i18n.IDL('HistMsgChatAvaDel')+'</div>';
                break;
             default:
                html='<div>action "<b>'+action_name+'"</b>" is unknown</div>'
@@ -993,13 +998,13 @@ vk_messages={
                html+='<div class="attacment"> <div class="att_ico att_wall"></div> <a target="_blank" href="http://vk.com/wall'+attach.wall["to_id"]+'_'+attach.wall["id"]+'">[wall'+attach.wall["to_id"]+'_'+attach.wall["id"]+']</a></div>';
                break;
             case 'link':
-               html+='<div class="attacment attb_link"> <div class="att_ico att_link"></div> <a href="'+attach.link["url"]+'" target="_blank"><span>'+IDL('HistMsgAttachLink')+'</span> '+doc2text(attach.link["title"])+'</a></div>';
+               html+='<div class="attacment attb_link"> <div class="att_ico att_link"></div> <a href="'+attach.link["url"]+'" target="_blank"><span>'+app.i18n.IDL('HistMsgAttachLink')+'</span> '+doc2text(attach.link["title"])+'</a></div>';
                break;
             case 'gift':
-               html+='<div class="attacment"> <div class="att_ico att_gift"></div> <a target="_blank" href="'+attach.gift["thumb_256"]+'">'+IDL('HistMsgAttachGift')+' #'+attach.gift["id"]+'</a></div>';
+               html+='<div class="attacment"> <div class="att_ico att_gift"></div> <a target="_blank" href="'+attach.gift["thumb_256"]+'">'+app.i18n.IDL('HistMsgAttachGift')+' #'+attach.gift["id"]+'</a></div>';
                break;
             case 'sticker':
-               html+='<div class="attacment"> <div class="att_ico att_sticker"></div> <a target="_blank" href="'+attach.sticker["photo_256"]+'">'+IDL('HistMsgAttachSticker')+' #'+attach.sticker["id"]+'</a></div>';
+               html+='<div class="attacment"> <div class="att_ico att_sticker"></div> <a target="_blank" href="'+attach.sticker["photo_256"]+'">'+app.i18n.IDL('HistMsgAttachSticker')+' #'+attach.sticker["id"]+'</a></div>';
                break;
             default:
                html+=JSON.stringify(attach);
@@ -1009,14 +1014,14 @@ vk_messages={
       }
 		var make_geo=function(m){
 			var html='';
-         html+='<div class="attacment"> <div class="att_ico att_geo"></div> <a href="https://maps.google.ru/maps?q='+m.geo['coordinates']+'" target="_blank">'+IDL('HistMsgGeoAttach')+' '+(m.geo['place'] || {'title':'---'})['title']+'</a></div>';
+         html+='<div class="attacment"> <div class="att_ico att_geo"></div> <a href="https://maps.google.ru/maps?q='+m.geo['coordinates']+'" target="_blank">'+app.i18n.IDL('HistMsgGeoAttach')+' '+(m.geo['place'] || {'title':'---'})['title']+'</a></div>';
 			return html;
 		}
 
       // write data
       html+='<hr>';
-      html+='<div> '+IDL('HistMsgDates').replace(/%start/g,t2d(msg[0].date)).replace(/%end/g,t2d(msg[msg.length-1].date))+' </div>';
-      html+='<div> '+IDL('HistMsgCount').replace(/%count/g,msg.length)+' </div>';
+      html+='<div> '+app.i18n.IDL('HistMsgDates').replace(/%start/g,t2d(msg[0].date)).replace(/%end/g,t2d(msg[msg.length-1].date))+' </div>';
+      html+='<div> '+app.i18n.IDL('HistMsgCount').replace(/%count/g,msg.length)+' </div>';
       html+='<hr>';
 
       // icons
@@ -1042,7 +1047,7 @@ vk_messages={
             html+=chatAction(msg[i].action);
          }
          if(msg[i].attachments !== undefined){
-            html+='<div class="attacments"> <b>'+IDL('HistMsgAttachments')+'</b> </div>';
+            html+='<div class="attacments"> <b>'+app.i18n.IDL('HistMsgAttachments')+'</b> </div>';
             l=msg[i].attachments.length;
             for(k=0;k<l;k++){
                html+=make_attach(msg[i].attachments[k]);
@@ -1060,7 +1065,7 @@ vk_messages={
       html+='<hr>';
 
       function initfwd(msgfwd){
-         html+='<div class="att_head"> <div class="att_ico att_fwd"></div> '+IDL('HistMsgFwd')+' </div>';
+         html+='<div class="att_head"> <div class="att_ico att_fwd"></div> '+app.i18n.IDL('HistMsgFwd')+' </div>';
          html+='<div class="fwd">';
          for(k=0,l=msgfwd.length;k<l;k++){
             var u = (user[msgfwd[k].user_id] || {
@@ -1076,7 +1081,7 @@ vk_messages={
             html+='<div class="from"> <b> <a href="http://vk.com/id'+msgfwd[k].user_id+'" target="_blank">'+u.first_name+' '+u.last_name+'</a></b> @ '+t2d(msgfwd[k].date)+'</div>';
             html+='<div class="msg_body"> '+t2m(msgfwd[k].body)+'</div>';
             if(msgfwd[k].attachments !== undefined){
-               html+='<div class="attacments"> <b>'+IDL('HistMsgAttachments')+'</b> </div>';
+               html+='<div class="attacments"> <b>'+app.i18n.IDL('HistMsgAttachments')+'</b> </div>';
                n=msgfwd[k].attachments.length;
                for(m=0;m<n;m++){
                   html+=make_attach(msgfwd[k].attachments[m]);
@@ -1212,20 +1217,20 @@ vk_im={
 
          var p_options = [];
          if (getSet(40)=='y') {
-            p_options.push({l:IDL('msgdelinbox',2), onClick:function(item) {
+            p_options.push({l:app.i18n.IDL('msgdelinbox',2), onClick:function(item) {
                vkDeleteMessages();
             }});
-            p_options.push({l:IDL('msgdeloutbox',2), onClick:function(item) {
+            p_options.push({l:app.i18n.IDL('msgdeloutbox',2), onClick:function(item) {
                vkDeleteMessages(true);
             }});
          }
-         p_options.push({l:IDL('Stats',2), onClick:function(item) {
+         p_options.push({l:app.i18n.IDL('Stats',2), onClick:function(item) {
             vkMsgStats();
          }});
 
          if (p_options.length>0){
             var el=se('<li class="t_r" id="vk_im_menu">\
-               <span class="add_media_lnk" id="vk_im_menu_actions" style="cursor: pointer;">'+IDL('Actions')+'</span><span class="divider">|</span>\
+               <span class="add_media_lnk" id="vk_im_menu_actions" style="cursor: pointer;">'+app.i18n.IDL('Actions')+'</span><span class="divider">|</span>\
              </li>');
             ge('im_top_tabs').appendChild(el);
 
@@ -1233,7 +1238,7 @@ vk_im={
                cur.vkAlbumMenu = new DropdownMenu(p_options, {//
                  target: ge('vk_im_menu_actions'),
                  containerClass: 'dd_menu_posts',
-                 updateHeader:function(){ return IDL('Actions'); },
+                 updateHeader:function(){ return app.i18n.IDL('Actions'); },
                  //offsetLeft:-15,
                  showHover:false
                });
@@ -1263,10 +1268,10 @@ vk_im={
       Inj.Wait('cur.imMedia',function(){
          var p=geByClass('rows', cur.imMedia.menu.menuNode)[0];
          var html='<div class="checkbox" id="vk_no_hide_add_box" onclick="checkbox(this); window.vk_prevent_addmedia_hide=isChecked(this);">'+
-                     //'<div></div>'+IDL('PreventHide')+
+                     //'<div></div>'+app.i18n.IDL('PreventHide')+
                       '<table style="border-spacing:0px;"><tr><td><div></div></td>\
                            <td>\
-                             <nobr>'+IDL('PreventHide')+'</nobr>\
+                             <nobr>'+app.i18n.IDL('PreventHide')+'</nobr>\
                            </td>\
                          </tr>\
                        </tbody>\
@@ -1275,7 +1280,7 @@ vk_im={
          var id='add_media_type_' +  cur.imMedia.menu.id + '_nohide';
          if (!ge(id)){
             // ADD WALL POST
-            var a=vkCe('a',{'onclick':'vk_im.attach_wall();','class':'add_media_item','style':"background-image: url('http://vk.com/images/icons/attach_icons.png'); background-position: 3px -130px;"},'<nobr>'+IDL('WallPost')+'</nobr>');
+            var a=vkCe('a',{'onclick':'vk_im.attach_wall();','class':'add_media_item','style':"background-image: url('http://vk.com/images/icons/attach_icons.png'); background-position: 3px -130px;"},'<nobr>'+app.i18n.IDL('WallPost')+'</nobr>');
             p.appendChild(a);
 
             var a=vkCe('a',{id:id,'style':'border-top:1px solid #DDD; padding:2px; padding-top:4px;'},html);
@@ -1320,7 +1325,7 @@ vk_im={
    },
    attach_wall:function(){
          var add=null;
-         var aBox = new MessageBox({title: IDL('EnterLinkToWallPost')});
+         var aBox = new MessageBox({title: app.i18n.IDL('EnterLinkToWallPost')});
          aBox.removeButtons();
          aBox.addButton(getLang('box_cancel'),function(){
             aBox.hide();
@@ -1350,7 +1355,7 @@ vk_im={
                //cur.chooseMedia('wall',val[1],{});
                aBox.hide();
             } else {
-               alert(IDL('IncorrectWallPostLink'))
+               alert(app.i18n.IDL('IncorrectWallPostLink'))
             }
          }
       return false;
@@ -1365,7 +1370,7 @@ vk_im={
          mid = mid[1];
          var p=nodes[i].parentNode;
          if (p.innerHTML.indexOf('vk_im.reply')!=-1) continue;
-         var r=se('<a class="fl_r_ vk_im_reply opacity_anim" onmouseover="showTooltip(this, {text: \''+IDL('Reply')+'\', showdt: 0, black: 1, shift: [15, -2, 0], className: \'im_important_tt\'});" onclick="return vk_im.reply(this,event,'+mid+')"><div class="vk_repost_icon"></div></a>');
+         var r=se('<a class="fl_r_ vk_im_reply opacity_anim" onmouseover="showTooltip(this, {text: \''+app.i18n.IDL('Reply')+'\', showdt: 0, black: 1, shift: [15, -2, 0], className: \'im_important_tt\'});" onclick="return vk_im.reply(this,event,'+mid+')"><div class="vk_repost_icon"></div></a>');
          p.insertBefore(r,p.firstChild); //appendChild(r);
       }
    },
@@ -1569,16 +1574,16 @@ function vkImTypingEvent(uid,need_close){
          var show=function(chat_name){
             var tm=(new Date).format('isoTime');
             var time='<div class="fl_r">'+tm+'</div>';
-            var text=IDL('Typing')+(chat?' ('+IDL("Chat")+' &laquo;'+chat_name+'&raquo;)':'');
+            var text=app.i18n.IDL('Typing')+(chat?' ('+app.i18n.IDL("Chat")+' &laquo;'+chat_name+'&raquo;)':'');
             text+=
             '<br><b>'+
             (chat?
-            '<a href="#" onclick="TopSearch.writeBox('+(2e9+chat)+'); return false;">'+IDL("Chat")+'</a><span class="divider">|</span>'+
-            '<a href="/im?sel=c'+chat+'" onclick="return nav.go(this, event);">'+IDL('Dialog')+'</a>'
+            '<a href="#" onclick="TopSearch.writeBox('+(2e9+chat)+'); return false;">'+app.i18n.IDL("Chat")+'</a><span class="divider">|</span>'+
+            '<a href="/im?sel=c'+chat+'" onclick="return nav.go(this, event);">'+app.i18n.IDL('Dialog')+'</a>'
             :
-            '<a href="#" onclick="TopSearch.writeBox(%uid); return false;">'+IDL("Chat")+'</a><span class="divider">|</span>'+
-            '<a href="/im?sel=%uid" onclick="return nav.go(this, event);">'+IDL('Dialog')+'</a><span class="divider">|</span>'+
-            '<a href="/write%uid" onclick="return showWriteMessageBox(event, %uid);">'+IDL('txMessage')+'</a>')+
+            '<a href="#" onclick="TopSearch.writeBox(%uid); return false;">'+app.i18n.IDL("Chat")+'</a><span class="divider">|</span>'+
+            '<a href="/im?sel=%uid" onclick="return nav.go(this, event);">'+app.i18n.IDL('Dialog')+'</a><span class="divider">|</span>'+
+            '<a href="/write%uid" onclick="return showWriteMessageBox(event, %uid);">'+app.i18n.IDL('txMessage')+'</a>')+
             '</b>';
             text=text.replace(/%uid/g,info.uid);
             text+=time;
@@ -1632,7 +1637,7 @@ function vkIMModActMenu(types,peer,user){
    if (!types || !peer || !user) return;
    if (/*peer > 0 && peer < 2e9 &&*/ user.msg_count){
       //console.log(user);
-      var item=['save_history', IDL('SaveHistory'), '3px -41px', vkIMSaveHistoryBox.pbind(peer)];
+      var item=['save_history', app.i18n.IDL('SaveHistory'), '3px -41px', vkIMSaveHistoryBox.pbind(peer)];
       //types.push(item);//  [id, name, bg-position, onclick, href, bg-url, customStyle]
       types.splice(1,0,item);
    }
@@ -1641,14 +1646,14 @@ function vkIMSaveHistoryBox(peer){
    var t='\
    <div id="saveldr" style="display:none; padding:8px; padding-top: 14px; text-align:center; width:360px;"><img src="/images/upload.gif"></div>\
    <div id="save_btn_text" style="text-align:center">\
-      <div class="button_blue"><button href="#" onclick="vk_messages.get_history('+peer+'); return false;">'+IDL('SaveHistory')+' *.html</button></div><br>\
+      <div class="button_blue"><button href="#" onclick="vk_messages.get_history('+peer+'); return false;">'+app.i18n.IDL('SaveHistory')+' *.html</button></div><br>\
       <small><a href="#" onclick="toggle(\'msg_save_more\'); return false;">(.txt)</a></small>\
       <div id="msg_save_more" style="display:none;">\
-      <div class="button_gray"><button href="#" onclick="vkMakeMsgHistory('+peer+'); return false;">'+IDL('SaveHistory')+'</button></div>\
-      <div class="button_gray"><button href="#" onclick="vkMakeMsgHistory('+peer+',true); return false;">'+IDL('SaveHistoryCfg')+'</button></div>\
+      <div class="button_gray"><button href="#" onclick="vkMakeMsgHistory('+peer+'); return false;">'+app.i18n.IDL('SaveHistory')+'</button></div>\
+      <div class="button_gray"><button href="#" onclick="vkMakeMsgHistory('+peer+',true); return false;">'+app.i18n.IDL('SaveHistoryCfg')+'</button></div>\
       </div>\
    </div>';
-   var box=vkAlertBox(IDL('SaveHistory'), t);
+   var box=vkAlertBox(app.i18n.IDL('SaveHistory'), t);
 }
 
 /* NOTIFIER */
@@ -1731,7 +1736,7 @@ function vkFriends(){
    //Inj.Replace('Friends.acceptRequest','text;','text+vkFrLstSel(mid); alert(text);');
    Inj.Replace('Friends.acceptRequest','text;','vkFrReqDoneAddUserLists(text,mid);');
 }
-function vkFrLstSel(mid){ return '<div class="actions"><a class="lists_select" onmousedown="return Friends.ddShow('+mid+', this, event)">'+IDL('AddFrToList')+'</a></div>'; }
+function vkFrLstSel(mid){ return '<div class="actions"><a class="lists_select" onmousedown="return Friends.ddShow('+mid+', this, event)">'+app.i18n.IDL('AddFrToList')+'</a></div>'; }
 function vkFrReqDoneAddUserLists(text,mid){
    var div=vkCe('div',{},text);
    var el=geByClass('friends_added',div)[0] || geByClass('friends_added_text',div)[0];
@@ -1741,7 +1746,7 @@ function vkFrReqDoneAddUserLists(text,mid){
       //el.parentNode.
       var el_=vkCe('div',{"class":"friends_added"},'');
       insertAfter(el_,el);
-      el_.innerHTML+='<div class="friends_added_text box_controls_text">'+IDL('AddFrToList')+'</div>';
+      el_.innerHTML+='<div class="friends_added_text box_controls_text">'+app.i18n.IDL('AddFrToList')+'</div>';
       for (var key in cur.userLists) el_.innerHTML+='<div class="checkbox" onclick="return Friends.checkCat(this, '+mid+', '+key+', 1);"><div></div>'+cur.userLists[key]+'</div>';
       return div.innerHTML;
    } else {
@@ -1784,17 +1789,17 @@ function vkMailPage(){
 	} else {
       vkMsgStatsBtn();
       /*if (ge('mail_bar_search') && !ge('vk_stats_btn')){
-         ge('mail_bar_search').insertBefore(vkCe('div',{id:'vk_stats_btn','class':'fl_l'},'<div class="button_blue"><button onclick="vkMsgStats();">'+IDL('Stats')+'</button></div>'),ge('mail_bar_search').firstChild);
+         ge('mail_bar_search').insertBefore(vkCe('div',{id:'vk_stats_btn','class':'fl_l'},'<div class="button_blue"><button onclick="vkMsgStats();">'+app.i18n.IDL('Stats')+'</button></div>'),ge('mail_bar_search').firstChild);
       }*/
    }
 	if (getSet(40)=='y') vkAddDeleteLink();
 }
 function vkMsgStatsBtn(){
    if (ge('mail_bar_search') && !ge('vk_stats_btn')){
-      ge('mail_bar_search').insertBefore(vkCe('div',{id:'vk_stats_btn','class':'fl_l'},'<div class="button_blue"><button onclick="vkMsgStats();">'+IDL('Stats')+'</button></div>'),ge('mail_bar_search').firstChild);
+      ge('mail_bar_search').insertBefore(vkCe('div',{id:'vk_stats_btn','class':'fl_l'},'<div class="button_blue"><button onclick="vkMsgStats();">'+app.i18n.IDL('Stats')+'</button></div>'),ge('mail_bar_search').firstChild);
    }
    if (ge('im_filter_out') && !ge('vk_stats_im_btn')){
-      ge('im_filter_out').appendChild(vkCe('div',{id:'vk_stats_im_btn','class':'fl_r'},'<div class="button_gray"><button onclick="vkMsgStats();" onmouseover="showTooltip(this, {text: \''+IDL('Stats')+'\', black: 1, shift: [8, 2, 0]});"><span class="vk_stats_icon"></span></button></div>'));
+      ge('im_filter_out').appendChild(vkCe('div',{id:'vk_stats_im_btn','class':'fl_r'},'<div class="button_gray"><button onclick="vkMsgStats();" onmouseover="showTooltip(this, {text: \''+app.i18n.IDL('Stats')+'\', black: 1, shift: [8, 2, 0]});"><span class="vk_stats_icon"></span></button></div>'));
    }
 }
 function vkMsgStats(){
@@ -1815,7 +1820,7 @@ function vkAddDeleteLink(){
 	if (!ge('vk_clean_msg') && ge('mail_tabs') && cur.section!="spam"){
 		//if (!(cur.section=="inbox" || cur.section=="outbox")) return;
 		var is_inbox=(cur.section=="inbox");
-		var caption=is_inbox?IDL('msgdelinbox'):IDL('msgdeloutbox');
+		var caption=is_inbox?app.i18n.IDL('msgdelinbox'):app.i18n.IDL('msgdeloutbox');
 		var li=vkCe('li',{"class":'t_r', id:'vk_clean_msg'},'\
 			<a href="#" onclick="vkDeleteMessages('+(!is_inbox?'true':'')+'); return false;">'+caption+'</a><span class="divide">|</span>\
 		');
@@ -1830,7 +1835,7 @@ function vkAddDeleteLink(){
 function vkAddDelMsgHistLink(){
   if (!ge('vk_del_history')){
 	var btn=vkCe('div', {	id:"vk_del_history", "class":"fl_l vk_mail_save_history", },
-					'<a href="#" onclick="vkDeleteMessagesHistory('+cur.thread.id+'); return false;">'+IDL('msgclearchat')+'</a>'
+					'<a href="#" onclick="vkDeleteMessagesHistory('+cur.thread.id+'); return false;">'+app.i18n.IDL('msgclearchat')+'</a>'
 				);
 	var ref=ge('mail_history');
 	ref.parentNode.insertBefore(btn,ref);
@@ -1846,16 +1851,16 @@ function vkDeleteMessages_(is_out){// step 1: scan all; step 2: delete; This fun
 	var del=function(){
 		if (abort) return;
 		var del_count=mids.length;
-		ge('vk_scan_msg').innerHTML=vkProgressBar(del_offset,del_count,310,IDL('msgdel')+' %');
+		ge('vk_scan_msg').innerHTML=vkProgressBar(del_offset,del_count,310,app.i18n.IDL('msgdel')+' %');
 		var ids_part=mids.slice(del_offset,del_offset+MSG_IDS_PER_DEL_REQUEST);
-		if (ids_part.length==0){	box.hide();		vkMsg(IDL('DeleteMessagesDone'),3000);	}
+		if (ids_part.length==0){	box.hide();		vkMsg(app.i18n.IDL('DeleteMessagesDone'),3000);	}
 		else AjPost('mail?act=a_mark', {mark: MARK_ACT, msgs_ids: ids_part.join(','), hash: cur.mark_hash, al:1},function(r,t){
 			del_offset+=MSG_IDS_PER_DEL_REQUEST;
 			setTimeout(del,MSG_DEL_REQ_DELAY);
 		});
 	};
 	var scan=function(){
-		if (cur_offset==0) ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,IDL('msgreq')+' %');
+		if (cur_offset==0) ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,app.i18n.IDL('msgreq')+' %');
 
     app.vkApi.request({
       method: "messages.get",
@@ -1871,19 +1876,19 @@ function vkDeleteMessages_(is_out){// step 1: scan all; step 2: delete; This fun
   			if (!ms[0]){ del();	return;	}
   			var msg_count=ms.shift();
   			ge('vk_scan_msg').innerHTML = vkProgressBar(
-          cur_offset,msg_count,310,IDL('msgreq')+' %');
+          cur_offset,msg_count,310,app.i18n.IDL('msgreq')+' %');
   			for (var i=0;i<ms.length;i++) mids.push(ms[i].mid);
   			if (cur_offset<msg_count){	cur_offset+=100; setTimeout(scan,MSG_SCAN_REQ_DELAY);} else del();
       }
     });
 	};
 	var run=function(){
-		box=new MessageBox({title: IDL('DeleteMessages'),closeButton:true,width:"350px"});
-		box.removeButtons(); box.addButton(IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+		box=new MessageBox({title: app.i18n.IDL('DeleteMessages'),closeButton:true,width:"350px"});
+		box.removeButtons(); box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
 		var html='<div id="vk_scan_msg"></div>'; box.content(html).show();
 		scan();
 	}
-	vkAlertBox(IDL('DeleteMessages'),IDL('msgdelconfirm'),run,true);
+	vkAlertBox(app.i18n.IDL('DeleteMessages'),app.i18n.IDL('msgdelconfirm'),run,true);
 }
 
 function vkRestoreMessages(is_out){// step 1: scan all; step 2: delete; This function not used
@@ -1909,9 +1914,9 @@ function vkRestoreMessages(is_out){// step 1: scan all; step 2: delete; This fun
       //*
       if (abort) return;
 		var del_count=deleted.length;
-		ge('vk_scan_msg').innerHTML=vkProgressBar(del_offset,del_count,310,IDL('msgrestore')+' %');
+		ge('vk_scan_msg').innerHTML=vkProgressBar(del_offset,del_count,310,app.i18n.IDL('msgrestore')+' %');
 		var ids_part=deleted.slice(del_offset,del_offset+1);
-		if (ids_part.length==0){	alert(restored.join(', ')); box.hide();		vkMsg(IDL('DeleteMessagesDone'),3000);	}
+		if (ids_part.length==0){	alert(restored.join(', ')); box.hide();		vkMsg(app.i18n.IDL('DeleteMessagesDone'),3000);	}
 		else
       app.vkApi.request({
         method: "messages.restore",
@@ -1928,7 +1933,7 @@ function vkRestoreMessages(is_out){// step 1: scan all; step 2: delete; This fun
       });
 	};
 	var scan=function(){
-		if (cur_offset==0) ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,IDL('msgreq')+' %');
+		if (cur_offset==0) ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,app.i18n.IDL('msgreq')+' %');
     app.vkApi.request({
       method: "messages.get",
       data: {
@@ -1942,19 +1947,19 @@ function vkRestoreMessages(is_out){// step 1: scan all; step 2: delete; This fun
         var ms=result.response;
         if (!ms[0]){ restore();	return;	}
         var msg_count=ms.shift();
-        ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,msg_count,310,IDL('msgreq')+' %');
+        ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,msg_count,310,app.i18n.IDL('msgreq')+' %');
         for (var i=0;i<ms.length;i++) mids.push(ms[i].mid);
         if (cur_offset<msg_count){	cur_offset+=100; setTimeout(scan,MSG_SCAN_REQ_DELAY);} else restore();
       }
     });
 	};
 	var run=function(){
-		box=new MessageBox({title: IDL('ScanMessages'),closeButton:true,width:"350px"});
-		box.removeButtons(); box.addButton(IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+		box=new MessageBox({title: app.i18n.IDL('ScanMessages'),closeButton:true,width:"350px"});
+		box.removeButtons(); box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
 		var html='<div id="vk_scan_msg"></div>'; box.content(html).show();
 		scan();
 	}
-	vkAlertBox(IDL('ScanMessages'),IDL('msgscanconfirm'),run,true);
+	vkAlertBox(app.i18n.IDL('ScanMessages'),app.i18n.IDL('msgscanconfirm'),run,true);
 }
 
 function vkDeleteMessages(is_out){
@@ -1968,12 +1973,12 @@ function vkDeleteMessages(is_out){
 	var abort=false;
 	var deldone=function(){
 			box.hide();
-			vkMsg(IDL('DeleteMessagesDone'),3000);
+			vkMsg(app.i18n.IDL('DeleteMessagesDone'),3000);
 	};
 	var del=function(callback){
 		if (abort) return;
 		var del_count=mids.length;
-		ge('vk_del_msg').innerHTML=vkProgressBar(del_offset,del_count,310,IDL('msgdel')+' %');
+		ge('vk_del_msg').innerHTML=vkProgressBar(del_offset,del_count,310,app.i18n.IDL('msgdel')+' %');
 		var ids_part=mids.slice(del_offset,del_offset+MSG_IDS_PER_DEL_REQUEST);
 		if (ids_part.length==0){
 			ge('vk_del_msg').innerHTML=vkProgressBar(1,1,310,' ');
@@ -1990,7 +1995,7 @@ function vkDeleteMessages(is_out){
 		mids=[];
 		if (cur_offset==0){
 			ge('vk_del_msg').innerHTML=vkProgressBar(1,1,310,' ');
-			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,IDL('msgreq')+' %');
+			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,app.i18n.IDL('msgreq')+' %');
 		}
     app.vkApi.request({
       method: "messages.get",
@@ -2009,7 +2014,7 @@ function vkDeleteMessages(is_out){
         }
         if (msg_count==0) msg_count=ms.shift();
         else ms.shift();
-        ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,IDL('msgreq')+' %');
+        ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,app.i18n.IDL('msgreq')+' %');
         for (var i=0;i<ms.length;i++) mids.push(ms[i].mid);
         cur_offset+=REQ_CNT;
         vklog(mids);
@@ -2018,14 +2023,14 @@ function vkDeleteMessages(is_out){
     });
 	};
 	var run=function(){
-		box=new MessageBox({title: IDL('DeleteMessages'),closeButton:true,width:"350px"});
+		box=new MessageBox({title: app.i18n.IDL('DeleteMessages'),closeButton:true,width:"350px"});
 		box.removeButtons();
-		box.addButton(IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+		box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
 		var html='<div id="vk_del_msg" style="padding-bottom:10px;"></div><div id="vk_scan_msg"></div>';
 		box.content(html).show();
 		scan();
 	}
-	vkAlertBox(IDL('DeleteMessages'),IDL('msgdelconfirm'),run,true);
+	vkAlertBox(app.i18n.IDL('DeleteMessages'),app.i18n.IDL('msgdelconfirm'),run,true);
 }
 
 function vkDeleteMessagesHistory(uid){
@@ -2040,7 +2045,7 @@ function vkDeleteMessagesHistory(uid){
 	var mark_hash=null;
 	var deldone=function(){
 			box.hide();
-			vkMsg(IDL('DeleteMessagesDone'),3000);
+			vkMsg(app.i18n.IDL('DeleteMessagesDone'),3000);
 	};
 	var get_mark_hash=function(callback){
 		AjGet('/al_mail.php?al=1',function(r,t){
@@ -2051,7 +2056,7 @@ function vkDeleteMessagesHistory(uid){
 	var del=function(callback){
 		if (abort) return;
 		var del_count=mids.length;
-		ge('vk_del_msg').innerHTML=vkProgressBar(del_offset,del_count,310,IDL('msgdel')+' %');
+		ge('vk_del_msg').innerHTML=vkProgressBar(del_offset,del_count,310,app.i18n.IDL('msgdel')+' %');
 		var ids_part=mids.slice(del_offset,del_offset+MSG_IDS_PER_DEL_REQUEST);
 		if (ids_part.length==0){
 			ge('vk_del_msg').innerHTML=vkProgressBar(1,1,310,' ');
@@ -2072,7 +2077,7 @@ function vkDeleteMessagesHistory(uid){
 		mids=[];
 		if (cur_offset==0){
 			ge('vk_del_msg').innerHTML=vkProgressBar(1,1,310,' ');
-			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,IDL('msgreq')+' %');
+			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,app.i18n.IDL('msgreq')+' %');
 		}
     app.vkApi.request({
       method: "messages.getHistory",
@@ -2090,7 +2095,7 @@ function vkDeleteMessagesHistory(uid){
         }
         if (msg_count==0) msg_count=ms.shift();
         else ms.shift();
-        ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,IDL('msgreq')+' %');
+        ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,app.i18n.IDL('msgreq')+' %');
         for (var i=0;i<ms.length;i++) mids.push(ms[i].mid);
         cur_offset+=REQ_CNT;
         vklog(mids);
@@ -2099,14 +2104,14 @@ function vkDeleteMessagesHistory(uid){
     });
 	};
 	var run=function(){
-		box=new MessageBox({title: IDL('DeleteMessages'),closeButton:true,width:"350px"});
+		box=new MessageBox({title: app.i18n.IDL('DeleteMessages'),closeButton:true,width:"350px"});
 		box.removeButtons();
-		box.addButton(IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+		box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
 		var html='<div id="vk_del_msg" style="padding-bottom:10px;"></div><div id="vk_scan_msg"></div>';
 		box.content(html).show();
 		scan();
 	}
-	vkAlertBox(IDL('DeleteMessages'),IDL('msgdelconfirm'),run,true);
+	vkAlertBox(app.i18n.IDL('DeleteMessages'),app.i18n.IDL('msgdelconfirm'),run,true);
 }
 
 // SAVE HISTORY TO FILE
@@ -2114,7 +2119,7 @@ function vkAddSaveMsgLink(){
   if (!ge('vk_history_to_file_block')){
 	var btn=vkCe('div', {	id:"vk_history_to_file_block", "class":"vk_mail_save_history_block", },
 					'<div id="saveldr" style="display:none; padding:8px; padding-top: 14px; text-align:center; width:130px;"><img src="/images/upload.gif"></div>'+
-					'<a href="#" onclick="return false;" id="save_btn_text" class="vk_mail_save_history"><span onclick="vk_messages.get_history(); return false;">'+IDL('SaveHistory')+'</span><span class="divide">|</span><span class="fl_r" onclick="vkMakeMsgHistory(); return false;">.txt</span><div class="cfg fl_r" onclick="vkMakeMsgHistory(null,true);"></div></a>'
+					'<a href="#" onclick="return false;" id="save_btn_text" class="vk_mail_save_history"><span onclick="vk_messages.get_history(); return false;">'+app.i18n.IDL('SaveHistory')+'</span><span class="divide">|</span><span class="fl_r" onclick="vkMakeMsgHistory(); return false;">.txt</span><div class="cfg fl_r" onclick="vkMakeMsgHistory(null,true);"></div></a>'
 				);
 	var ref=ge('mail_history');
 	ref.parentNode.insertBefore(btn,ref);
@@ -2251,10 +2256,10 @@ function vkMakeMsgHistory(uid,show_format){
 	}
 
 	if (show_format){
-		var aBox = new MessageBox({title: IDL('SaveHistoryCfg')});
+		var aBox = new MessageBox({title: app.i18n.IDL('SaveHistoryCfg')});
 		aBox.removeButtons();
-		aBox.addButton(IDL('Hide'), aBox.hide, 'no')
-		aBox.addButton(IDL('OK'),function(){
+		aBox.addButton(app.i18n.IDL('Hide'), aBox.hide, 'no')
+		aBox.addButton(app.i18n.IDL('OK'),function(){
 			msg_pattern=ge('vk_msg_fmt').value;
 			date_fmt=ge('vk_msg_date_fmt').value;
          msg_pattern=msg_pattern.replace(/\r?\n/g,'\r\n');
@@ -2265,11 +2270,11 @@ function vkMakeMsgHistory(uid,show_format){
 			run();
 		},'yes');
 		vkaddcss('.vk_save_hist_cfg textarea{width:370px;}');
-		html ='<h4>'+IDL('SaveMsgFormat')+'<a class="fl_r" onclick="ge(\'vk_msg_fmt\').value=SAVE_MSG_HISTORY_PATTERN;">'+
-					IDL('Reset')+'</a></h4><textarea id="vk_msg_fmt" onfocus="autosizeSetup(this,{});">'+msg_pattern+'</textarea><br><br>';
+		html ='<h4>'+app.i18n.IDL('SaveMsgFormat')+'<a class="fl_r" onclick="ge(\'vk_msg_fmt\').value=SAVE_MSG_HISTORY_PATTERN;">'+
+					app.i18n.IDL('Reset')+'</a></h4><textarea id="vk_msg_fmt" onfocus="autosizeSetup(this,{});">'+msg_pattern+'</textarea><br><br>';
 
-		html+='<h4>'+IDL('SaveMsgDateFormat')+'<a class="fl_r" onclick="ge(\'vk_msg_date_fmt\').value=SAVE_MSG_HISTORY_DATE_FORMAT;">'+
-					IDL('Reset')+'</a></h4><textarea id="vk_msg_date_fmt" onfocus="autosizeSetup(this,{});">'+date_fmt+'</textarea><br>';
+		html+='<h4>'+app.i18n.IDL('SaveMsgDateFormat')+'<a class="fl_r" onclick="ge(\'vk_msg_date_fmt\').value=SAVE_MSG_HISTORY_DATE_FORMAT;">'+
+					app.i18n.IDL('Reset')+'</a></h4><textarea id="vk_msg_date_fmt" onfocus="autosizeSetup(this,{});">'+date_fmt+'</textarea><br>';
 		aBox.content('<div class="vk_save_hist_cfg">'+html+'</div>');
 		aBox.show();
 		autosizeSetup('vk_msg_fmt',{});
@@ -2283,7 +2288,7 @@ function vkMakeMsgHistory(uid,show_format){
 function vkNotesPage(){
 	if (!ge('vk_clean_notes') && cur.oid==remixmid()){
 		var p=geByClass('summary')[0];
-		p.innerHTML+='<span class="divide">|</span><a style="font-weight:normal" id="vk_clean_notes" href="#" onclick="vkCleanNotes(); return false;">'+IDL('DelAllNotes')+'</a>';
+		p.innerHTML+='<span class="divide">|</span><a style="font-weight:normal" id="vk_clean_notes" href="#" onclick="vkCleanNotes(); return false;">'+app.i18n.IDL('DelAllNotes')+'</a>';
 	}
 }
 
@@ -2300,12 +2305,12 @@ function vkCleanNotes(){
 	var filter=['owner','others','all'];
 	var deldone=function(){
 			box.hide();
-			vkMsg(IDL("ClearDone"),3000);
+			vkMsg(app.i18n.IDL("ClearDone"),3000);
 	};
 	var del=function(callback){
 		if (abort) return;
 		var del_count=mids.length;
-		ge('vk_del_msg').innerHTML=vkProgressBar(del_offset,del_count,310,IDL('nodesdel')+' %');
+		ge('vk_del_msg').innerHTML=vkProgressBar(del_offset,del_count,310,app.i18n.IDL('nodesdel')+' %');
 		var nid=mids[del_offset];
 		if (!nid){
 			ge('vk_del_msg').innerHTML=vkProgressBar(1,1,310,' ');
@@ -2327,7 +2332,7 @@ function vkCleanNotes(){
 		mids=[];
 		if (cur_offset==0){
 			ge('vk_del_msg').innerHTML=vkProgressBar(1,1,310,' ');
-			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,IDL('notesreq')+' %');
+			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,app.i18n.IDL('notesreq')+' %');
 		}
     app.vkApi.request({
       method: "notes.get",
@@ -2345,7 +2350,7 @@ function vkCleanNotes(){
         }
         if (msg_count==0) msg_count=ms.shift();
         else ms.shift();
-        ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,IDL('notesreq')+' %');
+        ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,app.i18n.IDL('notesreq')+' %');
         for (var i=0;i<ms.length;i++){
         	if ((ms[i].date>del_time && by_time) || !by_time) mids.push(ms[i].nid);
         }
@@ -2361,9 +2366,9 @@ function vkCleanNotes(){
 	};
 	var vkRunClean=function(soffset){
 		start_offset=soffset?soffset:0;
-		box=new MessageBox({title: IDL('ClearNotes'),closeButton:true,width:"350px"});
+		box=new MessageBox({title: app.i18n.IDL('ClearNotes'),closeButton:true,width:"350px"});
 		box.removeButtons();
-		box.addButton(IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+		box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
 		var html='<div id="vk_del_msg" style="padding-bottom:10px;"></div><div id="vk_scan_msg"></div>';
 		box.content(html).show();
 		scan();
@@ -2391,7 +2396,7 @@ function vkCleanNotes(){
 			<div class="fl_l"><input type="hidden" id="notes_del_after_time"/></div>\
 		  </div>\
 		</div></div>';
-		var aBox = new MessageBox({title: IDL('ClearNotes'),width: "285px"});
+		var aBox = new MessageBox({title: app.i18n.IDL('ClearNotes'),width: "285px"});
 		aBox.removeButtons();
 		aBox.addButton(getLang('box_no'),aBox.hide, 'no');
 		aBox.addButton(getLang('box_yes'),function(){
@@ -2400,13 +2405,13 @@ function vkCleanNotes(){
 			vkRunClean();
 		},'yes');
 
-		aBox.content(IDL('CleanNotesConfirm')+html);
+		aBox.content(app.i18n.IDL('CleanNotesConfirm')+html);
 		aBox.show();
-		//vkAlertBox(IDL('ClearNotes'),IDL('CleanNotesConfirm')+html,vkRunClean,true);
+		//vkAlertBox(app.i18n.IDL('ClearNotes'),app.i18n.IDL('CleanNotesConfirm')+html,vkRunClean,true);
 		var delTime = new Datepicker(ge('notes_del_after_date'), {time:'notes_del_after_time', width:140});
 		var cb = new Checkbox(ge("notes_del_by_time"), {  width: 270,
 														  checked:by_time,
-														  label: IDL('DelCreatedAfterTime'),
+														  label: app.i18n.IDL('DelCreatedAfterTime'),
 														  onChange: function(state) { by_time = (state == 1)?true:false; }
 														})
 	});
@@ -2498,7 +2503,7 @@ function vkTopicSubscribe(add_link){
 		if (ge('vksubscribetopic')) return;
 		if (nav.objLoc[0].indexOf('topic-')!=-1){
 			 var divider=(ge('privacy_edit_topic_action') && ge('privacy_edit_topic_action').parentNode && isVisible(ge('privacy_edit_topic_action').parentNode))?'<span class="divide">|</span>':'';
-			 geByClass('t0')[0].appendChild(vkCe('li',{"class":"t_r"},'<a href="#" id="vksubscribetopic" onclick="return vkTopicSubscribe();">'+IDL('addtop')+'</a>'+divider))
+			 geByClass('t0')[0].appendChild(vkCe('li',{"class":"t_r"},'<a href="#" id="vksubscribetopic" onclick="return vkTopicSubscribe();">'+app.i18n.IDL('addtop')+'</a>'+divider))
 		}
 		return false;
 	}
@@ -2511,7 +2516,7 @@ function vkTopicSubscribe(add_link){
 		onDone: function(count, from, rows, offset, pages, preload) {
 			var pid=rows.split(text)[1].match(/Board\.deletePost\((\d+)\)/);
 			if (!pid) {
-				vkMsg(IDL('Error'));
+				vkMsg(app.i18n.IDL('Error'));
 			}
 			else {
 				var post = cur.owner + '_' + pid[1];
@@ -2519,7 +2524,7 @@ function vkTopicSubscribe(add_link){
 					showProgress:showGlobalPrg.pbind(progr_el, {cls: 'progress_inv_img', w: 46, h: 16}),
 					hideProgress:hide.pbind('global_prg'),
 					onDone: function(text, deleted) {
-						if (deleted) vkMsg(IDL('topicadded'));
+						if (deleted) vkMsg(app.i18n.IDL('topicadded'));
 					}
 				});
 

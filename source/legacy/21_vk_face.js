@@ -791,19 +791,19 @@ vk_menu={
    },
    custom_settings:function(){
       var cfg = vk_menu.get_custom_links();
-      var html='<h4>'+IDL('MenuCustomLinks')+'</h4>';
+      var html='<h4>'+app.i18n.IDL('MenuCustomLinks')+'</h4>';
       for (var i=0; i<cfg.length; i++){
          var item=cfg[i];
-         html+='<div class="vk_m_item" id="vk_m_item'+i+'"><a href="'+item[0]+'" title="'+IDL('mAuE')+'" target="_blank" onclick="return vk_menu.edit('+i+');">'+item[1]+'</a><a href="#" class="vk_menu_remove_btn" onclick="return vk_menu.remove('+i+')">&times;</a></div>';
+         html+='<div class="vk_m_item" id="vk_m_item'+i+'"><a href="'+item[0]+'" title="'+app.i18n.IDL('mAuE')+'" target="_blank" onclick="return vk_menu.edit('+i+');">'+item[1]+'</a><a href="#" class="vk_menu_remove_btn" onclick="return vk_menu.remove('+i+')">&times;</a></div>';
          if (item[2]){
             var sub=item[2];
             for (var j=0; j<sub.length; j++){
-               html+='<div class="vk_ms_item" id="vk_m_item'+i+'_'+j+'">- <a href="'+sub[j][0]+'" title="'+IDL('mAuE')+'"  target="_blank" onclick="return vk_menu.edit('+i+','+j+');">'+sub[j][1]+'</a><a href="#" class="vk_menu_remove_btn" title="'+IDL('delete')+'"  onclick="return vk_menu.remove('+i+','+j+')">&times;</a></div>';
+               html+='<div class="vk_ms_item" id="vk_m_item'+i+'_'+j+'">- <a href="'+sub[j][0]+'" title="'+app.i18n.IDL('mAuE')+'"  target="_blank" onclick="return vk_menu.edit('+i+','+j+');">'+sub[j][1]+'</a><a href="#" class="vk_menu_remove_btn" title="'+app.i18n.IDL('delete')+'"  onclick="return vk_menu.remove('+i+','+j+')">&times;</a></div>';
             }
          }
-         html+='<div id="vkm_add_frm'+i+'" class="vk_ms_item">- <span id="vkm_add_frm'+i+'"><a href="#" class="vk_menu_add_btn" onclick="return vk_menu.add('+i+')">'+IDL('Add')+'</a></div><br>';
+         html+='<div id="vkm_add_frm'+i+'" class="vk_ms_item">- <span id="vkm_add_frm'+i+'"><a href="#" class="vk_menu_add_btn" onclick="return vk_menu.add('+i+')">'+app.i18n.IDL('Add')+'</a></div><br>';
       }
-      html+='<div id="vkm_add_frm" class="vk_m_item"><a href="#" class="vk_menu_add_btn" onclick="return vk_menu.add()">'+IDL('Add')+'</a></div><br>';
+      html+='<div id="vkm_add_frm" class="vk_m_item"><a href="#" class="vk_menu_add_btn" onclick="return vk_menu.add()">'+app.i18n.IDL('Add')+'</a></div><br>';
 
       return html;//'';
    },
@@ -971,10 +971,10 @@ function vkMenu(){//vkExLeftMenu
  var ExMenu={
     //*
     'profile':[
-      ['/gifts'+vkmid,IDL('clGi')],
-      [['/fans.php?act=fans&mid='+vkmid,"return !showTabbedBox('al_fans.php', {act: 'show_fans_box', oid: "+vkmid+"}, {cache: 1}, event);"],IDL('clFans')],
-      [['/fans.php?act=idols',"return !showTabbedBox('al_fans.php', {act: 'show_publics_box', oid: "+vkmid+"}, {cache: 1}, event);"],IDL('clSubscriptions')],
-      [['/stats?mid='+vkmid,'return;'],IDL('Stats')]
+      ['/gifts'+vkmid,app.i18n.IDL('clGi')],
+      [['/fans.php?act=fans&mid='+vkmid,"return !showTabbedBox('al_fans.php', {act: 'show_fans_box', oid: "+vkmid+"}, {cache: 1}, event);"],app.i18n.IDL('clFans')],
+      [['/fans.php?act=idols',"return !showTabbedBox('al_fans.php', {act: 'show_publics_box', oid: "+vkmid+"}, {cache: 1}, event);"],app.i18n.IDL('clSubscriptions')],
+      [['/stats?mid='+vkmid,'return;'],app.i18n.IDL('Stats')]
     ],//*/
     /*
     'edit':[
@@ -982,146 +982,145 @@ function vkMenu(){//vkExLeftMenu
       ['?','qazqaz']
     ],//*/
     'friends':[
-      ['/friends?section=all',IDL("mFrA")],
-      ['/friends?section=online',IDL("mFrO")],
-      ['/friends?section=recent',IDL("mFrNew")],
-	  ['/friends?act=find',IDL("mFrSug")],
-      ['/friends?section=requests',IDL("mFrR"),true],
-      ['/friends?section=all_requests',IDL("mFrAllReq")],
-      ['/friends?section=out_requests',IDL("mFrOutReq")],
-      [['/friends?w=calendar','return nav.change({w: \'calendar\'})'],IDL("Birthdays")]
+      ['/friends?section=all',app.i18n.IDL("mFrA")],
+      ['/friends?section=online',app.i18n.IDL("mFrO")],
+      ['/friends?section=recent',app.i18n.IDL("mFrNew")],
+	  ['/friends?act=find',app.i18n.IDL("mFrSug")],
+      ['/friends?section=requests',app.i18n.IDL("mFrR"),true],
+      ['/friends?section=all_requests',app.i18n.IDL("mFrAllReq")],
+      ['/friends?section=out_requests',app.i18n.IDL("mFrOutReq")],
+      [['/friends?w=calendar','return nav.change({w: \'calendar\'})'],app.i18n.IDL("Birthdays")]
     ],
     'albums':[
-        ['/albums'+vkmid,IDL("mPhM")],
-        ['/friendsphotos',IDL("mPhFrP")],
-        ['/tag'+vkmid,IDL("mPhW")],
-        [["#","showBox('al_photos.php', {act: 'new_album_box'},{stat: ['photos.css']}); return false;"],IDL("mPhN")],
-        ['/photos'+vkmid+'?act=comments',IDL("mPhC")],
-        ['/photos'+vkmid,IDL("mPhA")],
-        ['/albums'+vkmid+'?act=added',vk_lang["mTags"],true]
+        ['/albums'+vkmid,app.i18n.IDL("mPhM")],
+        ['/friendsphotos',app.i18n.IDL("mPhFrP")],
+        ['/tag'+vkmid,app.i18n.IDL("mPhW")],
+        [["#","showBox('al_photos.php', {act: 'new_album_box'},{stat: ['photos.css']}); return false;"],app.i18n.IDL("mPhN")],
+        ['/photos'+vkmid+'?act=comments',app.i18n.IDL("mPhC")],
+        ['/photos'+vkmid,app.i18n.IDL("mPhA")],
+        ['/albums'+vkmid+'?act=added',app.i18n.t( "mTags" ),true]
     ],
     'video':[
-        ['/video',IDL("mViM")],
-        ['/video?section=tagged',IDL("mViW")],
-        ['/video?section=uploaded',IDL("mViUploaded")],
-        ['/video?section=comments',IDL("mPhC")],
-        [['#',"stManager.add('video.js',function(){Video.uploadVideoBox();}); return false;"], IDL("mViN")], //'video.php?act=new' //"showTabbedBox('al_video.php', {act: 'upload_box', oid: cur.oid}, {stat: ['video_edit.css', 'privacy.css', 'privacy.js', 'uploader.js']}); return false;"
-        ['/video?section=tagged',vk_lang["mTags"],true]
+        ['/video',app.i18n.IDL("mViM")],
+        ['/video?section=tagged',app.i18n.IDL("mViW")],
+        ['/video?section=uploaded',app.i18n.IDL("mViUploaded")],
+        ['/video?section=comments',app.i18n.IDL("mPhC")],
+        [['#',"stManager.add('video.js',function(){Video.uploadVideoBox();}); return false;"], app.i18n.IDL("mViN")], //'video.php?act=new' //"showTabbedBox('al_video.php', {act: 'upload_box', oid: cur.oid}, {stat: ['video_edit.css', 'privacy.css', 'privacy.js', 'uploader.js']}); return false;"
+        ['/video?section=tagged',app.i18n.t( "mTags" ),true]
     ],
     'audio':[
-        ['/audio',IDL("mAuM")],
-        ['/audio?act=feed',IDL("mNeU")],
-        [['#',"showBox('/audio', extend({}, {act: 'new_audio'}), {   params: {width: '430px'}, stat: ['audio.css','audio.js'] }); return false;"],IDL("mAuN")]
+        ['/audio',app.i18n.IDL("mAuM")],
+        ['/audio?act=feed',app.i18n.IDL("mNeU")],
+        [['#',"showBox('/audio', extend({}, {act: 'new_audio'}), {   params: {width: '430px'}, stat: ['audio.css','audio.js'] }); return false;"],app.i18n.IDL("mAuN")]
     ],
     'mail':[
-        ['/im',IDL('mDialogsMessages')],
-        ['/im?sel=-4',IDL("Spam")],
-        ['/im?sel=-5',IDL('mImportant')]
-		//,[['im.php?act=a_box&popup=1',''],IDL('mQuickMessages')]
+        ['/im',app.i18n.IDL('mDialogsMessages')],
+        ['/im?sel=-4',app.i18n.IDL("Spam")],
+        ['/im?sel=-5',app.i18n.IDL('mImportant')]
+		//,[['im.php?act=a_box&popup=1',''],app.i18n.IDL('mQuickMessages')]
     ],
     'notes':[
-        ['/notes',IDL("mNoM")],
-        //['/notes?act=new',IDL("mNoN")],
-        ['/notes?act=comments',IDL("mNoC")],
-        ['/notes?section=friends',IDL("mNoF")],
-        ['/notes?section=fave',IDL("mNoI")]
+        ['/notes',app.i18n.IDL("mNoM")],
+        //['/notes?act=new',app.i18n.IDL("mNoN")],
+        ['/notes?act=comments',app.i18n.IDL("mNoC")],
+        ['/notes?section=friends',app.i18n.IDL("mNoF")],
+        ['/notes?section=fave',app.i18n.IDL("mNoI")]
     ],
     'groups':[
-        ['/groups',IDL("mGrM")],
-        ['/groups?tab=inv',IDL("mGrInv")],
-        ['/search?c[section]=groups',IDL("mGrS")],
-        ['/groups?tab=admin',IDL("mGrAdmin")]
+        ['/groups',app.i18n.IDL("mGrM")],
+        ['/groups?tab=inv',app.i18n.IDL("mGrInv")],
+        ['/search?c[section]=groups',app.i18n.IDL("mGrS")],
+        ['/groups?tab=admin',app.i18n.IDL("mGrAdmin")]
     ],
     'events':[
-        ['/events?tab=future',IDL("mEvF")],
-        ['/events?tab=past',IDL("mEvL")],
-        ['/events?tab=calendar',IDL("mEvC")],
-        ['/search?c[section]=events',IDL("mEvS")]
+        ['/events?tab=future',app.i18n.IDL("mEvF")],
+        ['/events?tab=past',app.i18n.IDL("mEvL")],
+        ['/events?tab=calendar',app.i18n.IDL("mEvC")],
+        ['/search?c[section]=events',app.i18n.IDL("mEvS")]
     ],
    'gifts':[
-        ['/gifts.php?act=wishlist',IDL("mWishMy")],
-        ['/gifts.php?act=wishlist&done=1',IDL("mWishDone")],
-        ['/gifts.php?act=wishlist&mid=-1',IDL("mWishFr")]
+        ['/gifts.php?act=wishlist',app.i18n.IDL("mWishMy")],
+        ['/gifts.php?act=wishlist&done=1',app.i18n.IDL("mWishDone")],
+        ['/gifts.php?act=wishlist&mid=-1',app.i18n.IDL("mWishFr")]
     ],
    /*'gifts':[
-        ['gifts#act=wishlist',IDL("mWishMy")],
-        ['gifts#act=wishlist&done=1',IDL("mWishDone")],
-        ['gifts#act=wishlist&mid=-1',IDL("mWishFr")]
+        ['gifts#act=wishlist',app.i18n.IDL("mWishMy")],
+        ['gifts#act=wishlist&done=1',app.i18n.IDL("mWishDone")],
+        ['gifts#act=wishlist&mid=-1',app.i18n.IDL("mWishFr")]
     ],*/
     'feed':[
-        ['feed',IDL("mNeP")],
-        ['feed?section=updates',IDL("mNeU")],
-        //['feed?section=friends',IDL("mNeF")],
-        ['feed?section=groups',IDL("mNeG")],
-        ['feed?section=notifications',IDL("mNeNotif")],
-        ['feed?section=photos',IDL("clPh")],
-        ['feed?section=mentions',IDL("mNeMe")],
-        ['feed?section=recommended',IDL("mNeR")],
-        //['feed?section=suggested',IDL("mNeR")+' 2'],
-        ['feed?section=articles',IDL("mNeArticles")],
-        ['feed?section=comments',IDL("mNeB")],
-        ['tag'+vkmid+'?act=comments',IDL("mNeFW")]
+        ['feed',app.i18n.IDL("mNeP")],
+        ['feed?section=updates',app.i18n.IDL("mNeU")],
+        //['feed?section=friends',app.i18n.IDL("mNeF")],
+        ['feed?section=groups',app.i18n.IDL("mNeG")],
+        ['feed?section=notifications',app.i18n.IDL("mNeNotif")],
+        ['feed?section=photos',app.i18n.IDL("clPh")],
+        ['feed?section=mentions',app.i18n.IDL("mNeMe")],
+        ['feed?section=recommended',app.i18n.IDL("mNeR")],
+        //['feed?section=suggested',app.i18n.IDL("mNeR")+' 2'],
+        ['feed?section=articles',app.i18n.IDL("mNeArticles")],
+        ['feed?section=comments',app.i18n.IDL("mNeB")],
+        ['tag'+vkmid+'?act=comments',app.i18n.IDL("mNeFW")]
     ],
 	'fave':[
-        ["fave?section=users",IDL("mFaV")],
-        ["fave?section=links",IDL("mFaL")],
-        ["fave?section=likes_photo",IDL("mFaP")],
-        ["fave?section=likes_video",IDL("mFaVI")],
-        ["fave?section=likes_posts",IDL("mFaPO")],
-        ["cc",IDL("vk_cc")],
+        ["fave?section=users",app.i18n.IDL("mFaV")],
+        ["fave?section=links",app.i18n.IDL("mFaL")],
+        ["fave?section=likes_photo",app.i18n.IDL("mFaP")],
+        ["fave?section=likes_video",app.i18n.IDL("mFaVI")],
+        ["fave?section=likes_posts",app.i18n.IDL("mFaPO")],
+        ["cc",app.i18n.IDL("vk_cc")],
     ],
     'settings':[
-        ['settings',IDL("mSeO")],
-        ['settings?act=privacy',IDL("mSeP")],
-        ['settings?act=notify',IDL("mSeN")],
-        ['settings?act=blacklist',IDL("mSeB")],
-        ['settings?act=mobile',IDL("mSeMobile")],
-        ['settings?act=balance',IDL("mSeBalance")],
+        ['settings',app.i18n.IDL("mSeO")],
+        ['settings?act=privacy',app.i18n.IDL("mSeP")],
+        ['settings?act=notify',app.i18n.IDL("mSeN")],
+        ['settings?act=blacklist',app.i18n.IDL("mSeB")],
+        ['settings?act=mobile',app.i18n.IDL("mSeMobile")],
+        ['settings?act=balance',app.i18n.IDL("mSeBalance")],
         [[ "settings?act=" + app.name, "vkShowSettings(false); return false;" ],
         	app.name ],
-        [['settings?skinman','vkShowSkinMan(); return false;'],IDL("SkinMan")/*,false,vkbrowser.mozilla*/],
-        [['#','hz_chooselang(); return false;'],IDL("ChangeVkOptLang")]
+        [['settings?skinman','vkShowSkinMan(); return false;'],app.i18n.IDL("SkinMan")/*,false,vkbrowser.mozilla*/]
     ],
     'matches':[
-        ['matches.php',IDL("mMaM")],
-        ['matches.php?act=search',IDL("mMaS")],
-        ['matches.php?act=sent',IDL("mMaSe")]
+        ['matches.php',app.i18n.IDL("mMaM")],
+        ['matches.php?act=search',app.i18n.IDL("mMaS")],
+        ['matches.php?act=sent',app.i18n.IDL("mMaSe")]
     ],
     'opinions':[
-        ['opinions.php',IDL("mOpA")],
-        ['opinions.php?act=outbox',IDL("mOpO")],
-        ['opinions.php?act=friends',IDL("mOpF")]
+        ['opinions.php',app.i18n.IDL("mOpA")],
+        ['opinions.php?act=outbox',app.i18n.IDL("mOpO")],
+        ['opinions.php?act=friends',app.i18n.IDL("mOpF")]
     ],
     'apps':[
-        ['apps?act=apps',IDL("mApM")],
-        ['apps?act=catalog',IDL("mApA")],
-        ['apps?act=notifications',IDL("mTags"),true],
-        ['apps?act=settings',IDL("mApS")]
-        //,[['#',"Ajax.Send(\'apps.php?act=a_delete_all_not\', {}, function(){vkLoadLeftMenu();}); return false;"],IDL('MyTagsDelete'),true]
+        ['apps?act=apps',app.i18n.IDL("mApM")],
+        ['apps?act=catalog',app.i18n.IDL("mApA")],
+        ['apps?act=notifications',app.i18n.IDL("mTags"),true],
+        ['apps?act=settings',app.i18n.IDL("mApS")]
+        //,[['#',"Ajax.Send(\'apps.php?act=a_delete_all_not\', {}, function(){vkLoadLeftMenu();}); return false;"],app.i18n.IDL('MyTagsDelete'),true]
     ],
     'questions':[
-        ['questions.php',IDL("mQuM")],
-        ['questions.php?act=add_question',IDL("mQuN")],
-        ['questions.php?act=all',IDL("mQuS")],
-        ['questions.php?act=friends',IDL("mQuF")],
-        ['questions.php?act=answered',IDL("mQuA")]
+        ['questions.php',app.i18n.IDL("mQuM")],
+        ['questions.php?act=add_question',app.i18n.IDL("mQuN")],
+        ['questions.php?act=all',app.i18n.IDL("mQuS")],
+        ['questions.php?act=friends',app.i18n.IDL("mQuF")],
+        ['questions.php?act=answered',app.i18n.IDL("mQuA")]
     ],
     'market':[
-        ['market.php',IDL("mMaA")],
-        ['market.php?show=my',IDL("mMaN")],
-        ['market.php?show=fave',IDL("favorites")],
-        ['market.php?show=friends',IDL("mMaF")]
+        ['market.php',app.i18n.IDL("mMaA")],
+        ['market.php?show=my',app.i18n.IDL("mMaN")],
+        ['market.php?show=fave',app.i18n.IDL("favorites")],
+        ['market.php?show=friends',app.i18n.IDL("mMaF")]
     ],
 	'wall':[
-		['wall'+remixmid(),IDL('mWAllPosts')],
-		['wall'+remixmid()+'?own=1',IDL('mWMyPosts')],
-      [['#',"showWiki({w: 'postbox'}, false, event, {queue: 1, stat: ['wkview.js' ,'wkview.css', 'postbox.js', 'postbox.css', 'wide_dd.js', 'wide_dd.css', 'page.js', 'page.css']}); return false;"],IDL('NewPost')],
-      ['notes',IDL("mNoM")],
-      //['notes?act=new',IDL("mNoN")],
-      ['notes?act=comments',IDL("mNoC")]
+		['wall'+remixmid(),app.i18n.IDL('mWAllPosts')],
+		['wall'+remixmid()+'?own=1',app.i18n.IDL('mWMyPosts')],
+      [['#',"showWiki({w: 'postbox'}, false, event, {queue: 1, stat: ['wkview.js' ,'wkview.css', 'postbox.js', 'postbox.css', 'wide_dd.js', 'wide_dd.css', 'page.js', 'page.css']}); return false;"],app.i18n.IDL('NewPost')],
+      ['notes',app.i18n.IDL("mNoM")],
+      //['notes?act=new',app.i18n.IDL("mNoN")],
+      ['notes?act=comments',app.i18n.IDL("mNoC")]
 	],
     'vkopt':[
-         [["#","UpdateCounters(); return false;"],IDL("updateLMenu")]
+         [["#","UpdateCounters(); return false;"],app.i18n.IDL("updateLMenu")]
     ]
   };
   ExMenu['im']=ExMenu['mail'];
@@ -1212,7 +1211,7 @@ function vkMenu(){//vkExLeftMenu
 
 
   if (WALL_LINK){
-      var li=vkCe('li',{},'<a class="left_row" href="/wall'+remixmid()+'" onclick="return nav.go(this, event);"><span class="left_label inl_bl">'+IDL('wall')+'</span><span></span></a>');
+      var li=vkCe('li',{},'<a class="left_row" href="/wall'+remixmid()+'" onclick="return nav.go(this, event);"><span class="left_label inl_bl">'+app.i18n.IDL('wall')+'</span><span></span></a>');
       var md=geByClass('more_div',nav)[0];
       if (md) insertAfter(li,md)
       else nav.appendChild(li);
@@ -1491,7 +1490,7 @@ function vkWallAddBtnOnError(){
    var el=ge('msg_back_button');
    if (oid && el){
       el.parentNode.parentNode.innerHTML+=
-      '<a href="wall'+oid[1]+'?own=1"><div style="display: block; margin: 15px auto 0px;" class="button_gray"><button style="width: 100%;">'+IDL('GoToUserPosts')+'</button></div></a>'
+      '<a href="wall'+oid[1]+'?own=1"><div style="display: block; margin: 15px auto 0px;" class="button_gray"><button style="width: 100%;">'+app.i18n.IDL('GoToUserPosts')+'</button></div></a>'
    }
 }
 function UserOnlineStatus(status) {// ADD LAST STATUS

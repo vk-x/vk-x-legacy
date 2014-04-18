@@ -153,7 +153,7 @@ function AddSmileBtn(rfield){
 		}
 		var smiles=TextPasteSmiles;
 		var DivCode='<div>'+
-		 '<h4>'+IDL('sm_SelectSmile')+'</h4><div class="smilemenu">';
+		 '<h4>'+app.i18n.IDL('sm_SelectSmile')+'</h4><div class="smilemenu">';
 		 var i=0;
 		 for (key in smiles){
 		  i++;
@@ -377,8 +377,7 @@ function InpTexSetEvents(){
 	addEvent(cont, 'keyup', TextAreaKeyPressed); //'' keypress     keydown
 }
 function SwichKeybText(str){
-   // See keyboard layouts language in vklang.js
-   var cur_kl=vk_lang['keyboard_lang'] || vk_lang_ru['keyboard_lang'];
+	var cur_kl=app.i18n.t( "keyboard_lang" );
 	var alfeng=cur_kl[0];
 	var alfrus=cur_kl[1];
 

@@ -265,13 +265,13 @@ vkScreenBox.hide(200);
 vkScreenBox.content("");
 }
 function vkShowScreen(url){
-  if (!window.vkScreenBox || isNewLib()) vkScreenBox = new MessageBox({title: IDL('Preview'),fullPageLink:url+'" target="_blank',closeButton:true,width:"800px"});
+  if (!window.vkScreenBox || isNewLib()) vkScreenBox = new MessageBox({title: app.i18n.IDL('Preview'),fullPageLink:url+'" target="_blank',closeButton:true,width:"800px"});
   vkScreenBox.removeButtons();
 
   vkScreenBox.removeButtons();
   vkScreenBox.addButton(!isNewLib()?{
     onClick: vkHideScreen,
-    style:'button_no',label:IDL('Cancel')}:IDL('Cancel'),vkHideScreen,'no');
+    style:'button_no',label:app.i18n.IDL('Cancel')}:app.i18n.IDL('Cancel'),vkHideScreen,'no');
 
   vkScreenBox.setOptions({onHide: vkHideScreen});
   vkScreenBox.content('<img src="'+url+'" onclick="vkHideScreen();" width="780px">').show();
@@ -296,7 +296,7 @@ function vkPrepareCats(skins){ // it's PIZDEC! Don't translate to Russian
 function vkCatNavigate(elem){
   var cat=elem.getAttribute("category");
   vkShowSkinMan(cat);
-  ge("header").innerHTML='<h1>'+IDL("SkinMan")+' | '+cat+'</h1>';
+  ge("header").innerHTML='<h1>'+app.i18n.IDL("SkinMan")+' | '+cat+'</h1>';
   return false;
 }
 function vkMakeCatMenu(cats){
@@ -304,11 +304,11 @@ function vkMakeCatMenu(cats){
     el=(ge('sideBar') || ge('side_bar')).getElementsByTagName('ol')[0];//ge("nav");
 	vkNavigationMenu=el;
     //el.setAttribute("id","snav");
-    var html='<li><h4 style="cursor:hand;" onclick="show(vkNavigationMenu); hide(\'vk_cat_skins_menu\')">'+IDL('categories')+"</h4></li>"+
+    var html='<li><h4 style="cursor:hand;" onclick="show(vkNavigationMenu); hide(\'vk_cat_skins_menu\')">'+app.i18n.IDL('categories')+"</h4></li>"+
 
              '<li><a href="#"  onclick="return vkShowSkinMan();" class="left_row">'+
                '<span class="left_count_wrap  fl_r"><span class="inl_bl left_count">'+cats.SkinsCount+'</span></span>'+
-               '<span class="left_label inl_bl">'+IDL('all')+'</span>'+
+               '<span class="left_label inl_bl">'+app.i18n.IDL('all')+'</span>'+
              '</a></li>';
 
     for (var cat in cats)  if(cat!='SkinsCount')
@@ -353,16 +353,16 @@ function vkOnSkinList(Skins){
 function vkSetCSSCode(){
   var cur_css=vk_LSGetVal('VK_CURRENT_CSS_CODE');
   if (!cur_css) cur_css="";
-  if (!window.vkCSSCodeBox || isNewLib()) vkCSSCodeBox = new MessageBox({title: IDL('CSSCode'),closeButton:true,width:"500px"});
+  if (!window.vkCSSCodeBox || isNewLib()) vkCSSCodeBox = new MessageBox({title: app.i18n.IDL('CSSCode'),closeButton:true,width:"500px"});
   vkCSSCodeBox.removeButtons();
 
   vkCSSCodeBox.addButton(!isNewLib()?{
     onClick: vkCSSCodeBox.hide,
-    style:'button_no',label:IDL('Hide')}:IDL('Hide'),vkCSSCodeBox.hide,'no');
+    style:'button_no',label:app.i18n.IDL('Hide')}:app.i18n.IDL('Hide'),vkCSSCodeBox.hide,'no');
 
   vkCSSCodeBox.addButton(!isNewLib()?{
     onClick: function(){ ge('vkcsscode').value=""; ge('vkcsscode').focus(); },
-    style:'button_no',label:IDL('Clear')}:IDL('Clear'),function(){ ge('vkcsscode').value=""; ge('vkcsscode').focus(); },'no');
+    style:'button_no',label:app.i18n.IDL('Clear')}:app.i18n.IDL('Clear'),function(){ ge('vkcsscode').value=""; ge('vkcsscode').focus(); },'no');
 
   var applycode=function(){
       var val=ge('vkcsscode').value;
@@ -371,22 +371,22 @@ function vkSetCSSCode(){
         //vkCSSCodeBox.hide(200);
         //vkCSSCodeBox.content('');
       } else {
-        alert(IDL('WrongCSSCode'));
+        alert(app.i18n.IDL('WrongCSSCode'));
       }
     };
 
   vkCSSCodeBox.addButton(!isNewLib()?{
     onClick: applycode,
-    label:IDL('Apply')}:IDL('Apply'), applycode ,'yes');
+    label:app.i18n.IDL('Apply')}:app.i18n.IDL('Apply'), applycode ,'yes');
 
   /*vkCSSCodeBox.addButton({
     onClick: applycode,
-    label:IDL('Apply')
+    label:app.i18n.IDL('Apply')
   });*/
   vkCSSCodeBox.setOptions({
       onHide:function(){vkCSSCodeBox.content('');}
   });
-  vkCSSCodeBox.content(IDL('InsertCSSCode')+'<br><textarea style="width:460px; height:200px;" id="vkcsscode">'+cur_css+'</textarea>');
+  vkCSSCodeBox.content(app.i18n.IDL('InsertCSSCode')+'<br><textarea style="width:460px; height:200px;" id="vkcsscode">'+cur_css+'</textarea>');
   vkCSSCodeBox.show(200);
   return false;
 }
@@ -415,15 +415,15 @@ function vkShowSkinMan(filter,page){
 	var html='<div class="bar clearFix summaryBar summary_wrap clear_fix">'+
              '<div id="toppages" class="fl_r pages_top"></div>'+
              '<div class="summary">'+
-                '<a class="notbold" href="#" onclick="return vkSwichStyle(prompt(IDL(\'EnterCSSLink\')));">'+IDL('SetByLink')+'</a>'+
+                '<a class="notbold" href="#" onclick="return vkSwichStyle(prompt(app.i18n.IDL(\'EnterCSSLink\')));">'+app.i18n.IDL('SetByLink')+'</a>'+
                 (vkLocalStoreReady()?'<span class="divider">|</span>'+
-                '<a class="notbold" href="#" onclick="return vkSetCSSCode();">'+IDL('SetByCode')+'</a>':'')+
+                '<a class="notbold" href="#" onclick="return vkSetCSSCode();">'+app.i18n.IDL('SetByCode')+'</a>':'')+
                 (vkLocalStoreReady() && (
 					(vk_LSGetVal('VK_CURRENT_CSS_CODE') && vk_LSGetVal('VK_CURRENT_CSS_CODE').length)
 					||
 					(vkGetVal('VK_CURRENT_CSS_URL') && vkGetVal('VK_CURRENT_CSS_URL').length)
 				)?'<span class="divider">|</span>'+
-                '<a class="notbold" href="#" onclick="vkSwichCSS(\'\'); vkSwichStyle(\'\'); return false;">'+IDL('ClearCssCode')+'</a>':'')+
+                '<a class="notbold" href="#" onclick="vkSwichCSS(\'\'); vkSwichStyle(\'\'); return false;">'+app.i18n.IDL('ClearCssCode')+'</a>':'')+
              '</div>'+
 
             '</div>';
@@ -450,7 +450,7 @@ function vkShowSkinMan(filter,page){
       if (VK_STYLE_LIST[i].cat && (VK_STYLE_LIST[i].cat.match(filter) /*|| VK_STYLE_LIST[i].cat=="*"*/))  vkMyStyles.push(VK_STYLE_LIST[i]);
 
   }
-  document.title=IDL("SkinMan")+(filter?" | "+filter:"")+" | [vkOpt]";
+  document.title=app.i18n.IDL("SkinMan")+(filter?" | "+filter:"")+" | [vkOpt]";
   //addCss("css/photos2.css");
   vkaddcss("\
           .vk_cssjs_ico{background-image:url('"+skinman_cssjs+"'); cursor:pointer; display: block; height: 16px; width: 16px; float:right;}\
@@ -474,13 +474,13 @@ function vkShowSkinMan(filter,page){
   vkMakeCatMenu(cats);
   var html='<div class="bar clearFix summaryBar summary_wrap clear_fix">'+
              '<div id="toppages" class="fl_r pages_top"></div>'+
-             '<div class="summary">'+langNumeric(vkMyStyles.length,vk_lang["theme_num"])+ //+vkMyStyles.length+' '+IDL('Skins')+
+             '<div class="summary">'+langNumeric(vkMyStyles.length,app.i18n.t( "theme_num" ))+ //+vkMyStyles.length+' '+app.i18n.IDL('Skins')+
                 '<span class="divider">|</span>'+
-                '<a class="notbold" href="#" onclick="return vkSwichStyle(prompt(IDL(\'EnterCSSLink\')));">'+IDL('SetByLink')+'</a>'+
+                '<a class="notbold" href="#" onclick="return vkSwichStyle(prompt(app.i18n.IDL(\'EnterCSSLink\')));">'+app.i18n.IDL('SetByLink')+'</a>'+
                 (vkLocalStoreReady()?'<span class="divider">|</span>'+
-                '<a class="notbold" href="#" onclick="return vkSetCSSCode();">'+IDL('SetByCode')+'</a>':'')+
+                '<a class="notbold" href="#" onclick="return vkSetCSSCode();">'+app.i18n.IDL('SetByCode')+'</a>':'')+
                 (vkLocalStoreReady() && vk_LSGetVal('VK_CURRENT_CSS_CODE') && vk_LSGetVal('VK_CURRENT_CSS_CODE').length?'<span class="divider">|</span>'+
-                '<a class="notbold" href="#" onclick="vkSwichCSS(\'\');return false;">'+IDL('ClearCssCode')+'</a>':'')+
+                '<a class="notbold" href="#" onclick="vkSwichCSS(\'\');return false;">'+app.i18n.IDL('ClearCssCode')+'</a>':'')+
              '</div>'+
 
             '</div>'+
@@ -496,7 +496,7 @@ function vkShowSkinMan(filter,page){
      if (vkMyStyles[i].pid) pids.push(vkMyStyles[i].pid);
      var Thumb=(vkMyStyles[i].thumb)?vkMyStyles[i].thumb:"http://vkontakte.ru/images/question_a.gif";
      var Screen=(vkMyStyles[i].screen)?vkMyStyles[i].screen:null;
-     var Name=(vkMyStyles[i].name)?vkMyStyles[i].name:IDL("Noname");
+     var Name=(vkMyStyles[i].name)?vkMyStyles[i].name:app.i18n.IDL("Noname");
      var Author=(vkMyStyles[i].author)?vkMyStyles[i].author:"N/A";
      var CssUrl=(vkMyStyles[i].url)?vkMyStyles[i].url:"";
      var CssJsUrl=(vkMyStyles[i].script_url)?vkMyStyles[i].script_url:"";
@@ -504,7 +504,7 @@ function vkShowSkinMan(filter,page){
 
      var like_wrap=vkMyStyles[i].pid?vk_skinman.get_like_html(vkMyStyles[i].pid):'';
 
-     var mouseover = ' onmouseover="vkSkinManInfo(this,\''+(CssDesc!=""?CssDesc:IDL('WarnCSSJSTheme'))+'\');" ';
+     var mouseover = ' onmouseover="vkSkinManInfo(this,\''+(CssDesc!=""?CssDesc:app.i18n.IDL('WarnCSSJSTheme'))+'\');" ';
      html +=""+
           '<div class="'+(vkGetVal("VK_CURRENT_CSS_URL")==CssUrl?'current_skin':'noselected_skin')+'">'+
             '<div>'+like_wrap+'<h4 onclick="return vkSwichStyle(\''+CssUrl+'\',this,\''+CssJsUrl+'\');" style="cursor:hand;">'+Name+(CssJsUrl!=""?'<span class="vk_cssjs_ico" '+mouseover+'></span>':"")+'</h4></div>'+
@@ -512,16 +512,16 @@ function vkShowSkinMan(filter,page){
             '<div align=center class="thumbimg">'+
               '<a href="#" onclick="return vkSwichStyle(\''+CssUrl+'\',this,\''+CssJsUrl+'\');"><img width="160px" alt="'+Name+'" src="' + Thumb + '"/></a>'+
             '</div>' +
-            '<div><h4>'+IDL("Author")+": "+Author+'</h4></div>'+
-            '<div>'+((Screen)?'<a class="smaximize zoombg" href="'+Screen+'" onclick="return vkShowScreen(\''+Screen+'\')">'+IDL("Zoom")+'</a>':
-            '<span class="smaximizeoff zoombg">'+IDL("Zoom")+'</span>')+'</div>'+
+            '<div><h4>'+app.i18n.IDL("Author")+": "+Author+'</h4></div>'+
+            '<div>'+((Screen)?'<a class="smaximize zoombg" href="'+Screen+'" onclick="return vkShowScreen(\''+Screen+'\')">'+app.i18n.IDL("Zoom")+'</a>':
+            '<span class="smaximizeoff zoombg">'+app.i18n.IDL("Zoom")+'</span>')+'</div>'+
           '</div>';
   }
 
   html+='</div></div></div>';
   ge("content").innerHTML=html;
   ge("toppages").innerHTML=vkMakePageListS(page,Math.ceil(vkMyStyles.length/VK_THEMES_ON_PAGE)-1,"javascript:vkShowSkinMan("+(filter?filter:false)+",%%);","vkShowSkinMan("+(filter?filter:false)+",%%); return false;");
-  ge("header").innerHTML='<h1>'+IDL("SkinMan")+'</h1>';
+  ge("header").innerHTML='<h1>'+app.i18n.IDL("SkinMan")+'</h1>';
   vk_skinman.likes_load(pids);
   return false;
 }

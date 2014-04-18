@@ -98,7 +98,7 @@ vk_search={
    parse_info:function(profile){
       var sex=profile.sex;
       var relation=profile.relation;
-      var rel=IDL((sex==1?'profile_relation_f_':'profile_relation_m_')+relation);
+      var rel=app.i18n.IDL((sex==1?'profile_relation_f_':'profile_relation_m_')+relation);
       rel=relation>0?rel:'';
       if (profile.relation_partner){
          var rp=profile.relation_partner;
@@ -115,12 +115,12 @@ vk_search={
          bday_info = null;
 
       var info_labels=[
-			[bday_info, IDL('Bithday')],
-         //[(sex==1?Sex_fm:Sex_m), IDL('Sex')],
-         [rel,IDL('Relation')],
-			[profile.mobile_phone, IDL('Mob_tel')],
-			[profile.home_phone, IDL('Home_tel')],
-         [profile.skype, IDL('Skype')],
+			[bday_info, app.i18n.IDL('Bithday')],
+         //[(sex==1?Sex_fm:Sex_m), app.i18n.IDL('Sex')],
+         [rel,app.i18n.IDL('Relation')],
+			[profile.mobile_phone, app.i18n.IDL('Mob_tel')],
+			[profile.home_phone, app.i18n.IDL('Home_tel')],
+         [profile.skype, app.i18n.IDL('Skype')],
 		];
       var info_html='';
 		for (var i=0; i<info_labels.length;i++)
@@ -180,7 +180,7 @@ vk_profile={
          });
       }
       html='<a class="notes" onclick="return nav.go(this, event);" href="/notes'+cur.oid+'" onmouseover="vk_profile.wall_notes_link(true);">\
-      <span class="fl_r thumb"></span><span class="fl_r" id="pr_notes_count"></span>'+IDL('clNo',1)+'</a>';
+      <span class="fl_r thumb"></span><span class="fl_r" id="pr_notes_count"></span>'+app.i18n.IDL('clNo',1)+'</a>';
       if (ge('profile_counts') && !ge('pr_notes_count')){
          ge('profile_counts').appendChild(vkCe('div',{},html));
       }
@@ -196,7 +196,7 @@ vk_profile={
                   onclick:"cancelEvent(event); return nav.go(this, event);",
                   onmouseover:"this.parentNode.href='/wall"+cur.oid+"?with="+vk.id+"';",
                   onmouseout:"this.parentNode.href='"+href+"';"
-               },IDL('T-a-T',1)))
+               },app.i18n.IDL('T-a-T',1)))
    },
    edit_page:function(){
       vk_profile.edit_mid_name();
@@ -206,7 +206,7 @@ vk_profile={
          var p=ge('pedit_maiden_row');
          if (!p) return;
          var div=vkCe('div',{'class':'pedit_general_row clear_fix'},'\
-            <div class="pedit_general_label fl_l ta_r">'+IDL('Middle_name')+'</div>\
+            <div class="pedit_general_label fl_l ta_r">'+app.i18n.IDL('Middle_name')+'</div>\
             <div class="pedit_general_labeled fl_l"><input type="text" id="pedit_middle_name" class="text" autocomplete="off"></div>\
         ');
          p.parentNode.insertBefore(div,p);
@@ -225,17 +225,17 @@ vk_profile={
       if (cur.oid!=remixmid() || ge('friends_only') ) return;
       var p=ge('page_add_media');
       if (!p) return;
-      var cb=vkCe('div',{"class":"checkbox fl_l","id":"friends_only","onclick":"checkbox(this);checkbox('status_export',!isChecked(this));checkbox('facebook_export',!isChecked(this));"},'<div></div>'+IDL('OnlyForFriends'))
+      var cb=vkCe('div',{"class":"checkbox fl_l","id":"friends_only","onclick":"checkbox(this);checkbox('status_export',!isChecked(this));checkbox('facebook_export',!isChecked(this));"},'<div></div>'+app.i18n.IDL('OnlyForFriends'))
       p.parentNode.insertBefore(cb,p);
    },
    fav_fr_block:function(is_list){
       var is_right_block = false;//(getSet(XX)=='y');
       if (!ge('profile_favefr')){
          var html='\
-           <a href="/fave" onclick="return nav.go(this, event)" class="module_header"><div class="header_top clear_fix">'+IDL('FaveFr')+'</div></a>\
+           <a href="/fave" onclick="return nav.go(this, event)" class="module_header"><div class="header_top clear_fix">'+app.i18n.IDL('FaveFr')+'</div></a>\
            <div class="module_header">\
              <div class="p_header_bottom">\
-               <a href="javascript:vk_profile.fav_fr_block(true)" id="vk_favefr_all_link">'+ vkopt_brackets(IDL('FaveFr') +' ( -- )')+'</a>\
+               <a href="javascript:vk_profile.fav_fr_block(true)" id="vk_favefr_all_link">'+ vkopt_brackets(app.i18n.IDL('FaveFr') +' ( -- )')+'</a>\
              </div>\
            </div>\
            <div class="module_body clear_fix" id="vk_favefr_users_content"></div>\
@@ -308,7 +308,7 @@ vk_profile={
             }
          }
          if (ge('vk_favefr_users_content')){
-            ge("vk_favefr_all_link").innerHTML=vkopt_brackets(IDL('FaveFr') +' ('+list.length+')');
+            ge("vk_favefr_all_link").innerHTML=vkopt_brackets(app.i18n.IDL('FaveFr') +' ('+list.length+')');
             ge('vk_favefr_users_content').innerHTML=users;
             vkProcessNodeLite(ge('vk_favefr_users_content'));
          }
@@ -463,7 +463,7 @@ function vkWallPhotosLinks(){
    //alert(cur.oid +'\n'+ cur.pid +'\n'+ el +'\n'+ !ge('vk_wall_ph_links') +'\n'+ geByClass('page_media_full_photo')[0]);
    if (cur.oid && cur.pid && el && !ge('vk_wall_ph_links') && (geByClass('page_media_full_photo')[0] || geByClass('page_post_thumb_sized_photo')[0])){
       var listId='wall'+cur.oid+'_'+cur.pid;
-      el.insertBefore(vkCe('a',{id:'vk_wall_ph_links', "class":"fl_r","onclick":"vkGetLinksToPhotos('"+listId+"')"},IDL('Links')),el.firstChild);
+      el.insertBefore(vkCe('a',{id:'vk_wall_ph_links', "class":"fl_r","onclick":"vkGetLinksToPhotos('"+listId+"')"},app.i18n.IDL('Links')),el.firstChild);
       //vkGetLinksToPhotos();
    }
 }
@@ -497,7 +497,7 @@ vk_notes={  // <a onclick="showBox('wkview.php', {act: 'notes_old_privacy', nid:
    add_new:function(){
       stManager.add(['ui_controls.js', 'ui_controls.css','wkview.css'],function(){
 
-         var box = new MessageBox({title: IDL('NoteNew'),width:'654px', progress:'vk_box_progr',bodyStyle:'padding:0px;'},true);
+         var box = new MessageBox({title: app.i18n.IDL('NoteNew'),width:'654px', progress:'vk_box_progr',bodyStyle:'padding:0px;'},true);
          box.removeButtons();
 
          //box.addButton(getLang('box_cancel'),box.hide, 'gray')
@@ -613,7 +613,7 @@ function vkPollResults(post_id,pid){
          </div>\
       </div>';
 
-      var box=vkAlertBox(IDL('ViewResults'),html);
+      var box=vkAlertBox(app.i18n.IDL('ViewResults'),html);
       vkPollVoters(data.owner_id,data.poll_id);
    };
 
@@ -663,7 +663,7 @@ function vkPollResults(post_id,pid){
 function vkPollCancelAnswer(post_id,pid){
    var cancel=function(data){
       if (data.answer_id==0){
-         alert(IDL('CancelAnswerError'));
+         alert(app.i18n.IDL('CancelAnswerError'));
          return;
       }
       //board:
@@ -677,8 +677,8 @@ function vkPollCancelAnswer(post_id,pid){
         },
         callback: function( r ) {
             alert( r.response == 1 ?
-               IDL('CancelAnswerSuccess') :
-               IDL('CancelAnswerFail')
+               app.i18n.IDL('CancelAnswerSuccess') :
+               app.i18n.IDL('CancelAnswerFail')
             );
         }
       });
@@ -777,7 +777,7 @@ function vkPollResultsBtn(node){
                                   "class":"fl_r",
                                   "href":"#",
                                   "onclick":"return vkPollCancelAnswer('"+m[1]+"','"+m[2]+"');"
-                                 },IDL('CancelAnswer')),c.firstChild);
+                                 },app.i18n.IDL('CancelAnswer')),c.firstChild);
       }
 
       if (!el || !c) continue;
@@ -791,7 +791,7 @@ function vkPollResultsBtn(node){
                                "class":"fl_r",
                                "href":"#",
                                "onclick":"return vkPollResults('"+id+"');"
-                              },IDL('ViewResults')),c.firstChild);
+                              },app.i18n.IDL('ViewResults')),c.firstChild);
    }
 }
 
@@ -842,9 +842,9 @@ function checkAgeFunc(_this,_id,_day,_month){
        }
 
        if(full_years>0)
-         ge('checkAge').innerHTML='<b>'+langNumeric(full_years, vk_lang["vk_year"])+'</b>';
+         ge('checkAge').innerHTML='<b>'+langNumeric(full_years, app.i18n.t( "vk_year" ))+'</b>';
        else
-         ge('checkAge').innerHTML=IDL('AgeNA');
+         ge('checkAge').innerHTML=app.i18n.IDL('AgeNA');
   };
 
   if(vk_cur.vk_calEvents){
@@ -871,11 +871,11 @@ function vkProcessBirthday(day,month,year){
       var cur_date = new Date();
       var bDay = new Date(cur_date.getFullYear(), date.getMonth(), date.getDate());
       var years = cur_date.getFullYear() - date.getFullYear() - (bDay > cur_date?1:0);
-      info.push(langNumeric(years, vk_lang["vk_year"]));
+      info.push(langNumeric(years, app.i18n.t( "vk_year" )));
    }
 
    if (day && month){
-      var zodiacs=vk_lang['zodiac_signs'];
+      var zodiacs=app.i18n.t( 'zodiac_signs' );
       var idx = day>zodiac_cfg[month-1]?(month) % 12:(month-1);
 		var zodiac = zodiacs[idx];
       info.push(zodiac);
@@ -883,14 +883,14 @@ function vkProcessBirthday(day,month,year){
    return info;
 }
 
-//javascript: vk_users.find_age(cur.oid,function(age){alert(age?langNumeric(age, vk_lang['vk_year']):'N/A')});
+//javascript: vk_users.find_age(cur.oid,function(age){alert(age?langNumeric(age, app.i18n.t( 'vk_year' )):'N/A')});
 function vkBDYear(uid,el){
    var _el=ge(el);
    var a=geByTag('a',_el)[0];
    if (a && a.tt) a.tt.hide();
    addClass(_el,'fl_r');
    vk_users.find_age(uid,function(age){
-      var txt=age?langNumeric(age, vk_lang["vk_year"]):'N/A';
+      var txt=age?langNumeric(age, app.i18n.t( "vk_year" )):'N/A';
       removeClass(_el,'fl_r');
       _el.innerHTML=txt;
    },{el:el,width:50});
@@ -909,7 +909,7 @@ function vkProcessProfileBday(node){
 
    if (info.length>0){
       if (!yr)
-         info.push('<span id="%age_el"><a href="#" onmouseover="showTooltip(this,{center:true,className:\'vk_pr_tt\', text:\''+IDL('CalcAgeWarning')+'\'})" onclick="return vkBDYear('+cur.oid+',\'%age_el\');">'+langNumeric('?', vk_lang["vk_year"])+'</a></span>');
+         info.push('<span id="%age_el"><a href="#" onmouseover="showTooltip(this,{center:true,className:\'vk_pr_tt\', text:\''+app.i18n.IDL('CalcAgeWarning')+'\'})" onclick="return vkBDYear('+cur.oid+',\'%age_el\');">'+langNumeric('?', app.i18n.t( "vk_year" ))+'</a></span>');
       info = ' ('+info.join(', ')+')';
 
       var links=node.getElementsByTagName('a');
@@ -940,7 +940,7 @@ function status_icq(node) { //add image-link 'check status in ICQ'
     t=el.innerHTML || '';
     t=t.replace(/\D+/g,'') || '';
     if(t.length)                                                                                                                                                   // http://kanicq.ru/invisible/favicon.ico
-      el.innerHTML+=' <a href="http://kanicq.ru/invisible/'+t+'" title="'+IDL("CheckStatus")+'" target=new><img src="http://status.icq.com/online.gif?img=26&icq='+t+'&'+Math.floor(Math.random()*(100000))+'" alt="'+IDL("CheckStatus")+'"></a>';
+      el.innerHTML+=' <a href="http://kanicq.ru/invisible/'+t+'" title="'+app.i18n.IDL("CheckStatus")+'" target=new><img src="http://status.icq.com/online.gif?img=26&icq='+t+'&'+Math.floor(Math.random()*(100000))+'" alt="'+app.i18n.IDL("CheckStatus")+'"></a>';
   }
   //*
   if(skype) {
@@ -1017,7 +1017,7 @@ function vkAddCleanWallLink(){
 
     if (!rx){
       p_options.push({
-         l:IDL('PhotoLinks'),
+         l:app.i18n.IDL('PhotoLinks'),
          onClick:function(item) {
             vk_photos.scan_wall(cur.oid,(cur.wallType=="full_own"?true:false));
          }
@@ -1029,15 +1029,15 @@ function vkAddCleanWallLink(){
 
       var link='';
       if (rx && rx[1]==remixmid()){
-         //link='<a href="#" onclick="vkCleanNotes(); return false;">'+IDL('DelAllNotes')+'</a>';
+         //link='<a href="#" onclick="vkCleanNotes(); return false;">'+app.i18n.IDL('DelAllNotes')+'</a>';
          p_options.push({
-            l:IDL('DelAllNotes'),
+            l:app.i18n.IDL('DelAllNotes'),
             onClick:function(item) {
                vkCleanNotes();
             }
          });
          p_options.push({
-            l:IDL('NoteNew'),
+            l:app.i18n.IDL('NoteNew'),
             onClick:function(item) {
                vk_notes.add_new();
             }
@@ -1045,9 +1045,9 @@ function vkAddCleanWallLink(){
 
 
       } else {
-         //link='<a href="#" onclick="vkCleanWall('+cur.oid+'); return false;">'+IDL("wallClear")+'</a><span class="divide">|</span>';
+         //link='<a href="#" onclick="vkCleanWall('+cur.oid+'); return false;">'+app.i18n.IDL("wallClear")+'</a><span class="divide">|</span>';
          p_options.push({
-            l:IDL('wallClear'),
+            l:app.i18n.IDL('wallClear'),
             onClick:function(item) {
                vkCleanWall(cur.oid);
             }
@@ -1064,7 +1064,7 @@ function vkAddCleanWallLink(){
 	if(allow_clean && cur.wallType=="one" && !ge('vk_clean_post_comments_wall')){
 		var p=geByClass('reply_link_wrap')[0];
 		var el=vkCe('small',{id:'vk_clean_post_comments_wall'},'\
-			<span class="divide">|</span><a href="#" onclick="vkDelWallPostComments('+cur.oid+','+nav.objLoc[0].match(/_(\d+)/)[1]+'); return false;">'+IDL("DelAllComments")+'</a>\
+			<span class="divide">|</span><a href="#" onclick="vkDelWallPostComments('+cur.oid+','+nav.objLoc[0].match(/_(\d+)/)[1]+'); return false;">'+app.i18n.IDL("DelAllComments")+'</a>\
 		');
 		p.appendChild(el);
 	}
@@ -1073,7 +1073,7 @@ function vkAddCleanWallLink(){
 
    if (ge('full_wall_filters')){
       if (!ge('vk_wall_act_cont')){
-         ge('full_wall_filters').appendChild(vkCe('li',{"class":'t_r', id:'vk_wall_act_cont'},'<a href="#" id="vk_wall_act_menu">'+IDL('Actions')+'</a><span class="divide"> </span>'));
+         ge('full_wall_filters').appendChild(vkCe('li',{"class":'t_r', id:'vk_wall_act_cont'},'<a href="#" id="vk_wall_act_menu">'+app.i18n.IDL('Actions')+'</a><span class="divide"> </span>'));
          stManager.add(['ui_controls.js', 'ui_controls.css'],function(){
             cur.vkFullWallMenu = new DropdownMenu(p_options, {//
               target: ge('vk_wall_act_menu'),
@@ -1102,7 +1102,7 @@ function vkAddDelWallCommentsLink(node){
 			if (pid) pid=pid[1];
 			else continue;
 			var el=vkCe('small',{"class":'vk_del_comments'},'\
-				<span class="divide">|</span><a href="#" onclick="vkDelWallPostComments('+cur.oid+','+pid+'); return false;">'+IDL("DelAllComments")+'</a>\
+				<span class="divide">|</span><a href="#" onclick="vkDelWallPostComments('+cur.oid+','+pid+'); return false;">'+app.i18n.IDL("DelAllComments")+'</a>\
 			');
 			p[i].appendChild(el);
 		}
@@ -1121,12 +1121,12 @@ function vkDelWallPostComments(oid,pid){
 	var abort=false;
 	var deldone=function(){
 			box.hide();
-			vkMsg(IDL("ClearDone"),3000);
+			vkMsg(app.i18n.IDL("ClearDone"),3000);
 	};
 	var del=function(callback){
 		if (abort) return;
 		var del_count=mids.length;
-		ge('vk_del_msg').innerHTML=vkProgressBar(del_offset,del_count,310,IDL('msgdel')+' %');
+		ge('vk_del_msg').innerHTML=vkProgressBar(del_offset,del_count,310,app.i18n.IDL('msgdel')+' %');
 		var pid=mids[del_offset];
 		if (!pid){
 			ge('vk_del_msg').innerHTML=vkProgressBar(1,1,310,' ');
@@ -1147,7 +1147,7 @@ function vkDelWallPostComments(oid,pid){
 		mids=[];
 		if (cur_offset==0){
 			ge('vk_del_msg').innerHTML=vkProgressBar(1,1,310,' ');
-			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,IDL('msgreq')+' %');
+			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,app.i18n.IDL('msgreq')+' %');
 		}
       app.vkApi.request({
         method: "wall.getComments",
@@ -1167,7 +1167,7 @@ function vkDelWallPostComments(oid,pid){
           }
           if (msg_count==0) msg_count=ms.shift();
           else ms.shift();
-          ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,IDL('msgreq')+' %');
+          ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,app.i18n.IDL('msgreq')+' %');
           for (var i=0;i<ms.length;i++) mids.push(ms[i].cid);
           cur_offset+=REQ_CNT;
           vklog(mids);
@@ -1176,14 +1176,14 @@ function vkDelWallPostComments(oid,pid){
       });
 	};
 	var run=function(){
-		box=new MessageBox({title: IDL('DelComments'),closeButton:true,width:"350px"});
+		box=new MessageBox({title: app.i18n.IDL('DelComments'),closeButton:true,width:"350px"});
 		box.removeButtons();
-		box.addButton(IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+		box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
 		var html='<div id="vk_del_msg" style="padding-bottom:10px;"></div><div id="vk_scan_msg"></div>';
 		box.content(html).show();
 		scan();
 	};
-	vkAlertBox(IDL('DelComments'),IDL('DelAllCommentsConfirm'),run,true);
+	vkAlertBox(app.i18n.IDL('DelComments'),app.i18n.IDL('DelAllCommentsConfirm'),run,true);
 }
 
 function vkCleanWall(oid){
@@ -1199,12 +1199,12 @@ function vkCleanWall(oid){
 	var filter=['owner','others','all'];
 	var deldone=function(){
 			box.hide();
-			vkMsg(IDL("ClearDone"),3000);
+			vkMsg(app.i18n.IDL("ClearDone"),3000);
 	};
 	var del=function(callback){
 		if (abort) return;
 		var del_count=mids.length;
-		ge('vk_del_msg').innerHTML=vkProgressBar(del_offset,del_count,310,IDL('msgdel')+' %');
+		ge('vk_del_msg').innerHTML=vkProgressBar(del_offset,del_count,310,app.i18n.IDL('msgdel')+' %');
 		var pid=mids[del_offset];
 		if (!pid){
 			ge('vk_del_msg').innerHTML=vkProgressBar(1,1,310,' ');
@@ -1226,7 +1226,7 @@ function vkCleanWall(oid){
 		mids=[];
 		if (cur_offset==0){
 			ge('vk_del_msg').innerHTML=vkProgressBar(1,1,310,' ');
-			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,IDL('msgreq')+' %');
+			ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,app.i18n.IDL('msgreq')+' %');
 		}
       params.v = "3.0";
       app.vkApi.request({
@@ -1246,7 +1246,7 @@ function vkCleanWall(oid){
           }
           if (msg_count==0) msg_count=ms.shift();
           else ms.shift();
-          ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,IDL('msgreq')+' %');
+          ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset+REQ_CNT,msg_count,310,app.i18n.IDL('msgreq')+' %');
           for (var i=0;i<ms.length;i++) mids.push(ms[i].id);
           cur_offset+=REQ_CNT;
           vklog(mids);
@@ -1257,38 +1257,38 @@ function vkCleanWall(oid){
 	vkRunCleanWall=function(soffset){
 		abox.hide();
 		start_offset=soffset?soffset:0;
-		box=new MessageBox({title: IDL('ClearWall'),closeButton:true,width:"350px"});
+		box=new MessageBox({title: app.i18n.IDL('ClearWall'),closeButton:true,width:"350px"});
 		box.removeButtons();
-		box.addButton(IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+		box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
 		var html='<div id="vk_del_msg" style="padding-bottom:10px;"></div><div id="vk_scan_msg"></div>';
 		box.content(html).show();
 		scan();
 	};
 	/*
-		html=IDL('ClearBegin')+'<br>\
-		<a href="#" onclick="vkStartClearWall(0);  return false;">- '+IDL('FromFirstPage')+'</a><br>\
-		<a href="#" onclick="vkStartClearWall(20); return false;">- '+IDL('FromSecondPage')+'</a>\
+		html=app.i18n.IDL('ClearBegin')+'<br>\
+		<a href="#" onclick="vkStartClearWall(0);  return false;">- '+app.i18n.IDL('FromFirstPage')+'</a><br>\
+		<a href="#" onclick="vkStartClearWall(20); return false;">- '+app.i18n.IDL('FromSecondPage')+'</a>\
 		';
 	*/
-	var html=IDL('ClearBegin')+'<br><b>\
-			<a href="#" onclick="vkRunCleanWall(0);  return false;">- '+IDL('FromFirstPage')+'</a><br>\
-			<a href="#" onclick="vkRunCleanWall(20); return false;">- '+IDL('FromSecondPage')+'</a><br>'+
-         (cur.pgPage?'<a href="#" onclick="vkRunCleanWall('+cur.pgPage*20+'); return false;">- '+IDL('FromPage')+' <b>'+(cur.pgPage+1) +'</b></a>':'')+'\
+	var html=app.i18n.IDL('ClearBegin')+'<br><b>\
+			<a href="#" onclick="vkRunCleanWall(0);  return false;">- '+app.i18n.IDL('FromFirstPage')+'</a><br>\
+			<a href="#" onclick="vkRunCleanWall(20); return false;">- '+app.i18n.IDL('FromSecondPage')+'</a><br>'+
+         (cur.pgPage?'<a href="#" onclick="vkRunCleanWall('+cur.pgPage*20+'); return false;">- '+app.i18n.IDL('FromPage')+' <b>'+(cur.pgPage+1) +'</b></a>':'')+'\
 		</b>\
 		';
-	var abox=vkAlertBox(IDL('ClearWall'),html);
-	//vkAlertBox(IDL('ClearWall'),IDL('CleanWallConfirm'),vkRunCleanWall,true);
+	var abox=vkAlertBox(app.i18n.IDL('ClearWall'),html);
+	//vkAlertBox(app.i18n.IDL('ClearWall'),app.i18n.IDL('CleanWallConfirm'),vkRunCleanWall,true);
 }
 
 function vkFaveProfileBlock(is_list){
    var is_right_block = (getSet(57)=='y');
    if (!ge('profile_fave')){
       var html='\
-        <a href="/fave" onclick="return nav.go(this, event)" class="module_header"><div class="header_top clear_fix">'+IDL('FaveOnline')+'</div></a>\
+        <a href="/fave" onclick="return nav.go(this, event)" class="module_header"><div class="header_top clear_fix">'+app.i18n.IDL('FaveOnline')+'</div></a>\
         <div class="module_header">\
           <div class="p_header_bottom">\
-            <a href="javascript:vkFaveProfileBlock(true)" id="vk_fave_all_link">'+ vkopt_brackets(IDL('FaveOnline') +' ( -- )')+'</a>\
-            <span class="fl_r"><a href="/fave" onclick="return nav.go(this, event)">'+IDL('all')+'</a></span>\
+            <a href="javascript:vkFaveProfileBlock(true)" id="vk_fave_all_link">'+ vkopt_brackets(app.i18n.IDL('FaveOnline') +' ( -- )')+'</a>\
+            <span class="fl_r"><a href="/fave" onclick="return nav.go(this, event)">'+app.i18n.IDL('all')+'</a></span>\
           </div>\
         </div>\
         <div class="module_body clear_fix" id="vk_fave_users_content"></div>\
@@ -1338,7 +1338,7 @@ function vkFaveProfileBlock(is_list){
             }
          }
          if (ge('vk_fave_users_content')){
-            ge("vk_fave_all_link").innerHTML=vkopt_brackets(IDL('FaveOnline') +' ('+onlines.length+')');
+            ge("vk_fave_all_link").innerHTML=vkopt_brackets(app.i18n.IDL('FaveOnline') +' ('+onlines.length+')');
             ge('vk_fave_users_content').innerHTML=users;
             vkProcessNodeLite(ge('vk_fave_users_content'));
          }
@@ -1357,11 +1357,11 @@ function vkProfileGroupBlock(){
    if (ge('profile_groups')) re(ge('profile_groups'));
    if (!ge('profile_groups')){
       var html='\
-        <a href="/groups?id='+cur.oid+'" onclick="return nav.go(this, event)" class="module_header"><div class="header_top clear_fix">'+IDL('clGr')+'<span id="vk_group_block_count"></span></div></a>\
+        <a href="/groups?id='+cur.oid+'" onclick="return nav.go(this, event)" class="module_header"><div class="header_top clear_fix">'+app.i18n.IDL('clGr')+'<span id="vk_group_block_count"></span></div></a>\
         <div class="module_header">\
           <div class="p_header_bottom">\
             <a href="/groups?id='+cur.oid+'" onclick="return nav.go(this, event)"> </a>\
-            <span class=""><a href="/groups?id='+cur.oid+'" onclick="return nav.go(this, event)">'+IDL('all')+'</a></span>\
+            <span class=""><a href="/groups?id='+cur.oid+'" onclick="return nav.go(this, event)">'+app.i18n.IDL('all')+'</a></span>\
           </div>\
         </div>\
         <div class="module_body clear_fix" id="vk_group_block_content"></div>\
@@ -1380,7 +1380,7 @@ function vkProfileGroupBlock(){
    AjPost('al_groups.php',{act: 'get_list', mid: cur.oid,tab:'groups',al:1},function(r,t){
       var data=t.split('<!json>');
       if (!data[1]){
-            ge('vk_group_block_content').innerHTML=IDL('NA');
+            ge('vk_group_block_content').innerHTML=app.i18n.IDL('NA');
             hide('profile_groups');
             return;
       }
@@ -1458,7 +1458,7 @@ function vkFrProfile(){
   var mod_el={
     'profile_albums':function(el){
         var _el=geByClass('module_body',el)[0];
-        _el.innerHTML='<div align="center"><a href="/photos'+cur.oid+'" onclick="return nav.go(this, event);">'+vkopt_brackets(IDL("obzor"))+'</a> <a href="/photos'+cur.oid+'?act=comments"  onclick="return nav.go(this, event);">'+vkopt_brackets(IDL("komm"))+'</a></div>'+_el.innerHTML;
+        _el.innerHTML='<div align="center"><a href="/photos'+cur.oid+'" onclick="return nav.go(this, event);">'+vkopt_brackets(app.i18n.IDL("obzor"))+'</a> <a href="/photos'+cur.oid+'?act=comments"  onclick="return nav.go(this, event);">'+vkopt_brackets(app.i18n.IDL("komm"))+'</a></div>'+_el.innerHTML;
         var hdr=geByClass('p_header_bottom',el)[0];
         if (!hdr) return;
         hdr.innerHTML='<a href="javascript:vk_photos.profile_albums_list()">'+vkopt_brackets(hdr.innerHTML)+'</a>';
@@ -1654,10 +1654,10 @@ vk_graff={
          url=url[1];
          var html='<iframe src="about:blank" name="graff_upload_frame" width=0 height=0 style="display:none;"></iframe>\
                <form id="fakeupload" name="upload" action="'+url+'" method="POST" enctype="multipart/form-data" target="graff_upload_frame"><center>\
-               <span class="label">'+IDL('GraffitiFile')+'</span><br>\
+               <span class="label">'+app.i18n.IDL('GraffitiFile')+'</span><br>\
                <input type="file" style="width:280px;" size="22" id="file2" name="photo">\
                </center></form>';
-         var Box = new MessageBox({title: IDL('LoadFakeGraffiti')});
+         var Box = new MessageBox({title: app.i18n.IDL('LoadFakeGraffiti')});
          Box.removeButtons();
          Box.addButton(getLang('box_cancel'), function(){Box.hide(200);Box.content("");},'no');
          Box.addButton(getLang('box_send'), vk_graff.start_upload,'yes');
@@ -1684,7 +1684,7 @@ vk_graff={
             a.setAttribute("style","background-image: url(/images/icons/attach_icons.gif); background-position: 3px -151px");
             a.setAttribute("href","#");
             a.setAttribute("onclick","vk_graff.upload_box("+mid+");return false;");
-            a.innerHTML=IDL('LoadGraffiti');
+            a.innerHTML=app.i18n.IDL('LoadGraffiti');
             bef.parentNode.insertBefore(a,bef.nextSibling);
          }
       }
@@ -1704,10 +1704,10 @@ function vkWallAddPreventHideCB(){
    Inj.Wait('cur.wallAddMedia',function(){
       var p=geByClass('rows', cur.wallAddMedia.menu.menuNode)[0];
       var html='<div class="checkbox" id="vk_no_hide_add_box" onclick="checkbox(this); window.vk_prevent_addmedia_hide=isChecked(this);">'+
-                  //'<div></div>'+IDL('PreventHide')+
+                  //'<div></div>'+app.i18n.IDL('PreventHide')+
                    '<table style="border-spacing:0px;"><tr><td><div></div></td>\
                         <td>\
-                          <nobr>'+IDL('PreventHide')+'</nobr>\
+                          <nobr>'+app.i18n.IDL('PreventHide')+'</nobr>\
                         </td>\
                       </tr>\
                     </tbody>\
@@ -1728,23 +1728,23 @@ function vkModGroupBlocks(){
    var el=ge('group_albums');// || ge('public_albums');
    if (el && !ge('gr_photo_browse')){
       el=geByClass('p_header_bottom',el)[0];
-      var a=vkCe('a',{id:'gr_photo_browse', href:'/photos'+cur.oid, onclick:"event.cancelBubble = true; return nav.go(this, event)"},IDL("obzor",1));
+      var a=vkCe('a',{id:'gr_photo_browse', href:'/photos'+cur.oid, onclick:"event.cancelBubble = true; return nav.go(this, event)"},app.i18n.IDL("obzor",1));
       el.appendChild(a);
-      //el.innerHTML+='<a href="/photos'+cur.oid+'" onmousedown="event.cancelBubble = true;" onclick="event.cancelBubble = true; return nav.go(this, event);">[ '+IDL("obzor")+' ]</a>';
+      //el.innerHTML+='<a href="/photos'+cur.oid+'" onmousedown="event.cancelBubble = true;" onclick="event.cancelBubble = true; return nav.go(this, event);">[ '+app.i18n.IDL("obzor")+' ]</a>';
    }
 }
 function vkAudioBlock(load_audios,oid){
    if (ge('group_audios')) return;
    oid = oid || cur.oid;
    var mini_tpl='<a href="/audio?id='+cur.oid+'" onclick="return nav.go(this, event);" class="module_header"><div class="header_top clear_fix">'+
-                     IDL('clAu',1)+
+                     app.i18n.IDL('clAu',1)+
                   '</div></a>';
    var block_tpl='\
      <a href="/audio?id='+cur.oid+'" onclick="return nav.go(this, event);" class="module_header">\
-     <div class="header_top clear_fix">'+IDL('clAu',1)+'</div>\
+     <div class="header_top clear_fix">'+app.i18n.IDL('clAu',1)+'</div>\
      </a>\
      <div class="p_header_bottom">\
-       <!--<span class="fl_r" >'+IDL('all')+'</span>-->\
+       <!--<span class="fl_r" >'+app.i18n.IDL('all')+'</span>-->\
        <span id="vk_audio_count">---</span>\
      </div>\
      <div class="module_body clear_fix" id="vk_audio_content" ></div>';
@@ -1785,9 +1785,9 @@ function vkAudioBlock(load_audios,oid){
    if (p && !ge('vk_group_audios')){
       var div=vkCe('div',{"class":"module clear audios_module",id:"vk_group_audios", style:"margin-bottom:3px;"},mini_tpl);//block_tpl
       insertAfter(div,p);
-      geByClass('header_top',div)[0].innerHTML+='<a class="fl_r right_link"  href="#" onclick="cancelEvent(event); vkAudioBlock(true); return false;">'+IDL('GetAudiosList')+'</a>';
+      geByClass('header_top',div)[0].innerHTML+='<a class="fl_r right_link"  href="#" onclick="cancelEvent(event); vkAudioBlock(true); return false;">'+app.i18n.IDL('GetAudiosList')+'</a>';
       //addClass(div,'empty');
-      //ge('vk_audio_content').innerHTML='<a href="#" onclick="vkAudioBlock(true); return false;">'+IDL('GetAudiosList')+'</a>';
+      //ge('vk_audio_content').innerHTML='<a href="#" onclick="vkAudioBlock(true); return false;">'+app.i18n.IDL('GetAudiosList')+'</a>';
    }
 
    if (!load_audios) return;
@@ -1838,7 +1838,7 @@ function vkWikiPages(){
                "id":"vk_add_wiki_page",
                "href":"#",
                "onclick":"vkWikiNew(); return false;"
-            },IDL('Add')+'<span class="divide">|</span>')
+            },app.i18n.IDL('Add')+'<span class="divide">|</span>')
          );
          p.appendChild(
             vkCe('a',{
@@ -1846,7 +1846,7 @@ function vkWikiPages(){
                "id":"vk_add_wiki_page",
                "href":"#",
                "onclick":"vkGetWikiCode('"+pid+"','"+gid+"'); return false;"
-            },IDL('Code')+'<span class="divide">|</span>')
+            },app.i18n.IDL('Code')+'<span class="divide">|</span>')
          );
       }
    } else {
@@ -1866,7 +1866,7 @@ function vkWikiPages(){
                "id":"vk_add_wiki_page",
                "href":"#",
                "onclick":"vkWikiNew(); return false;"
-            },IDL('Add')+(end?'<span class="divide">|</span>':'')),
+            },app.i18n.IDL('Add')+(end?'<span class="divide">|</span>':'')),
             p.firstChild
          );
          p.insertBefore(
@@ -1875,7 +1875,7 @@ function vkWikiPages(){
                "id":"vk_add_wiki_page",
                "href":"#",
                "onclick":"vkGetWikiCode('"+pid+"','"+gid+"'); return false;"
-            },IDL('Code')+'<span class="divide">|</span>'),
+            },app.i18n.IDL('Code')+'<span class="divide">|</span>'),
             p.firstChild
          );
       }
@@ -1884,7 +1884,7 @@ function vkWikiPages(){
 
 }
 function vkWikiNew(){
-   var title=prompt(IDL("Title"));
+   var title=prompt(app.i18n.IDL("Title"));
    if (title)
       nav.go("pages?act=edit&oid="+cur.oid+"&p="+encodeURIComponent(title));
 }
@@ -1953,13 +1953,13 @@ vk_groups = {
       if (!p) return;
       p=geByClass('module_body',p)[0];
       if (p && !ge('vk_show_members_link')){
-         var el=se('<div id="vk_show_members_link" class="opacity_anim"><a href="#" onclick="return vk_groups.show_members()">'+IDL('ShowGroupMembers')+'</a></div>');
+         var el=se('<div id="vk_show_members_link" class="opacity_anim"><a href="#" onclick="return vk_groups.show_members()">'+app.i18n.IDL('ShowGroupMembers')+'</a></div>');
          p.appendChild(el);
       }
    },
    show_members:function(gid){
          if (!gid) gid=Math.abs(cur.gid || cur.oid);
-         var box=showFastBox({title:IDL('GroupMembers'),width:'478px',progress:'progress'+gid},'<div id="vk_member_list'+gid+'" class="dislike_list"></div>');
+         var box=showFastBox({title:app.i18n.IDL('GroupMembers'),width:'478px',progress:'progress'+gid},'<div id="vk_member_list'+gid+'" class="dislike_list"></div>');
          box.setOptions({bodyStyle: 'padding: 0px; height: 310px;', width: 478});
          addClass(ge('vk_member_list'+gid),'disliked_users_big_loader');
          stManager.add('boxes.css');
@@ -2057,11 +2057,11 @@ vk_groups = {
       var gid=Math.abs(oid);
       if (!ge('vk_group_requests')){//
          var html='\
-           <a href="/club'+gid+'?act=users&tab=requests" onclick="return nav.go(this, event)" class="module_header"><div class="header_top clear_fix">'+IDL('GroupRequests')+'</div></a>\
+           <a href="/club'+gid+'?act=users&tab=requests" onclick="return nav.go(this, event)" class="module_header"><div class="header_top clear_fix">'+app.i18n.IDL('GroupRequests')+'</div></a>\
            <div class="module_header">\
              <div class="p_header_bottom">\
                <a href="javascript:vk_groups.requests_block(true)" id="vk_gr_req_all_link">'+ vkopt_brackets(getLang('global_X_people',0)) +'</a>\
-               <span class="fl_r"><a href="/club'+gid+'?act=users&tab=requests" onclick="return nav.go(this, event)">'+IDL('all')+'</a></span>\
+               <span class="fl_r"><a href="/club'+gid+'?act=users&tab=requests" onclick="return nav.go(this, event)">'+app.i18n.IDL('all')+'</a></span>\
              </div>\
            </div>\
            <div class="module_body clear_fix" id="vk_gr_req_users_content"></div>\
@@ -2190,7 +2190,7 @@ vk_groups = {
    deactivated_edit_btn:function(){
       var p=ge('gedit_users_summaryw_members');//ge('gedit_summary_tabs');//
       if (!p || ge('vk_deactivated_edit_btn')) return;
-      var el=se('<a class="fl_r nobold" id="vk_deactivated_edit_btn" href="#" onclick="return vk_groups.deactivated_edit();">'+IDL('FrDeleted')+'</a>');
+      var el=se('<a class="fl_r nobold" id="vk_deactivated_edit_btn" href="#" onclick="return vk_groups.deactivated_edit();">'+app.i18n.IDL('FrDeleted')+'</a>');
       p.insertBefore(el, p.firstChild);
    },
    deactivated_edit:function(gid){
@@ -2218,7 +2218,7 @@ vk_groups = {
             }
             var uid=queue.shift();
             var need_run=(queue.length==0)?false:true;
-            ge('vk_gre_scan_queue').innerHTML=vkProgressBar(deactiv_count-queue.length,deactiv_count,590,IDL('Loading')+' %');
+            ge('vk_gre_scan_queue').innerHTML=vkProgressBar(deactiv_count-queue.length,deactiv_count,590,app.i18n.IDL('Loading')+' %');
             var tab='members';
             ajax.post('groupsedit.php', {
                act: 'get_page',
@@ -2262,7 +2262,7 @@ vk_groups = {
                users=null;
                if (need_run) queue_process();
 
-               ge('vk_gre_scan').innerHTML=vkProgressBar(offset,count,590,IDL('Search')+' %');
+               ge('vk_gre_scan').innerHTML=vkProgressBar(offset,count,590,app.i18n.IDL('Search')+' %');
                if (offset<count){
                   offset+=PER_REQ;
                   setTimeout(scan,350);
@@ -2280,7 +2280,7 @@ vk_groups = {
          var btn=ge('vkillinv');
          var p=ge('gedit_users_summaryw_invites');//ge('gedit_summary_tabs');//
          if (!p || ge('vkillinv')) return;
-         var el=se('<a class="fl_r nobold" id="vkillinv" href="#" onmouseover="showTooltip(this, {text: \'max 500 per day\', showdt: 0, black: 1});" onclick="return vk_groups.remove_all_invites();">'+IDL('Kill_Invitation')+'</a>');
+         var el=se('<a class="fl_r nobold" id="vkillinv" href="#" onmouseover="showTooltip(this, {text: \'max 500 per day\', showdt: 0, black: 1});" onclick="return vk_groups.remove_all_invites();">'+app.i18n.IDL('Kill_Invitation')+'</a>');
          p.insertBefore(el, p.firstChild);
          return;
       }
@@ -2298,11 +2298,11 @@ vk_groups = {
          if (abort) return;
          var del_count=ids.length;
          console.log(del_count,del_offset);
-         ge('vk_scan').innerHTML=vkProgressBar(del_offset,del_count,310,IDL('killing... ')+' %');
+         ge('vk_scan').innerHTML=vkProgressBar(del_offset,del_count,310,app.i18n.IDL('killing... ')+' %');
          var ids_part=ids[del_offset];//.slice(del_offset,del_offset+1);
          if (!ids_part){
             box.hide();
-            vkMsg(IDL('Done'),3000);
+            vkMsg(app.i18n.IDL('Done'),3000);
          }
          else {// ids[0]  ids[7]
             ajax.post('groupsedit.php', {
@@ -2332,13 +2332,13 @@ vk_groups = {
          }});
       };
       var run=function(){
-         box=new MessageBox({title: IDL('deleting'),closeButton:true,width:"350px"});
+         box=new MessageBox({title: app.i18n.IDL('deleting'),closeButton:true,width:"350px"});
          box.removeButtons();
-         box.addButton(IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+         box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
          var html='<div id="vk_scan"></div>'; box.content(html).show();
          scan();
       }
-      vkAlertBox(IDL('Kill_Invitation'),IDL('Kill_Invitation_confirm'),run,true);
+      vkAlertBox(app.i18n.IDL('Kill_Invitation'),app.i18n.IDL('Kill_Invitation_confirm'),run,true);
       return false;
    },
    unban_all:function(add_btn){
@@ -2349,7 +2349,7 @@ vk_groups = {
          } else if(ge('group_bl_summary')) {//nav.objLoc['tab']=='invites'
             var p=ge('group_bl_summary');
             if (!p) return;
-            btn=vkCe('span',{"class":'', id:'vunbanall'},'<a onclick="vk_groups.unban_all();">'+IDL('UnbanAll')+'</a>');
+            btn=vkCe('span',{"class":'', id:'vunbanall'},'<a onclick="vk_groups.unban_all();">'+app.i18n.IDL('UnbanAll')+'</a>');
             p.parentNode.appendChild(vkCe('span',{"class":'divide'},'|'));
             p.parentNode.appendChild(btn);//insertAfter(btn,p);
          }
@@ -2370,11 +2370,11 @@ vk_groups = {
          if (abort) return;
          var del_count=ids.length;
          console.log(del_count,del_offset);
-         ge('vk_scan').innerHTML=vkProgressBar(del_offset,del_count,310,IDL('unban users... ')+' %');
+         ge('vk_scan').innerHTML=vkProgressBar(del_offset,del_count,310,app.i18n.IDL('unban users... ')+' %');
          var ids_part=ids[del_offset];//.slice(del_offset,del_offset+1);
          if (!ids_part){
             box.hide();
-            vkMsg(IDL('Done'),3000);
+            vkMsg(app.i18n.IDL('Done'),3000);
          }
          else
             ajax.post('al_groups.php', {act: 'bl_user', mid: ids[del_offset][0], gid: cur.gid, hash: cur.hash}, {
@@ -2415,13 +2415,13 @@ vk_groups = {
          });
       };
       var run=function(){
-         box=new MessageBox({title: IDL('deleting'),closeButton:true,width:"350px"});
+         box=new MessageBox({title: app.i18n.IDL('deleting'),closeButton:true,width:"350px"});
          box.removeButtons();
-         box.addButton(IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+         box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
          var html='<div id="vk_scan"></div>'; box.content(html).show();
          scan();
       }
-      vkAlertBox(IDL('UnbanAll'),IDL('UnbanAll_confirm'),run,true);
+      vkAlertBox(app.i18n.IDL('UnbanAll'),app.i18n.IDL('UnbanAll_confirm'),run,true);
    },
 
    // GROUPS LIST
@@ -2430,7 +2430,7 @@ vk_groups = {
       if (nav.objLoc['id'] && nav.objLoc['id']!=vk.id) return;
       var p=ge('groups_list_tabs');
       if (!p || ge('vk_leave_all')) return;
-      var li=se('<li class="t_r" id="vk_leave_all"><span class="divider">|</span><a onclick="vk_groups.leave_all()">'+IDL('LeaveAll')+'</a></li>');
+      var li=se('<li class="t_r" id="vk_leave_all"><span class="divider">|</span><a onclick="vk_groups.leave_all()">'+app.i18n.IDL('LeaveAll')+'</a></li>');
       p.appendChild(li);
    },
    leave_all:function(){
@@ -2443,12 +2443,12 @@ vk_groups = {
       var abort=false;
       var deldone=function(){
             box.hide();
-            vkMsg(IDL("ClearDone"),3000);
+            vkMsg(app.i18n.IDL("ClearDone"),3000);
       };
       var del=function(callback){
          if (abort) return;
          var del_count=mids.length;
-         ge('vk_del_msg').innerHTML=vkProgressBar(del_offset,del_count,310,IDL('deleting')+' %');
+         ge('vk_del_msg').innerHTML=vkProgressBar(del_offset,del_count,310,app.i18n.IDL('deleting')+' %');
          var item_id=mids[del_offset];
          if (!item_id){
             ge('vk_del_msg').innerHTML=vkProgressBar(1,1,310,' ');
@@ -2468,7 +2468,7 @@ vk_groups = {
       var _count=0;
       var cur_offset=0;
       var scan=function(){
-         if (cur_offset==0) ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,IDL('listreq')+' %');
+         if (cur_offset==0) ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,app.i18n.IDL('listreq')+' %');
 
          var params={extended:1};
          params['count']=REQ_CNT;
@@ -2482,7 +2482,7 @@ vk_groups = {
                var ms=r.response;
                if (!ms[0]){ del(deldone); return;  }
                var _count=ms.shift();
-               ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,_count,310,IDL('listreq')+' %');
+               ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,_count,310,app.i18n.IDL('listreq')+' %');
                for (var i=0;i<ms.length;i++) if (!ms[i].is_admin) mids.push(ms[i].gid);
                if (cur_offset<_count){ cur_offset+=REQ_CNT; setTimeout(scan,SCAN_REQ_DELAY);} else del(deldone);
            }
@@ -2491,24 +2491,24 @@ vk_groups = {
 
       var run=function(){
 
-         box=new MessageBox({title: IDL('LeaveGroups'),closeButton:true,width:"350px"});
+         box=new MessageBox({title: app.i18n.IDL('LeaveGroups'),closeButton:true,width:"350px"});
          box.removeButtons();
-         box.addButton(IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+         box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
          var html='</br><div id="vk_del_msg" style="padding-bottom:10px;"></div><div id="vk_scan_msg"></div>';
          box.content(html).show();
          scan();
       };
 
-      vkAlertBox(IDL('LeaveGroups'),IDL('LeaveAllGroupsConfirm'),run,true);
+      vkAlertBox(app.i18n.IDL('LeaveGroups'),app.i18n.IDL('LeaveAllGroupsConfirm'),run,true);
    },
    // UTILS
    leave:function(gid){
-      vkAlertBox('', IDL('LeaveGroup'),function(){
+      vkAlertBox('', app.i18n.IDL('LeaveGroup'),function(){
          app.vkApi.request({
            method: "groups.leave",
            data: { gid: Math.abs( gid ), v: "3.0" },
            callback: function( r ) {
-             vkMsg(r.response?IDL('GroupLeft'):IDL('Fail'),700)
+             vkMsg(r.response?app.i18n.IDL('GroupLeft'):app.i18n.IDL('Fail'),700)
            }
          });
       }, true)
@@ -2519,7 +2519,7 @@ vk_groups = {
         method: "groups.join",
         data: { gid: Math.abs( gid ), v: "3.0" },
         callback: function( r ) {
-          vkMsg(r.response?IDL('Done'):IDL('Fail'),700)
+          vkMsg(r.response?app.i18n.IDL('Done'):app.i18n.IDL('Fail'),700)
         }
       });
       return false;
@@ -2536,7 +2536,7 @@ function vkGroupDecliner(node){// [name, gid, href, thumb, count, type, hash, fr
       var p=geByClass('group_row_info',nodes[i])[0];
       if (!p) continue;
       var gid=(nodes[i].id || "").match(/\d+/);
-      var el=vkCe('div',{"class":'fl_r'},'<a href="#" onclick="return vkGroupLeave('+gid+',this);">'+IDL('LeaveGroup')+'</a>');
+      var el=vkCe('div',{"class":'fl_r'},'<a href="#" onclick="return vkGroupLeave('+gid+',this);">'+app.i18n.IDL('LeaveGroup')+'</a>');
       p.appendChild(el);
       //p.insertBefore(el,p.firstChild);
 
@@ -2554,7 +2554,7 @@ function vkGroupLeave(gid,node){
      data: { gid: gid, v: "3.0" },
      callback: function( r ) {
          if (r.response==1){
-            if (p) p.innerHTML=IDL('GroupLeft');
+            if (p) p.innerHTML=app.i18n.IDL('GroupLeft');
          } else
             if (p) p.innerHTML='WTF? O_o';
      }
@@ -2607,7 +2607,7 @@ function vkGrLstFilter(){
    stManager.add(['ui_controls.js', 'ui_controls.css'],function(){
       vkaddcss('ul.t0 .result_list ul li{float:none}');
       if (cur.vkGrLstMenu) return;
-      cur.vkGrLstMenu = new Dropdown(ge('vk_grlst_filter'),[[0,IDL("SelectGRFilter")],[1,IDL("Groups")],[2,IDL("Events")],[3,IDL("GroupsAndPublics")],[4,IDL("Publics")]], {//
+      cur.vkGrLstMenu = new Dropdown(ge('vk_grlst_filter'),[[0,app.i18n.IDL("SelectGRFilter")],[1,app.i18n.IDL("Groups")],[2,app.i18n.IDL("Events")],[3,app.i18n.IDL("GroupsAndPublics")],[4,app.i18n.IDL("Publics")]], {//
         target: ge('vk_gr_filter'),
         resultField:'vk_grlst_filter',
         width:160,
@@ -2687,20 +2687,20 @@ vk_fave = {
 
       if (!ge('vk_fav_phlinks_btn')){
          var a=vkCe('div',{id:'vk_fav_phlinks_btn',"class":'summary_tab fl_r'},'\
-            <a href="#" onclick="return false;"  id="vk_favph_act_menu" class_="summary_tab2">'+IDL('Actions')+'</a>\
-         ');//<a href="#" onclick="return false;"  id="vk_favph_act_menu" class_="fl_r summary_right">'+IDL('Actions')+'</a>\
+            <a href="#" onclick="return false;"  id="vk_favph_act_menu" class_="summary_tab2">'+app.i18n.IDL('Actions')+'</a>\
+         ');//<a href="#" onclick="return false;"  id="vk_favph_act_menu" class_="fl_r summary_right">'+app.i18n.IDL('Actions')+'</a>\
          //geByClass('t0')[0].appendChild(a);
          insertAfter(a,p)
 
          var p_options = [];
-         p_options.push({l:IDL('SaveAlbumAsHtml'), onClick:function(item) {
+         p_options.push({l:app.i18n.IDL('SaveAlbumAsHtml'), onClick:function(item) {
             vkGetPageWithPhotos('liked'+vk.id,null);
          }});
-         p_options.push({l:IDL('Links'), onClick:function(item) {
+         p_options.push({l:app.i18n.IDL('Links'), onClick:function(item) {
                vkGetLinksToPhotos('liked'+vk.id,null);
          }});
 
-         p_options.push({l:IDL('DelLikes'), onClick:function(item) {
+         p_options.push({l:app.i18n.IDL('DelLikes'), onClick:function(item) {
                vk_fave.remove_likes_photo();
          }});
 
@@ -2730,14 +2730,14 @@ vk_fave = {
 
       if (!ge('vk_fav_vidlinks_btn')){
          var a=vkCe('div',{id:'vk_fav_vidlinks_btn',"class":'summary_tab fl_r'},'\
-            <a href="#" onclick="return false;"  id="vk_favvid_act_menu" class_="summary_tab2">'+IDL('Actions')+'</a>\
-         ');//<a href="#" onclick="return false;"  id="vk_favvid_act_menu" class_="fl_r summary_right">'+IDL('Actions')+'</a>\
+            <a href="#" onclick="return false;"  id="vk_favvid_act_menu" class_="summary_tab2">'+app.i18n.IDL('Actions')+'</a>\
+         ');//<a href="#" onclick="return false;"  id="vk_favvid_act_menu" class_="fl_r summary_right">'+app.i18n.IDL('Actions')+'</a>\
          //geByClass('t0')[0].appendChild(a);
          insertAfter(a,p)
 
          var p_options = [];
 
-         p_options.push({l:IDL('DelLikes'), onClick:function(item) {
+         p_options.push({l:app.i18n.IDL('DelLikes'), onClick:function(item) {
                vk_fave.remove_likes_video();
          }});
 
@@ -2767,8 +2767,8 @@ vk_fave = {
 
       if (!ge('vk_fav_postlinks_btn')){
          var a=vkCe('div',{id:'vk_fav_postlinks_btn',"class":'summary_tab fl_r', "style":'padding: 11px 5px 4px;'},'\
-            <a href="#" onclick="return false;"  id="vk_favpost_act_menu" class_="summary_tab2">'+IDL('Actions')+'</a>\
-         ');//<a href="#" onclick="return false;"  id="vk_favpost_act_menu" class_="fl_r summary_right">'+IDL('Actions')+'</a>\
+            <a href="#" onclick="return false;"  id="vk_favpost_act_menu" class_="summary_tab2">'+app.i18n.IDL('Actions')+'</a>\
+         ');//<a href="#" onclick="return false;"  id="vk_favpost_act_menu" class_="fl_r summary_right">'+app.i18n.IDL('Actions')+'</a>\
          //geByClass('t0')[0].appendChild(a);
          //e.parentNode.insertBefore(a,e);
          insertAfter(a,e)
@@ -2776,7 +2776,7 @@ vk_fave = {
 
          var p_options = [];
 
-         p_options.push({l:IDL('DelLikes'), onClick:function(item) {
+         p_options.push({l:app.i18n.IDL('DelLikes'), onClick:function(item) {
                vk_fave.remove_likes_posts();
          }});
 
@@ -2805,12 +2805,12 @@ vk_fave = {
       var abort=false;
       var deldone=function(){
             box.hide();
-            vkMsg(IDL("ClearDone"),3000);
+            vkMsg(app.i18n.IDL("ClearDone"),3000);
       };
       var del=function(callback){
          if (abort) return;
          var del_count=ids.length;
-         ge('vk_del_info').innerHTML=vkProgressBar(del_offset,del_count,310,IDL('deleting')+' %');
+         ge('vk_del_info').innerHTML=vkProgressBar(del_offset,del_count,310,app.i18n.IDL('deleting')+' %');
          var obj=ids[del_offset];
          if (!obj){
             ge('vk_del_info').innerHTML=vkProgressBar(1,1,310,' ');
@@ -2836,7 +2836,7 @@ vk_fave = {
          ids=[];
          if (cur_offset==0){
             ge('vk_del_info').innerHTML=vkProgressBar(1,1,310,' ');
-            ge('vk_scan_info').innerHTML=vkProgressBar(cur_offset,2,310,IDL('listreq')+' %');
+            ge('vk_scan_info').innerHTML=vkProgressBar(cur_offset,2,310,app.i18n.IDL('listreq')+' %');
          }
          app.vkApi.request({
            method: "fave.getPhotos",
@@ -2850,7 +2850,7 @@ vk_fave = {
              }
              if (info_count==0) info_count=data.shift();
              else data.shift();
-             ge('vk_scan_info').innerHTML=vkProgressBar(cur_offset+REQ_CNT,info_count,310,IDL('listreq')+' %');
+             ge('vk_scan_info').innerHTML=vkProgressBar(cur_offset+REQ_CNT,info_count,310,app.i18n.IDL('listreq')+' %');
              for (var i=0;i<data.length;i++) ids.push([data[i].owner_id,data[i].pid]);
              cur_offset+=REQ_CNT;
              //vklog(ids);
@@ -2859,14 +2859,14 @@ vk_fave = {
          });
       };
       var run=function(){
-         box=new MessageBox({title: IDL('DelPhotosLikes'),closeButton:true,width:"350px"});
+         box=new MessageBox({title: app.i18n.IDL('DelPhotosLikes'),closeButton:true,width:"350px"});
          box.removeButtons();
-         box.addButton(IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+         box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
          var html='<div id="vk_del_info" style="padding-bottom:10px;"></div><div id="vk_scan_info"></div>';
          box.content(html).show();
          scan();
       };
-      vkAlertBox(IDL('DelPhotosLikes'),IDL('DelPhotosLikesConfirm'),run,true);
+      vkAlertBox(app.i18n.IDL('DelPhotosLikes'),app.i18n.IDL('DelPhotosLikesConfirm'),run,true);
    },
    remove_likes_video:function(){
       var REQ_CNT=100;//100;
@@ -2878,12 +2878,12 @@ vk_fave = {
       var abort=false;
       var deldone=function(){
             box.hide();
-            vkMsg(IDL("ClearDone"),3000);
+            vkMsg(app.i18n.IDL("ClearDone"),3000);
       };
       var del=function(callback){
          if (abort) return;
          var del_count=ids.length;
-         ge('vk_del_info').innerHTML=vkProgressBar(del_offset,del_count,310,IDL('deleting')+' %');
+         ge('vk_del_info').innerHTML=vkProgressBar(del_offset,del_count,310,app.i18n.IDL('deleting')+' %');
          var obj=ids[del_offset];
          if (!obj){
             ge('vk_del_info').innerHTML=vkProgressBar(1,1,310,' ');
@@ -2909,7 +2909,7 @@ vk_fave = {
          ids=[];
          if (cur_offset==0){
             ge('vk_del_info').innerHTML=vkProgressBar(1,1,310,' ');
-            ge('vk_scan_info').innerHTML=vkProgressBar(cur_offset,2,310,IDL('listreq')+' %');
+            ge('vk_scan_info').innerHTML=vkProgressBar(cur_offset,2,310,app.i18n.IDL('listreq')+' %');
          }
          app.vkApi.request({
            method: "fave.getVideos",
@@ -2923,7 +2923,7 @@ vk_fave = {
              }
              if (info_count==0) info_count=data.shift();
              else data.shift();
-             ge('vk_scan_info').innerHTML=vkProgressBar(cur_offset+REQ_CNT,info_count,310,IDL('listreq')+' %');
+             ge('vk_scan_info').innerHTML=vkProgressBar(cur_offset+REQ_CNT,info_count,310,app.i18n.IDL('listreq')+' %');
              for (var i=0;i<data.length;i++) ids.push([data[i].owner_id,data[i].pid]);
              cur_offset+=REQ_CNT;
              //vklog(ids);
@@ -2932,14 +2932,14 @@ vk_fave = {
          });
       };
       var run=function(){
-         box=new MessageBox({title: IDL('DelVideosLikes'),closeButton:true,width:"350px"});
+         box=new MessageBox({title: app.i18n.IDL('DelVideosLikes'),closeButton:true,width:"350px"});
          box.removeButtons();
-         box.addButton(IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+         box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
          var html='<div id="vk_del_info" style="padding-bottom:10px;"></div><div id="vk_scan_info"></div>';
          box.content(html).show();
          scan();
       };
-      vkAlertBox(IDL('DelVideosLikes'),IDL('DelVideosLikesConfirm'),run,true);
+      vkAlertBox(app.i18n.IDL('DelVideosLikes'),app.i18n.IDL('DelVideosLikesConfirm'),run,true);
    },
    remove_likes_posts:function(){
       var REQ_CNT=100;//100;
@@ -2951,12 +2951,12 @@ vk_fave = {
       var abort=false;
       var deldone=function(){
             box.hide();
-            vkMsg(IDL("ClearDone"),3000);
+            vkMsg(app.i18n.IDL("ClearDone"),3000);
       };
       var del=function(callback){
          if (abort) return;
          var del_count=ids.length;
-         ge('vk_del_info').innerHTML=vkProgressBar(del_offset,del_count,310,IDL('deleting')+' %');
+         ge('vk_del_info').innerHTML=vkProgressBar(del_offset,del_count,310,app.i18n.IDL('deleting')+' %');
          var obj=ids[del_offset];
          if (!obj){
             ge('vk_del_info').innerHTML=vkProgressBar(1,1,310,' ');
@@ -2982,7 +2982,7 @@ vk_fave = {
          ids=[];
          if (cur_offset==0){
             ge('vk_del_info').innerHTML=vkProgressBar(1,1,310,' ');
-            ge('vk_scan_info').innerHTML=vkProgressBar(cur_offset,2,310,IDL('listreq')+' %');
+            ge('vk_scan_info').innerHTML=vkProgressBar(cur_offset,2,310,app.i18n.IDL('listreq')+' %');
          }
          app.vkApi.request({
            method: "fave.getPosts",
@@ -2996,7 +2996,7 @@ vk_fave = {
              }
              if (info_count==0) info_count=data.shift();
              else data.shift();
-             ge('vk_scan_info').innerHTML=vkProgressBar(cur_offset+REQ_CNT,info_count,310,IDL('listreq')+' %');
+             ge('vk_scan_info').innerHTML=vkProgressBar(cur_offset+REQ_CNT,info_count,310,app.i18n.IDL('listreq')+' %');
              for (var i=0;i<data.length;i++) ids.push([data[i].owner_id,data[i].pid]);
              cur_offset+=REQ_CNT;
              //vklog(ids);
@@ -3005,14 +3005,14 @@ vk_fave = {
          });
       };
       var run=function(){
-         box=new MessageBox({title: IDL('DelPostsLikes'),closeButton:true,width:"350px"});
+         box=new MessageBox({title: app.i18n.IDL('DelPostsLikes'),closeButton:true,width:"350px"});
          box.removeButtons();
-         box.addButton(IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+         box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
          var html='<div id="vk_del_info" style="padding-bottom:10px;"></div><div id="vk_scan_info"></div>';
          box.content(html).show();
          scan();
       };
-      vkAlertBox(IDL('DelPostsLikes'),IDL('DelPostsLikesConfirm'),run,true);
+      vkAlertBox(app.i18n.IDL('DelPostsLikes'),app.i18n.IDL('DelPostsLikesConfirm'),run,true);
    }
 }
 
@@ -3046,7 +3046,7 @@ vk_board={
       var panel=ge(idcont);
       if (panel) re(panel);
       panel=vkCe('div',{id:idcont,"class":'vk_bp_other_posts'},'<div id="'+idres+'"><div class="vk_bp_separator"></div></div>\
-                     <div id="'+idctrls+'" > <div class="button_blue fl_r"><button>'+IDL('Cancel')+'</button></div> <div id="'+idprogr+'"></div></div>')
+                     <div id="'+idctrls+'" > <div class="button_blue fl_r"><button>'+app.i18n.IDL('Cancel')+'</button></div> <div id="'+idprogr+'"></div></div>')
       p.insertBefore(panel,p.firstChild);
       var btn=geByTag1('button');
       var status=function(){
@@ -3107,7 +3107,7 @@ vk_board={
          var z=geByClass('vk_brd_action',els[i])[0];
          if (!p || !a || z) continue;
          p.appendChild(vkCe('span',{"class":"divide vk_brd_action"},'|'));
-         p.appendChild(vkCe('a',{"href":"#","class":'vk_brd_action',onclick:"return vk_board.get_user_posts('"+a.getAttribute('href')+"','"+els[i].getAttribute('id')+"')"},IDL('PrevPosts')));
+         p.appendChild(vkCe('a',{"href":"#","class":'vk_brd_action',onclick:"return vk_board.get_user_posts('"+a.getAttribute('href')+"','"+els[i].getAttribute('id')+"')"},app.i18n.IDL('PrevPosts')));
       }
    }
 }
@@ -3276,7 +3276,7 @@ vk_feed={
       vk_feed.process_node();
       if (ge('vk_feed_filter') || cur.section=="articles") return;
       var p=ge('feed_progress');
-      var div=vkCe('div',{'class':'fl_r', id:'vk_feed_filter'},'<div id="vkf_filter_chk"></div>'/*'<a href="#" onclick="">'+IDL('Filter')+'</a>'*/);
+      var div=vkCe('div',{'class':'fl_r', id:'vk_feed_filter'},'<div id="vkf_filter_chk"></div>'/*'<a href="#" onclick="">'+app.i18n.IDL('Filter')+'</a>'*/);
       p.parentNode.insertBefore(vkCe('span',{'class':'divide fl_r'},'|'),p);
       p.parentNode.insertBefore(div,p);
 
@@ -3287,17 +3287,17 @@ vk_feed={
 
       var cfg=(vkGetVal('vk_feed_filter') || '00000000000').split('');
       var items=[
-         [IDL('with_photo'), 'photo', false],// 0    photo
-         [IDL('with_video'), 'video', false],// 1    video
-         [IDL('with_audio'), 'audio', false],// 2    audio
-         [IDL('with_graff'), 'graff', false],// 3    graff
-         [IDL('with_poll'),  'poll',  false],// 4    poll
-         [IDL('with_note'),  'note',  false],// 5    note
-         [IDL('with_repost'),'repost',false],// 6    repost
-         [IDL('with_text'),  'text',  false],// 7    text
-         [IDL('with_links'), 'links', false],// 8    links
-         [IDL('from_friend'),'friend',false],// 9    friend
-         [IDL('from_group'), 'group', false] // 10   group
+         [app.i18n.IDL('with_photo'), 'photo', false],// 0    photo
+         [app.i18n.IDL('with_video'), 'video', false],// 1    video
+         [app.i18n.IDL('with_audio'), 'audio', false],// 2    audio
+         [app.i18n.IDL('with_graff'), 'graff', false],// 3    graff
+         [app.i18n.IDL('with_poll'),  'poll',  false],// 4    poll
+         [app.i18n.IDL('with_note'),  'note',  false],// 5    note
+         [app.i18n.IDL('with_repost'),'repost',false],// 6    repost
+         [app.i18n.IDL('with_text'),  'text',  false],// 7    text
+         [app.i18n.IDL('with_links'), 'links', false],// 8    links
+         [app.i18n.IDL('from_friend'),'friend',false],// 9    friend
+         [app.i18n.IDL('from_group'), 'group', false] // 10   group
       ];
       for (var i=0; i<items.length; i++){
          if (cfg[i]=='1')
@@ -3333,7 +3333,7 @@ vk_feed={
          var cb = new Checkbox(ge("vkf_filter_chk"), {
                      width: 100,
                      checked:enabled,
-                     label: IDL('Filter'),
+                     label: app.i18n.IDL('Filter'),
                      onChange: function(state) {
                         var checked = (state == 1)?true:false;
                         setCfg(bit,checked?'y':'n');
@@ -3351,7 +3351,7 @@ vk_feed={
                      }
                   });
 
-         panel.appendChild(vkCe('h4',{},IDL('HideFeedRows')));
+         panel.appendChild(vkCe('h4',{},app.i18n.IDL('HideFeedRows')));
          for (var i=0; i<items.length; i++){
             var el=vkCe('span',{'class':'fl_l'},'<div></div>');
             panel.appendChild(el);
@@ -3377,14 +3377,14 @@ vk_feed={
       if (!r || ge('filter_t_vknewlist')) return;
       var el=se('<div class="feed_filter_tabs_row clear_fix feed_newlist_filter_row" id="filter_t_vknewlist" onmouseover="addClass(this, \'feed_filter_tabs_row_over\');" onmouseout="removeClass(this, \'feed_filter_tabs_row_over\');" onclick="vk_feed.new_list();">\
         <div class="feed_filter_tabs_icon fl_l feed_icon_newlist"></div>\
-        <div class="feed_filter_tabs_title fl_l noselect" onselectstart="return false;">'+IDL('NewList',1)+'</div>\
+        <div class="feed_filter_tabs_title fl_l noselect" onselectstart="return false;">'+app.i18n.IDL('NewList',1)+'</div>\
         <div class="feed_filter_tabs_check fl_l"></div>\
       </div>');
       r.parentNode.appendChild(el);
       //vk_feed.new_list();
    },
    new_list:function(){
-      var box = new MessageBox({title: IDL('NewList')});
+      var box = new MessageBox({title: app.i18n.IDL('NewList')});
 
       var users_list=[];
 
@@ -3477,9 +3477,9 @@ vk_feed={
          save(users_list,val('vk_feed_list_title'));
       },'yes');
       box.content('<div>\
-      <h2>'+IDL('ListTitle')+'</h2>\
+      <h2>'+app.i18n.IDL('ListTitle')+'</h2>\
       <input type="text" id="vk_feed_list_title" value="'+Math.round((new Date()).getTime()/1000).toString(36)+'" class="text" style="width:370px; margin-bottom:15px;">\
-      <h2>'+IDL('LinkToUserOrGroup')+'</h2>\
+      <h2>'+app.i18n.IDL('LinkToUserOrGroup')+'</h2>\
       <div class="fl_r"><div class="button_blue" id="vk_feed_search_btn"><button><span class="vk_magglass_icon"></span></button></div></div>\
       <div><input type="text" id="vk_feed_list_user" class="text olist_filter" style="margin-top:2px; width: 305px;"></div>\
       <div id="vk_feed_users_list"></div>\
@@ -3757,7 +3757,7 @@ function vk_tag_api(section,url,app_id){
            // this.getAttribute(\'dislike_id\') - да-да... я не знаком с data- атрибутами
            return se(
               (obj_id=='wiki'?'<div class="button_gray fl_l"><button':'<div')+' dislike_id="'+obj_id+'" class="post_dislike fl_r" onclick="vk_dislike.dislike(this.getAttribute(\'dislike_id\'));" onmouseover="vk_dislike.dislike_over(this.getAttribute(\'dislike_id\'));" id="post_dislike'+obj_id+'">\
-                <span class="post_dislike_link fl_l" id="dislike_link'+obj_id+'">'+IDL('dislike')+'</span>\
+                <span class="post_dislike_link fl_l" id="dislike_link'+obj_id+'">'+app.i18n.IDL('dislike')+'</span>\
                 <i class="post_dislike_icon no_dislikes fl_l'+(my_dislike?' my_dislike':'')+'" id="dislike_icon'+obj_id+'"></i>\
                 <span class="post_dislike_count fl_l" id="dislike_count'+obj_id+'">'+(count|| '')+'</span>\
               '+(obj_id=='wiki'?'</button></div>':'</div>')
@@ -3921,7 +3921,7 @@ function vk_tag_api(section,url,app_id){
 
          var cnt=parseInt(count.innerHTML) || 0;
          html=dk.tip_tpl.replace(/%OBJ_ID%/g,post)
-                        .replace(/%USERS_DISLIKE%/g,langNumeric(cnt,IDL('users_dislike')));
+                        .replace(/%USERS_DISLIKE%/g,langNumeric(cnt,app.i18n.IDL('users_dislike')));
 
          var data=null;
          var tip_ready = (icon.parentNode.tt &&  icon.parentNode.tt!= 'loadingstat');
@@ -3957,7 +3957,7 @@ function vk_tag_api(section,url,app_id){
             }
             html='<tr>'+html+'</tr>';
             ge('dislike_table_'+post).innerHTML=html;
-            ge('dislike_title_'+post).innerHTML=langNumeric(info.count,IDL('users_dislike'));
+            ge('dislike_title_'+post).innerHTML=langNumeric(info.count,app.i18n.IDL('users_dislike'));
             vkProcessNode(ge('dislike_table_'+post));
          }
          if (cnt>0 || act){
@@ -4031,7 +4031,7 @@ function vk_tag_api(section,url,app_id){
          });
       },
       show_users:function(post){
-         var box=showFastBox({title:IDL('who_dislike'),width:'478px',progress:'progress'+post},'<div id="dislike_list'+post+'" class="dislike_list"></div>');
+         var box=showFastBox({title:app.i18n.IDL('who_dislike'),width:'478px',progress:'progress'+post},'<div id="dislike_list'+post+'" class="dislike_list"></div>');
          box.setOptions({bodyStyle: 'padding: 0px; height: 310px;', width: 478});
          addClass(ge('dislike_list'+post),'disliked_users_big_loader');
          stManager.add('boxes.css');
@@ -4105,7 +4105,7 @@ function vk_tag_api(section,url,app_id){
             }
 
             html=cont_tpl.replace(/%PAGE_LIST%/g,pg)
-                         .replace(/%TITLE%/g,langNumeric(info.count,IDL('users_dislike')))
+                         .replace(/%TITLE%/g,langNumeric(info.count,app.i18n.IDL('users_dislike')))
                          .replace(/%USERS%/g,html);
             ge('dislike_list'+post).innerHTML=html;
             vkProcessNode(ge('dislike_list'+post));

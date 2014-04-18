@@ -357,7 +357,7 @@ function vkCheckLoadedScripts(){
       "vk_skinman"   :!!window.vkShowSkinMan,
       "vk_txtedit"   :!!window.vkAddSmilePanel,
       "vk_users"     :!!window.ProcessUserPhotoLink,
-      "vklang"       :!!window.vk_lang_en,
+      "vklang"       :"vklang was deprecated. See window.app.i18n",
       "vkopt"        :!!window.vkonDOMReady
    }
    console.log('result:',obj)

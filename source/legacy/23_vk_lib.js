@@ -202,40 +202,12 @@ var vkMozExtension = {
       else if (bracket &&  bracket!=2) s='[ '+s+' ]';
 		return s;
 	}
-	function IDL(i,bracket) {
-	  vkLangGet();
-	  if (vk_lang[i]) return vkCutBracket(vk_lang[i],bracket);
-	  if (vk_lang_ru[i]) return vkCutBracket(vk_lang_ru[i],bracket);
-	  if (window.vk_lang_add && vk_lang_add[i]) return vkCutBracket(vk_lang_add[i],bracket);
-	  else return vkCutBracket(i,bracket);
-	}
 
    function vkopt_brackets(s){
       var s=vkCutBracket(s,2);
       if (!CUT_VKOPT_BRACKET) s='[ '+s+' ]';
       return s;
    }
-
-	function vkExtendLang(obj) {
-	  if (!window.vk_lang_add) vk_lang_add={};
-	  for (var key in obj)  vk_lang_add[key]=obj[key];
-	}
-
-	function vkLangSet(id,no_reload){
-	  vksetCookie('vklang',id);
-	  vk_lang=VK_LANGS[id];
-	  if (no_reload) InstallRelease();
-	  else  location.reload();
-	}
-
-	function vkLangGet(){
-	  if (!window.vk_lang){
-		 var id=vkgetCookie('vklang');
-		 if (!id) id=0;
-		 vk_lang=VK_LANGS[id]?VK_LANGS[id]:VK_LANGS[0];
-	  }
-	  return id;
-	}
 
 	function replaceChars(text, nobr) {
 		var res = "";
@@ -1919,18 +1891,18 @@ function vkOnResizeSaveBtn(w,h){
 function vkSaveText(text,fname){
   VKTextToSave=text; VKFNameToSave=fname;
   var html = '<div><span id="vkdsldr"><div class="box_loader"></div></span>'+
-             '<span id="vksavetext" style="display:none">'+IDL("ClickForSave")+'</span>'+
+             '<span id="vksavetext" style="display:none">'+app.i18n.IDL("ClickForSave")+'</span>'+
              '<div id="dscontainer" style="display:inline-block;position:relative;top:8px;"></div>'+
              '</div>';
-  DataSaveBox = new MessageBox({title: IDL('SaveToFile')});
+  DataSaveBox = new MessageBox({title: app.i18n.IDL('SaveToFile')});
   var Box = DataSaveBox;
   vkOnSavedFile=function(){Box.hide(200);};
   Box.removeButtons();
-  Box.addButton(IDL('Cancel'),Box.hide,'no');
+  Box.addButton(app.i18n.IDL('Cancel'),Box.hide,'no');
   Box.content(html).show();
   var swf=location.protocol=='https:'?VKFDS_SWF_HTTPS_LINK:VKFDS_SWF_LINK;
   var params={width:100, height:29, allowscriptaccess: 'always',"wmode":"transparent","preventhide":"1","scale":"noScale"};
-  var vars={};//'idl_browse':IDL('Browse'),'mask_name':mask[0],'mask_ext':mask[1]
+  var vars={};//'idl_browse':app.i18n.IDL('Browse'),'mask_name':mask[0],'mask_ext':mask[1]
 	renderFlash('dscontainer',
 		{url:swf,id:"vkdatasaver"},
 		params,vars
@@ -1944,7 +1916,7 @@ var VKFDL_SWF_LINK='http://cs6147.vk.me/u13391307/8f4dac1239fc88.zip';
 var VKFDL_SWF_HTTPS_LINK='https://pp.vk.me/c6147/u13391307/8f4dac1239fc88.zip';
 
 function vkLoadTxt(callback,mask){
-	DataLoadBox = new MessageBox({title: IDL('LoadFromFile')});
+	DataLoadBox = new MessageBox({title: app.i18n.IDL('LoadFromFile')});
 	var Box = DataLoadBox;
 
 	vkOnDataLoaded=function(text){
@@ -1958,16 +1930,16 @@ function vkLoadTxt(callback,mask){
 			hide("vkdlldr"); show("vkloadtext");
 	}
 	var html = '<div><span id="vkdlldr"><div class="box_loader"></div></span>'+
-		 '<span id="vkloadtext" style="display:none">'+IDL("ClickForLoad")+'</span>'+
+		 '<span id="vkloadtext" style="display:none">'+app.i18n.IDL("ClickForLoad")+'</span>'+
 		 '<div id="dlcontainer" style="display:inline-block;position:relative;top:8px;"></div>'+
 		 '</div>';
 	Box.removeButtons();
-	Box.addButton(IDL('Cancel'),Box.hide,'no');
+	Box.addButton(app.i18n.IDL('Cancel'),Box.hide,'no');
 	Box.content(html).show();
    var swf=location.protocol=='https:'?VKFDL_SWF_HTTPS_LINK:VKFDL_SWF_LINK;
 
 	var params={width:100, height:29, "allowscriptaccess":"always","wmode":"transparent","preventhide":"1","scale":"noScale"};
-	var vars={'idl_browse':IDL('Browse'),'mask_name':mask[0],'mask_ext':mask[1]};
+	var vars={'idl_browse':app.i18n.IDL('Browse'),'mask_name':mask[0],'mask_ext':mask[1]};
 	renderFlash('dlcontainer',
 		{url:swf,id:"vkdataloader"},
 		params,vars
@@ -2413,8 +2385,8 @@ if (!window.vkopt_plugins) vkopt_plugins={};
 
 /* WebMoney Form */
 function WMDonateForm(Amount,purse_id,descr_text,submit_text){
- descr_text=descr_text?descr_text:IDL('Donate_text');
- submit_text=submit_text?submit_text:IDL('Donate');
+ descr_text=descr_text?descr_text:app.i18n.IDL('Donate_text');
+ submit_text=submit_text?submit_text:app.i18n.IDL('Donate');
  var type=purse_id.match(/(\w)\d+/)[1].toLowerCase();
  var wm='WM'+type.toUpperCase();
  var html='<div style="margin:0 auto; display: table;"><FORM action="wmk:payto" style="padding:0; margin:0px" method="get">\
@@ -2427,14 +2399,14 @@ function WMDonateForm(Amount,purse_id,descr_text,submit_text){
 	<INPUT type=hidden value=Y name=BringToFront>\
 	<INPUT type=submit value="'+submit_text+'">\
 </td></tr></table></FORM>\
-<div style="color:#AAA; font-size:7pt; text-align:center;">'+IDL('NeedWMKeeper')+'</div>\
+<div style="color:#AAA; font-size:7pt; text-align:center;">'+app.i18n.IDL('NeedWMKeeper')+'</div>\
 </div>';
 return html;
 }
 /* Yandex Money */
 function YMDonateForm(Amount,purse_id,submit_text){
   if(ge('purse_ad_link')) show('purse_ad_link');
- submit_text=submit_text?submit_text:IDL('Donate');
+ submit_text=submit_text?submit_text:app.i18n.IDL('Donate');
  var html=
  '<div style="margin:0 auto; display: table;">\
   <form style="margin: 0; padding: 0;" action="https://money.yandex.ru/charity.xml" method="post">\
@@ -2451,7 +2423,7 @@ function YMDonateForm(Amount,purse_id,submit_text){
 }
 
 function YM5DonateForm(purse_id,submit_text){
- submit_text=submit_text?submit_text:IDL('Donate');
+ submit_text=submit_text?submit_text:app.i18n.IDL('Donate');
  var type=purse_id.match(/(\w)\d+/)[1].toLowerCase();
  var wm='WM'+type.toUpperCase();
  var html='<div style="margin:0 auto; display: table;"><img src="data:image/gif;base64,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"/><form style="margin: 0; padding: 0 0 2px;" action="https://money.yandex.ru/donate.xml" method="post">\

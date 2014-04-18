@@ -3,3 +3,4 @@
 	require "./ajax/perform-request"
 	require "./vk-api"
 	require "./dislike"
+	require "./i18n"
