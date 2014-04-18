@@ -185,7 +185,6 @@
 		FavRemoved: "User was deleted from Favourites list"
 		FavUsers: "[ Favourites ]"
 		Filter: "[ Filter ]"
-		FIS: "To complete install refresh page."
 		FixAlbumInfo: "Fix album info"
 		Found: "Found"
 		FrDeleted: "[ Blocked ]"
@@ -243,7 +242,6 @@
 		HtmlPageSaveHelp: "Wait until this page will finish loading and save as web-page to save all photos. Photos will be save in folder with the same name as web-page\t\t\t\t\t\t<small><br>Opera: \"Save as..\" -> \"HTML-file with images\"\t\t\t\t\t\t<br>Firefox: \"Save as...\" -> \"Web-page, fully\" (Be careful! Firefox can use a lot of memory, when you are saving a big amount of photos with this function)\t\t\t\t\t\t</small>"
 		ImgCopySeacrh: "Search copy:"
 		ImportSettings: "Restore settings from file"
-		INCD: "<font color=\"red\"><b>ATTENTION!</b></font><br><br><b>Remember</b>: To avoid fakes, which can stole your password, download script <b>only</b> from official <a href=\"http://vkopt.net/\" target=_blank><b>site</b></a>.<br><br>To turn on/off functions you have to go to <a href=\"/settings?act=happy\" target=_blank>settings</a>.<br><br>Don't turn on all (necessary and unnecessary) functions to avoid lags during page loads.<br><br><b>With questions</b> of using script go to <a href=\"http://vkopt.net/forum/forumdisplay.php?f=4\"  target=_blank>forum</a><br><br>Description of Vkopt's functions can be found <a href=\"http://vkopt.net/forum/forumdisplay.php?f=4\"  target=_blank>here</a><br><br>"
 		IncorrectAudioLink: "Incorrect audio link"
 		IncorrectPhotoLink: "Incorrect photo link"
 		IncorrectVideoLink: "Incorrect video link"
@@ -730,7 +728,6 @@
 		TagsInfo: "[ Information about tags ]"
 		TetAtet: "One on one"
 		theme_num: [ "", "<b>%s</b> skin", "<b>%s</b> skins", "<b>%s</b> skins" ]
-		THFI: "Thanks for installing happy!"
 		TimeRemaining: "<time> remained till scrobbling"
 		TinEyeSearch: "[ Search copies (TinEye) ]"
 		ToggleQuickPreviews: "Show quick album preview"
@@ -806,7 +803,6 @@
 		WrongCSSCode: "Error. In CSS-code there are <style> or <script> tags"
 		WTF_SID: "Bad SID. Authorization impossible"
 		Yes: "Ok"
-		YIV: "You have been installed happy v"
 		YouTube: "YouTube"
 		zodiac_signs: [ "Capricorn", "Aquarius", "Pisces", "Aries", "Taurus"
 			"Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius" ]

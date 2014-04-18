@@ -24,29 +24,22 @@ function InstallRelease(){
       vksetCookie( "remixbit", DefSetBits );
     }
 
+    // Hasn't been previously installed, this is a fresh installation.
+    if ( vkgetCookie( app.name ).split( "." ).length !== 3 ) {
+      // There're likely no local settings saved, get the remote backup.
+      vkLoadSettingsFromServer();
+    }
+
 	  vksetCookie( app.name, app.version.full );
 
 	  vksetCookie('vkplayer','00-0_0');
 	  if (!vkgetCookie('remixbit')) vksetCookie('remixbit',DefSetBits);
 	  vkCheckSettLength();
 
-	  if (!window.vkMsg_Box) vkMsg_Box = new MessageBox({title: app.i18n.IDL('THFI'),width:"495px"});
-	  vkMsg_Box.removeButtons();
-	  vkMsg_Box.addButton(!isNewLib()?{
-		onClick: function(){vkMsg_Box.hide( 200 );},
-		style:'button_no',label:'OK'}:'OK',function(){vkMsg_Box.hide( 200 );},'no');
-    var cont = app.i18n.IDL( "YIV" ) + "<b>" + app.version.full + "</b><br><br>" + app.i18n.IDL( "INCD" ) + "<b>" + app.i18n.IDL( "FIS" ) + "</b>";
+    // We're done with installation, apply with reload.
+    window.location.reload();
 
-     cont+='<br><br><div id="cfg_on_serv_info" style="text-align:center;"></div>';
-     vkLoadSettingsFromServer(true,function(setts){
-      if (setts){
-         ge('cfg_on_serv_info').innerHTML+='<br>'+vkRoundButton([app.i18n.IDL('LoadFromServer'),'javascript: vkLoadSettingsFromServer();']);
-      }
-     });//check cfg backup
-
-
-	  vkMsg_Box.content(cont).show();
-
+    return true;
   }
   return false;
 }
