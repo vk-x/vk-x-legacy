@@ -64,7 +64,6 @@ var SetsOnLocalStore={
   'remixumbit':'c',
   'IDNew':'c',
   'AdmGr':'c',//last of cookie
-  'vkplayer':'c',
   'dapi_mid':'c',
   'dapi_sid':'c',
   'dapi_secret':'c',

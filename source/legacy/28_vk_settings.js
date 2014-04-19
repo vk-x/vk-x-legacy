@@ -1,47 +1,37 @@
-function InstallRelease(){
+function InstallRelease() {
+
+  // TODO: Figure out whether this check is needed or not.
   if (!window.vk || !vk.id) return;
-  if (isNewLib() && !window.lastWindowWidth){
-      setTimeout(InstallRelease,50);
-      return;
-  }
 
   var lastUsedVersion = vkgetCookie( app.name );
 
   if ( lastUsedVersion !== app.version.full ) {
-    if ( lastUsedVersion != null ) {
+    vksetCookie( app.name, app.version.full );
+
+    // This should be done after loading settings backup, so wrap it
+    // in a function and pass as a callback.
+    finishInstallation = function() {
+      // Apply defaults for new settings. See #37 for more info.
       vkCheckSettLength();
+
+      // Closes #78.
+      // TODO: Figure out why we need to reload.
+      window.location.reload();
+    };
+
+    // This is an update.
+    if ( lastUsedVersion ) {
+      finishInstallation();
+
+    // This is fresh install.
+    } else {
+      vkLoadSettingsFromServer( false, finishInstallation );
     }
-    // TODO: Check app permissions and force reauth if needed.
-    // app.vkApi.request({ method: "getUserSettings" });
-  }
-
-  if ( !vkGetVal( "VK_SAVE_MSG_HISTORY_PATTERN" ) ) {
-      vkSetVal( "VK_SAVE_MSG_HISTORY_PATTERN", SAVE_MSG_HISTORY_PATTERN );
-  }
-
-  if ( !window.IDBit && lastUsedVersion !== app.version.full ) {
-    if ( lastUsedVersion && parseInt( lastUsedVersion[ 0 ] ) !== app.version.major ) {
-      vksetCookie( "remixbit", DefSetBits );
-    }
-
-    // Hasn't been previously installed, this is a fresh installation.
-    if ( vkgetCookie( app.name ).split( "." ).length !== 3 ) {
-      // There're likely no local settings saved, get the remote backup.
-      vkLoadSettingsFromServer();
-    }
-
-	  vksetCookie( app.name, app.version.full );
-
-	  vksetCookie('vkplayer','00-0_0');
-	  if (!vkgetCookie('remixbit')) vksetCookie('remixbit',DefSetBits);
-	  vkCheckSettLength();
-
-    // We're done with installation, apply with reload.
-    window.location.reload();
 
     return true;
+  } else {
+    return false;
   }
-  return false;
 }
 
 function vkLocalStorageMan(ret){
@@ -1150,9 +1140,15 @@ function vkLoadSettingsFromServer(check,callback){
              if (scfg['VK_CURRENT_CSS_CODE']) vk_LSSetVal('VK_CURRENT_CSS_CODE',decodeURIComponent(scfg['VK_CURRENT_CSS_CODE']));
              if (scfg['vk_sounds_vol']) vkSetVal("vk_sounds_vol",scfg['vk_sounds_vol']);
 
+        if ( ge('cfg_on_serv_info') ) {
          ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_info">'+app.i18n.IDL('seCfgRestored')+'</div>';
+        }
+        callback( true );
        } else {
+        if ( ge('cfg_on_serv_info') ) {
          ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_error">'+app.i18n.IDL('seCfgLoadError')+' #0</div>';
+        }
+        callback( false );
        }
      }
    }
