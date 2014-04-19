@@ -4,9 +4,9 @@
 
 master | develop
 :----: | :-----:
-[![Build Status](https://travis-ci.org/deltaidea/happy.png?branch=master)](https://travis-ci.org/deltaidea/happy) | [![Develop](https://travis-ci.org/deltaidea/happy.png?branch=develop)](https://travis-ci.org/deltaidea/happy)
+[![Build Status](https://travis-ci.org/vk-x/vk-x.png?branch=master)](https://travis-ci.org/vk-x/vk-x) | [![Develop](https://travis-ci.org/vk-x/vk-x.png?branch=develop)](https://travis-ci.org/vk-x/vk-x)
 
-We have **[Travis CI](https://travis-ci.org/deltaidea/happy)** running
+We have **[Travis CI](https://travis-ci.org/vk-x/vk-x)** running
 `gulp test && gulp dist` on each push and Pull Request.  
 See **Prepare environment**, **Run tests** and **Build extensions**
 below for more info.

@@ -1,9 +1,9 @@
 {
-  "name": "happy",
+  "name": "vk-x",
   "version": "0.4.2",
   "description": "Extension for VK.com inspired by and based on VkOpt.",
   "description_ru": "Расширение для VK.com, вдохновлённое и основанное на VkOpt.",
-  "homepage": "https://github.com/deltaidea/happy",
+  "homepage": "https://github.com/vk-x/vk-x",
   "author": {
     "name": "Nikita Litvin",
     "nickname": "deltaidea",
@@ -13,7 +13,7 @@
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/deltaidea/happy"
+    "url": "https://github.com/vk-x/vk-x"
   },
   "scripts": {
     "test": "gulp test && gulp dist"

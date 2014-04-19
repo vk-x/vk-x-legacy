@@ -1,15 +1,15 @@
-# [happy](https://github.com/deltaidea/happy) for [VK.com](http://vk.com)
+# [vk-x](https://github.com/vk-x/vk-x) for [VK.com](http://vk.com)
 
-**happy** (always lowercase) is a cross-browser extension for
-[VK.com](http://vk.com) inspired by and based on [VkOpt](http://vkopt.net).
+**vk-x** is a cross-browser extension for [VK.com](http://vk.com)
+inspired by and based on [VkOpt](http://vkopt.net).
 
 ## Download
 
-[releases]: https://github.com/deltaidea/happy/releases
+[releases]: https://github.com/vk-x/vk-x/releases
 
 See [releases][releases]:
 
-[![](http://i.imgur.com/e4cNW28.png)][releases]
+[![](http://i.imgur.com/z0zWeMV.png)][releases]
 
 There're no published extensions yet. :(
 
