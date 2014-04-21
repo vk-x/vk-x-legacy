@@ -196,7 +196,7 @@ vk_profile={
                   onclick:"cancelEvent(event); return nav.go(this, event);",
                   onmouseover:"this.parentNode.href='/wall"+cur.oid+"?with="+vk.id+"';",
                   onmouseout:"this.parentNode.href='"+href+"';"
-               },app.i18n.IDL('T-a-T',1)))
+               },'[ T-a-T ]'))
    },
    edit_page:function(){
       vk_profile.edit_mid_name();
