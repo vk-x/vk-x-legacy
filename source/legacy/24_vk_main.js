@@ -796,7 +796,7 @@ function vkPhChooseProcess(answer,url,q){
        <div class="fl_l">\
            '+app.i18n.IDL('EnterLinkToPhoto')+': \
          <span><input id="vk_link_to_photo" type="text"  style="width:230px" class="s_search text"></span>\
-         <div id="vk_link_to_photo_button" class="button_blue" style="vertical-align: middle;"><button onclick="vkCheckPhotoLinkToMedia();">'+app.i18n.IDL('OK')+'</button></div>\
+         <div id="vk_link_to_photo_button" class="button_blue" style="vertical-align: middle;"><button onclick="vkCheckPhotoLinkToMedia();">'+'OK'+'</button></div>\
        </div>\
        ');
        ref.parentNode.insertBefore(node,ref);
@@ -842,7 +842,7 @@ function vkVidChooseProcess(answer,url,q){
     var node=vkCe('div',{'style':"height: 25px; padding: 4px 20px; padding-left:0px; margin-top: 33px;","class":'vk_opa2 vk_idattach'},'\
     <div class="fl_l">'+app.i18n.IDL('EnterLinkToVideo')+':</div>\
       <span class="fl_l"><input id="vk_link_to_video" type="text"  style="width:215px" class="s_search text"></span>\
-      <div id="vk_link_to_video_button" class="button_blue fl_r"  style="vertical-align: middle;"><button onclick="vkCheckVideoLinkToMedia();">'+app.i18n.IDL('OK')+'</button></div>\
+      <div id="vk_link_to_video_button" class="button_blue fl_r"  style="vertical-align: middle;"><button onclick="vkCheckVideoLinkToMedia();">'+'OK'+'</button></div>\
     \
     ');
     /*ref.parentNode.insertBefore(node,ref);
@@ -886,7 +886,7 @@ function vkAudioChooseProcess(answer,url,q){
     var node=vkCe('div',{'style':"height: 25px; padding: 4px 20px; padding-left:0px; margin-top: 33px;","class":'vk_opa2 vk_idattach'},'\
     <div class="fl_l" style="line-height:20px">'+app.i18n.IDL('EnterLinkToAudio')+':</div>\
       <span class="fl_l"><input id="vk_link_to_audio" type="text" style="width:190px"  class="s_search text"></span>\
-      <div id="vk_link_to_audio_button" class="button_blue fl_r"  style="vertical-align: middle;"><button onclick="vkCheckAudioLinkToMedia();">'+app.i18n.IDL('OK')+'</button></div>\
+      <div id="vk_link_to_audio_button" class="button_blue fl_r"  style="vertical-align: middle;"><button onclick="vkCheckAudioLinkToMedia();">'+'OK'+'</button></div>\
     \
     ');
     //ref.parentNode.insertBefore(node,ref);
@@ -2259,7 +2259,7 @@ function vkMakeMsgHistory(uid,show_format){
 		var aBox = new MessageBox({title: app.i18n.IDL('SaveHistoryCfg')});
 		aBox.removeButtons();
 		aBox.addButton(app.i18n.IDL('Hide'), aBox.hide, 'no')
-		aBox.addButton(app.i18n.IDL('OK'),function(){
+		aBox.addButton('OK',function(){
 			msg_pattern=ge('vk_msg_fmt').value;
 			date_fmt=ge('vk_msg_date_fmt').value;
          msg_pattern=msg_pattern.replace(/\r?\n/g,'\r\n');

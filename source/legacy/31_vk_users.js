@@ -1336,7 +1336,7 @@ function vkFriendsBySex(add_link){
           AjPost('al_friends.php', {act: 'save_list', title: title, cat_id: listId, friends: friendsList.join(','), hash: hash},function(r, t) {
             elem.innerHTML="<b>OK</b>";
             box.removeButtons();
-            box.addButton(app.i18n.IDL('OK'),box.hide,'yes');
+            box.addButton('OK',box.hide,'yes');
           });
         });
       }
@@ -1349,7 +1349,7 @@ function vkFriendsBySex(add_link){
     ");
 	box.removeButtons();
 	box.addButton(app.i18n.IDL('Cancel'),box.hide,'no');
-	box.addButton(app.i18n.IDL('OK'),RunMake,'yes');
+	box.addButton('OK',RunMake,'yes');
 	var html='<div class="vkfrbx">'+app.i18n.IDL('FrToCatsBySex')+':<br>'+
 		  '<span id="frcatp1"><input type="text" id="frcat1" value=":-*"></span> -'+Sex_fm+'<br>'+
 		  '<span id="frcatp2"><input type="text" id="frcat2"  value="^_^"></span> -'+Sex_m+'<br>'+
