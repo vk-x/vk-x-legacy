@@ -1,7 +1,7 @@
 	templateTransform = require "./template-transform"
 
 	module.exports =
-		transform: [ templateTransform, "coffeeify", "jadeify" ]
+		transform: [ templateTransform, "coffeeify", "jadeify", "brfs" ]
 		extensions: [
 			".litcoffee", ".template.litcoffee"
 			".js", ".template.js"

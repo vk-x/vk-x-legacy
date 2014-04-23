@@ -4,3 +4,5 @@
 	require "./vk-api"
 	require "./dislike"
 	require "./i18n"
+	require "./install"
+	require "./main-menu"

@@ -39,6 +39,7 @@
     "gulp-karma": "~0.0.4",
     "coffeeify": "~0.6.0",
     "jadeify": "~2.1.1",
+    "brfs": "~1.1.1",
     "karma-browserify": "0.0.6",
     "gulp-order": "~1.0.6",
     "gulp-coffee": "~1.4.1",

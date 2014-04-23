@@ -4,6 +4,8 @@
 	vkApi = require( "./vk-api" ) app, ajax
 	dislike = require( "./dislike" ) ajax, vkApi
 	i18n = require( "./i18n" )()
+	install = require( "./install" ) app, i18n
+	mainMenu = require( "./main-menu" ) app
 	_ = require "lodash"
 
 	i18n.addLanguage "ru", require "./i18n/ru"
@@ -22,6 +24,8 @@ For compatibility with legacy code:
 	app.vkApi = vkApi
 	app.dislike = dislike
 	app.i18n = i18n
+	app.install = install
+	app.mainMenu = mainMenu
 	app.util = _
 
 	window.app = app

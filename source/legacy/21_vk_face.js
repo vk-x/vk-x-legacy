@@ -1225,7 +1225,22 @@ function vkMenu(){//vkExLeftMenu
      div.className='moreDiv more_div';
      nav.appendChild(div);
   }
-  var li=vkCe('li',{id:"frOpt"},'<a class="left_row" href="settings?act=' + app.name + '" onclick="vkShowSettings(true); return false;"><span class="left_label inl_bl">' + app.name + '</span><span></span></a>');
+
+  var li = vkCe( "li", {}, app.mainMenu.extensionMenuItemHtml() );
+
+	window.vkShowChangelog = function() {
+		stManager.add([ "wkview.js", "wkview.css", "wk.css", "wk.js",
+			"common.css", "page_help.css", "page.css", "page.js" ],
+			function() {
+				WkView.show( false, app.install.changelogHtml(), {
+					wkRaw: "changelog",
+					hide_title: 1,
+					className: "wk_large_cont"
+				}, "", false );
+				window.localStorage.removeItem( app.name + "-new-version" );
+		});
+	};
+
   nav.appendChild(li);
   //*/
 
@@ -1237,14 +1252,14 @@ function vkMenu(){//vkExLeftMenu
     var item=items[i];
     var page=item.href.match(/\/([A-Za-z]+)(\.php|\d+|\?|$)/);//
 	//vklog(page);
-    if (item.className=='hasedit' || item.className=='hasedit fl_l' || item.id=='myprofile')
+    if (item.href.indexOf( "act=" + app.name )!=-1)
+      page='vkopt';
+    else if (item.className=='hasedit' || item.className=='hasedit fl_l' || item.id=='myprofile')
       page='profile';
     else if ((item.className || '').indexOf('vk_custom_link')!=-1)
       page='custom_link';
     else if ((item.className || '').indexOf('vk_custom_sublink')!=-1)
       page='custom_sublink';
-    else if (item.href.indexOf( "act=" + app.name )!=-1)
-      page='vkopt';
     else
       page=(page)?page[1]:'';
 
