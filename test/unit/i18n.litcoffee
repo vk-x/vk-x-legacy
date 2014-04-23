@@ -190,6 +190,12 @@ translated = i18n.IDL "someKey", 2
 				i18n.setLanguage "fake"
 				i18n.IDL( "hello", 2 ).should.equal "world!"
 
+			it "should just return translated string if bracketsFlag
+			is 2 and string is not in brackets", ->
+				i18n.addLanguage "fake", hello: "world!"
+				i18n.setLanguage "fake"
+				i18n.IDL( "hello", 2 ).should.equal "world!"
+
 			it "should remove --force spaces and square brackets
 			if bracketsFlag is 2", ->
 				i18n.addLanguage "fake", hello: "  [world!  ] "

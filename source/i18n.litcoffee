@@ -75,11 +75,12 @@ This file only contains notes on internal details.
 			WRAP_WITH_BRACKETS = 1
 			TRIM_BRACKETS = 2
 
+			isTrimBracketsEnabled = bracketsFlag is TRIM_BRACKETS or
+				window.CUT_VKOPT_BRACKET is on
+
 			if bracketsFlag is WRAP_WITH_BRACKETS
 				"[ #{translation} ]"
-			else if bracketsFlag is TRIM_BRACKETS or
-			window.CUT_VKOPT_BRACKET is on and
-			translation[ 0 ] is "["
+			else if isTrimBracketsEnabled and translation[ 0 ] is "["
 				translation
 					.substring 1, translation.length - 1
 					.trim()
