@@ -6,6 +6,10 @@
 	"homepage_url": "<%= homepage %>",
 	"author": "<%= author.name %>",
 	"default_locale": "en",
+	"icons": {
+		"128": "icon128.png",
+		"48": "icon48.png"
+	},
 	"content_scripts": [{
 		"js": [ "content.js" ],
 		"run_at": "document_start",
