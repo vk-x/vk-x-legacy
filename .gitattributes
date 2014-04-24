@@ -1,2 +1,12 @@
-* text eol=lf
-*.exe binary
+*.gitattributes text eol=lf
+*.gitignore text eol=lf
+*.html text eol=lf
+*.jade text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.litcoffee text eol=lf
+*.manifest text eol=lf
+*.md text eol=lf
+*.rdf text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
