@@ -604,9 +604,6 @@ function vkInitSettings(){
 	Sounds:[
 	  {id:48, text:app.i18n.IDL("ReplaceVkSounds")}
 	],
-   Help:[
-     {id:69, text:app.i18n.IDL("HelpAds")}
-   ],
    Others:[
 		{id:9,  header:app.i18n.IDL("seTestFr"), text:app.i18n.IDL("seRefList"), sub:{id:1, text:'<br>'+app.i18n.IDL("now")+': <b>%cur</b> '+app.i18n.IDL("day")+'<br>'+app.i18n.IDL("set")+': %sets'+
             '<br><a onClick="javascript:vkFriendsCheck();" style="cursor: hand;">'+app.i18n.IDL('seCreList')+'</a>',
@@ -704,7 +701,6 @@ vk_settings = {
       var sets=[];
       var excluded={
          //'Sounds':1,
-         'Help':1,
          'Hidden':1
       };
       for (var key in vkoptSets){
@@ -951,7 +947,6 @@ function vkMakeSettings(el){
   var tabs=[];
   var excluded={
    'Sounds':1,
-   'Help':1,
    'Hidden':1
   };
   for (var cat in vkoptSets){
@@ -1003,11 +998,9 @@ function vkMakeSettings(el){
     '</div>';
     tabs.push({name:app.i18n.IDL('Sounds'),content:sounds});
   }//*/
-  window.vkopt_add_cfg=vkGetSettings(vkoptSets['Help'],allsett);
   var CfgArea='<input type="hidden" id="TxtEditDiv_remixbitset" /><textarea id="remixbitset" rows=1 style="border: 1px double #999999; overflow: hidden; width: 100%;" type="text" readonly onmouseover="this.value=vkRemixBitS()" onClick="this.focus();this.select();">DefSetBits=\''+vkgetCookie('remixbit')+'\';</textarea>';
   tabs.push({name:app.i18n.IDL('all'),content:'all'});
-  tabs.push({name:app.i18n.IDL('Help'),content:'<table style="width:100%; border-bottom:1px solid #DDD; padding:10px;"><tr><td colspan="2" style="text-align:center; font-weight:bold; text-decoration:underline;">'+app.i18n.IDL('Donations')+'</td></tr><tr><td width="50%"><div>'+app.i18n.IDL("DevRekv")+'</div><div>'+WMPursesList('wmdonate')+'</div></td><td><div id="wmdonate" class="clear_fix">'+WMDonateForm(30,'R255120081922')+'</div></td></tr></table>'+
-    '<div id="vkcurcfg">'+
+  tabs.push({name:app.i18n.IDL('settingsSectionBackup'),content:'<div class="sett_cat_header">'+app.i18n.IDL('settingsSectionBackup')+'</div><div id="vkcurcfg">'+
     (vkbrowser.opera?'<br>'+app.i18n.IDL('SettsNotSaved')+'<b align="center">'+app.i18n.IDL('addVkopsSets')+'<br>'+CfgArea+'</b>'+
     '<br><b align="center">'+app.i18n.IDL('seAttent')+'</b>':'<b align="center">Config:<br>'+CfgArea+'</b>')+
 	'</div>'+

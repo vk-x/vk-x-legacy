@@ -228,7 +228,6 @@ function VkOptMainInit(){
 
   vkStyles();
   if (!ge('content')) return;
-  if (getSet(69)=='n') vkopt_disabled_ad=true;
   if (getSet(31)=='y' || getSet(35)=='y') vkMakeRightBar();
   if (vk_DEBUG) vkInitDebugBox();
   vkInitSettings();

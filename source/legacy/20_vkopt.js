@@ -2,6 +2,8 @@ if (!window.vk_DEBUG) var vk_DEBUG=false;
 /* EXT CONFIG */
 if (!window.DefSetBits)
 
+// This is how settings are stored now. Because f*** you.
+// Char 69 is known to be unused.
 var DefSetBits='ynyynnyyynyyy0n0yy0nnnynyyynyy0nynynnnnyy0yyy1yynnnnny0nynynynnnnyynnynnnynyyyynnyn3nnnnynynnnnny-3-0-#c5d9e7-#34a235-1';
 
 var DefExUserMenuCfg='11111110111111111111'; // default user-menu items config
@@ -82,7 +84,6 @@ var vkLdrMonoImg='<img src="/images/upload_inv_mono.gif">';
 var vkLdrMiniImg='<img src="/images/upload_inv_mini.gif">';
 var vkBigLdrImg='<center><img src="/images/progress7.gif"></center>';
 var SettBit=false;
-var vkopt_disabled_ad=false;
 
 var FriendsNid=[];
 
