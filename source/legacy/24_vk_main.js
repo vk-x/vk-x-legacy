@@ -202,7 +202,6 @@ function vkProcessResponseNode(node,url,q){
 
 function vkLocationCheck(){
   if (vkCheckInstallCss()) return true;
-  XFR.check();
   if (location.href.match('/away')) if (getSet(6) == 'y'){
 	location.href=unescape(vkLinksUnescapeCyr(location.href.split('to=')[1].split(/&h=.{18}/)[0]).split('&post=')[0]);
 	return true;

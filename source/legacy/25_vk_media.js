@@ -1511,11 +1511,11 @@ function vkPhotoUrlUpload(url){
       // TODO: Find out what is this and use app.vkApi here.
       var flashvars = {
         api_id: 2168679, // VkOpt old app ID.
-        viewer_id:vkgetCookie('dapi_mid'),
-        user_id:vkgetCookie('dapi_mid'),
+        viewer_id:window.vk.id,
+        user_id:window.vk.id,
         api_url:'http://api.'+domain+'/api.php',
-        api_sid:vkgetCookie('dapi_sid'),
-        api_secret:vkgetCookie('dapi_secret'),
+        api_sid: null, // This is why this function doesn't work. See #94.
+        api_secret: null,
         image_url: url,
         album_id:vkGetVal('vk_pru_album') || 0,
         onFlashReady:"vk_vkpru_on_init",
@@ -3708,11 +3708,16 @@ function vkAudioDelDup(add_button,btn){
 		var get_sizes=function(){
 			if (urls[idx]){
 				ge('vk_deldup_text').innerHTML=vkProgressBar(idx,urls.length,150,idx+'/'+urls.length);
-				XFR.post(urls[idx][0],{},function(h,l){
-					adata[urls[idx][1]].size=l;
-					idx++;
-					get_sizes();
-				},true);
+        app.ajax.head({
+          url: urls[idx][0],
+          callback: function( response, meta ) {
+            var contentLength = parseInt( meta.response
+              .header[ "content-length" ]);
+            adata[ urls[ idx ][ 1 ] ].size = contentLength;
+            idx += 1;
+            get_sizes();
+          }
+        });
 			} else {
 				re_dup();
 			}
@@ -3851,21 +3856,26 @@ function vkAudioShowOnlySize ( id ) {
 			el.removeAttribute('getsize_ok');
 			el.innerHTML='';
 		},WAIT_TIME);
-		XFR.post(el.getAttribute('url'),{},function(h,l){
-			clearTimeout(reset);
-			if (dur>0 && l>0){
-				var kbit=l/128;
-				var kbps= Math.ceil(Math.round(kbit/dur)/16)*16;
-				//el.innerHTML=kbps+'Kbps | '+vkFileSize(l,1);
-				el.innerHTML=vkFileSize(l,1)+' | '+kbps+'Kbps';
-			} else {
-				el.innerHTML='o_O';
-			}
-         /* костыли с педалями и тормозами */
-         if (window.sorter && sorter.update && ge('audio'+id) && (ge('audio'+id).parentNode || {}).sorter)
-            sorter.update(ge('audio'+id));
-
-		},true);
+    app.ajax.head({
+      url: el.getAttribute( "url" ),
+      callback: function( response, meta ) {
+        var contentLength = parseInt( meta.response.header[ "content-length" ]);
+        clearTimeout( reset );
+        if ( dur > 0 && contentLength > 0 ) {
+          var kbit = contentLength / 128;
+          var kbps = Math.ceil( Math.round( kbit / dur ) / 16 ) * 16;
+          el.innerHTML = vkFileSize( contentLength, 1 ) + ' | ' + kbps + 'Kbps';
+        } else {
+          el.innerHTML = "o_O";
+        }
+        if ( window.sorter &&
+          sorter.update &&
+          ge( "audio" + id ) &&
+          ( ge( "audio" + id ).parentNode || {}).sorter ) {
+          sorter.update( ge( "audio" + id ) );
+        }
+      }
+    });
 	}
 }
 
@@ -4035,7 +4045,7 @@ vkLastFM={
    },
    init:function(){
       var fm=vkLastFM;
-      var md5=vkMD5;//from vk_lib.js
+      var md5 = app.util.md5;
       fm.token=localStorage['lastfm_token'];
       fm.username=localStorage['lastfm_username'];
       fm.session_key=localStorage['lastfm_session_key'];
@@ -5176,9 +5186,6 @@ vk_vid_down={
          //console.log(r);
       }
 
-
-      // XFR2.send({ url:'http: //api.digitalaccess.ru/api/json/', method: 'POST', data:JSON.stringify(data)},function(r){ alert(r.text);  });
-
       xhr = new XMLHttpRequest();
       xhr.open('POST', 'http://api.digitalaccess.ru/api/json/', true);
       xhr.onreadystatechange = function(){
@@ -5233,8 +5240,6 @@ vk_vid_down={
       btn.setAttribute('onclick',"vk_vid_down.vkVideoGetLinks("+cur.oid+","+((nav.objLoc['section'] || "").match(/\d+/) || 0)+"); return false;");
    },
    vkVideoGetLinks: function(oid,aid){
-   //vkApis.videos: function(oid,aid,quality,callback,progress){// quality: 0 - 240p; 1 - 360p;  2 - 480p;  3 - 720p;
-
       var box=vkAlertBox(app.i18n.IDL('Links'),'<div id="vk_links_container">'+vkBigLdrImg+'</div>');
       box.setOptions({width:"325px"});
       div=ge('vk_links_container');
@@ -5740,16 +5745,20 @@ vk_vid_down={
             el.removeAttribute('getsize_ok');
             el.innerHTML='';
          },WAIT_TIME);
-         XFR.post(el.getAttribute('url'),{},function(h,l){
-            clearTimeout(reset);
-            if (l>0){
-               el.innerHTML=vkFileSize(l,2);
+         app.ajax.head({
+          url: el.getAttribute( "url" ),
+          callback: function( response, meta ) {
+            var contentLength = parseInt( meta.response
+              .header[ "content-length" ]);
+            clearTimeout( reset );
+            if ( contentLength > 0 ) {
+              el.innerHTML = vkFileSize( contentLength, 2 );
             } else {
-               el.innerHTML='0 byte';
-               el.removeAttribute('getsize_ok');
+              el.innerHTML = "0 byte";
+              el.removeAttribute( "getsize_ok" );
             }
-
-         },true);
+          }
+         });
       }
    },
    vkVidVarsGet: function(){
@@ -5791,159 +5800,58 @@ vk_vid_down={
      return query;
    },
    vkGetYoutubeLinks: function(vid, callback) {
-      /*// Hashes calc from youtube html5 player lib
-      var x = Date.now ||
-      function() {
-         return +new Date
-      };
-      function Qi(a) {
-         a = a.split("");
-         a = Ri(a, 52);
-         a = a.reverse();
-         a = a.slice(3);
-         a = Ri(a, 21);
-         a = a.reverse();
-         a = a.slice(3);
-         a = a.reverse();
-         return a.join("")
-      }
-      function Ri(a, b) {
-         var c = a[0];
-         a[0] = a[b % a.length];
-         a[b] = c;
-         return a
-      };
-
-      //alert(Qi('7F57F587C6E44AB8DFCAC50556FA669876D918A33F2.AAA00E3B7056C121228F5B949CDBCDEF5357ABD1BD1')=='8DBA7535FEDCBDC949B5F122121C6507B3E00AAA.2F33A819D678966AF65505CACFD8BA44E6C785F7');
-
-
-      var Ek = void 0;
-      function Fk() {
-         var a;
-         if (void 0 == Ek && (Ek = !1, window.crypto && window.crypto.Nx)) try {
-            a = new Uint8Array(1), window.crypto.Nx(a), Ek = !0
-         } catch (b) {}
-         if (Ek) {
-            a = Array(16);
-            var c = new Uint8Array(16);
-            window.crypto.getRandomValues(c);
-            for (var d = 0; d < a.length; d++) a[d] = c[d]
-         } else for (a = Array(16), c = 0; 16 > c; c++) {
-            for (var d = x(), e = 0; e < d % 23; e++) a[c] = Math.random();
-            a[c] = Math.floor(256 * Math.random())
-         }
-         return a
-      }
-
-      function Gk() {
-         for (var a = Fk(), b = [], c = 0; c < a.length; c++) b.push("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_" [a[c] & 63]);
-         return b.join("")
-      }
-      //*/
-      /*
-      function decode_sig(s){// code from http://userscripts.org/scripts/review/25105
-         var sig=s;
-         function swap(a,b){var c=a[0];a[0]=a[b%a.length];a[b]=c;return a};
-         if (sig.length==88) {
-           var sigA=sig.split("");
-           sigA=sigA.slice(2);sigA=swap(sigA,1);sigA=swap(sigA,10);
-           sigA=sigA.reverse();sigA=sigA.slice(2);sigA=swap(sigA,23);
-           sigA=sigA.slice(3);sigA=swap(sigA,15);sigA=swap(sigA,34);
-           sig=sigA.join("");
-         } else if (sig.length==87) {
-           var sigA=sig.substr(44,40).split('').reverse().join('');
-           var sigB=sig.substr(3,40).split('').reverse().join('');
-           sig=sigA.substr(21,1)+sigA.substr(1,20)+sigA.substr(0,1)+sigA.substr(22,9)+
-           sig.substr(0,1)+sigA.substr(32,8)+sig.substr(43,1)+sigB;
-         } else if (sig.length==86) {
-           sig=sig.substr(2,15)+sig.substr(0,1)+sig.substr(18,23)+sig.substr(79,1)+
-           sig.substr(42,1)+sig.substr(43,36)+sig.substr(82,1)+sig.substr(80,2)+sig.substr(41,1);
-         } else if (sig.length==85) {
-           var sigA=sig.substr(44,40).split('').reverse().join('');
-           var sigB=sig.substr(3,40).split('').reverse().join('');
-           sig=sigA.substr(7,1)+sigA.substr(1,6)+sigA.substr(0,1)+sigA.substr(8,15)+sig.substr(0,1)+
-           sigA.substr(24,9)+sig.substr(1,1)+sigA.substr(34,6)+sig.substr(43,1)+sigB;
-         } else if (sig.length==84) {
-           var sigA=sig.substr(44,40).split('').reverse().join('');
-           var sigB=sig.substr(3,40).split('').reverse().join('');
-           sig=sigA+sig.substr(43,1)+sigB.substr(0,6)+sig.substr(2,1)+sigB.substr(7,9)+
-           sigB.substr(39,1)+sigB.substr(17,22)+sigB.substr(16,1);
-         } else if (sig.length==83) {
-           var sigA=sig.substr(43,40).split('').reverse().join('');
-           var sigB=sig.substr(2,40).split('').reverse().join('');
-           sig=sigA.substr(30,1)+sigA.substr(1,26)+sigB.substr(39,1)+
-           sigA.substr(28,2)+sigA.substr(0,1)+sigA.substr(31,9)+sig.substr(42,1)+
-           sigB.substr(0,5)+sigA.substr(27,1)+sigB.substr(6,33)+sigB.substr(5,1);
-         } else if (sig.length==82) {
-           var sigA=sig.substr(34,48).split('').reverse().join('');
-           var sigB=sig.substr(0,33).split('').reverse().join('');
-           sig=sigA.substr(45,1)+sigA.substr(2,12)+sigA.substr(0,1)+sigA.substr(15,26)+
-           sig.substr(33,1)+sigA.substr(42,1)+sigA.substr(43,1)+sigA.substr(44,1)+
-           sigA.substr(41,1)+sigA.substr(46,1)+sigB.substr(32,1)+sigA.substr(14,1)+
-           sigB.substr(0,32)+sigA.substr(47,1);
-         }
-         return sig;
-      }
-      */
-
-      //var cpn=Gk();
-
-      var url = (vk_ext_api.ready?'http:':location.protocol)+'//www.youtube.com/get_video_info?video_id=' + vid +
+      var url = location.protocol+'//www.youtube.com/get_video_info?video_id=' + vid +
                '&asv=3&eurl=' +
                encodeURIComponent(location.href) + '&el=embedded';
-               /*'html5=1&video_id=' + vid +'&cpn='+cpn+'&eurl=' +
-               encodeURIComponent(location.href) + '&el=embedded&c=web'*/
-      XFR.post(url,{},function(t){
-         var obj=vk_vid_down.YTDataDecode(t);
-         var map=(/*obj.adaptive_fmts ||*/ obj.fmt_url_map || obj.url_encoded_fmt_stream_map);
-         if (!map) {
+
+      app.ajax.post({
+        url: url,
+        callback: function( response, meta ) {
+          var obj = vk_vid_down.YTDataDecode( response ),
+              map = obj.fmt_url_map || obj.url_encoded_fmt_stream_map,
+              links;
+
+          if ( !map ) {
             callback([]);
-            return [];
-         }
-         /*
-         var params={
-            oid:obj.oid,
-            ptk:obj.ptk,
-            ptchn:obj.ptchn,
-            pltype:obj.pltype,
-            cpn:cpn//Gk()
-         }
-         //*/
-         var links=[];
-         for (var i=0;i<map.length;i++){
-            var sig=map[i].sig //|| Qi(map[i].s);// || (decode_sig(map[i].s));
-            if (!map[i].sig && map[i].s) continue;// "Qi(map[i].s)" calc sig normaly, but links not valid
+          } else {
+            links = [];
+            for ( i = 0; i < map.length; i++ ) {
+              var sig=map[i].sig
+              if (!map[i].sig && map[i].s) continue;
 
-            var format=YT_video_itag_formats[map[i].itag];
-            var info=(map[i].type+'').split(';')[0]+' '+(obj.fmt_list[i]+'').split('/')[1];
-            if (!format) vklog('<b>YT '+map[i].itag+'</b>: \n'+(map[i].stereo3d?'3D/':'')+info,1);
-            format=(map[i].stereo3d?'3D/':'')+(format?format:info);
+              var format=YT_video_itag_formats[map[i].itag];
+              var info=(map[i].type+'').split(';')[0]+' '+(obj.fmt_list[i]+'').split('/')[1];
+              if (!format) vklog('<b>YT '+map[i].itag+'</b>: \n'+(map[i].stereo3d?'3D/':'')+info,1);
+              format=(map[i].stereo3d?'3D/':'')+(format?format:info);
 
-            obj.title = isArray(obj.title) ? obj.title.join('') : obj.title;
-            // Original VkOpt code checks if title exists.
-            // Maybe it really can be null.
-            videoTitle = obj.title || "";
+              obj.title = isArray(obj.title) ? obj.title.join('') : obj.title;
 
-            // Youtube returns video title as an array of strings
-            // if it is longer than 50 characters or so.
-            if ( app.util.isArray( obj.title ) ) {
-              videoTitle = videoTitle.join();
+              // Original VkOpt code checks if title exists.
+              // Maybe it really can be null.
+              videoTitle = obj.title || "";
+
+              // Youtube returns video title as an array of strings
+              // if it is longer than 50 characters or so.
+              if ( app.util.isArray( obj.title ) ) {
+                videoTitle = videoTitle.join();
+              }
+
+              // It also escapes spaces as "+".
+              // TODO: Find out how does Youtube escape "+" itself.
+              videoTitle = videoTitle.replace( "+", " " );
+
+              links.push([
+                map[i].url +
+                  "&signature=" + sig +
+                  "&quality=" + map[i].quality +
+                  "&title=" + encodeURIComponent( videoTitle ),
+                format,
+                info
+              ]);
             }
-
-            // It also escapes spaces as "+".
-            // TODO: Find out how does Youtube escape "+" itself.
-            videoTitle = videoTitle.replace( "+", " " );
-
-            links.push([
-              map[i].url +
-                "&signature=" + sig +
-                "&quality=" + map[i].quality +
-                "&title=" + encodeURIComponent( videoTitle ),
-              format,
-              info
-            ]);
-         }
-         callback(links);
+            callback( links );
+          }
+        }
       });
    },
    vkYTVideoLinks: function(link){
@@ -5962,16 +5870,16 @@ vk_vid_down={
    /*END OF YOUTUBE FUNCTIONS */
    /* VIMEO FUNCTIONS */
    vkGetVimeoLinks: function(vid, callback) {
-      XFR.post('http://player.vimeo.com/video/'+vid, {}, function(t) {
+      app.ajax.post({
+        url: "http://player.vimeo.com/video/" + vid,
+        callback: function( t ) {
          t = (t || "").replace(/<iframe[^<>]+><[^<>]+iframe>/g,'');
          var r = t.match(/clip\d+_\d+\s*=\s*(\{[^;]+\});/);
-         //alert(t);
          if (!r) return;
          var params = eval('(' + r[1] + ')');
 
          var config = params.config;
          var links = [];
-         //alert(JSON.stringify(config.video.files));
          for (var key in config.video.files) {
             var data = config.video.files[key];
             for (var i = 0; i < data.length; i++) {
@@ -5993,6 +5901,7 @@ vk_vid_down={
             }
          }
          callback(links);
+        }
       });
    },
    vkVimeoVideoLinks: function(link){

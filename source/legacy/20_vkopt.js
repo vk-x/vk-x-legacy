@@ -66,9 +66,6 @@ var SetsOnLocalStore={
   'remixumbit':'c',
   'IDNew':'c',
   'AdmGr':'c',//last of cookie
-  'dapi_mid':'c',
-  'dapi_sid':'c',
-  'dapi_secret':'c',
   'FavList':'s',
   'GrList':'s',//myGrList
   'VK_CURRENT_CSS_URL':'s',
@@ -514,7 +511,6 @@ function VkOptInit(ignore_login){
 		return;
 	}
 	VkOptMainInit();
-	md5=vkMD5;
    window._vkopt_started=true;
 }
 

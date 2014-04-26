@@ -118,7 +118,7 @@ function vkStyle(url){
 
    }
 
-   if (need_xhr && vk_ext_api.ready){
+   if (need_xhr){
     var processCss = function( css ) {
       // if new theme apply before loaded previous
       if (vk_skinman_last_style_url!=url) return;

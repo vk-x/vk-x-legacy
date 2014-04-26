@@ -7,6 +7,7 @@
 	install = require( "./install" ) app, i18n
 	mainMenu = require( "./main-menu" ) app
 	_ = require "lodash"
+	md5 = require "md5-jkmyers"
 
 	i18n.addLanguage "ru", require "./i18n/ru"
 	i18n.addLanguage "ua", require "./i18n/ua"
@@ -27,5 +28,6 @@ For compatibility with legacy code:
 	app.install = install
 	app.mainMenu = mainMenu
 	app.util = _
+	app.util.md5 = md5
 
 	window.app = app

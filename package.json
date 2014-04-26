@@ -51,6 +51,7 @@
     "gulp-inject": "~0.4.1",
     "js-string-escape": "~1.0.0",
     "gulp-template": "~0.1.1",
-    "gulp-header": "~1.0.2"
+    "gulp-header": "~1.0.2",
+    "md5-jkmyers": "0.0.1"
   }
 }
