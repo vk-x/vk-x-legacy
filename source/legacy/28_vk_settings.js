@@ -153,7 +153,7 @@ function vkGetVkoptFullConfig(){
   var config='{\r\n'+temp.join(',\r\n')+'\r\n}';
   */
   var config=JSON.stringify(sets);
-  vkSaveText(config,'vksetts_id'+remixmid()+'.json');
+  vkSaveText(config,'vksetts_id'+window.vk.id+'.json');
   //alert(config);
 }
 
@@ -467,7 +467,7 @@ function GenWallList(el){
   var lnk;
   for (var i=0; i<wall_list.length;i++){
       lnk=(wall_list[i][0] == 'g')?"wall.php?gid="+wall_list[i].split('g')[1]:"wall.php?id="+wall_list[i];
-      if (wall_list[i]=="") {lnk="wall.php?id="+remixmid(); wall_list[i]=String(remixmid());}//
+      if (wall_list[i]=="") {lnk="wall.php?id="+window.vk.id; wall_list[i]=String(window.vk.id);}//
       whtml+='<div id="wit'+wall_list[i]+'" style="width:130px"><a style="position:relative; left:120px" onclick="vkRemWall('+i+')">x</a>'+i+') <a style="width:110px;" href="'+lnk+'">'+wall_list[i]+'</a></div>';
   }
   if (!el) {return whtml;} else {ge(el).innerHTML=whtml;}

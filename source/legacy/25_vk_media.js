@@ -3810,15 +3810,15 @@ function vkAudioWikiCode(aid,oid,id){vkAlertBox('Wiki-code:','<center><input typ
 
 function vkShowAddAudioTip(el,id){
    var a=id.match(/^(-?\d+)_(\d+)/);
-   var show_add=(!ge('audio_add'+id)) && (a[1]!=remixmid());
-   //alert(ge('audio_add'+id)+'\n'+(a[1]!=remixmid())+'\n'+show_add);
+   var show_add=(!ge('audio_add'+id)) && (a[1]!=window.vk.id);
+   //alert(ge('audio_add'+id)+'\n'+(a[1]!=window.vk.id)+'\n'+show_add);
 	if (a){
 		var pls=padAudioPlaylist();
       var name=vkParseAudioInfo(id);
 
       name=(name[5]+' '+name[6]).replace(/[\?\&\s]/g,'+');
       var html = '';
-      html += (remixmid()==cur.oid || isGroupAdmin(cur.oid))?'<a href="#" onclick="vkAudioEd.Delete(\''+a[2]+'\',\''+id+'\',this); return false;">'+app.i18n.IDL('delete',2)+'</a>':'';
+      html += (window.vk.id==cur.oid || isGroupAdmin(cur.oid))?'<a href="#" onclick="vkAudioEd.Delete(\''+a[2]+'\',\''+id+'\',this); return false;">'+app.i18n.IDL('delete',2)+'</a>':'';
       html += show_add ?'<a href="#" onclick="vkAddAudioT(\''+a[1]+'\',\''+a[2]+'\',this); return false;">'+app.i18n.IDL('AddMyAudio')+'</a>':'';
       html += '<a href="#" onclick="vk_audio.add_to_group('+a[1]+','+a[2]+'); return false;">'+app.i18n.IDL('AddToGroup')+'</a>';
       html += '<a href="#" onclick="'+"showBox('like.php', {act: 'publish_box', object: 'audio"+a[1]+'_'+a[2]+"', to: 'mail'}, {stat: ['page.js', 'page.css', 'wide_dd.js', 'wide_dd.css', 'sharebox.js']});"+'return false;">'+app.i18n.IDL('Share')+'</a>';

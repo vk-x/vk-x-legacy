@@ -424,7 +424,7 @@ if (!window.Audio){
 
 	function vkgetCookie(name,temp){
 	  if (name=='remixbit' && SettBit && !temp) return SettBit;
-	  if (name=='remixmid') { if (temp) return false; else { tmp=remixmid(); return tmp; } }
+	  if (name=='remixmid') { if (temp) return false; else { tmp=window.vk.id; return tmp; } }
 	  if (vkLocalStoreReady() && (SetsOnLocalStore[name] || /api\d+_[a-z]+/.test(name))){
 		var val=vkGetVal(name);
 		if (val) return val;

@@ -1218,7 +1218,7 @@ function vkFriendsCheck(nid){
 	};
   if (!nid) nid=getSet('-',NID_CFG);
   nid=parseInt(nid);
-  if (FriendsNid[remixmid()]) nid=FriendsNid[remixmid()];
+  if (FriendsNid[window.vk.id]) nid=FriendsNid[window.vk.id];
   if (nid == 0) {searchNote();};
   if (nid) friends_check();
 }
@@ -1395,7 +1395,7 @@ function vkHighlightFriends(){
           if (user.domain != 'id'+user.uid) vkFr.push('id'+user.uid);
         }
         vk_friends_id_list=vkFr.join(',');
-        var result=unixtime()+','+remixmid()+'|'+vk_friends_id_list;
+        var result=unixtime()+','+window.vk.id+'|'+vk_friends_id_list;
         vkSetVal('vk_friends_ids'+uid,result);
         vklog('friends loaded from API. highlighting...');
         highlight();
@@ -1408,12 +1408,12 @@ function vkHighlightFriends(){
 		for (var i=0;i<nodes.length;i++)  ProcessHighlightFriendLink(nodes[i]);
 	};
 	if (fr && fr!=''){
-		var arr=fr.split('|')[0].split(',');// ft="time,remixmid,id1,id2,id3,id3..idN";
+		var arr=fr.split('|')[0].split(',');
 		vk_friends_id_list=fr.split('|')[1];
 		var time=parseInt(arr.shift());
 		var mid=parseInt(arr.shift());
 		var dif=(unixtime()-time)/(1000*60*60);
-		if (dif>check_time || mid!=parseInt(remixmid())) load_friends(highlight);
+		if (dif>check_time || mid!=parseInt(window.vk.id)) load_friends(highlight);
 		else vklog('friends loaded from LocalStorage. highlighting...');
 	} else if (!fr || fr==''){
 		load_friends(highlight);

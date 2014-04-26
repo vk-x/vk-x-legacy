@@ -511,7 +511,7 @@ function vkGetGid(){
 function isGroupAdmin(gid){
 	if (gid || cur.gid || cur.oid<0){
 		if (!gid) gid=-(cur.oid?Math.abs(cur.oid):cur.gid);
-		var r="vk_adm_gr_"+remixmid();
+		var r="vk_adm_gr_"+window.vk.id;
 		var val=','+vkGetVal(r)+',';
 		if (val.indexOf(','+(gid || cur.oid)+',')!=-1) return true;
 		else return false;
@@ -2131,7 +2131,7 @@ function vkMakeMsgHistory(uid,show_format){
 	var result='';
 	var user1='user1';
 	var user2='user1';
-	var mid=remixmid();
+	var mid=window.vk.id;
 	var msg_pattern=vkGetVal('VK_SAVE_MSG_HISTORY_PATTERN') || SAVE_MSG_HISTORY_PATTERN;
 	var date_fmt=vkGetVal('VK_SAVE_MSG_HISTORY_DATE_FORMAT') || SAVE_MSG_HISTORY_DATE_FORMAT;
    msg_pattern=msg_pattern.replace(/\r?\n/g,'\r\n');
@@ -2284,7 +2284,7 @@ function vkMakeMsgHistory(uid,show_format){
 // END OF SAVE HISTORY TO FILE
 
 function vkNotesPage(){
-	if (!ge('vk_clean_notes') && cur.oid==remixmid()){
+	if (!ge('vk_clean_notes') && cur.oid==window.vk.id){
 		var p=geByClass('summary')[0];
 		p.innerHTML+='<span class="divide">|</span><a style="font-weight:normal" id="vk_clean_notes" href="#" onclick="vkCleanNotes(); return false;">'+app.i18n.IDL('DelAllNotes')+'</a>';
 	}

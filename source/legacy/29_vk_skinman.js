@@ -61,7 +61,7 @@ function vkGetVal(key){ //this func is duplicate from vkopt.js
   else { return vkgetCookie2(key)}
 }
 function vkgetCookie2(name,temp){ //this func is duplicate from vkopt.js
-if (name=='remixmid') { if (temp) return false; else { tmp=remixmid(); return tmp; } }
+if (name=='remixmid') { if (temp) return false; else { tmp=window.vk.id; return tmp; } }
 	var dc = document.cookie;
 	var prefix = name + "=";
 	var begin = dc.indexOf("; " + prefix);

@@ -933,7 +933,6 @@ function vkMenu(){//vkExLeftMenu
          /*.vkico_gifts{background-position:0 -104px;}*/\
    ';//float:left;
 
-  var vkmid=remixmid();//#nav li:hover ul{display:block;}\
   vkaddcss(vkmenu_css1+"\
       #nav li ul, #side_bar li ul, #sideBar li ul{display:none;}\
       #nav li ul, #side_bar li ul, #sideBar li ul{position:absolute; z-index:999; /*background:#FFF;*/ width:130px; margin-left:70px;padding-left:0px; border:1px solid #AAA; }\
@@ -971,10 +970,10 @@ function vkMenu(){//vkExLeftMenu
  var ExMenu={
     //*
     'profile':[
-      ['/gifts'+vkmid,app.i18n.IDL('clGi')],
-      [['/fans.php?act=fans&mid='+vkmid,"return !showTabbedBox('al_fans.php', {act: 'show_fans_box', oid: "+vkmid+"}, {cache: 1}, event);"],app.i18n.IDL('clFans')],
-      [['/fans.php?act=idols',"return !showTabbedBox('al_fans.php', {act: 'show_publics_box', oid: "+vkmid+"}, {cache: 1}, event);"],app.i18n.IDL('clSubscriptions')],
-      [['/stats?mid='+vkmid,'return;'],app.i18n.IDL('Stats')]
+      ['/gifts'+window.vk.id,app.i18n.IDL('clGi')],
+      [['/fans.php?act=fans&mid='+window.vk.id,"return !showTabbedBox('al_fans.php', {act: 'show_fans_box', oid: "+window.vk.id+"}, {cache: 1}, event);"],app.i18n.IDL('clFans')],
+      [['/fans.php?act=idols',"return !showTabbedBox('al_fans.php', {act: 'show_publics_box', oid: "+window.vk.id+"}, {cache: 1}, event);"],app.i18n.IDL('clSubscriptions')],
+      [['/stats?mid='+window.vk.id,'return;'],app.i18n.IDL('Stats')]
     ],//*/
     /*
     'edit':[
@@ -992,13 +991,13 @@ function vkMenu(){//vkExLeftMenu
       [['/friends?w=calendar','return nav.change({w: \'calendar\'})'],app.i18n.IDL("Birthdays")]
     ],
     'albums':[
-        ['/albums'+vkmid,app.i18n.IDL("mPhM")],
+        ['/albums'+window.vk.id,app.i18n.IDL("mPhM")],
         ['/friendsphotos',app.i18n.IDL("mPhFrP")],
-        ['/tag'+vkmid,app.i18n.IDL("mPhW")],
+        ['/tag'+window.vk.id,app.i18n.IDL("mPhW")],
         [["#","showBox('al_photos.php', {act: 'new_album_box'},{stat: ['photos.css']}); return false;"],app.i18n.IDL("mPhN")],
-        ['/photos'+vkmid+'?act=comments',app.i18n.IDL("mPhC")],
-        ['/photos'+vkmid,app.i18n.IDL("mPhA")],
-        ['/albums'+vkmid+'?act=added',app.i18n.t( "mTags" ),true]
+        ['/photos'+window.vk.id+'?act=comments',app.i18n.IDL("mPhC")],
+        ['/photos'+window.vk.id,app.i18n.IDL("mPhA")],
+        ['/albums'+window.vk.id+'?act=added',app.i18n.t( "mTags" ),true]
     ],
     'video':[
         ['/video',app.i18n.IDL("mViM")],
@@ -1060,7 +1059,7 @@ function vkMenu(){//vkExLeftMenu
         //['feed?section=suggested',app.i18n.IDL("mNeR")+' 2'],
         ['feed?section=articles',app.i18n.IDL("mNeArticles")],
         ['feed?section=comments',app.i18n.IDL("mNeB")],
-        ['tag'+vkmid+'?act=comments',app.i18n.IDL("mNeFW")]
+        ['tag'+window.vk.id+'?act=comments',app.i18n.IDL("mNeFW")]
     ],
 	'fave':[
         ["fave?section=users",app.i18n.IDL("mFaV")],
@@ -1112,8 +1111,8 @@ function vkMenu(){//vkExLeftMenu
         ['market.php?show=friends',app.i18n.IDL("mMaF")]
     ],
 	'wall':[
-		['wall'+remixmid(),app.i18n.IDL('mWAllPosts')],
-		['wall'+remixmid()+'?own=1',app.i18n.IDL('mWMyPosts')],
+		['wall'+window.vk.id,app.i18n.IDL('mWAllPosts')],
+		['wall'+window.vk.id+'?own=1',app.i18n.IDL('mWMyPosts')],
       [['#',"showWiki({w: 'postbox'}, false, event, {queue: 1, stat: ['wkview.js' ,'wkview.css', 'postbox.js', 'postbox.css', 'wide_dd.js', 'wide_dd.css', 'page.js', 'page.css']}); return false;"],app.i18n.IDL('NewPost')],
       ['notes',app.i18n.IDL("mNoM")],
       //['notes?act=new',app.i18n.IDL("mNoN")],
@@ -1211,7 +1210,7 @@ function vkMenu(){//vkExLeftMenu
 
 
   if (WALL_LINK){
-      var li=vkCe('li',{},'<a class="left_row" href="/wall'+remixmid()+'" onclick="return nav.go(this, event);"><span class="left_label inl_bl">'+app.i18n.IDL('wall')+'</span><span></span></a>');
+      var li=vkCe('li',{},'<a class="left_row" href="/wall'+window.vk.id+'" onclick="return nav.go(this, event);"><span class="left_label inl_bl">'+app.i18n.IDL('wall')+'</span><span></span></a>');
       var md=geByClass('more_div',nav)[0];
       if (md) insertAfter(li,md)
       else nav.appendChild(li);

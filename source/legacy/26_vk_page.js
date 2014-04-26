@@ -150,7 +150,7 @@ vk_profile={
       vk_profile.wall_notes_link();
       if (cur.oid!=vk.id) vk_profile.wall_tat_link();
       if (getSet(91)=='y' && cur.oid!=vk.id) vk_profile.fav_fr_block();
-      if (getSet(50)=='y' && remixmid()==cur.oid && !ge('profile_fave')) vkFaveProfileBlock();
+      if (getSet(50)=='y' && window.vk.id==cur.oid && !ge('profile_fave')) vkFaveProfileBlock();
       if (getSet(60) == 'y') vkProfileMoveAudioBlock();
       if (getSet(61) == 'y') vkProfileGroupBlock();
       if (MOD_PROFILE_BLOCKS) vkFrProfile();
@@ -222,7 +222,7 @@ vk_profile={
       },true);
    },
    only4friends_checkbox:function(){
-      if (cur.oid!=remixmid() || ge('friends_only') ) return;
+      if (cur.oid!=window.vk.id || ge('friends_only') ) return;
       var p=ge('page_add_media');
       if (!p) return;
       var cb=vkCe('div',{"class":"checkbox fl_l","id":"friends_only","onclick":"checkbox(this);checkbox('status_export',!isChecked(this));checkbox('facebook_export',!isChecked(this));"},'<div></div>'+app.i18n.IDL('OnlyForFriends'))
@@ -348,7 +348,7 @@ vk_highlinghts={
                   var gid=href.split('/');
                   gid=gid[gid.length-1];
                   if (hasClass(nodes[i],'fans_idol_ph')) continue;
-                  if (cur.oid!=remixmid() && groups.indexOf(','+gid+',')!=-1)	addClass(nodes[i],'vk_common_group');
+                  if (cur.oid!=window.vk.id && groups.indexOf(','+gid+',')!=-1)	addClass(nodes[i],'vk_common_group');
                   if (isGroupAdmin(gid))	addClass(nodes[i],'vk_adm_group');
                }
             }
@@ -387,9 +387,9 @@ vk_highlinghts={
             if (!href) continue;
             var gid=href.split('/');
             gid=gid[gid.length-1];
-            if (cur.oid!=remixmid() && groups.indexOf(gid)!=-1)	addClass(nodes[i],'vk_common_group');
+            if (cur.oid!=window.vk.id && groups.indexOf(gid)!=-1)	addClass(nodes[i],'vk_common_group');
             /*
-            if (cur.oid==remixmid() && groups.indexOf(gid)==-1){
+            if (cur.oid==window.vk.id && groups.indexOf(gid)==-1){
                groups.push(gid);
                vkSetVal('vk_my_groups',groups.join(','));
             }*/
@@ -397,7 +397,7 @@ vk_highlinghts={
          }
       }
       var gl=vkGetVal('vk_my_groups');
-      if (!gl || gl=='' || (common && cur.oid==remixmid())){
+      if (!gl || gl=='' || (common && cur.oid==window.vk.id)){
          vk_highlinghts.update_my_gr_list(function(r){
             hl();
          });
@@ -409,7 +409,7 @@ vk_highlinghts={
       var common=(getSet(39) == 'y');
 
       function process_node(nodes){
-         if (cur.oid==remixmid()){
+         if (cur.oid==window.vk.id){
             var mygr=(vkGetVal('vk_my_groups')||'').split(',');//[];
             for (var i=0;i<nodes.length;i++){
                var href=nodes[i].getAttribute('href');
@@ -1024,11 +1024,11 @@ function vkAddCleanWallLink(){
       });
     }
     //notes
-   var allow_clean=(cur.oid==remixmid() || isGroupAdmin(cur.oid));
+   var allow_clean=(cur.oid==window.vk.id || isGroupAdmin(cur.oid));
 	if (allow_clean && !rw && !ge('vk_clean_wall') && ge('full_wall_filters')){
 
       var link='';
-      if (rx && rx[1]==remixmid()){
+      if (rx && rx[1]==window.vk.id){
          //link='<a href="#" onclick="vkCleanNotes(); return false;">'+app.i18n.IDL('DelAllNotes')+'</a>';
          p_options.push({
             l:app.i18n.IDL('DelAllNotes'),
@@ -1092,7 +1092,7 @@ function vkAddCleanWallLink(){
 
 function vkAddDelWallCommentsLink(node){
 	if (getSet(77)!='y') return;
-   var allow_clean=(cur.oid==remixmid()  || isGroupAdmin(cur.oid));
+   var allow_clean=(cur.oid==window.vk.id  || isGroupAdmin(cur.oid));
 	if(allow_clean && (cur.wallType=="full_all"  || cur.wallType=="full_own") && !ge('vk_clean_post_comments_wall')){
 		var p=geByClass('reply_link_wrap',node);
 		for (var i=0;i<p.length;i++){
