@@ -3868,12 +3868,6 @@ function vkAudioShowOnlySize ( id ) {
         } else {
           el.innerHTML = "o_O";
         }
-        if ( window.sorter &&
-          sorter.update &&
-          ge( "audio" + id ) &&
-          ( ge( "audio" + id ).parentNode || {}).sorter ) {
-          sorter.update( ge( "audio" + id ) );
-        }
       }
     });
 	}
