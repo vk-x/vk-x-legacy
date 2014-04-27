@@ -12,12 +12,8 @@
 
 		win.addEventListener "message", handleBackgroundAjax, no
 
-		# See: content_script.js:23
-		inject "window._ext_ldr_vkopt_loader = true", target: doc, isSource: yes
-
 		# See: background.js:10 and gulpfile.js
 		inject "run-in-top.js", target: doc if win is win.top
-
 		inject "run-in-frames.js", target: doc if win isnt win.top
 
 Magic and all the Mozilla-fu taken from VkOpt.

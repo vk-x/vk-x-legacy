@@ -21,9 +21,6 @@ Now we use gulp to concat source code and inject it below.
 	sourceForTop = "This will be replaced with the source"
 	sourceForFrames = "This will be replaced with the source"
 
-	# See: content_script.js:23
-	inject "window._ext_ldr_vkopt_loader = true", isSource: yes
-
 	# See: background.js:10
 	if window is window.top
 		inject sourceForTop, isSource: yes

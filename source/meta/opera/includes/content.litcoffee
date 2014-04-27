@@ -32,9 +32,6 @@ Needs further investigation because `eval()` is too slow to leave it so.
 	sourceForTop = "This will be replaced with the source"
 	sourceForFrames = "This will be replaced with the source"
 
-	# See: content_script.js:23
-	window._ext_ldr_vkopt_loader = true
-
 	# See: background.js:10
 	if window is window.top
 		window.eval sourceForTop
