@@ -762,8 +762,8 @@
 		UserInFriend: "User is your friend"
 		UserOnline: "User is online"
 		Users: "Users"
-		users_dislike: [ "", "%s user disliked it", "%s users disliked it"
-			"%s users disliked it"
+		users_dislike: [ "", "%s person dislikes this", "%s persons dislike this"
+			"%s persons dislike this"
 		]
 		UznatVozrast: "Age?(="
 		vblog: "Code for blog"
