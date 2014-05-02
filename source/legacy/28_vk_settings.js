@@ -42,7 +42,7 @@ function vkLocalStorageMan(ret){
   if(!ret){
 	  if (!window.localStorage) return false;
 	  //if (!window.vkLocalStorageBox)
-		vkLocalStorageBox = new MessageBox({title: app.i18n.IDL('LocalStorage')+' (vkontakte)', width:"570px"});
+		vkLocalStorageBox = new MessageBox({title: 'LocalStorage', width:"570px"});
 	  var Box = vkLocalStorageBox;
 	  Box.removeButtons();
 	  Box.addButton(app.i18n.IDL('Cancel'),Box.hide,'no');
