@@ -109,7 +109,6 @@ function vkLocalStorageMan(ret){
 
 
 function vkSettingsPage(){
-	vkOpt_toogle();
 	if (!ge('vkopt_settings_tab') && ge('settings_filters')){
 		var li=vkCe('li',{id:'vkopt_settings_tab'});
 		li.innerHTML='\
@@ -611,7 +610,11 @@ function vkInitSettings(){
 		{id:6, text:app.i18n.IDL("seOnAway")},
 		{id:34, text:app.i18n.IDL("seSwichTextChr")},
       {id:77, text:app.i18n.IDL("seBatchCleaners")},
-      {id:78, text:app.i18n.IDL("seCutBracket")}
+      {id:78, text:app.i18n.IDL("seCutBracket")},
+      {raw: "<div style='clear: both'></div><div style='margin: 10px 0 auto'>" + vkRoundButton(
+        [ "Reset Settings","javascript:vkResetVkOptSetting()" ],
+        [ "View localStorage", "javascript:vkLocalStorageMan()" ]
+      ) + "</div>"}
    ],
    Hidden:[
       {id:82, text:app.i18n.IDL("FullThumb")},
@@ -863,6 +866,12 @@ function vkGetSettings(setts,allsett){
   for (var k=0;k<setts.length;k++){
       var set=setts[k];
       if (set.hide) continue;
+
+      if ( set.raw ) {
+        html += set.raw;
+        continue;
+      }
+
       var id=set.id;
 
       if (vkoptHiddenSets.indexOf(id)!=-1) continue;
