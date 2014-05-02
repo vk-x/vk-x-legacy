@@ -886,7 +886,7 @@ function vkGetProfile(uid,callback,no_switch_button){
          [rel,app.i18n.IDL('Relation')],
 			[profile.mobile_phone, app.i18n.IDL('Mob_tel')],
 			[profile.home_phone, app.i18n.IDL('Home_tel')],
-         [profile.skype, app.i18n.IDL('Skype')],
+         [profile.skype, 'Skype'],
 			[profile.university_name,app.i18n.IDL('University_name')],
 			[profile.faculty_name,app.i18n.IDL('Faculty')],
 			[profile.graduation,app.i18n.IDL('Graduation')]

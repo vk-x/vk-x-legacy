@@ -120,7 +120,7 @@ vk_search={
          [rel,app.i18n.IDL('Relation')],
 			[profile.mobile_phone, app.i18n.IDL('Mob_tel')],
 			[profile.home_phone, app.i18n.IDL('Home_tel')],
-         [profile.skype, app.i18n.IDL('Skype')],
+         [profile.skype, 'Skype'],
 		];
       var info_html='';
 		for (var i=0; i<info_labels.length;i++)
