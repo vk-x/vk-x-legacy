@@ -141,9 +141,6 @@ function vkGetVkoptFullConfig(){
       FavList:vkGetVal('FavList'),
       menu_custom_links:vkGetVal('menu_custom_links'),
       vk_sounds_vol:vkGetVal("vk_sounds_vol") || "",
-      VK_CURRENT_CSS_URL:vkGetVal('VK_CURRENT_CSS_URL'),
-      VK_CURRENT_CSSJS_URL:vkGetVal('VK_CURRENT_CSSJS_URL'),
-      VK_CURRENT_CSS_CODE:vkGetVal('VK_CURRENT_CSS_CODE'),
       WallsID:vkGetVal('WallsID')
    }
   /*
@@ -580,7 +577,6 @@ function vkInitSettings(){
       {id:30, header:app.i18n.IDL("seClockH") , text:app.i18n.IDL("seClockO"),ops:[0,1,2,3]},
       {id:31, text:app.i18n.IDL("seRightBar")+vkCheckboxSetting(37,app.i18n.IDL("seRightBarFixAsSideBar"),true)},
       {id:35, text:app.i18n.IDL("seBlocksToRightBar")},
-      {id:32, text:app.i18n.IDL("seSkinManBtn") /*, hide: (vkbrowser.mozilla)*/},
       {id:33, text:app.i18n.IDL("seSmiles")+vkCheckboxSetting(63,app.i18n.IDL("seSmilesAlwaysShow"),true),warn:'seSmilesAlwaysShowWarning'},
       {id:95, text:app.i18n.IDL("seEmojiSmiles")},
       {id:36, text:app.i18n.IDL("sePreventHideNotifications")},
@@ -1068,17 +1064,10 @@ function vkSaveSettingsOnServer(check){
 	var cur_date=Math.round((new Date().getTime())/1000);
 	sett+='|'+cur_date;
 
-   var csscode=encodeURIComponent(vk_LSGetVal('VK_CURRENT_CSS_CODE') || "");
-   csscode=csscode.length<4096?csscode:'';
-
    var cfg={
       'remixbits':sett,
       'menu_custom_links':vk_string_escape(vkGetVal('menu_custom_links') || ""),
-      'vk_sounds_vol':vkGetVal("vk_sounds_vol") || "",
-      //'FavList':vkGetVal('FavList'),
-      'VK_CURRENT_CSS_URL':vkGetVal("VK_CURRENT_CSS_URL") || "",
-      'VK_CURRENT_CSSJS_URL':vkGetVal('VK_CURRENT_CSSJS_URL') || "",
-      'VK_CURRENT_CSS_CODE':csscode
+      'vk_sounds_vol':vkGetVal("vk_sounds_vol") || ""
    };
    var FavList=vkGetVal('FavList');
    if(FavList && FavList!='') cfg['FavList']=FavList;
@@ -1100,7 +1089,7 @@ function vkSaveSettingsOnServer(check){
    });
 }
 function vkLoadSettingsFromServer(check,callback){
-	var params={keys:'remixbits,FavList,menu_custom_links,vk_sounds_vol,VK_CURRENT_CSS_URL,VK_CURRENT_CSSJS_URL,VK_CURRENT_CSS_CODE'};
+	var params={keys:'remixbits,FavList,menu_custom_links,vk_sounds_vol'};
   if (check) params={key:'remixbits'};
   params.v = "3.0";
   app.vkApi.request({
@@ -1140,10 +1129,6 @@ function vkLoadSettingsFromServer(check,callback){
                 else if(confirm(app.i18n.IDL('FavListRelace'))) vkSetVal('FavList',val);
              }
              if (scfg['menu_custom_links']) vkSetVal('menu_custom_links',scfg['menu_custom_links']);
-             // SkinManager settings
-             if (scfg['VK_CURRENT_CSS_URL']) vkSetVal('VK_CURRENT_CSS_URL',scfg['VK_CURRENT_CSS_URL']);
-             if (scfg['VK_CURRENT_CSSJS_URL']) vkSetVal('VK_CURRENT_CSSJS_URL',scfg['VK_CURRENT_CSSJS_URL']);
-             if (scfg['VK_CURRENT_CSS_CODE']) vk_LSSetVal('VK_CURRENT_CSS_CODE',decodeURIComponent(scfg['VK_CURRENT_CSS_CODE']));
              if (scfg['vk_sounds_vol']) vkSetVal("vk_sounds_vol",scfg['vk_sounds_vol']);
 
         if ( ge('cfg_on_serv_info') ) {

@@ -201,7 +201,6 @@ function vkProcessResponseNode(node,url,q){
 }
 
 function vkLocationCheck(){
-  if (vkCheckInstallCss()) return true;
   if (location.href.match('/away')) if (getSet(6) == 'y'){
 	location.href=unescape(vkLinksUnescapeCyr(location.href.split('to=')[1].split(/&h=.{18}/)[0]).split('&post=')[0]);
 	return true;
@@ -254,7 +253,6 @@ function VkOptMainInit(){
   vkOnNewLocation(true);//Inj.Wait('window.nav', vkOnNewLocation,50);
   vkSmiles();
   //vkPrepareTxtPanels();
-  vkSkinManInit();
   vkClock();
   window.vk_vid_down && vk_vid_down.process_node();
   vkPollResultsBtn();

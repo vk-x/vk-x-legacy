@@ -3,7 +3,7 @@ if (!window.vk_DEBUG) var vk_DEBUG=false;
 if (!window.DefSetBits)
 
 // This is how settings are stored now. Because f*** you.
-// Char 69 is known to be unused.
+// Chars 32, 69 are known to be unused.
 var DefSetBits='ynyynnyyynyyy0n0yy0nnnynyyynyy0nynynnnnyy0yyy1yynnnnny0nynynynnnnyynnynnnynyyyynnyn3nnnnynynnnnny-3-0-#c5d9e7-#34a235-1';
 
 var DefExUserMenuCfg='11111110111111111111'; // default user-menu items config
@@ -68,9 +68,6 @@ var SetsOnLocalStore={
   'AdmGr':'c',//last of cookie
   'FavList':'s',
   'GrList':'s',//myGrList
-  'VK_CURRENT_CSS_URL':'s',
-  'VK_CURRENT_CSSJS_URL':'s',
-  'VK_CURRENT_CSS_CODE':'s',
   'menu_custom_links':'s',
   'WallsID':'s',
   'vk_sounds_vol':'s'
@@ -351,10 +348,10 @@ function vkCheckLoadedScripts(){
       "vk_page"      :!!window.vkToTopBackLink,
       "vk_resources" :!!window.vkSound,
       "vk_settings"  :!!window.vksettobj,
-      "vk_skinman"   :!!window.vkShowSkinMan,
+      "vk_skinman"   :"vk_skinman has been deprecated. See #143",
       "vk_txtedit"   :!!window.vkAddSmilePanel,
       "vk_users"     :!!window.ProcessUserPhotoLink,
-      "vklang"       :"vklang was deprecated. See window.app.i18n",
+      "vklang"       :"vklang has been deprecated. See window.app.i18n",
       "vkopt"        :!!window.vkonDOMReady
    }
    console.log('result:',obj)

@@ -233,7 +233,6 @@ var vk_photos = {
              var pid=p.owner_id+'_'+p.pid;
              var el=ge('vk_exinfo_'+pid);
              if (!el) continue;
-             //   onclick="vk_skinman.like(\''+pid+'\'); event.cancelBubble = true;" onmouseout="vk_skinman.like_out(\''+pid+'\')"
              el.innerHTML='<span class="info_wrap">\
                              <span class="vk_ph_likes_count" onmouseover="vk_photos.like_over(\''+pid+'\',this)">\
                                <i class="vk_like_icon_white'+(p.likes.user_likes?' my_like':'')+'" id="s_like_icon'+pid+'"></i>\

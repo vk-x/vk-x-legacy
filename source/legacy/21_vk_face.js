@@ -603,7 +603,6 @@ function vkStyles(){
    main_css+=vk_photos.css;
    main_css+=vk_audio.css;
    main_css+=vk_feed.css;
-   main_css+=vk_skinman.css;
    main_css+=vk_groups.css;
    main_css+=vk_search.css;
    main_css+=vk_videos.css();
@@ -1077,8 +1076,7 @@ function vkMenu(){//vkExLeftMenu
         ['settings?act=mobile',app.i18n.IDL("mSeMobile")],
         ['settings?act=balance',app.i18n.IDL("mSeBalance")],
         [[ "settings?act=" + app.name, "vkShowSettings(false); return false;" ],
-        	app.name ],
-        [['settings?skinman','vkShowSkinMan(); return false;'],app.i18n.IDL("SkinMan")/*,false,vkbrowser.mozilla*/]
+        	app.name ]
     ],
     'matches':[
         ['matches.php',app.i18n.IDL("mMaM")],
