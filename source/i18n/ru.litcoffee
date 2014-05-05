@@ -760,7 +760,6 @@
 		UncheckAll: "[ Снять отметки ]"
 		uncheckAll: "Снять отметки"
 		University_name: "ВУЗ"
-		updateLMenu: "Обновить меню"
 		UpGraffiti: " "
 		UploadFraffiti: "Загрузить"
 		UploadPhoto: "Загрузить фотографию"

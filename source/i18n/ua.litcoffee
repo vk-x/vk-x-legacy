@@ -750,7 +750,6 @@
 		UncheckAll: "[ Зняти позначки ]"
 		uncheckAll: "Зняти позначення"
 		University_name: "ВНЗ"
-		updateLMenu: "Оновити меню"
 		UpGraffiti: " "
 		UploadFraffiti: "Завантажити"
 		UploadPhoto: "Завантажити фотографію"

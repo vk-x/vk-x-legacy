@@ -731,7 +731,6 @@
 		uncheckAll: "Unselect all"
 		UncheckAll: "[ Unselect ]"
 		University_name: "University"
-		updateLMenu: "Refresh menu"
 		UpGraffiti: " "
 		UploadFraffiti: "Upload"
 		UploadPhoto: "Upload photo"

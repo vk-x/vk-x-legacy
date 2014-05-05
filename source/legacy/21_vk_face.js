@@ -1115,14 +1115,12 @@ function vkMenu(){//vkExLeftMenu
       ['notes',app.i18n.IDL("mNoM")],
       //['notes?act=new',app.i18n.IDL("mNoN")],
       ['notes?act=comments',app.i18n.IDL("mNoC")]
-	],
-    'vkopt':[
-         [["#","UpdateCounters(); return false;"],app.i18n.IDL("updateLMenu")]
-    ]
+	]
   };
   ExMenu['im']=ExMenu['mail'];
   ExMenu['audios']=ExMenu['audio'];
   if (vk_DEBUG){
+      ExMenu['vkopt'] = [];
       ExMenu['vkopt'].push([["#","if (window.vk_updmenu_timeout) clearTimeout(vk_updmenu_timeout); return false;"],'<b>Stop Upd Menu</b>']);
       ExMenu['vkopt'].push([["#","vkPhotoUrlUpload(prompt('Image URL:')); return false;"],'UploadImg']);
       ExMenu['vkopt'].push([["#","vk_photos.url(prompt('Image URL:')); return false;"],'UploadImg v2']);
@@ -1314,6 +1312,9 @@ function vkMenu(){//vkExLeftMenu
     }
   }
   var nav=(ge('sideBar') || ge('side_bar')).getElementsByTagName('ol')[0];
+
+  nav.addEventListener( "mouseover",
+  	app.util.throttle( UpdateCounters, 1000 ) );
 
   if (window.vkLinks && vkLinks.length>1){
         var li=document.createElement('li');

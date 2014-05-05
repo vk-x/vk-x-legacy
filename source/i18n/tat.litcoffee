@@ -393,7 +393,6 @@
 		txMessage: "Хәбәр"
 		UncheckAll: "[ Билгеләрне алу ]"
 		uncheckAll: "Билгеләрне бетерергә"
-		updateLMenu: "Менюны яңартырга"
 		UpGraffiti: " "
 		UploadFraffiti: "Өстәргә"
 		UploadPhoto: "Фото өстәргә"

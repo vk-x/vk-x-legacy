@@ -588,7 +588,6 @@
 		txMessage: "Паведамленьне"
 		uncheckAll: "Зняць адзнакі"
 		UncheckAll: "[ Зняць адзнакі ]"
-		updateLMenu: "Абнавіць меню"
 		UpGraffiti: " "
 		UploadFraffiti: "Загрузіць"
 		UploadPhoto: "Загрузіць фотаздымак"

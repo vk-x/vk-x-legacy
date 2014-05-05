@@ -503,7 +503,6 @@
 		txMessage: "Messaggio"
 		uncheckAll: "Rimuovi la selezione"
 		UncheckAll: "[ Rimuve segnale ]"
-		updateLMenu: "Rinnova il menu"
 		UpGraffiti: " "
 		UploadFraffiti: "Carica"
 		UploadPhoto: "Carica una foto"
