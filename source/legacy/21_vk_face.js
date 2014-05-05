@@ -281,6 +281,9 @@ function vkStyles(){
          padding-bottom: 2px !important;\
          padding-top:2px !important;\
       }\
+      body #pad_playlist_panel .wall_module .audio .title_wrap {\
+         width: 290px !important; /* Fixes #142. */\
+      }\
       .audio .area {margin-bottom: 0px !important;}\
       .choose_audio_row {height:auto !important;}\
       .choose_audio_row a.choose{margin-top: 0px !important; padding-bottom: 2px !important; padding-top:2px !important; height: auto !important; line-height: normal !important;}\
