@@ -1,6 +1,6 @@
-# [vk-x](https://github.com/vk-x/vk-x) for [VK.com](http://vk.com)
+# [vk-x](https://github.com/vk-x/vk-x) for [vk.com](http://vk.com)
 
-**vk-x** is a cross-browser extension for [VK.com](http://vk.com)
+**vk-x** is a cross-browser extension for [vk.com](http://vk.com)
 inspired by and based on [VkOpt](http://vkopt.net).
 
 ## Download
