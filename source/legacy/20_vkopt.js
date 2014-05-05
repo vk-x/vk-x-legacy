@@ -338,25 +338,6 @@ var TextPasteSmiles={
 	  }
 	}
 
-function vkCheckLoadedScripts(){
-   var obj={
-      "vk_face"      :!!window.SmileNode,
-      "vk_lib"       :!!window.vkApis,
-      "vk_main"      :!!window.vkProcessResponseNode,
-      "vk_media"     :!!window.vkLastFM,
-      "vk_page"      :!!window.vkToTopBackLink,
-      "vk_resources" :!!window.vkSound,
-      "vk_settings"  :!!window.vksettobj,
-      "vk_skinman"   :"vk_skinman has been deprecated. See #143",
-      "vk_txtedit"   :!!window.vkAddSmilePanel,
-      "vk_users"     :!!window.ProcessUserPhotoLink,
-      "vklang"       :"vklang has been deprecated. See window.app.i18n",
-      "vkopt"        :!!window.vkonDOMReady
-   }
-   console.log('result:',obj)
-  //vkLastFM.get_loved
-}
-
 ////////// INIT ////////
 function vkonDOMReady(fn, ctx){
     var ready, timer;
