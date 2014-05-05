@@ -429,12 +429,6 @@ function vkStyles(){
 		.sett_new_:after{content:'*'; color:#F00; position:absolute; margin-top:-3px;}\
 		.sett_new:before{content:'new'; color:#F00; position:absolute; margin-left:-3px; margin-top:-3px; font-size:7pt; text-shadow:white 1px 1px 2px; background:rgba(255,255,255,0.6); -moz-border-radius:2px; border-radius:2px; transform:rotate(-20deg); -webkit-transform:rotate(-20deg);  -moz-transform:rotate(-20deg);  -o-transform:rotate(-20deg);}\
 		.sett_cat_header{display: inline-block; width:100%; text-align: center; font-weight:bold; border: 1px solid #B1BDD6; color: #255B8E; background: rgba(0, 55, 96, 0.145); line-height: 25px;}\
-		.vk_sounds_settrings .sett_block{border-bottom:0px; width: 300px;}\
-		#vkTestSounds a{  margin: 0px;  padding: 3px; padding-left:25px; line-height:20px; display: inline-block; width:225px;  \
-						  background: url(http:\/\/vk.com\/images\/play.gif) 4px 5px no-repeat;\
-						  border-bottom_: solid 1px #CCD3DA; }\
-		#vkTestSounds a:hover {  text-decoration: none;  background-color: #DAE1E8; }\
-      #vk_sound_vol{text-align:center; width:200px; margin:0 auto;}\
       #wmdonate .sett_block{width:96%; height:110px;}\
       #wmdonate .sett_block .stext{width: 190px;}\
       \

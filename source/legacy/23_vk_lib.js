@@ -1527,11 +1527,6 @@ function vkDownloadFile(el,ignore) {
 }
 
 /* NOTIFY TOOLS */
-function vkNotifyCustomSInit(){
-      vkNotifierSound = function(sound){   if (typeof sound == 'string' && sound!='none') (new Sound2(sound)).play();};
-      Inj.Before('Notifier.pushEvents','curNotifier.sound.play();','if (arguments[2]) vkNotifierSound(arguments[2]); else ');
-      Inj.After('Notifier.lcRecv','!data.full',', data.sound');
-}
 function vkShowNotify(params){
    params = params || {};
    vk_nf_id=unixtime()+vkRand();//window.vk_nf_id || 0;

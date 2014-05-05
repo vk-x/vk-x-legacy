@@ -1508,48 +1508,7 @@ function vkFastChatSortUsers(a,b){
 
    bf=(b.indexOf('vk_faved_user')!=-1);
    bo=(b.indexOf('fc_contact_online')!=-1);
-
-   /*
-   if (af && bf) return 1;
-   else if (!af && bf) return 1;
-   else return 0; */
-   /*
-   else if (!af && !ao) return 1;
-   //else if (!bf && !bo) return 1;
-   else if (af && bf){
-      if (ao && !bo) return -1;
-      else if (!ao && bo) return 1;
-      else return 0;
-   } else {
-      if (ao && !bo) return -1;
-      else if (!ao && bo) return 1;
-      else return 0;
-   }*/
-
-
-   //vkFastChatSortUsers
 }
-/*
-function vkNotifyUserCheckAndShow(params){
-   params = params || {};
-   var show=true;
-   var data=curNotifier.q_shown;
-   for (var i=0;i<data.length;i++){
-      var n=data[i];
-      if (n.title==params.title && n.author_link==params.author_link && n.baloonEl){
-         var el=geByClass('notifier_baloon_msg',n.baloonEl)[0].getElementsByTagName('div')[0];
-         el.innerHTML+='<small> ['+(params._time || params.text)+'] </small>';
-         show=false;
-      }
-   }
-   if (show) {
-      //if (params._time) params.text+=params._time;
-      vkShowNotify(params);
-    } else {
-         if (!window.vk_fav_onl_sound) var window.vk_fav_onl_sound=new Sound2('On');
-         vk_fav_onl_sound.play();
-    }
-}  */
 
 function vkFavOnlineChecker(on_storage){
    //case 'fav_users_statuses':vkFavOnlineChecker(true); break;

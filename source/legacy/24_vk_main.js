@@ -101,7 +101,6 @@ function vkOnStorage(id,cmd){
 	switch(id){
 		case 'user_online_status': UserOnlineStatus(cmd); break;
 		case 'menu_counters':UpdateCounters(false,cmd); break;
-		case 'upd_sounds':vkUpdateSounds(true); break;
       case 'fav_users_statuses':vkFavOnlineChecker(cmd); break;
       case 'fave_users_statuses':vkFaveOnlineChecker(cmd); break;
 	}
@@ -1491,12 +1490,6 @@ function vkIM(){
    if (getSet(89)=='y'){
       Inj.Start('IM.changeTitle','return;');
    }
-   if (getSet(48)=='y' && window.Sound){
-		Inj.Wait('window.cur && window.cur.sound',function(){
-			cur.sound=new Sound2('Msg');
-		});
-      vkNotifyCustomSInit();
-	}
 }
 
 
@@ -1666,13 +1659,6 @@ function vkNotifier(){
 		Inj.Before('Notifier.onInstanceFocus','curNotifier.q_shown = []','if (vk_allow_autohide_notify)');*/
 
 		Notifier.unfreezeEvents=Notifier.freezeEvents;
-	}
-	if (getSet(48)=='y'){
-		Inj.Wait('window.curNotifier && window.curNotifier.sound',function(){
-			curNotifier.sound=new Sound2('New');
-			curNotifier.sound_im=new Sound2('Msg');
-		});
-      vkNotifyCustomSInit();
 	}
    if (getSet(51)=='y'){
       vk_fav.inj_notifier();

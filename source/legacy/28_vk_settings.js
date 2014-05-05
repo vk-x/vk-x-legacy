@@ -140,7 +140,6 @@ function vkGetVkoptFullConfig(){
       //AdmGr:vkgetCookie('AdmGr'),
       FavList:vkGetVal('FavList'),
       menu_custom_links:vkGetVal('menu_custom_links'),
-      vk_sounds_vol:vkGetVal("vk_sounds_vol") || "",
       WallsID:vkGetVal('WallsID')
    }
   /*
@@ -596,9 +595,6 @@ function vkInitSettings(){
       {id:88, text:app.i18n.IDL("seGroupRequestsBlock"),info:'infoUseNetTrafic'}
       //{id:64, text:app.i18n.IDL("seToTopOld")}
     ],
-	Sounds:[
-	  {id:48, text:app.i18n.IDL("ReplaceVkSounds")}
-	],
    Others:[
 		{id:9,  header:app.i18n.IDL("seTestFr"), text:app.i18n.IDL("seRefList"), sub:{id:1, text:'<br>'+app.i18n.IDL("now")+': <b>%cur</b> '+app.i18n.IDL("day")+'<br>'+app.i18n.IDL("set")+': %sets'+
             '<br><a onClick="javascript:vkFriendsCheck();" style="cursor: hand;">'+app.i18n.IDL('seCreList')+'</a>',
@@ -699,7 +695,6 @@ vk_settings = {
 
       var sets=[];
       var excluded={
-         //'Sounds':1,
          'Hidden':1
       };
       for (var key in vkoptSets){
@@ -951,58 +946,13 @@ function vkMakeSettings(el){
   var html="";
   var tabs=[];
   var excluded={
-   'Sounds':1,
    'Hidden':1
   };
+
   for (var cat in vkoptSets){
-    //alert(vkGetSettings(vkoptSets[cat],allsett));
 	if (!excluded[cat]) tabs.push({name:app.i18n.IDL(cat),content:'<div class="sett_cat_header">'+app.i18n.IDL(cat)+'</div>'+vkGetSettings(vkoptSets[cat],allsett)});
-    //html+='<div class="sett_container"><div class="sett_header" onclick="toggle(this.nextSibling);">'+app.i18n.IDL(cat)+'</div><div id="sett'+cat+'">'+vkGetSettings(vkoptSets[cat],allsett)+'</div></div>';
   }
-  //*
-  if (vkLocalStoreReady()){
-   var currsnd=vkGetVal('sounds_name');
-   currsnd=(currsnd && currsnd!=''?currsnd:app.i18n.IDL('Default'));
-   var changevolume=function(v,p,u){
-      var f=function(){
-         if (!ge('vk_sound_vol_label')){
-            setTimeout(f,100);
-            return;
-         }
-         ge('vk_sound_vol_label').innerHTML=app.i18n.IDL('Volume')+": "+p+"%";
-      }
-      f();
-      if (!u){
-         localStorage['vk_sounds_vol']=p;
-      }
-   };
-	var s_preview='<div class="vk_sounds_preview">'+
-		'<div>'+app.i18n.IDL('SoundsThemeName')+': <b><span id="vkSndThemeName">'+currsnd+'</span></b></div>'+
-		'<br><div id="vkTestSounds">'+
-         '<a href="javascript: vkSound(\'Msg\')">'+app.i18n.IDL('SoundMsg')+'</a><br>'+
-         '<a href="javascript: vkSound(\'New\')">'+app.i18n.IDL('SoundNewEvents')+'</a><br>'+
-         '<a href="javascript: vkSound(\'On\')">'+app.i18n.IDL('SoundFavOnl')+'</a><br>'+
-         (window.localStorage?'<div id="vk_sound_vol"><div id="vk_sound_vol_label"></div>'+
-            vk_hor_slider.init('vk_sound_vol',100,parseInt(localStorage['vk_sounds_vol'] || 100),
-               changevolume,
-               function(v,p){
-                  changevolume(v,p,true);
-               },200)+
-         '</div>':'')+
-		'</div>'+
-	'</div>';
-    var sounds=
-	'<div class="vk_sounds_settrings">'+'<div class="sett_cat_header">'+app.i18n.IDL('Sounds')+'</div>'+
-	'<table><tr><td>'+vkGetSettings(vkoptSets['Sounds'],allsett)+'</td><td>'+s_preview+'</td></tr></table>'+
-	'</div>'+
-    '<div style_="padding: 0px 20px 0px 20px">'+
-	//s_preview+
-	'<div style="clear:both" align="center"><br><h4>'+app.i18n.IDL('SoundsThemeLoadClear')+'</h4><br>'+
-    vkRoundButton([app.i18n.IDL('LoadSoundsTheme'),'javascript: vkLoadSoundsFromFile();'],[app.i18n.IDL('ResetSoundsDef'),'javascript: vkResetSounds();'])+'</div>'+
-    '<h4><br></h4><small>'+app.i18n.IDL('SoundsThemeOnForum')+'</small>'+
-    '</div>';
-    tabs.push({name:app.i18n.IDL('Sounds'),content:sounds});
-  }//*/
+
   var CfgArea='<input type="hidden" id="TxtEditDiv_remixbitset" /><textarea id="remixbitset" rows=1 style="border: 1px double #999999; overflow: hidden; width: 100%;" type="text" readonly onmouseover="this.value=vkRemixBitS()" onClick="this.focus();this.select();">DefSetBits=\''+vkgetCookie('remixbit')+'\';</textarea>';
   tabs.push({name:app.i18n.IDL('all'),content:'all'});
   tabs.push({name:app.i18n.IDL('settingsSectionBackup'),content:'<div class="sett_cat_header">'+app.i18n.IDL('settingsSectionBackup')+'</div><div id="vkcurcfg">'+
@@ -1066,8 +1016,7 @@ function vkSaveSettingsOnServer(check){
 
    var cfg={
       'remixbits':sett,
-      'menu_custom_links':vk_string_escape(vkGetVal('menu_custom_links') || ""),
-      'vk_sounds_vol':vkGetVal("vk_sounds_vol") || ""
+      'menu_custom_links':vk_string_escape(vkGetVal('menu_custom_links') || "")
    };
    var FavList=vkGetVal('FavList');
    if(FavList && FavList!='') cfg['FavList']=FavList;
@@ -1089,7 +1038,7 @@ function vkSaveSettingsOnServer(check){
    });
 }
 function vkLoadSettingsFromServer(check,callback){
-	var params={keys:'remixbits,FavList,menu_custom_links,vk_sounds_vol'};
+	var params={keys:'remixbits,FavList,menu_custom_links'};
   if (check) params={key:'remixbits'};
   params.v = "3.0";
   app.vkApi.request({
@@ -1129,7 +1078,6 @@ function vkLoadSettingsFromServer(check,callback){
                 else if(confirm(app.i18n.IDL('FavListRelace'))) vkSetVal('FavList',val);
              }
              if (scfg['menu_custom_links']) vkSetVal('menu_custom_links',scfg['menu_custom_links']);
-             if (scfg['vk_sounds_vol']) vkSetVal("vk_sounds_vol",scfg['vk_sounds_vol']);
 
         if ( ge('cfg_on_serv_info') ) {
          ge('cfg_on_serv_info').innerHTML='<div class="vk_cfg_info">'+app.i18n.IDL('seCfgRestored')+'</div>';
@@ -1144,41 +1092,4 @@ function vkLoadSettingsFromServer(check,callback){
      }
    }
   });
-}
-
-function vkUpdateSounds(on_command){
-	if (getSet(48)=='y'){
-		if (!on_command) vkCmd('upd_sounds',{});
-		if (window.curNotifier){
-			curNotifier.sound=new Sound2('New');
-			curNotifier.sound_im=new Sound2('Msg');
-		}
-	}
-}
-function vkResetSounds(){
-  for (var key in vkSoundsRes) vkSetVal('sound_'+key,'');
-  vkSetVal('sounds_name','');
-  if(ge('vkSndThemeName')) ge('vkSndThemeName').innerHTML=app.i18n.IDL('Default');
-  vkUpdateSounds();
-}
-
-function vkLoadSoundsFromFile(){
-    vkLoadTxt(function(txt){
-    try {
-      var cfg=eval('('+txt+')');
-	  //alert('qwe');
-      for (var key in cfg) if (cfg[key] && vkSoundsRes[key] && key!='Name')
-        vkSetVal('sound_'+key,cfg[key]);
-
-      var tname=cfg['Name']?cfg['Name']:'N/A';
-      tname=replaceChars(tname);
-      vkSetVal('sounds_name',tname);
-      if(ge('vkSndThemeName')) ge('vkSndThemeName').innerHTML=tname;
-
-      alert(app.i18n.IDL('SoundsThemeLoaded'));
-	  vkUpdateSounds();
-    } catch(e) {
-      alert(app.i18n.IDL('SoundsThemeError'));
-    }
-  },["VkOpt Sounds Theme (*.vksnd)","*.vksnd"]);
 }
