@@ -8,6 +8,7 @@
 		<em:version><%= version %></em:version>
 		<em:creator><%= author.name %></em:creator>
 		<em:homepageURL><%= homepage %></em:homepageURL>
+		<em:updateURL><%= extensionUpdateUrls.firefox %></em:updateURL>
 		<em:type>2</em:type>
 
 		<!-- Mozilla Firefox -->
