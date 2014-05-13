@@ -236,7 +236,7 @@ Distributable Maxthon extension created using
 		resultName = "#{distPrefix}-maxthon.mxaddon"
 		pathToResult = path.join cwd, "dist", resultName
 		pathToSource = path.join cwd, "build", "maxthon"
-		pathToBuilder = path.join cwd, "build", "maxthon-packager.exe"
+		pathToBuilder = path.join cwd, "build", "maxthon-packer.exe"
 
 		execFile pathToBuilder, [ pathToSource, pathToResult ], null,
 			( error ) ->
