@@ -3,17 +3,21 @@
 **vk-x** is a cross-browser extension for [vk.com](http://vk.com)
 inspired by and based on [VkOpt](http://vkopt.net).
 
-## Download
+Please note that this project is in alpha stage! Extensions may have bugs.
 
-[releases]: https://github.com/vk-x/vk-x/releases
+## Install
 
-See [releases][releases]:
+Go to [our site](http://vk-x.github.io/) to install browser extension.
 
-[![](http://i.imgur.com/z0zWeMV.png)][releases]
+Currently we support extensions for:
+- Chromium
+- Firefox
+- Maxthon
+- Opera
 
-There're no published extensions yet. :(
-
-You can also get the source and build it, see [dev docs](gulpfile.litcoffee).
+You can also manually install particular version from
+[releases](https://github.com/vk-x/vk-x/releases) or
+get the source and build it, see [dev docs](gulpfile.litcoffee).
 
 ## Contribute
 
