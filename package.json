@@ -5,7 +5,8 @@
   "description_ru": "Расширение для vk.com, вдохновлённое и основанное на VkOpt.",
   "homepage": "https://github.com/vk-x/vk-x",
   "extensionUpdateUrls": {
-    "firefox": "https://vk-x.github.io/update/firefox.xml"
+    "firefox": "https://vk-x.github.io/update/firefox.xml",
+    "opera": "https://vk-x.github.io/update/opera.xml"
   },
   "author": {
     "name": "Nikita Litvin",
