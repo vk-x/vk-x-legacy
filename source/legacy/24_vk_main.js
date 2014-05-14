@@ -236,7 +236,7 @@ function VkOptMainInit(){
 
   vk_plugins.init();
   addEvent(document, 'mouseup', vkOnDocumentClick);
-  if ( location.href.match( "act=" + app.name ) ) {
+  if ( location.href.match( "#" + app.name + "$" ) ) {
     vkShowSettings();
   }
   if (window.topMsg){

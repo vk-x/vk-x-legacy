@@ -1072,7 +1072,7 @@ function vkMenu(){//vkExLeftMenu
         ['settings?act=blacklist',app.i18n.IDL("mSeB")],
         ['settings?act=mobile',app.i18n.IDL("mSeMobile")],
         ['settings?act=balance',app.i18n.IDL("mSeBalance")],
-        [[ "settings?act=" + app.name, "vkShowSettings(false); return false;" ],
+        [[ "#" + app.name, "vkShowSettings(); return false;" ],
         	app.name ]
     ],
     'matches':[

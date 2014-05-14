@@ -112,7 +112,7 @@ function vkSettingsPage(){
 	if (!ge('vkopt_settings_tab') && ge('settings_filters')){
 		var li=vkCe('li',{id:'vkopt_settings_tab'});
 		li.innerHTML='\
-			<a href="/settings?act=' + app.name + '" onclick="return checkEvent(event)" onmousedown="return vkShowSettings();">\
+			<a href="/#' + app.name + '" onclick="return checkEvent(event)" onmousedown="return vkShowSettings();">\
 			<b class="tl1"><b></b></b><b class="tl2"></b>\
 			<b class="tab_word">' + app.name + '</b>\
 			</a>';
@@ -922,7 +922,7 @@ function vkInpChange(e,obj,callback){
 }
 
 
-function vkMakeSettings(el){
+function vkMakeSettings(){
   vklog('Last settings index: '+VK_SETTS_COUNT,2);
   vkCheckSettLength();
 
@@ -967,9 +967,7 @@ function vkMakeSettings(el){
 
   vkRemixBitS=function(){return "DefSetBits='"+vkgetCookie('remixbit')+"';";}
   tabs[0].active=true;
-  html=vkMakeContTabs(tabs);
-  if (el) ge(el).innerHTML=html;//'<div id="vksetts_search"></div><div id="vksetts_tabs">'+html+'</div>';//vkGetSettings(vkoptSets['Media'],allsett);
-  else return html;
+  return vkMakeContTabs(tabs);
 }
 
 function vkShowSettings(box){
@@ -986,23 +984,14 @@ function vkShowSettings(box){
 
   var header = app.name + " " + app.version.full;
 
-  if (!box){
-    show('header');
-    document.title = app.name + " " + app.version.full + " settings";
-    ge('header').innerHTML='<h1>'+header+'</h1>';
-    ge('content').innerHTML=tpl.replace(/%html/g,'');
-    vkMakeSettings('vksetts_tabs');
-  } else {
-    var html=tpl.replace(/%html/g,vkMakeSettings());
-    if (!window.vkSettingsBox || isNewLib()) vkSettingsBox = new MessageBox({title: header,closeButton:true,width:"650px"});
-    var box=vkSettingsBox;
-    box.removeButtons();
-    box.addButton(isNewLib()?app.i18n.IDL('Hide'):{
-      onClick: function(){ box.hide(200); },
-      style:'button_no',label:app.i18n.IDL('Hide')},function(){ box.hide(200); },'no');
-    //box.setOptions({onHide: function(){box.content('');}});
-    box.content(html).show();
-  }
+  var html=tpl.replace(/%html/g,vkMakeSettings());
+  if (!window.vkSettingsBox || isNewLib()) vkSettingsBox = new MessageBox({title: header,closeButton:true,width:"650px"});
+  var box=vkSettingsBox;
+  box.removeButtons();
+  box.addButton(isNewLib()?app.i18n.IDL('Hide'):{
+    onClick: function(){ box.hide(200); },
+    style:'button_no',label:app.i18n.IDL('Hide')},function(){ box.hide(200); },'no');
+  box.content(html).show();
 
   vkLoadSettingsFromServer(true);//check cfg backup
   return false;

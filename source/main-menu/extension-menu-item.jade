@@ -1,7 +1,7 @@
 table( id="myprofile_table" cellspacing="0" cellpadding="0" )
 	tr
 		td( id="myprofile_wrap" )
-			a( href='/settings?act='+appName onclick='vkShowSettings(true); return false' id='myprofile' class='left_row' onmousemove='vkMenuItemHover(event,this)' onmouseout='vkMenuItemOut(event,this)' )
+			a( href='#'+appName onclick='vkShowSettings(); return false' id='myprofile' class='left_row' onmousemove='vkMenuItemHover(event,this)' onmouseout='vkMenuItemOut(event,this)' )
 				span( class='left_label inl_bl' )= appName
 
 		if isNewVersion
