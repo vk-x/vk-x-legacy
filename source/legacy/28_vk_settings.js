@@ -592,22 +592,15 @@ function vkInitSettings(){
       {id:74, text:app.i18n.IDL("seLeaveGroupLinks")},
       {id:79, text:vk_settings.dislikes_icons()+app.i18n.IDL("seDislikes"),info:'infoUseNetTrafic'},
       {id:86, text:app.i18n.IDL("seDisableWallWikiBox")},
-      {id:88, text:app.i18n.IDL("seGroupRequestsBlock"),info:'infoUseNetTrafic'}
-      //{id:64, text:app.i18n.IDL("seToTopOld")}
-    ],
-   Others:[
+      {id:88, text:app.i18n.IDL("seGroupRequestsBlock"),info:'infoUseNetTrafic'},
 		{id:9,  header:app.i18n.IDL("seTestFr"), text:app.i18n.IDL("seRefList"), sub:{id:1, text:'<br>'+app.i18n.IDL("now")+': <b>%cur</b> '+app.i18n.IDL("day")+'<br>'+app.i18n.IDL("set")+': %sets'+
             '<br><a onClick="javascript:vkFriendsCheck();" style="cursor: hand;">'+app.i18n.IDL('seCreList')+'</a>',
             ops:[1,2,3,4,5,6,7]}},
 		{id:6, text:app.i18n.IDL("seOnAway")},
 		{id:34, text:app.i18n.IDL("seSwichTextChr")},
       {id:77, text:app.i18n.IDL("seBatchCleaners")},
-      {id:78, text:app.i18n.IDL("seCutBracket")},
-      {raw: "<div style='clear: both'></div><div style='margin: 10px 0 auto'>" + vkRoundButton(
-        [ "Reset Settings","javascript:vkResetVkOptSetting()" ],
-        [ "View localStorage", "javascript:vkLocalStorageMan()" ]
-      ) + "</div>"}
-   ],
+      {id:78, text:app.i18n.IDL("seCutBracket")}
+    ],
    Hidden:[
       {id:82, text:app.i18n.IDL("FullThumb")},
       {id:83, text: "dislike icon", ops:[0,1,2,3]},
@@ -963,7 +956,13 @@ function vkMakeSettings(el){
     '<div style="clear:both" align="center"><br><h4>'+app.i18n.IDL('ConfigBackupRestore')+'</h4><br>'+vkRoundButton([app.i18n.IDL('ExportSettings'),'javascript: vkGetVkoptFullConfig();'],[app.i18n.IDL('ImportSettings'),'javascript: vkLoadVkoptConfigFromFile();'])+'</div>'+
     '<div style="clear:both" align="center"><br><h4>'+app.i18n.IDL('ConfigOnServer')+'</h4>'+
 	'<div id="cfg_on_serv_info" style="text-align:center;"></div>'+
-	'<br>'+vkRoundButton([app.i18n.IDL('SaveOnServer'),'javascript: vkSaveSettingsOnServer();'],[app.i18n.IDL('LoadFromServer'),'javascript: vkLoadSettingsFromServer();'])+'</div>'
+	'<br>'+vkRoundButton([app.i18n.IDL('SaveOnServer'),'javascript: vkSaveSettingsOnServer();'],[app.i18n.IDL('LoadFromServer'),'javascript: vkLoadSettingsFromServer();'])+'</div>' +
+    "<div style=\"clear:both\" align=\"center\"><br><h4>" +
+    app.i18n.t( "manageLocalSettings" ) + '</h4>' +
+    "<br><div align=\"center\">" + vkRoundButton(
+        [ "Reset Settings","javascript:vkResetVkOptSetting()" ],
+        [ "View localStorage", "javascript:vkLocalStorageMan()" ]
+      ) + "</div>"
   });
 
   vkRemixBitS=function(){return "DefSetBits='"+vkgetCookie('remixbit')+"';";}

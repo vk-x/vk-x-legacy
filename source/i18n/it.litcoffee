@@ -281,7 +281,6 @@
 		Off_red: "<font color=\"#FF5C5C\">Spento</font>"
 		on: "Acceso"
 		On_green: "<font color=\"#17A170\">Acceso</font>"
-		Others: "Resto"
 		paAllUserPhotos: "[ Tutte foto di utente ]"
 		paBanAll: "[ Tutti nella lista nera ]"
 		paBanAllAndDelPhotos: "[ Cancellare tutte foto e nella lista nera ]"

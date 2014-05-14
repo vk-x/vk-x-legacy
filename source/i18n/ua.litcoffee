@@ -431,7 +431,6 @@
 		on: "Вкл"
 		On_green: "<font color=\"#17A170\">Включити</font>"
 		OnlyForFriends: "[ тільки для друзів ]"
-		Others: "Інше"
 		OutFriendRequests: "Вами відправлена заявка/підписка користувачу"
 		paAllUserPhotos: "[ Всі фото користувача ]"
 		paBanAll: "[ Забанити всіх ]"

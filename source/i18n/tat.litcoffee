@@ -221,7 +221,6 @@
 		Off_red: "<font color=\"#FF5C5C\">Сүндерергә</font>"
 		on: "Кабызырга"
 		On_green: "<font color=\"#17A170\">Кабызырга</font>"
-		Others: "Калганнары"
 		paAllUserPhotos: "[ Кешенең бөтен фотолары ]"
 		paBanAll: "[ Барысын да банга салу ]"
 		paBanAllAndDelPhotos: "[ Бөтен фотоларны бетерергә һәм бан исемлегенә кертергә. ]"

@@ -320,7 +320,6 @@
 		on: "Укл"
 		On_green: "<font color=\"#17A170\">Уключыць</font>"
 		OnlyForFriends: "[ толькі для сяброў ]"
-		Others: "Астатняе"
 		paAllUserPhotos: "[ Усе фота карыстача ]"
 		paBanAll: "[ Забаніць усіх ]"
 		paBanAllAndDelPhotos: "[ Выдаліць усе фота і забаніць ]"
