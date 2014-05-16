@@ -1392,12 +1392,6 @@ function vkLoadTxt(callback,mask){
 }
 //END DATA LOADER
 
-function vkSwitchHost(){
-   var vk='//vk.com/';
-   var vko='//vkontakte.ru/';
-   var v= (location.href.indexOf(vk)==-1);
-   location.assign(location.href.split(v?vko:vk).join(v?vk:vko));
-}
 function vkDisableAjax(){
   if (window.nav && nav.go) Inj.Before('nav.go',"var _a = window.audioPlayer","{ location.href='/'+strLoc; return true;};");
 }
