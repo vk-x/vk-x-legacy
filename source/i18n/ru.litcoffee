@@ -58,7 +58,7 @@
 		CancelAnswerFail: "Ошибка отмены голоса"
 		CancelAnswerSuccess: "Голос отменён. Обновите страницу."
 		categories: "Категории"
-		changelogBody: require( "./ru/changelog" )()
+		changelogContent: require( "./ru/changelog" )()
 		changelogSubtitle: "Теперь Вы используете {name} {version}."
 		changelogTitle: "Свежий {name} к Вашим услугам!"
 		Chat: "Чат"
@@ -236,7 +236,6 @@
 		HistMsgFwd: "Пересланные сообщения:"
 		HistMsgGeoAttach: "Место:"
 		HistoryError: "Невозможно получить историю статусов!<br>Код ошибки: "
-		homepage: "Домашняя страница {name}"
 		Home_tel: "Дом. телефон"
 		HtmlPageSaveHelp: "Для сохраннения всех изображений, дождитесь полной загрузки страницы, после чего сохраните её. Изображения будут сохранены в папке с одноименным названием.\t\t\t\t\t\t<small><br>Opera: \"Сохранить как..\" -> \"HTML-файл с изображениями\"\t\t\t\t\t\t<br>Firefox: \"Сохранить как...\" -> \"Веб-страница, полностью\" (осторожно! на больших количествах фото Firefox может потреблять очень много памяти, при использовании \"сохранения альбомов\".)\t\t\t\t\t\t</small>"
 		ImgCopySeacrh: "Поиск копий:"

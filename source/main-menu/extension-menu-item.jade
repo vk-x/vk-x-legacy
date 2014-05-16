@@ -6,5 +6,5 @@ table( id="myprofile_table" cellspacing="0" cellpadding="0" )
 
 		if isNewVersion
 			td( id='myprofile_edit_wrap' )
-				a( href='javascript:vkShowChangelog();' id='myprofile_edit' class='left_row' style='font-weight: bold' onmousemove='vkMenuHide()' )
+				a( href='javascript:app.install.showChangelog();' id='myprofile_edit' class='left_row' style='font-weight: bold' onmousemove='vkMenuHide()' )
 					span( class='left_label inl_bl' style='color:red' )= appVersion

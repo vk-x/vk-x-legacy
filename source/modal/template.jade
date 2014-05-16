@@ -1,0 +1,11 @@
+.wk_extpage_head_wrap.clear_fix(class=isSmallIcon?"":"wk_extpage_head_unsubscribed")
+	if iconLink
+		a.wk_extpage_owner_thumb.fl_l(href=iconLink target="_blank")
+			img.wk_extpage_owner_thumb(src=icon)
+	else
+		a.wk_extpage_owner_thumb.fl_l(style="cursor: default")
+			img.wk_extpage_owner_thumb(src=icon)
+	.wk_extpage_head_owner_title
+		div.wk_extpage_head_domain!= title
+	.wk_extpage_head_description!= subtitle
+!= content

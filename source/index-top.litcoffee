@@ -4,7 +4,8 @@
 	vkApi = require( "./vk-api" ) app, ajax
 	dislike = require( "./dislike" ) ajax, vkApi
 	i18n = require( "./i18n" )()
-	install = require( "./install" ) app, i18n
+	modal = require( "./modal" ) app
+	install = require( "./install" ) app, i18n, modal
 	mainMenu = require( "./main-menu" ) app
 	_ = require "lodash"
 	md5 = require "md5-jkmyers"
@@ -25,6 +26,7 @@ For compatibility with legacy code:
 	app.vkApi = vkApi
 	app.dislike = dislike
 	app.i18n = i18n
+	app.modal = modal
 	app.install = install
 	app.mainMenu = mainMenu
 	app.util = _

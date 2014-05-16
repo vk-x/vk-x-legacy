@@ -1,5 +1,5 @@
-	module.exports = ( app, i18n ) ->
-		changelogHtml: ->
+	module.exports = ( app, i18n, modal ) ->
+		showChangelog: ->
 			title = i18n.t "changelogTitle"
 				.replace "{version}", app.version.full
 				.replace "{name}", app.name
@@ -8,16 +8,23 @@
 				.replace "{version}", app.version.full
 				.replace "{name}", app.name
 
-			body = i18n.t "changelogBody"
-
-			homepageLink = app.homepage
-			homepage = i18n.t "homepage"
+			content = i18n.t "changelogContent"
 				.replace "{name}", app.name
+				.replace "{homepage}", app.homepage
 
-			fs = require "fs"
-			logo = "data:image/png;base64," +
-				fs.readFileSync "#{__dirname}/meta/logo.png", "base64"
+			modal.show
+				title: title
+				iconLink: app.homepage
+				subtitle: subtitle
+				content: content
+				pageName: "changelog"
 
-			template = require "./install/changelog-template"
+			@newVersionFlag off
 
-			template { title, subtitle, body, homepage, homepageLink, logo }
+		newVersionFlag: ( value ) ->
+			if value is on
+				localStorage[ app.name + "-new-version" ] = on
+			else if value is off
+				localStorage.removeItem app.name + "-new-version"
+			else
+				localStorage[ app.name + "-new-version" ]?

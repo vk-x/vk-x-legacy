@@ -6,3 +6,4 @@
 	require "./i18n"
 	require "./install"
 	require "./main-menu"
+	require "./modal"

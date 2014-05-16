@@ -58,7 +58,7 @@
 		CancelAnswerFail: "Error while cancelling vote"
 		CancelAnswerSuccess: "Vote cancelled. Reload this page"
 		categories: "Categories"
-		changelogBody: require( "./en/changelog" )()
+		changelogContent: require( "./en/changelog" )()
 		changelogSubtitle: "You've got {name} {version} now."
 		changelogTitle: "Fresh {name} is at your service!"
 		Chat: "Chat"
@@ -233,7 +233,6 @@
 		HistMsgFwd: "Forwarded messages:"
 		HistMsgGeoAttach: "Location:"
 		HistoryError: "Unable to get status history!<br>Err no: "
-		homepage: "{name} homepage"
 		Home_tel: "Alternative phone"
 		HtmlPageSaveHelp: "Wait until this page will finish loading and save as web-page to save all photos. Photos will be save in folder with the same name as web-page\t\t\t\t\t\t<small><br>Opera: \"Save as..\" -> \"HTML-file with images\"\t\t\t\t\t\t<br>Firefox: \"Save as...\" -> \"Web-page, fully\" (Be careful! Firefox can use a lot of memory, when you are saving a big amount of photos with this function)\t\t\t\t\t\t</small>"
 		ImgCopySeacrh: "Search copy:"

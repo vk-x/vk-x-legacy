@@ -1220,19 +1220,6 @@ function vkMenu(){//vkExLeftMenu
 
   var li = vkCe( "li", {}, app.mainMenu.extensionMenuItemHtml() );
 
-	window.vkShowChangelog = function() {
-		stManager.add([ "wkview.js", "wkview.css", "wk.css", "wk.js",
-			"common.css", "page_help.css", "page.css", "page.js" ],
-			function() {
-				WkView.show( false, app.install.changelogHtml(), {
-					wkRaw: "changelog",
-					hide_title: 1,
-					className: "wk_large_cont"
-				}, "", false );
-				window.localStorage.removeItem( app.name + "-new-version" );
-		});
-	};
-
   nav.appendChild(li);
   //*/
 

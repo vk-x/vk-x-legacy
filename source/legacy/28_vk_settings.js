@@ -30,7 +30,7 @@ function InstallRelease() {
 
     // Remember that there was an update/install. This will be used after
     // reload to show changelog. See vkMenu() in legacy/vk_face.js
-    window.localStorage[ app.name + "-new-version" ] = true;
+    app.install.newVersionFlag( true );
 
     return true;
   } else {
