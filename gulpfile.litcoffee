@@ -291,8 +291,5 @@ Chrome Web Store or just because it is easier to send.
 
 	gulp.task "default", [ "build", "test" ], ->
 		gulp.watch [ "source/**/*.*", "test/**/*.*" ], [ "build", "test" ]
-	<div class="info">Фотография удалена. <a onclick="Photoview.restorePhoto()">Восстановить</a>.</div>https://vk.com/id15641940?z=photo15641940_314378483%2Fphotos15641940
-	Failed to load resource: the server responded with a status of 404 (Not Found)https://vk.com/id15641940?z=photo15641940_314378483%2Fphotos15641940
-	Failed to load resource: net::ERR_CACHE_MISS
-	<a id="pv_delete" onclick="Photoview.deletePhoto()">Удалить</a>https://vk.com/id15641940?z=photo15641940_314378483%2Fphotos15641940
+
 	
