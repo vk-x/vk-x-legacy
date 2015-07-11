@@ -32,7 +32,7 @@
     "coffee-script": "~1.7.1",
     "gulp-load-plugins": "~0.4.0",
     "colors": "~0.6.2",
-    "karma-coffee-preprocessor": "http://git.io/pd9vpA",
+    "karma-coffee-preprocessor": "~0.3.0",
     "karma": "~0.12.1",
     "mocha": "~1.18.2",
     "karma-mocha": "~0.1.3",
