@@ -520,14 +520,12 @@ function vkInitSettings(){
       {id:93, text:app.i18n.IDL("seAlbumPhotosExInfo"),info:'infoUseNetTrafic'}
     ],
     Users:[
-      {id:10, text:app.i18n.IDL("seExUserMenu")+'<br><a href="#" onclick="toggle(\'vkExUMenuCFG\'); return false;">[<b> '+app.i18n.IDL("Settings")+' </b>]</a><span id="vkExUMenuCFG" style="display:none">'+GetUserMenuSett()+'</span>'},
-      {id:11, text:app.i18n.IDL("seExUMClik")},
+      {id:10, text:app.i18n.IDL("seExUserMenu")+'<br><a href="#" onclick="toggle(\'vkExUMenuCFG\'); return false;">[<b> '+app.i18n.IDL("Settings")+' </b>]</a>'+
+         '<span id="vkExUMenuCFG" style="display:none"><div>'+vkCheckboxSetting(11,app.i18n.IDL("seExUMClik"))+'</div><hr />'+GetUserMenuSett()+'</span>'},
+      {id:8, text:app.i18n.IDL("seZoomPhoto")},
       {id:38, text:'<table><tr><td> <table><tr><td width=20 height=20 id="spct11" bgcolor='+getFrColor()+'></td></tr></table> <td>'+
          '<span class="cltool"><a onclick="init_colorpicker(this.parentNode,FrCol_click,\'' + getFrColor() + '\')">'+app.i18n.IDL("seLightFriends")+'</a></span>'+
          '</td></tr></table>'},
-      {id:8, text:app.i18n.IDL("seZoomPhoto")},// {id:8, header:app.i18n.IDL("seZoomPhoto") , text:app.i18n.IDL("seZoomPhHelp"),ops:[0,1,2]},
-      //{id 23 - store "is expland" profile}
-      //{id:24, text:app.i18n.IDL("seAvaArrows")},
       {id:25, text:app.i18n.IDL("seICQico")},
       {id:26, text:app.i18n.IDL("seCalcAge")},
       {id:39, text:app.i18n.IDL("seGrCom")},
@@ -543,7 +541,6 @@ function vkInitSettings(){
       {id:87, text:app.i18n.IDL("seSearchExInfo"),info:'infoUseNetTrafic'},
       {id:91, text:app.i18n.IDL("seFaveFr"),info:'infoUseNetTrafic'},
       {id:96, text:app.i18n.IDL("seExInfoGrReq"),info:'infoUseNetTrafic'}
-      //{id:65, text:app.i18n.IDL("seShowLastActivity"),info:'infoUseNetTrafic'}
     ],
 
     Messages:[

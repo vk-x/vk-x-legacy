@@ -2035,13 +2035,17 @@ vk_groups = {
          hide('progress'+gid);
          var html='';
          var users=info.users;
-         for (var i=0; i<users.length;i++){
-            html+=item_tpl.replace(/%NAME%/g,users[i].first_name)
-                          .replace(/%UID%/g,users[i].uid)
-                          .replace(/%AVA%/g,users[i].photo_rec);
-            html+=((i+1)%IN_ROW==0)?'</tr><tr>':'';
+         if (!users.length){
+            html='<tr><td><div class="msg">'+app.i18n.IDL('MembersListAccessDenied')+'</div></td></tr>';
+         } else {
+            for (var i=0; i<users.length;i++){
+               html+=item_tpl.replace(/%NAME%/g,users[i].first_name)
+                             .replace(/%UID%/g,users[i].uid)
+                             .replace(/%AVA%/g,users[i].photo_rec);
+               html+=((i+1)%IN_ROW==0)?'</tr><tr>':'';
+            }
+            html='<tr>'+html+'</tr>';
          }
-         html='<tr>'+html+'</tr>';
 
          var pg='';
          if (info.count>PER_PAGE){
