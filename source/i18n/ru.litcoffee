@@ -543,7 +543,7 @@
 		SearchOnPda: "[ Поищите стену ещё тут ]"
 		SearchText: "[ Найти текст ]"
 		seAttent: "[ Эти настройки сохраняются только на вашем компьютере ! ]"
-		seAudioDownloadName: "Нормальные имена аудио при скачивании <small>(возможно потребуется <a href="http://www.westbyte.com/dm/index.phtml?page=archive&tmp=1&lng=Russian&app=Download%20Master&ver=5.14.2.1329">Download Master v5.14</a>)</small>"
+		seAudioDownloadName: "Нормальные имена при скачивании <small>(возможно потребуется <a href=\"http://www.westbyte.com/dm/index.phtml?page=archive&tmp=1&lng=Russian&app=Download Master&ver=5.14.2.1329\">Download Master v5.14</a>)</small>"
 		seAudioFullTitles: "Полные названия аудиозаписей"
 		seAudioLyr: "Аудио. Ссылка на поиск текста песни. Необходимо включить "
 		seAudioSize: "Загружать информацию о размере и качестве аудио"
