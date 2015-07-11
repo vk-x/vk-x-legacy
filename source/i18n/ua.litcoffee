@@ -314,6 +314,7 @@
 		mAuN: "Додати"
 		mDialogsMessages: "Діалоги"
 		Media: "Медіа"
+		MembersListAccessDenied: "Доступ до учасників групи заборонений, можливо у вас немає прав модератора групи"
 		MenuCustomLinks: "Свої посилання в меню:"
 		Messages: "Повідомлення"
 		mEvC: "Календар"
