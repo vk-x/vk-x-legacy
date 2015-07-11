@@ -22,7 +22,7 @@
   "scripts": {
     "test": "gulp test && gulp dist"
   },
-  "devDependencies": {
+  "dependencies": {
     "gulp": "~3.6.0",
     "lodash": "~2.4.1",
     "superagent": "~0.17.0",
