@@ -772,4 +772,4 @@
 		Yes: "Ok"
 		YouTube: "YouTube"
 		zodiac_signs: [ "Capricorn", "Aquarius", "Pisces", "Aries", "Taurus"
-			"Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius" ]
+			"Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Ophiuchus" ]
