@@ -43,6 +43,7 @@ var FULL_ENCODE_FILENAME=false;
 var PHOTO_DOWNLOAD_NAMES=false;
 var ZODIAK_SIGN_OPHIUCHUS=false;
 var AUDIO_DOWNLOAD_POSTFIX=false;
+var POST_SUBSCRIBE_BTN=false;
 
 var VKOPT_CFG_LIST=[
          'vk_DEBUG',
