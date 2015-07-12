@@ -1257,15 +1257,8 @@ vk_im={
    add_prevent_hide_cbox: function (){
       Inj.Wait('cur.imMedia',function(){
          var p=geByClass('add_media_items', cur.imMedia.menu.menuNode)[0];
-         var html='<div class="checkbox" id="vk_no_hide_add_box" onclick="checkbox(this); window.vk_prevent_addmedia_hide=isChecked(this);">'+
-                     //'<div></div>'+app.i18n.IDL('PreventHide')+
-                      '<table style="border-spacing:0px;"><tr><td><div></div></td>\
-                           <td>\
-                             <nobr>'+app.i18n.IDL('PreventHide')+'</nobr>\
-                           </td>\
-                         </tr>\
-                       </tbody>\
-                      </table>'+
+         var html='<div class="checkbox" id="vk_no_hide_add_box"  style="padding: 7px;" onclick="checkbox(this); window.vk_prevent_addmedia_hide=isChecked(this);">'+
+                     '<div></div>'+'<nobr>'+app.i18n.IDL('PreventHide')+'</nobr>'+
                   '</div>';
          var id='add_media_type_' +  cur.imMedia.menu.id + '_nohide';
          if (!ge(id)){
@@ -1273,7 +1266,7 @@ vk_im={
             var a=vkCe('a',{'onclick':'vk_im.attach_wall();','class':'add_media_item','style':"background-image: url('http://vk.com/images/icons/attach_icons.png'); background-position: 3px -130px;"},'<nobr>'+app.i18n.IDL('WallPost')+'</nobr>');
             p.appendChild(a);
 
-            var a=vkCe('a',{id:id,'style':'border-top:1px solid #DDD; padding:2px; padding-top:4px;'},html);
+            var a=vkCe('a',{id:id,'style':'border-top:1px solid #DDD;'},html);
             p.appendChild(a);
 
          }
