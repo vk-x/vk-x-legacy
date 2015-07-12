@@ -494,6 +494,11 @@ function vkInitSettings(){
   if (!window.vk_au_down){
     vkoptHiddenSets.push(0,1);
   }
+
+  var examples={
+      seSubscribeToPostComments:'<div title="'+app.i18n.IDL('AddToSubscribtions')+'" class="vk_post_subscribe fl_r" style="visibility:visible"><i class="sp_main fl_l"></i></div>'
+  }
+
   vkoptSets={
     Media:[
       {id:0,  text:app.i18n.IDL("seLinkAu")},
@@ -586,6 +591,7 @@ function vkInitSettings(){
       {id:74, text:app.i18n.IDL("seLeaveGroupLinks")},
       {id:79, text:vk_settings.dislikes_icons()+app.i18n.IDL("seDislikes"),info:'infoUseNetTrafic'},
       {id:86, text:app.i18n.IDL("seDisableWallWikiBox")},
+      {id:97, text:examples.seSubscribeToPostComments+app.i18n.IDL("seSubscribeToPostComments")},
       {id:88, text:app.i18n.IDL("seGroupRequestsBlock"),info:'infoUseNetTrafic'},
 		{id:9,  header:app.i18n.IDL("seTestFr"), text:app.i18n.IDL("seRefList"), sub:{id:1, text:'<br>'+app.i18n.IDL("now")+': <b>%cur</b> '+app.i18n.IDL("day")+'<br>'+app.i18n.IDL("set")+': %sets'+
             '<br><a onClick="javascript:vkFriendsCheck();" style="cursor: hand;">'+app.i18n.IDL('seCreList')+'</a>',
