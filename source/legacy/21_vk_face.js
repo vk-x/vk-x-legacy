@@ -782,7 +782,7 @@ vk_menu={
          ['/dev/datatypes','Types'],
          ['/dev/api_requests','Requests'],
          ['/dev/auth_direct','Direct API auth']
-      ]],
+      ]]
    ],
    get_custom_links:function(){
       try {
@@ -1069,7 +1069,7 @@ function vkMenu(){//vkExLeftMenu
         ["fave?section=likes_photo",app.i18n.IDL("mFaP")],
         ["fave?section=likes_video",app.i18n.IDL("mFaVI")],
         ["fave?section=likes_posts",app.i18n.IDL("mFaPO")],
-        ["cc",app.i18n.IDL("vk_cc")],
+        ["cc",app.i18n.IDL("vk_cc")]
     ],
     'settings':[
         ['settings',app.i18n.IDL("mSeO")],

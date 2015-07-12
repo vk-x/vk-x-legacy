@@ -74,7 +74,7 @@ var SetsOnLocalStore={
   'GrList':'s',//myGrList
   'menu_custom_links':'s',
   'WallsID':'s'
-}
+};
 var vk_showinstall=true;
 var vkLdrImg='<img src="/images/upload.gif">';
 var vkLdrMonoImg='<img src="/images/upload_inv_mono.gif">';

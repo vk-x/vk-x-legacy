@@ -120,7 +120,7 @@ vk_search={
          [rel,app.i18n.IDL('Relation')],
 			[profile.mobile_phone, app.i18n.IDL('Mob_tel')],
 			[profile.home_phone, app.i18n.IDL('Home_tel')],
-         [profile.skype, 'Skype'],
+         [profile.skype, 'Skype']
 		];
       var info_html='';
 		for (var i=0; i<info_labels.length;i++)
@@ -1699,11 +1699,11 @@ if (!masks[id]) return;
 	masks={'profile_full_info':vk_shuts_prof};
 	if ((el==3 && ge('profile_full_link').getAttribute('title').match('hid'))	 || el==0){
      addClass(c,"shut"); profile.hideFull();
-	   ge('profile_full_link') ? null : geByClass('profile_info_link')[0].id='profile_full_link';
+	   if (ge('profile_full_link') == null) geByClass('profile_info_link')[0].id='profile_full_link';
 	   ge('profile_full_link').setAttribute('title','show');
   }	else {
      removeClass(c,"shut"); profile.showFull(cur.oid);
-	   ge('profile_full_link') ? null : geByClass('profile_info_link')[0].id='profile_full_link';
+	   if (ge('profile_full_link') == null) geByClass('profile_info_link')[0].id='profile_full_link';
 	   ge('profile_full_link').setAttribute('title','hide');
   }
   ge('profile_full_link').setAttribute('onclick','shut(\'profile_full_info\');');
@@ -3123,7 +3123,7 @@ vk_board={
       var rx=/post(-\d+)_(\d+)/;
       var last_id=parseInt(el.id.match(rx)[2]);
       var idprogr=el.id+'_progress';
-      var idres=el.id+'_other';el.id+'_results'
+      var idres=el.id+'_other';
       var idcont=el.id+'_results';
       var idctrls=el.id+'_ctrls';
       var panel=ge(idcont);
