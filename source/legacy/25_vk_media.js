@@ -2952,6 +2952,7 @@ vk_audio={
       .album_choose{display: block;float: left; padding: 6px 10px; min-width: 175px;}\
       #vk_links_to_audio_on_page{padding: 10px; text-align:center; display:block;}\
      #albumBanned .post_dislike_icon{opacity: 1;}\
+     .vk_deldup_btn_wrap{padding: 0 10px;}\
      .title_wrap { position: relative; }\
      .title_wrap .size {\
         display: none;\
@@ -3610,7 +3611,9 @@ function vkAudioDelDup(add_button,btn){
 		} else if (nav.objLoc[0]=='search' && nav.objLoc['c[section]']=='audio'){
 			var p=ge('search_filters');
 			if (ge('vk_deldup_btn') || !p) return;
-			p.appendChild(vkCe('div',{"class":'no_select filter_open',
+			var cont=vkCe('div',{"class":'vk_deldup_btn_wrap'});
+      p.appendChild(cont);
+      cont.appendChild(vkCe('div',{"class":'no_select filter_open',
 									  "onclick":"searcher.toggleFilter(this, 'vk_del_dup');",
 									  "onselectstart":"return false"},app.i18n.IDL('Duplicates')));
 			p.appendChild(vkCe('div',{id:"vk_del_dup"},'\
