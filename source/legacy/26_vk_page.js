@@ -573,6 +573,78 @@ function vkWallReply(post,toMsgId, toId, event, rf,v,replyName){
       }
 }
 
+function vkPostSubscribe(oid, id_post){     // Подписаться на пост на стене путем добавления и удаления коммента
+    // Сначала запускаем перехват изменений DOM-а, чтобы удалить кнопку "добавлен 1 комментарий" и сам коммент,
+    // потому что вконтакт присылает новые комменты, даже если они были моментально удалены.
+    var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+    var list = ge('replies'+oid+'_'+id_post);   // контейнер с комментами. Будем следить за ним.
+    var observer = new MutationObserver(function(mutations, _this) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList') {
+                if (mutation.addedNodes)
+                    list.removeChild(mutation.addedNodes[0]);   // удаляем добавленный коммент
+                var added_comment_link = geByClass('replies_open',list.parentNode);
+                if (added_comment_link.length)  // если есть кнопка "добавлен 1 комментарий",
+                    list.parentNode.removeChild(added_comment_link[0]); // то удаляем её.
+                _this.disconnect(); // Остановить прослушивание изменений DOM
+            }
+        });
+    });
+    observer.observe(list, { childList: true });
+    // Собственно, добавление и удаление комментария.
+    app.vkApi.request({
+        method: "wall.addComment",
+        data: { owner_id: oid, post_id: id_post, text: '[subscribing using vk-x...]' },
+        callback: function(result) {
+            if (result.response) {
+                app.vkApi.request({
+                    method: "wall.deleteComment",
+                    data: { owner_id: oid, comment_id: result.response.comment_id },
+                    callback: function(result) {
+                        if (result.response) {
+                            vkMsg(app.i18n.IDL('Done'));
+                        } else {
+                            vkMsg(app.i18n.IDL('Error'));
+                        }
+                    }
+                });
+            } else {
+                vkMsg(app.i18n.IDL('Error'));
+            }
+        }
+    });
+}
+
+function vkPostSubscribeBtn(node) {      // Добавление кнопки "Подписаться на пост"
+    // при первом вызове (который без параметров) добавляем стили кнопки "подписаться"
+    if (!node) vkaddcss('                               \
+        .post_subscribe {                               \
+            padding:    5px 6px;                        \
+            cursor:     pointer;                        \
+            visibility: hidden;                         \
+        }                                               \
+        .wall_post_over .post_subscribe {               \
+            visibility: visible;                        \
+        }                                               \
+        .post_subscribe i {                             \
+            width:      11px;                           \
+            height:     11px;                           \
+            background-image: url("'+subscribe_icon+'");\
+        }');
+
+    var els = geByClass('post_full_like', node);    // все контейнеры с лайками
+    for (var i = 0; i < els.length; i++) {
+        var parentContainer = els[i];
+        var id = parentContainer.innerHTML.match(/(-?\d+)_(\d+)'/);    // id владельца и записи, для которой создается кнопка
+        parentContainer.appendChild(vkCe('div', {
+                "title":    app.i18n.IDL('AddToSubscribtions'),
+                "class":    "post_subscribe fl_r",
+                "onclick":  "vkPostSubscribe(" + id[1] + ", " + id[2] + ")"
+            },
+            '<i class="sp_main fl_l"></i>'
+        ));
+    }
+}
 
 function vkPollResults(post_id,pid){
    var tpl='\
