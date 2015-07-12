@@ -5237,9 +5237,6 @@ vk_vid_down={
       ge('vk_glinks_max720p').onclick=run.pbind(3);
 
       var show_links=function(list){
-         vkaddcss('#vk_mp3_links_area, #vk_m3u_playlist_area, #vk_pls_playlist_area, #vk_mp3_wget_links_area{width:520px; height:400px;}');
-            //var res='#EXTM3U\n';
-            //var pls='[playlist]\n\n';
             var links=[];
             //var list=r.response;
             for (var i=0;i<list.length;i++){
@@ -5973,6 +5970,7 @@ vk_vid_down={
 }
 
 vk_au_down={
+   css:'#vk_mp3_links_area, #vk_m3u_playlist_area,#vk_pls_playlist_area, #vk_mp3_wget_links_area{width:520px; height:400px;}',
    page:function(){
       vk_au_down.vkAudioPlayList(true);
    },
@@ -5991,7 +5989,6 @@ vk_au_down={
        td.innerHTML='<a href="'+url+'"  download="'+name+'" title="'+name+'" onmousedown="vk_audio.prevent_play();" onclick="vk_audio.prevent_play(); return vkDownloadFile(this);" onmouseover="vkDragOutFile(this);"><div onmouseover_="vkGetAudioSize(\''+id+'\',this)" class="play_new down_btn" id="down'+id+'"></div></a>';
        tr.appendChild(td);
        el.setAttribute('vk_ok','1');
-       //vk$(this).dragout();
    },
    vkAudioPlayList: function(add_button){
       if(add_button){
@@ -6007,10 +6004,8 @@ vk_au_down={
             },'<div class="label">'+app.i18n.IDL('Links')+'</div>');
 
          p.insertBefore(btn,p.firstChild);
-         //p.innerHTML+='<span class="divider">|</span><a onclick="vkAudioPlayList(); return false;" href="#" id="vkmp3links">'+app.i18n.IDL('Links')+'</a>';
          return;
       }
-      vkaddcss('#vk_mp3_links_area, #vk_m3u_playlist_area,#vk_pls_playlist_area{width:520px; height:400px;}');
       var params={};
       if (cur.album_id && cur.album_id>0) params['album_id']=cur.album_id;
       var box=vkAlertBox('',vkBigLdrImg);
