@@ -62,7 +62,8 @@ var VKOPT_CFG_LIST=[
          'FULL_ENCODE_FILENAME',
          'PHOTO_DOWNLOAD_NAMES',
          'ZODIAK_SIGN_OPHIUCHUS',
-         'AUDIO_DOWNLOAD_POSTFIX'
+         'AUDIO_DOWNLOAD_POSTFIX',
+         'POST_SUBSCRIBE_BTN'
 ];
 
 var vkNewSettings=[88,89,90,91,92,93,94,95,96]; //"new" label on settings item

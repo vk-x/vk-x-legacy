@@ -605,7 +605,7 @@ function vkStyles(){
    main_css+=vk_board.css;
    main_css+=vk_photos.css;
    main_css+=vk_audio.css;
-   main_css+=vk_feed.css;
+   main_css+=vk_feed.css();
    main_css+=vk_groups.css;
    main_css+=vk_search.css;
    main_css+=vk_videos.css();
