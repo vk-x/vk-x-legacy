@@ -541,7 +541,7 @@ if (!window.Audio){
 			//} catch(e){	vklog('Inj_Error: '+func+'=function('+arg+'){'+ac+code+'}',1);	}
 		},
       need_porno:function(){
-         return vkbrowser.mozilla && !(vkbrowser.mozilla && parseInt(vkbrowser.version)>=17);
+         return vkbrowser.mozilla && parseInt(vkbrowser.version) < 17;
       },
 		toRE:function(s,m){
 			if (Inj.need_porno() && (typeof s)=='string' && (s.indexOf("+'")!=-1 ||s.indexOf("'+")!=-1 || s.indexOf('"+')!=-1)){
