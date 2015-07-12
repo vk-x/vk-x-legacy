@@ -764,6 +764,7 @@
 		WallPost: "[ Post from wall ]"
 		wallsHelp: "For groups wall before id add symbol g. Example: g123456"
 		WarnSetting: "<b>This option isn't recommended to use</b><br>Don't turn it on, if you aren't sure!!!"
+		wget_links: "Links for Wget"
 		who_dislike: "People who disliked it"
 		whofavedofline: "Added to faves and offline now"
 		whofavedonline: "Added to faves and online now"
