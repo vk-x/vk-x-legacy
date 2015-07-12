@@ -263,6 +263,7 @@
 		links: "Ссылки"
 		Links: "[ Ссылки ]"
 		LinksGet: "Получить ссылки"
+		LinksGif: "[ Ссылки на GIF ]"
 		LinkToUserOrGroup: "Ссылка на пользователя или группу"
 		listreq: "Запрос списка"
 		ListTitle: "Название списка"

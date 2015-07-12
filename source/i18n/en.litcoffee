@@ -271,6 +271,7 @@
 		links: "Links"
 		Links: "[ Links ]"
 		LinksGet: "Get links"
+		LinksGif: "[ Links to GIF ]"
 		LinkToUser: "Link to user"
 		LinkToUserOrGroup: "Link to user or community"
 		listreq: "Requesting list"
