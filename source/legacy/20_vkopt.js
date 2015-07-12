@@ -42,6 +42,7 @@ var VIDEO_LINKS_WITH_EXTRA=true;
 var FULL_ENCODE_FILENAME=false;
 var PHOTO_DOWNLOAD_NAMES=false;
 var ZODIAK_SIGN_OPHIUCHUS=false;
+var AUDIO_DOWNLOAD_POSTFIX=false;
 
 var VKOPT_CFG_LIST=[
          'vk_DEBUG',
@@ -60,7 +61,8 @@ var VKOPT_CFG_LIST=[
          'VIDEO_LINKS_WITH_EXTRA',
          'FULL_ENCODE_FILENAME',
          'PHOTO_DOWNLOAD_NAMES',
-         'ZODIAK_SIGN_OPHIUCHUS'
+         'ZODIAK_SIGN_OPHIUCHUS',
+         'AUDIO_DOWNLOAD_POSTFIX'
 ];
 
 var vkNewSettings=[88,89,90,91,92,93,94,95,96]; //"new" label on settings item

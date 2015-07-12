@@ -3877,13 +3877,12 @@ function vkGetAudioSize(id,el){
 	vkAudioShowOnlySize( id );
 }
 function vkDownloadPostfix(){
-	var postfixEnabled = false;
 	/*!
 	активация функции контакта изменяющая загловок ответа,
 	для скачивания файла минуя плагины типа QuickTime.
 	но есть вероятность оказаться на виду у разработчиков контакта и спалиться за скачиванием музыки
 	*/
-	return (postfixEnabled ? 'dl=1' : '');
+	return (AUDIO_DOWNLOAD_POSTFIX ? 'dl=1' : '');
 }
 function vkAudioSizeLabel(audio){
 return '<small class="duration fl_r" id="vk_asize'+audio[0]+'_'+audio[1]+'" url="'+audio[2]+'" dur="'+audio[3]+'"></small>';
