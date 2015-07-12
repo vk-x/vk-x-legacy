@@ -1969,6 +1969,50 @@ function vkWikiNew(){
       nav.go("pages?act=edit&oid="+cur.oid+"&p="+encodeURIComponent(title));
 }
 
+// Фунция сохранения всех документов (или только гифок)
+function vkDocsDownloadAll(_oid, onlyGifs){
+  vkDocsList='<div style="background:#FFB; border:1px solid #AA0;  margin:20px; padding:20px;">'+app.i18n.IDL('HtmlPageSaveHelp')+'</div>';
+  app.vkApi.request({
+    method: "docs.get",
+    data: { oid: _oid },
+    callback: function(r) {
+        if (!r.error && r.response[0]>0){      // Если у владельца есть документы и они доступны
+           for (var i=1;i< r.response[0];i++) // формирование кода страницы. не-картинки отображатьсяне не будут, но все равно загрузятся.
+           if (!onlyGifs || r.response[i].ext=="gif") // Если загружаем только гифки, то проверяем расширение файла
+              vkDocsList+='<img src="'+r.response[i].url+'" />';
+           // создание таблички со сылкой на сгенерированную страницу
+           var box=new MessageBox({title: app.i18n.IDL('SavingDocuments'),width:"350px"});
+           box.removeButtons();
+           box.addButton(box_close,box.hide,'no');
+           var html='<h4><a href="#" onclick="vkWnd(vkDocsList,\''+document.title.replace(/['"]+/g,"")+'\'); return false;">'+app.i18n.IDL('ClickForShowPage')+'</a></h4>';
+           box.content(html).show();
+        }
+    }
+  });
+}
+function vkDocsPage() {   // Добавляет кнопку "скачать всё" и "скачать все GIF" на странице "Документы"
+    var buttons = ge('docs_side_filter');   // Родительский контейнер всех кнопок, которые справа
+    if (buttons) {  // Добавление кнопок
+        buttons.insertBefore(vkCe('div',{   // Кнопка "Скачать всё"
+                "class": "side_filter",
+                "onmousedown": "vkDocsDownloadAll(cur.oid);",
+                "onmouseover": "addClass(this, 'side_filter_over');",
+                "onmouseout":  "removeClass(this, 'side_filter_over');"
+            },
+            app.i18n.IDL('downloadAll')
+        ),ge('docs_section_all')); // перед кнопкой "все документы"
+
+     buttons.insertBefore(vkCe('div',{   // Кнопка "Скачать все гифки"
+           "class": "side_filter",
+           "onmousedown": "vkDocsDownloadAll(cur.oid,true);",
+           "onmouseover": "addClass(this, 'side_filter_over');",
+           "onmouseout":  "removeClass(this, 'side_filter_over');"
+        },
+        app.i18n.IDL('downloadAllGifs')
+     ),ge('docs_section_all')); // перед кнопкой "все документы"
+  }
+}
+
 /* PAGES.JS */
 vk_pages={
    inj:function(){
