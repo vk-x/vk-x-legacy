@@ -602,7 +602,7 @@
 		seSmilesAlwaysShowWarning: "Включение опции «всегда отображать» может привести к замедленной работе сайта"
 		seSortFeedPhotos: "Сортировать новые фотографии в новостях в порядке добавления"
 		seSortNam: "[ Сортировка списков друзей по параметру ]"
-		seSubscribeToPostComments: "Кнопка &#171;Подписаться&#187; на <a href=\"/feed?section=comments\">слежение за комментариями</a> к посту"
+		seSubscribeToPostComments: "Кнопка «Подписаться» на <a href=\"/feed?section=comments\">слежение за комментариями</a> к посту"
 		seSwichTextChr: "Изменять раскладку текста в текущем поле при нажатии CTRL+ Q или CTRL+ ]"
 		set: "Установить"
 		seTestFr: "[ Проверка удаленных/новых друзей ]"

@@ -670,6 +670,7 @@
 		seSortFeedPhotos: "Sort new photos in feed by time"
 		seSortNam: "Sort friends list by parameter"
 		seStyleBtns: "Advanced text edit"
+		seSubscribeToPostComments: "«Subscribe» to <a href=\"/feed?section=comments\">updates of post comments</a> button"
 		seSwichTextChr: "Change keyboard layout in current textfield by CTRL+Q or CTRL+]"
 		set: "Set"
 		seTestFr: "Checking new/deleted friends"
