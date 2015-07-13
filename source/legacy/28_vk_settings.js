@@ -587,7 +587,7 @@ function vkInitSettings(){
 		{id:34, text:app.i18n.IDL("seSwichTextChr")},
       {id:77, text:app.i18n.IDL("seBatchCleaners")},
       {id:78, text:app.i18n.IDL("seCutBracket")},
-      {id:97, header:app.i18n.IDL("seRegexBlock"), text:'<input type="text" style="width: 100%;" onchange="setSet(\'-\',encodeURIComponent(this.value),6)" value="'+decodeURIComponent(getSet('-',6))+'" />'}
+      {id:98, text:app.i18n.IDL("seRegexBlock")+'<input type="text" style="width: 100%;" onchange="setSet(\'-\',encodeURIComponent(this.value),6)" value="'+decodeURIComponent(getSet('-',6))+'" />'}
     ],
    Hidden:[
       {id:82, text:app.i18n.IDL("FullThumb")},
@@ -596,7 +596,7 @@ function vkInitSettings(){
    ]
   };
 
-	//LAST 96
+	//LAST 98
 	/*
       vkoptSets['advanced']=[
          'vk_upd_menu_timeout',
