@@ -590,7 +590,7 @@ function vkInitSettings(){
       {id:97, text:examples.seSubscribeToPostComments+app.i18n.IDL("seSubscribeToPostComments")},
       {id:88, text:app.i18n.IDL("seGroupRequestsBlock"),info:'infoUseNetTrafic'},
 		{id:9,  header:app.i18n.IDL("seTestFr"), text:app.i18n.IDL("seRefList"), sub:{id:1, text:'<br>'+app.i18n.IDL("now")+': <b>%cur</b> '+app.i18n.IDL("day")+'<br>'+app.i18n.IDL("set")+': %sets'+
-            '<br><a onClick="javascript:vkFriendsCheck();" style="cursor: hand;">'+app.i18n.IDL('seCreList')+'</a>',
+            '<br><a onClick="vkFriendsCheck();" style="cursor: hand;">'+app.i18n.IDL('seCreList')+'</a>',
             ops:[1,2,3,4,5,6,7]}},
 		{id:6, text:app.i18n.IDL("seOnAway")},
 		{id:34, text:app.i18n.IDL("seSwichTextChr")},
