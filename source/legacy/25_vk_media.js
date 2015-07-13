@@ -5434,7 +5434,7 @@ vk_vid_down={
 
                            var vidname=vkCleanFileName(winToUtf(decodeURIComponent(obj.title || obj.md_title))).replace(/\+/g,' ');
 
-                           videos.push([v,vidname+' ['+fmt[i]+']',vidext]); url);
+                           videos.push([v,vidname+' ['+fmt[i]+']',vidext]);
                   } else {
                     //not vk video
                   }

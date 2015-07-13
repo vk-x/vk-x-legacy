@@ -3603,8 +3603,8 @@ vk_feed={
         if (input) {
             input.onkeyup = vk_feed.input_handler;
             input.onfocus = function () {   // Подсказка о действии клавиши Enter
-+                vkSettInfo(input, app.i18n.IDL('EnterToSearch'));
-+            }
+                vkSettInfo(input, app.i18n.IDL('EnterToSearch'));
+            }
         }
         vk_feed.additional_owners = [];
     },
