@@ -6050,8 +6050,8 @@ vk_au_down={
          var links_joined = links.join('\n');
          links_html='<div class="vk_mp3_links">\
                <textarea id="vk_mp3_links_area">'+links_joined+'</textarea>\
-               <a download="playlist.txt" href="data:text/plain;base64,' + base64_encode(utf8ToWindows1251(utf8_encode(links_joined))) + '">'+vkButton(app.i18n.IDL('.TXT'))+'</a>\
-               <a download="playlist.txt" href="data:text/plain;base64,' + base64_encode(utf8_encode(links_joined)) + '">'+vkButton(app.i18n.IDL('.TXT')+' (UTF-8)','',1)+'</a>\
+               <a download="playlist.txt" href="data:text/plain;base64,' + base64_encode(utf8ToWindows1251(utf8_encode(links_joined))) + '">'+vkButton('.TXT')+'</a>\
+               <a download="playlist.txt" href="data:text/plain;base64,' + base64_encode(utf8_encode(links_joined)) + '">'+vkButton('.TXT (UTF-8)','',1)+'</a>\
                </div>';
          var wget_links_joined = wget_links.join('\n');
          wget_links_html='<div class="vk_mp3_wget_links">\

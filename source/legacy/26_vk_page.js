@@ -2011,8 +2011,8 @@ function vkDocsShowBox(tpl) { // создание таблички со сылк
             wget_links+='wget "'+item.url+'" -O "'+winToUtf(item.filename).replace(/"/g,'\\"')+'"\n';
          }
          var links_html='<textarea class="vk_docs_links_area">'+links+'</textarea>\
-                  <a download="DocumentsLinks.txt" href="data:text/plain;base64,' + base64_encode(utf8ToWindows1251(utf8_encode(links))) + '">'+vkButton(app.i18n.IDL('.TXT'))+'</a>\
-                  <a download="DocumentsLinks.txt" href="data:text/plain;base64,' + base64_encode(utf8_encode(links)) + '">'+vkButton(app.i18n.IDL('.TXT')+' (UTF-8)','',1)+'</a>';
+                  <a download="DocumentsLinks.txt" href="data:text/plain;base64,' + base64_encode(utf8ToWindows1251(utf8_encode(links))) + '">'+vkButton('.TXT')+'</a>\
+                  <a download="DocumentsLinks.txt" href="data:text/plain;base64,' + base64_encode(utf8_encode(links)) + '">'+vkButton('.TXT (UTF-8)','',1)+'</a>';
          var wget_links_html='<textarea class="vk_docs_links_area">'+wget_links+'</textarea>\
                   <a download="DownloadDocuments.sh" href="data:text/plain;base64,' + base64_encode(utf8ToWindows1251(utf8_encode(wget_links))) + '">'+vkButton(app.i18n.IDL('.SH'))+'</a>\
                   <a download="DownloadDocuments.sh" href="data:text/plain;base64,' + base64_encode(utf8_encode(wget_links)) + '">'+vkButton(app.i18n.IDL('.SH')+' (UTF-8)','',1)+'</a>';

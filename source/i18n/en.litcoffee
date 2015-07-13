@@ -770,6 +770,7 @@
 		who_dislike: "People who disliked it"
 		whofavedofline: "Added to faves and offline now"
 		whofavedonline: "Added to faves and online now"
+		Wiki: "Wiki"
 		WikiPagesList: "[ List of Wiki-pages ]"
 		with_audio: "with audios"
 		with_graff: "with graffities"
