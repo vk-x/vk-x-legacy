@@ -182,8 +182,19 @@ It just checks that request is correct and calls provided function
 					data: "bar"
 					callback: callback
 
-			it "should use sane defaults", ->
-				# ajax.request()
+			it "should use sane defaults", ( done ) ->
+				requests = []
+				xhr = sinon.useFakeXMLHttpRequest()
+				xhr.onCreate = ( xhr ) -> requests.push xhr
+
+				ajax.request()
+
+				requests.length.should.equal 1
+				requests[ 0 ].url.should.equal location.href
+				requests[ 0 ].method.should.equal "GET"
+				
+				xhr.restore()
+				done()
 
 #### It sends cross-origin request data to background script:
 
