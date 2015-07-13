@@ -1575,8 +1575,6 @@ function vkFavUsersList(add_button){
         vkProcessNode(p);
       }
     });
-
-   return false;
 }
 
 ////
