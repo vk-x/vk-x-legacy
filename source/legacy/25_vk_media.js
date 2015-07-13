@@ -3636,7 +3636,7 @@ function vkAudioDelDup(add_button,btn){
 		lockButton(btn);
 		var dcount=0;
 		var adata={};
-		var divs = vkArr2Arr(geByClass('play_new'));
+		var divs = geByClass('play_new').slice();
 		for (var i=0; i<divs.length; i++){
 			if (divs[i].id && divs[i].id.split('play')[1]) var id=divs[i].id.split('play')[1];
 			else continue;
@@ -3656,7 +3656,7 @@ function vkAudioDelDup(add_button,btn){
 		var adata={};
 		var urls=[];
 		var dcount=0;
-		var divs = vkArr2Arr(geByClass('play_new'));
+		var divs = geByClass('play_new').slice();
 		for (var i=0; i<divs.length; i++){
 			if (divs[i].id && divs[i].id.split('play')[1]) var id=divs[i].id.split('play')[1];
 			else continue;
