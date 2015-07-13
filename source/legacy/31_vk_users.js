@@ -766,14 +766,13 @@ function vkGetProfile(uid,callback,no_switch_button){
 		if(rate>=90000) rate_text=rate+'$';
 
 		var percentwidth=rate*(1/Math.pow(10,level<3?2:level))*fullwidth;
-		var html='<div class="vkrate '+lvl_class+'">'+
+		return '<div class="vkrate '+lvl_class+'">'+
 			'<div class="vk_rate_left" style="width:'+percentwidth+'px;">  </div>'+
 			'<div class="vk_rate_right" style="width:'+fullwidth+'px;"> </div>'+
 			'<div class="vkpercent" style="width:'+fullwidth+'px;">'+rate_text+'</div>'+
 		  '</div>';
-		return html;
 	  }
-	  //make_rate(361);
+
 	  var MakeProfile = function(r){
 		if (!r.response || !r.response.profile) return;
 		var profile=r.response.profile;
@@ -782,24 +781,6 @@ function vkGetProfile(uid,callback,no_switch_button){
 		var country=r.response.country;
 		var city=r.response.city;
       var msg_count=r.response.msg_count;
-
-      //console.log(profile);
-      /*
-         var uid='+uid+';
-         var x=API.friends.areFriends({uids:uid});
-         if (x[0].friend_status==3){
-            var lists=API.friends.getLists();
-            var friends=API.friends.get({fields:'uid,lists'});
-            var i=0;
-            var user_in_lists=null;
-            while (i<friends.length)
-               if (friends[i].uid==uid){
-                     user_in_lists=friends[i].lists
-               }
-
-         }
-         return {uid:uid,in_lists:user_in_lists,lists:lists}
-      */
 		var common='';
 		//console.log(profile);
 		var username='<a href="/id'+uid+'" onclick="return nav.go(this, event);">'+profile.first_name+' '+profile.nickname+' '+profile.last_name+'</a>';

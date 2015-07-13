@@ -341,18 +341,15 @@ var TextPasteSmiles={
 
 		div.setAttribute('style',style);
 		div.appendChild($c("#", s));
-		//div.appendChild($c("span",{"class":"time", "#text": (new Date().getTime()) - vkstarted}));
 		div.innerHTML=s+'<span class="time">'+(new Date((new Date().getTime()) - vkstarted)).format("MM:ss:L",true)+'</span>';
 
 		if (LAST_LOG_MSG==s){
 			LAST_EQ_LOG_MSG_COUNT++;
-			var r='<span class="count">'+LAST_EQ_LOG_MSG_COUNT+'</span>'+div.innerHTML;
-			node.lastChild.innerHTML=r;
+			node.lastChild.innerHTML='<span class="count">'+LAST_EQ_LOG_MSG_COUNT+'</span>'+div.innerHTML;
 		} else {
 			LAST_EQ_LOG_MSG_COUNT=0;
 			node.appendChild(div);
 		}
-		//node.appendChild(div);
 		node.scrollTop = node.scrollHeight;
 		LAST_LOG_MSG=s;
 	  }
