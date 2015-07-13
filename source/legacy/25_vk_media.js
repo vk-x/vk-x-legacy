@@ -830,12 +830,11 @@ var vk_photos = {
 }
 
 function vkPVPhotoMover(show_selector){
-   if (!show_selector && cur.pvCurPhoto && (cur.pvCurPhoto.actions || {}).edit && ge('pv_album_name') && !ge('pv_album_name').innerHTML.match('vkPVPhotoMover') && trim(ge('pv_album_name').innerHTML)!="" ){
+   if (!show_selector && cur.pvCurPhoto && (cur.pvCurPhoto.actions || {}).edit && ge('pv_album_name') && !/vkPVPhotoMover/.test(ge('pv_album_name').innerHTML) && trim(ge('pv_album_name').innerHTML)!="" ){
       ge('pv_album_name').innerHTML= '<div id="vk_ph_album_info">'+
                                     ge('pv_album_name').innerHTML+
                                     '<div class="fl_r vk_edit_ico" onclick="return vkPVPhotoMover(true);"> </div>'+
                                  '</div><div id="vk_ph_album_selector"></div>';
-      //appendChild(vkCe('div',{'class':'fl_r', id:'vk_ph_move', onclick:"return vkPVPhotoMover(true);"},'edit'));
       return;
    }
    if (!show_selector) return;
@@ -3003,13 +3002,11 @@ vk_audio={
      // get mp3 url maybe from /audio?act=reload_audio&al=1&audio_id=132434853&owner_id=10723321
 
      if ((node || ge('content')).innerHTML.indexOf('play_new')==-1) return;
-     var smartlink=(getSet(1) == 'y')?true:false;
-     var download=(getSet(0) == 'y')?1:0;
-     //var clean_trash=getSet(94) == 'y';
+     var smartlink=(getSet(1) == 'y');
+     var download=(getSet(0) == 'y');
      if (!download && getSet(43) != 'y') return;
      var SearchLink=true;
      var trim=function(text) { return (text || "").replace(/^\s+|\s+$/g, " "); }
-     //InitAudiosMenu();
 
      var divs = geByClass('play_new',node);
      for (var i=0; i<divs.length; i++){
@@ -3026,7 +3023,6 @@ vk_audio={
             //if (clean_trash) vk_audio.process_node(anode);
              var el=geByClass("duration",anode )[0];
              var spans=el.parentNode.getElementsByTagName('span');
-             var span_title=null;
              var span_title=geByClass('title',anode )[0];
              if (window.nav && nav.objLoc[0]=='search' && !span_title){
                 for (var x=0; x<spans.length;x++)
@@ -3499,7 +3495,7 @@ function vkCleanAudios(){
 	vkAlertBox(app.i18n.IDL('DelAudios'),'<b><a href="/'+owner+'">'+owner+'</a></b><br>'+app.i18n.IDL('DelAllAutiosConfirm'),run,true);
 }
 vkAudioEd = {
-   Delete:function(id,aid,el){
+   Delete:function(id,aid,_el){
     var el = ge('audio' + aid);
     var h = getSize(geByClass1('play_btn', el))[1];
     stManager.add(['audio_edit.js']);
@@ -4016,8 +4012,7 @@ vkLastFM={
       fm.token=localStorage['lastfm_token'];
       fm.username=localStorage['lastfm_username'];
       fm.session_key=localStorage['lastfm_session_key'];
-      fm.enable_scrobbling=parseInt(localStorage['lastfm_enable_scrobbling']);
-      if (isNaN(fm.enable_scrobbling)) fm.enable_scrobbling=0;
+      fm.enable_scrobbling=parseInt(localStorage['lastfm_enable_scrobbling']) || false;
       function LastFM(options){
          var apiKey=options.apiKey||'';
          var apiSecret=options.apiSecret||'';
@@ -4353,11 +4348,7 @@ vkLastFM={
    },
    toggle:function(hide_tooltip){
       var fm=vkLastFM;
-      /*
-      if (fm.enable_scrobbling){
-         fm.enable_scrobbling=0;
-      }*/
-      fm.enable_scrobbling=fm.enable_scrobbling?0:1;
+      fm.enable_scrobbling=!fm.enable_scrobbling;
       var els=geByClass('vk_lastfm_icon');
       for (var i=0; i<els.length;i++){
          var el=els[i];//ge('vk_lastfm_icon');
