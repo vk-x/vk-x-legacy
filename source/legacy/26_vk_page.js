@@ -3335,6 +3335,7 @@ vk_feed={
       .vkf_filter .vk_feed_links,\
       .vkf_filter .vk_feed_group,\
       .vkf_filter .vk_feed_friend,\
+      .vkf_filter .vk_feed_regexp,\
       .vkf_filter .vk_feed_repost{display:none !important}\
       \
       .vkf_photo .vk_feed_photo,\
@@ -3347,6 +3348,7 @@ vk_feed={
       .vkf_links .vk_feed_links,\
       .vkf_group .vk_feed_group,\
       .vkf_friend .vk_feed_friend,\
+      .vkf_regexp .vk_feed_regexp,\
       .vkf_repost .vk_feed_repost{display:block !important}\
       \
       .vkf_nophoto .vk_feed_photo,\
@@ -3359,7 +3361,8 @@ vk_feed={
       .vkf_nolinks .vk_feed_links,\
       .vkf_nogroup .vk_feed_group,\
       .vkf_nofriend .vk_feed_friend,\
-      .vkf_norepost .vk_feed_repost{display:none !important}\
+      .vkf_noregexp .vk_feed_regexp,\
+      .vkf_norepost .vk_feed_repost{border:2px solid red !important}\
    ';
    },
    inj:function(){
@@ -3396,7 +3399,8 @@ vk_feed={
             text  :false,
             links :false,
             friend:false,
-            group :false
+            group :false,
+            regexp:false
          };
 
          var p=geByClass('post',row)[0];
@@ -3493,7 +3497,7 @@ vk_feed={
       var panel=vkCe('div',{id:'vk_feed_filter_panel',style:'display:none;'});
       p.appendChild(panel);
 
-      var cfg=(vkGetVal('vk_feed_filter') || '00000000000').split('');
+      var cfg=(vkGetVal('vk_feed_filter') || '000000000000').split('');
       var items=[
          [app.i18n.IDL('with_photo'), 'photo', false],// 0    photo
          [app.i18n.IDL('with_video'), 'video', false],// 1    video
@@ -3505,7 +3509,8 @@ vk_feed={
          [app.i18n.IDL('with_text'),  'text',  false],// 7    text
          [app.i18n.IDL('with_links'), 'links', false],// 8    links
          [app.i18n.IDL('from_friend'),'friend',false],// 9    friend
-         [app.i18n.IDL('from_group'), 'group', false] // 10   group
+         [app.i18n.IDL('from_group'), 'group', false], // 10   group
+         [app.i18n.IDL('by_regexp'), 'regexp', false] // 11   regexp
       ];
       for (var i=0; i<items.length; i++){
          if (cfg[i]=='1')
