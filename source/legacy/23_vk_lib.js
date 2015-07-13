@@ -1,6 +1,6 @@
 /* FUNCTIONS LEVEL 0*/
 ///////////
-function isNewLib(){return window.showWriteMessageBox?true:false}
+function isNewLib(){return window.showWriteMessageBox}
 /* CROSS */
 var _ua_ = window.navigator.userAgent.toLowerCase();
 var vkbrowser = {
