@@ -413,7 +413,7 @@ if (!window.Audio){
 		var expire = new Date();
 		if (nDays==null || nDays==0) nDays=365;
 		expire.setTime(today.getTime()+ 3600000*24*nDays);
-		document.cookie = cookieName+ "="+ escape(cookieValue)+
+		document.cookie = cookieName+ "="+ encodeURIComponent(cookieValue)+
 		";expires="+ expire.toUTCString()+
 		((domain) ? ";domain=" + domain : ";domain="+location.host);
 		}
@@ -437,7 +437,7 @@ if (!window.Audio){
 		}	else	{		begin += 2;	}
 		var end = document.cookie.indexOf(";", begin);
 		if (end == -1)	{		end = dc.length;	}
-		return unescape(dc.substring(begin + prefix.length, end));
+		return decodeURIComponent(dc.substring(begin + prefix.length, end));
 	}
 
 	function delCookie(name, path, domain) {

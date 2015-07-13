@@ -873,7 +873,7 @@ function vkPrepareProfileInfo(){
 function checkAgeFunc(_this,_id,_day,_month){
   /*
   if(getSet(27)!='y'){
-    alert(unescape('%u041D%u0443%u0436%u043D%u043E%20%u0432%u043A%u043B%u044E%u0447%u0438%u0442%u044C%20%u043A%u0430%u043B%u0435%u043D%u0434%u0430%u0440%u044C%21'));
+    alert(decodeURIComponent('%u041D%u0443%u0436%u043D%u043E%20%u0432%u043A%u043B%u044E%u0447%u0438%u0442%u044C%20%u043A%u0430%u043B%u0435%u043D%u0434%u0430%u0440%u044C%21'));
     return;
   }*/
   var getAge=function(){
