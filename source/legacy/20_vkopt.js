@@ -43,7 +43,6 @@ var PHOTO_DOWNLOAD_NAMES=false;
 var ZODIAK_SIGN_OPHIUCHUS=false;
 var AUDIO_DOWNLOAD_POSTFIX=false;
 var FEEDFILTER_DEBUG=false;
-var POST_SUBSCRIBE_BTN=false;
 
 var VKOPT_CFG_LIST=[
          'vk_DEBUG',
@@ -64,8 +63,7 @@ var VKOPT_CFG_LIST=[
          'PHOTO_DOWNLOAD_NAMES',
          'ZODIAK_SIGN_OPHIUCHUS',
          'AUDIO_DOWNLOAD_POSTFIX',
-         'FEEDFILTER_DEBUG',
-         'POST_SUBSCRIBE_BTN'
+         'FEEDFILTER_DEBUG'
 ];
 
 var vkNewSettings=[94,95,96,97]; //"new" label on settings item
