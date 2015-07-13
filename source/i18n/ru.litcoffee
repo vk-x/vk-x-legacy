@@ -151,6 +151,7 @@
 		EnterLinkToPhoto: "[Ссылка на фото вида `photoXXX_YYYYY`]"
 		EnterLinkToVideo: "[Ссылка на видео вида `videoXXXX_YYYY`]"
 		EnterLinkToWallPost: "[Ссылка на запись стены вида `wallXXX_YYYYY`]"
+		EnterToSearch: "Нажмите Enter для поиска по адресу страницы"
 		ErrOldVkoptFound: "Обнаружены подключенные файлы старой версии VkOpt. Удалите устаревшие файлы скрипта во избежание проблем."
 		Error: "Ошибка"
 		Events: "События"

@@ -167,6 +167,7 @@
 		EnterLinkToPhoto: "[Link to photo as `photoXXX_YYYYY`]"
 		EnterLinkToVideo: "[Link to video as `videoXXXX_YYYY`]"
 		EnterLinkToWallPost: "[Link to wall post as `wallXXX_YYYYY`]"
+		EnterToSearch: "Press Enter to search by page address"
 		ErrOldVkoptFound: "Old files of VkOpt were found. Delete them to avoid problems."
 		Error: "Error"
 		ErrorStatus3pageClosed: "-3 (Unable to get statuses from closed profile!)"

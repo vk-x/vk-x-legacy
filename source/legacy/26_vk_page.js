@@ -3600,8 +3600,12 @@ vk_feed={
     additional_owners: [],  // массив айдишников тех, кого нашли через прямой адрес странички
     hang_handler: function (box) {  // Повесить на поле ввода "Быстрый поиск", которое в окне box, обработчик нажатия клавиш
         var input = geByClass('olist_filter', box.tabContent)[0];    // поле ввода "Быстрый поиск"
-        if (input)
+        if (input) {
             input.onkeyup = vk_feed.input_handler;
+            input.onfocus = function () {   // Подсказка о действии клавиши Enter
++                vkSettInfo(input, app.i18n.IDL('EnterToSearch'));
++            }
+        }
         vk_feed.additional_owners = [];
     },
     input_handler: function (ev) {  // Обработчик нажатия Enter в поле ввода.
@@ -3634,29 +3638,22 @@ vk_feed={
         }
     },
     search_user: function (url, callback) { // Поиск страницы по url и вызов callback с ответом от API в качестве аргумента
-        if (/^https?:\/\/vk\.com\/[\w\.]+$/.test(url)) {    // если это действительно адрес странички, ищем
+        if (/^(https?:\/\/vk\.com\/)?[\w\.]+$/.test(url)) {    // если это действительно адрес странички, ищем
             var sn = url.split('/').pop();
             if (!sn) return;
 
             app.vkApi.request({
-              method: "users.get",
-              data: { user_ids: sn, fields: "photo_50,screen_name", v: "3.0" },
+              method: "execute",
+              data: {
+                  code: "var u=API.users.get({user_ids: \"" + sn +
+                        "\", fields: \"photo_50,screen_name\"});" +
+                        "if (u) return u;" +
+                        "else return API.groups.getById({group_id: \"" + sn +
+                        "\", fields: \"photo,screen_name\"});",
+                  v: "3.0" },
               callback: function( res ) {
-
                   if ( res.error ) {
-                     app.vkApi.request({
-                       method: "groups.getById",
-                       data: { group_id: sn, fields: "photo,screen_name", v: "3.0" },
-                       callback: function( res ) {
-
-                           if ( res.error ) {
-                              vkMsg( app.i18n.IDL( "Error" ));
-                           } else {
-                              callback( res, res.response, res.error );
-                           }
-
-                       }
-                     });
+                     vkMsg( app.i18n.IDL( "Error" ));
                   } else {
                      callback( res, res.response, res.error );
                   }
