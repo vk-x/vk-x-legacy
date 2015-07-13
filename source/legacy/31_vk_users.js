@@ -652,7 +652,7 @@ function vkShowPhoto(el, img, right,res,uid) {
     }
     var p = ge('vkbigPhoto');
     var pi = ge('vkbigPhotoImg');
-	pi.src = "http://vkontakte.ru/images/upload.gif";
+	pi.src = "/images/upload.gif";
 	ge('vkbigPhotoLink').href="/"+(String(uid).match(/^\d+$/)?'id':'')+uid;
     var onload = function(){
       if (allowShowPhoto) show('vkbigPhoto');
@@ -690,7 +690,7 @@ function vkHidePhoto() {
     allowShowPhoto=false;
     clearTimeout(allowShowPhotoTimer);
     allowHidePhoto=setTimeout(function(){ fadeOut('vkbigPhoto');//hide('vkbigPhoto');
-      //ge('vkbigPhotoImg').src = "http://vkontakte.ru/images/upload.gif";
+      //ge('vkbigPhotoImg').src = "/images/upload.gif";
     },200);
 }
 //javascript: vkGetProfile(13391307);
