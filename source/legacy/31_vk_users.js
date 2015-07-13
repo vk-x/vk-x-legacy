@@ -1003,8 +1003,7 @@ function vkCheckFrLink(){
 	if (getSet(9)=='y' && !ge('section_frcheck')){
 		var ref=ge("section_all");//section_suggestions
 		var sec=vkCe('a',{href:'#', onclick:"vkFriendsCheckRun(true);return false;",id:'section_frcheck',"class":"side_filter"},app.i18n.IDL("refreshList"));
-		ref.parentNode.insertBefore(sec, ref.nextSibling);//
-		return;
+		ref.parentNode.insertBefore(sec, ref.nextSibling);
 	}
 }
 
@@ -1677,8 +1676,7 @@ vk_friends={
          var ref=ge("section_all");//section_suggestions
          if (!ref) return;
          var sec=vkCe('a',{href:'#', onclick:"vk_friends.not_in_list_show(); Friends.selectSection('frnolist');return false;",id:'section_frnolist',"class":"side_filter"},app.i18n.IDL("FrNotInLists"));
-         ref.parentNode.insertBefore(sec, ref.nextSibling);//
-         return;
+         ref.parentNode.insertBefore(sec, ref.nextSibling);
       }
    },
    not_in_list_show:function(){
@@ -1705,8 +1703,7 @@ vk_friends={
          var ref=ge("section_all"); //section_suggestions
          if (!ref) return;
          var sec=vkCe('a',{href:'#', onclick:"vk_friends.deleted_show(); Friends.selectSection('"+id+"');return false;",id:'section_'+id,"class":"side_filter"},app.i18n.IDL("FrDeleted"));
-         ref.parentNode.insertBefore(sec, ref.nextSibling);//
-         return;
+         ref.parentNode.insertBefore(sec, ref.nextSibling);
       }
    },
    deleted_show:function(){
