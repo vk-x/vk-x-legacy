@@ -216,7 +216,7 @@ function VkOptMainInit(){
     app.i18n.detectLanguage( window.vk.lang );
   }
 
-  if (InstallRelease()) return;
+  InstallRelease();
 
 
   if (isNewLib() && !window.lastWindowWidth){
