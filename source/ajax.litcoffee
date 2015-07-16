@@ -5,10 +5,12 @@ This file only contains notes on internal details.
 
 # `ajax` module
 
+	app = require "./app"
+	performRequest = require "./ajax/perform-request"
 	_ = require "lodash"
 	uri = require "./uri"
 
-	ajax = ( app, performRequest ) ->
+	ajax =
 
 ## `ajax.request`
 

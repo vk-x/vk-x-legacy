@@ -3,7 +3,7 @@
 	describe "dislike", ->
 
 		app = require "../../source/app"
-		ajax = require( "../../source/ajax" ) app
+		ajax = require "../../source/ajax"
 		vkApi = require( "../../source/vk-api" ) app, ajax
 		dislike = null
 		beforeEach -> dislike = require( "../../source/dislike" ) ajax, vkApi

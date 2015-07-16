@@ -3,7 +3,7 @@
 	describe "vkApi", ->
 
 		app = require "../../source/app"
-		ajax = require( "../../source/ajax" ) app
+		ajax = require "../../source/ajax"
 		vkApi = null
 		beforeEach -> vkApi = require( "../../source/vk-api" ) app, ajax
 

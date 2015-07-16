@@ -2,12 +2,7 @@
 
 	describe "ajax", ->
 
-		app = require "../../source/app"
-		performRequest = require "../../source/ajax/perform-request"
-		uri = require "../../source/uri"
-		ajaxFactory = require "../../source/ajax"
-		ajax = null
-		beforeEach -> ajax = ajaxFactory app, performRequest
+		ajax = require "../../source/ajax"
 
 ## What?
 
@@ -26,9 +21,7 @@ where the file is stored.
 #### API
 
 ```CoffeeScript
-app = require "./app"
-performRequest = require "./ajax/perform-request"
-ajax = require( "./ajax" ) app, performRequest
+ajax = require "./ajax"
 
 callback = ( response, meta ) -> if meta.status is 200 then alert response
 
@@ -126,6 +119,8 @@ correct and invokes callback if provided.
 It just checks that request is correct and calls provided function
 (which then may send a response message if needed).
 
+		appName = require( "../../source/app" ).name
+
 		mimicBackgroundListener = ( callback, expectedData = {}) ->
 			listener = ( message ) ->
 				# Remove this listener once message is captured.
@@ -135,7 +130,7 @@ It just checks that request is correct and calls provided function
 				for key, value of expectedData
 					requestData.should.have.property key
 					requestData[ key ].should.deep.equal value
-				requestData.requestOf.should.equal app.name
+				requestData.requestOf.should.equal appName
 				callback requestData if callback
 
 			window.addEventListener "message", listener, no
@@ -156,25 +151,25 @@ It just checks that request is correct and calls provided function
 					requestData.url.should.equal "/some?same-origin=path"
 					done()
 
-				fakePerformRequest = sinon.spy ({ data, source, callback }) ->
-					data.should.deep.equal
-						method: "POST"
-						url: "/some?same-origin=path"
-						data: "bar"
-						query: {}
-						headers: {}
-						requestOf: app.name
-						# _requestId is generated using lodash.uniqueId
-						# which has a separate instance for each "ajax"
-						# instance, so ID is guaranteed to be 1.
-						_requestId: "#{app.name}1"
+				performRequest = require "../../source/ajax/perform-request"
+
+				sinon.stub performRequest, "performRequest",
+				({ data, source, callback }) ->
+
+					data.method.should.equal "POST"
+					data.url.should.equal "/some?same-origin=path"
+					data.data.should.equal "bar"
+					data.query.should.deep.equal {}
+					data.headers.should.deep.equal {}
+					data.requestOf.should.equal appName
+					data._requestId.should.be.a "string"
+
+					performRequest.performRequest.restore()
 
 					callback
 						method: "POST"
 						url: "/some?same-origin=path"
 						response: text: "foo"
-
-				ajax = ajaxFactory app, performRequest: fakePerformRequest
 
 				ajax.request
 					method: "POST"
@@ -232,7 +227,7 @@ It just checks that request is correct and calls provided function
 				# Set up a background listener.
 				mimicBackgroundListener ( requestData ) ->
 					delete requestData.requestOf
-					requestData.responseOf = app.name
+					requestData.responseOf = appName
 					requestData.response = { text: "foo" }
 					window.postMessage requestData, "*"
 
