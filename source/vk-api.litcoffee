@@ -5,45 +5,47 @@ This file only contains notes on internal details.
 
 # `vkApi` module
 
+	app = require "./app"
+	ajax = require "./ajax"
 	_ = require "lodash"
-
-	vkApi = ( app, ajax ) ->
 
 ## Private API
 
-		apiAppInfo =
-			id: 4238625
-			permissions: [
-				"audio"
-				"docs"
-				"friends"
-				"groups"
-				"messages"
-				"notes"
-				"pages"
-				"photos"
-				"stats"
-				"status"
-				"video"
-				"wall"
-			]
+	apiAppInfo =
+		id: 4238625
+		permissions: [
+			"audio"
+			"docs"
+			"friends"
+			"groups"
+			"messages"
+			"notes"
+			"pages"
+			"photos"
+			"stats"
+			"status"
+			"video"
+			"wall"
+		]
 
-		apiVersion = "5.16"
+	apiVersion = "5.16"
 
-		authUrlParams =
-			client_id: apiAppInfo.id
-			scope: apiAppInfo.permissions.join ","
-			redirect_uri: encodeURIComponent "https://oauth.vk.com/blank.html"
-			display: "popup"
-			v: apiVersion
-			response_type: "token"
+	authUrlParams =
+		client_id: apiAppInfo.id
+		scope: apiAppInfo.permissions.join ","
+		redirect_uri: encodeURIComponent "https://oauth.vk.com/blank.html"
+		display: "popup"
+		v: apiVersion
+		response_type: "token"
 
-		authUrl = "https://oauth.vk.com/authorize?" +
-			( "#{param}=#{value}" for param, value of authUrlParams ).join "&"
+	authUrl = "https://oauth.vk.com/authorize?" +
+		( "#{param}=#{value}" for param, value of authUrlParams ).join "&"
 
-		requestBaseUrl = "https://api.vk.com/method/"
+	requestBaseUrl = "https://api.vk.com/method/"
 
 ## "Public" API
+
+	vkApi =
 
 Although these fields are exposed as public, it is strongly recommended to only
 use those without an undersore (`_`).

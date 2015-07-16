@@ -2,10 +2,7 @@
 
 	describe "vkApi", ->
 
-		app = require "../../source/app"
-		ajax = require "../../source/ajax"
-		vkApi = null
-		beforeEach -> vkApi = require( "../../source/vk-api" ) app, ajax
+		vkApi = require "../../source/vk-api"
 
 ## What?
 
@@ -29,9 +26,7 @@ without throwing him into online.
 All options are required.
 
 ```CoffeeScript
-app = require "./app"
-ajax = require( "./ajax" ) app
-vkApi = require( "./vk-api" ) app, ajax
+vkApi = require "./vk-api"
 
 vkApi.getAccessToken callback: ( accessToken ) -> alert accessToken
 ```
@@ -117,6 +112,8 @@ equal to `id` attribute specified on `authFrame` element
 
 #### `_performAuth` helper
 
+		appName = require( "../../source/app" ).name
+
 		describe "_performAuth", ->
 
 			it "should create an iframe and listen for the token", ( done ) ->
@@ -147,14 +144,15 @@ equal to `id` attribute specified on `authFrame` element
 
 				authRequestId.should.be.a "string"
 
+
 				window.postMessage
-					oauthMessageOf: app.name
+					oauthMessageOf: appName
 					_requestId: "#{authRequestId}-incorrect"
 					accessToken: "icorrect fake token"
 				, "*"
 
 				window.postMessage
-					oauthMessageOf: app.name
+					oauthMessageOf: appName
 					accessToken: "icorrect fake token"
 				, "*"
 
@@ -164,7 +162,7 @@ equal to `id` attribute specified on `authFrame` element
 				, "*"
 
 				window.postMessage
-					oauthMessageOf: app.name
+					oauthMessageOf: appName
 					_requestId: authRequestId
 					accessToken: "fake token"
 				, "*"
@@ -195,6 +193,7 @@ as an argument.
 					isFakeCallbackCalled = yes
 					accessToken.should.equal "fake token"
 					vkApi._performAuth.restore()
+					vkApi._accessToken = null
 					done()
 
 Let's rock.
@@ -208,7 +207,6 @@ Let's rock.
 `_performAuth` should be called only once as the result should be cached.
 
 				isFakeAuthCalled = no
-				fakeAuth =
 				sinon.stub vkApi, "_performAuth", ({ callback } = {}) ->
 					isFakeAuthCalled.should.equal no
 					isFakeAuthCalled = yes
@@ -221,12 +219,13 @@ It should also get correct access token as an argument.
 
 				fakeCallbackCalls = 0
 				fakeCallback = ( accessToken ) ->
-					isFakeAuthCalled.should.be. yes
+					isFakeAuthCalled.should.equal yes
 					fakeCallbackCalls.should.be.lessThan 3
 					fakeCallbackCalls += 1
 					accessToken.should.equal "fake token"
 					if fakeCallbackCalls is 3
-						fakeAuth.restore()
+						vkApi._performAuth.restore()
+						vkApi._accessToken = null
 						done()
 
 Let's rock.
@@ -287,6 +286,8 @@ which uses a queue internally in order to make requests sequentially.
 #### `_request` helper
 
 This is the thin wrapper for `vkApi.getAccessToken` and `ajax.get`.
+
+		ajax = require "../../source/ajax"
 
 		describe "_request", ->
 
@@ -388,6 +389,8 @@ empty), `_enqueue` also calls `_next` and sets `_isBusy` flag to `yes`.
 						vkApi._requestQueue
 							.should.deep.equal [ fakeRequestData ]
 						vkApi._next.restore()
+						vkApi._requestQueue = []
+						vkApi._isBusy = no
 						done()
 
 					vkApi._enqueue fakeRequestData
@@ -401,12 +404,15 @@ It only enqueues request data if `_isBusy` is already `yes`.
 					data: fake: "API arguments"
 					callback: ->
 
-				vkApi._next = -> throw Error "Called '_next'!"
+				sinon.stub vkApi, "_next", -> throw Error "Called '_next'!"
 
 				vkApi._isBusy = yes
 				vkApi._enqueue fakeRequestData
 
 				vkApi._requestQueue.should.deep.equal [ fakeRequestData ]
+				vkApi._next.restore()
+				vkApi._requestQueue = []
+				vkApi._isBusy = no
 
 #### `_next` helper
 
@@ -432,6 +438,9 @@ to continue sequential queue processing.
 						data: "fake data"
 						callback: ( result ) ->
 							result.should.equal 102
+							vkApi._request.restore()
+							vkApi._requestQueue = []
+							vkApi._isBusy = no
 							done()
 					}
 				]

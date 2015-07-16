@@ -1,6 +1,6 @@
 	app = require "./app"
 	ajax = require "./ajax"
-	vkApi = require( "./vk-api" ) app, ajax
+	vkApi = require "./vk-api"
 	dislike = require( "./dislike" ) ajax, vkApi
 	i18n = require( "./i18n" )()
 	modal = require( "./modal" ) app
