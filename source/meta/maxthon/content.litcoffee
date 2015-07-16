@@ -1,11 +1,11 @@
 	app = require "../../app"
-	performRequest = require( "../../ajax/perform-request" ) app
+	performRequest = require "../../ajax/perform-request"
 	inject = require "../inject"
 
 	handleBackgroundAjax = ({ data, source }) ->
 		callback = ( responseData ) ->
 			source.postMessage responseData, "*"
-		performRequest { data, source, callback }
+		performRequest.performRequest { data, source, callback }
 
 	window.addEventListener "message", handleBackgroundAjax, no
 

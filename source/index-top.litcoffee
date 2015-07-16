@@ -1,5 +1,5 @@
 	app = require "./app"
-	performRequest = require( "./ajax/perform-request" ) app
+	performRequest = require "./ajax/perform-request"
 	ajax = require( "./ajax" ) app, performRequest
 	vkApi = require( "./vk-api" ) app, ajax
 	dislike = require( "./dislike" ) ajax, vkApi

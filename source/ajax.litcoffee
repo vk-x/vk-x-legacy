@@ -35,7 +35,7 @@ This file only contains notes on internal details.
 
 			if isSameOrigin
 				# Handle request in current context.
-				performRequest
+				performRequest.performRequest
 					data: settings
 					source: window
 					callback: ( data ) -> callback data.response.text, data

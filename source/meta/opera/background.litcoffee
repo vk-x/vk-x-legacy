@@ -3,11 +3,11 @@ to do cross-origin ajax requests.
 See: [`source/meta/opera/index.html`](index.html).
 
 	app = require "../../app"
-	performRequest = require( "../../ajax/perform-request" ) app
+	performRequest = require "../../ajax/perform-request"
 
 	handleBackgroundAjax = ({ data, source }) ->
 		callback = ( responseData ) ->
 			source.postMessage responseData
-		performRequest { data, source, callback }
+		performRequest.performRequest { data, source, callback }
 
 	opera.extension.onmessage = handleBackgroundAjax

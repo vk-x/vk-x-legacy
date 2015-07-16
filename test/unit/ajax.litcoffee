@@ -3,7 +3,7 @@
 	describe "ajax", ->
 
 		app = require "../../source/app"
-		performRequest = require( "../../source/ajax/perform-request" ) app
+		performRequest = require "../../source/ajax/perform-request"
 		uri = require "../../source/uri"
 		ajaxFactory = require "../../source/ajax"
 		ajax = null
@@ -27,7 +27,7 @@ where the file is stored.
 
 ```CoffeeScript
 app = require "./app"
-performRequest = require( "./ajax/perform-request" ) app
+performRequest = require "./ajax/perform-request"
 ajax = require( "./ajax" ) app, performRequest
 
 callback = ( response, meta ) -> if meta.status is 200 then alert response
@@ -174,7 +174,7 @@ It just checks that request is correct and calls provided function
 						url: "/some?same-origin=path"
 						response: text: "foo"
 
-				ajax = ajaxFactory app, fakePerformRequest
+				ajax = ajaxFactory app, performRequest: fakePerformRequest
 
 				ajax.request
 					method: "POST"

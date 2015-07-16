@@ -2,11 +2,7 @@
 
 	describe "ajax/performRequest", ->
 
-		app = require "../../../source/app"
-		uri = require "../../../source/uri"
-		performRequest = null
-		beforeEach -> performRequest =
-			require( "../../../source/ajax/perform-request" ) app
+		performRequest = require "../../../source/ajax/perform-request"
 
 ## What?
 
@@ -25,12 +21,11 @@ This is an internal module. Use [`ajax`](../ajax.litcoffee) module instead.
 #### API
 
 ```CoffeeScript
-app = require "./app"
-performRequest = require( "./ajax/perform-request" ) app
+performRequest = require "./ajax/perform-request"
 
 callback = ( response, meta ) -> if meta.status is 200 then alert response
 
-performRequest
+performRequest.performRequest
 	data:
 		method: "GET"
 		url: "http://example.com/"
@@ -72,7 +67,7 @@ of current test.
 				data: to: "send"
 				query: params: "to set"
 				headers: custom: "one"
-				requestOf: app.name
+				requestOf: require( "../../../source/app" ).name
 				_requestId: "1"
 
 			callback = ({ url, method, responseOf, _requestId, response }) ->
@@ -84,7 +79,7 @@ of current test.
 				response.ok.should.be.ok
 				done()
 
-			performRequest
+			performRequest.performRequest
 				data: requestData
 				source: window
 				callback: callback

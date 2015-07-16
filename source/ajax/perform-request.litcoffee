@@ -4,9 +4,10 @@
 This file only contains notes on internal details.
 
 	superagent = require "superagent"
+	app = require "../app"
 	uri = require "../uri"
 
-	performRequest = ( app ) -> ({ data, source, callback }) ->
+	performRequest = ({ data, source, callback }) ->
 		return unless data.requestOf is app.name
 
 		# Opera 12 denies to access source.location in background
@@ -62,4 +63,4 @@ This file only contains notes on internal details.
 
 			callback responseData
 
-	module.exports = performRequest
+	module.exports = { performRequest }
