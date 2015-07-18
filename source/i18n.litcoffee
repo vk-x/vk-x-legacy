@@ -7,12 +7,11 @@ This file only contains notes on internal details.
 
 	_ = require "lodash"
 
-	i18n = ->
+	i18n =
 
 		_languages: {}
 		_currentName: null
 		_fallbackLanguage: null
-
 
 ## `i18n.addLanguage`
 

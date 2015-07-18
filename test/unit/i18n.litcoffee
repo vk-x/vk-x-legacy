@@ -2,8 +2,12 @@
 
 	describe "i18n", ->
 
-		i18n = null
-		beforeEach -> i18n = require( "../../source/i18n" )()
+		i18n = require "../../source/i18n"
+
+		beforeEach ->
+			i18n._languages = {}
+			i18n._currentName = null
+			i18n._fallbackLanguage = null
 
 ## What?
 
@@ -19,7 +23,7 @@ Because **VK** itself is international.
 #### API
 
 ```CoffeeScript
-i18n = require( "./i18n" )()
+i18n = require "./i18n"
 
 i18n.addLanguage "en",
 	hello: "Hello, world!"
