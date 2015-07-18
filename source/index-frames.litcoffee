@@ -1,3 +1,4 @@
-	app = require "./app"
+	iframeAuthHelper = require "./vk-api/iframe-auth-helper"
 
-	require( "./vk-api/iframe-auth-helper" ) app
+	# See test/unit/vk-api.litcoffee
+	iframeAuthHelper()

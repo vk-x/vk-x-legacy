@@ -1,4 +1,6 @@
-	module.exports = ( app ) ->
+	app = require "../app"
+
+	module.exports = ->
 		if /^http(s)?:\/\/oauth\.vk\.com\/authorize\?/.test location.href
 			# Auth page redirects if window.parent && window.parent !== window
 			window.parent = null
