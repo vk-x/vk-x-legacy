@@ -1,9 +1,6 @@
 	describe "mainMenu", ->
 
-		app = require "../../source/app"
-		mainMenuFactory = require "../../source/main-menu"
-		mainMenu = null
-		beforeEach -> mainMenu = mainMenuFactory app
+		mainMenu = require "../../source/main-menu"
 
 		describe "extensionMenuItemHtml", ->
 

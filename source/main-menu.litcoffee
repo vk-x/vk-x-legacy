@@ -1,4 +1,6 @@
-	module.exports = ( app ) ->
+	app = require "./app"
+
+	module.exports =
 		extensionMenuItemHtml: ->
 			template = require "./main-menu/extension-menu-item"
 

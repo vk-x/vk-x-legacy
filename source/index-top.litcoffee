@@ -5,7 +5,7 @@
 	i18n = require "./i18n"
 	modal = require "./modal"
 	install = require "./install"
-	mainMenu = require( "./main-menu" ) app
+	mainMenu = require "./main-menu"
 	_ = require "lodash"
 	md5 = require "md5-jkmyers"
 
