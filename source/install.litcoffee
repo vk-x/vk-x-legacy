@@ -1,4 +1,9 @@
-	module.exports = ( app, i18n, modal ) ->
+	app = require "./app"
+	modal = require "./modal"
+	i18n = require "./i18n"
+
+	module.exports =
+
 		showChangelog: ->
 			title = i18n.t "changelogTitle"
 				.replace "{version}", app.version.full

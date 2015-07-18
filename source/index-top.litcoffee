@@ -4,7 +4,7 @@
 	dislike = require "./dislike"
 	i18n = require "./i18n"
 	modal = require "./modal"
-	install = require( "./install" ) app, i18n, modal
+	install = require "./install"
 	mainMenu = require( "./main-menu" ) app
 	_ = require "lodash"
 	md5 = require "md5-jkmyers"

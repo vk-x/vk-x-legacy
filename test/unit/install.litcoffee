@@ -1,12 +1,11 @@
 	describe "install", ->
 
+		install = require "../../source/install"
+
 		app = require "../../source/app"
 		modal = require "../../source/modal"
 		i18n = require "../../source/i18n"
-		installFactory = require "../../source/install"
-		install = null
-		beforeEach -> install = installFactory app, i18n, modal
-
+		
 		describe "showChangelog", ->
 
 			it "should correctly call modal.show()", ( done ) ->
