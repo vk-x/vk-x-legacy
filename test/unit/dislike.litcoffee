@@ -2,10 +2,7 @@
 
 	describe "dislike", ->
 
-		ajax = require "../../source/ajax"
-		vkApi = require "../../source/vk-api"
-		dislike = null
-		beforeEach -> dislike = require( "../../source/dislike" ) ajax, vkApi
+		dislike = require "../../source/dislike"
 
 ## What?
 
@@ -20,10 +17,7 @@ Why not? Many VkOpt users use dislikes.
 #### API
 
 ```CoffeeScript
-app = require "./app"
-ajax = require( "./ajax" ) app
-vkApi = require( "./vk-api" ) app, ajax
-dislike = require( "./dislike" ) ajax, vkApi
+dislike = require "./dislike"
 
 # Just any unique string you prefer for current object.
 objectUniqueId = "photo12345_12345"
@@ -104,6 +98,8 @@ To get dislikes we can use regular
 **`dislike.request`** is the main dislike method.
 
 #### `_fetchWidgetHtml` helper
+
+		ajax = require "../../source/ajax"
 
 		describe "_fetchWidgetHtml", ->
 
@@ -332,6 +328,8 @@ if ( dislikeList ) {
 ```
 
 Back to tests.
+
+		vkApi = require "../../source/vk-api"
 
 		describe "count", ->
 

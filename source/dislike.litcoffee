@@ -5,21 +5,22 @@ This file only contains notes on internal details.
 
 # `dislike` module
 
-	dislike = ( ajax, vkApi ) ->
+	ajax = require "./ajax"
+	vkApi = require "./vk-api"
 
-## Private API
-
-		widgetUrl = "/widget_like.php"
+	dislike =
 
 ## "Public" API
 
 Although these fields are exposed as public, it is strongly recommended to only
 use those without an undersore (`_`).
 Private methods are here for testing purposes only (see tests).
+		
+		_widgetUrl: "/widget_like.php"
 
 		_fetchWidgetHtml: ({ appId, targetUrl, callback }) ->
 			ajax.post
-				url: widgetUrl
+				url: @_widgetUrl
 				data:
 					app: appId
 					url: targetUrl
@@ -52,7 +53,7 @@ Private methods are here for testing purposes only (see tests).
 
 		_performLikeRequest: ({ appId, hashValues, dislike, callback }) ->
 			ajax.post
-				url: widgetUrl
+				url: @_widgetUrl
 				query: act: "a_like"
 				data:
 					app: appId

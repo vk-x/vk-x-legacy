@@ -1,7 +1,7 @@
 	app = require "./app"
 	ajax = require "./ajax"
 	vkApi = require "./vk-api"
-	dislike = require( "./dislike" ) ajax, vkApi
+	dislike = require "./dislike"
 	i18n = require( "./i18n" )()
 	modal = require( "./modal" ) app
 	install = require( "./install" ) app, i18n, modal
