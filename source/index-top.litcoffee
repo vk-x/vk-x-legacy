@@ -3,7 +3,7 @@
 	vkApi = require "./vk-api"
 	dislike = require "./dislike"
 	i18n = require "./i18n"
-	modal = require( "./modal" ) app
+	modal = require "./modal"
 	install = require( "./install" ) app, i18n, modal
 	mainMenu = require( "./main-menu" ) app
 	_ = require "lodash"

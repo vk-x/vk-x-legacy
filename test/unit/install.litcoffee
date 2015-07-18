@@ -1,7 +1,7 @@
 	describe "install", ->
 
 		app = require "../../source/app"
-		modal = require( "../../source/modal" ) app
+		modal = require "../../source/modal"
 		i18n = require "../../source/i18n"
 		installFactory = require "../../source/install"
 		install = null

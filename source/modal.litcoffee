@@ -7,11 +7,12 @@ This file only contains notes on internal details.
 
 	_ = require "lodash"
 	template = require "./modal/template"
+	app = require "./app"
 	fs = require "fs"
 	logo = "data:image/png;base64," + fs.readFileSync "#{__dirname}/meta/" +
 	"logo.png", "base64"
 
-	modal = ( app ) ->
+	modal =
 
 		STMANAGER_DEPENDENCIES: [
 			"common.css"

@@ -2,10 +2,7 @@
 
 	describe "modal", ->
 
-		app = require "../../source/app"
-		modalFactory = require "../../source/modal"
-		modal = null
-		beforeEach -> modal = modalFactory app
+		modal = require "../../source/modal"
 
 ## What?
 
@@ -23,8 +20,7 @@ separate this functionality.
 #### API
 
 ```CoffeeScript
-app = require( "./app" )
-modal = require( "./modal" ) app
+modal = require "./modal"
 
 modal.show
 	title: "Hello, world!" # optional, app.name is default
