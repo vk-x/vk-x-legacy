@@ -5,7 +5,7 @@ This file only contains notes on internal details.
 
 	superagent = require "superagent"
 	app = require "../app"
-	uri = require "../uri"
+	url = require "url"
 
 	performRequest = ({ data, source, callback }) ->
 		return unless data.requestOf is app.name
@@ -13,7 +13,7 @@ This file only contains notes on internal details.
 		# Opera 12 denies to access source.location in background
 		# See: source/meta/opera/includes/content.litcoffee
 		sourceUrl = source.location?.href ? data.sourceUrl
-		absoluteUrl = uri.relativeToAbsolute sourceUrl, data.url
+		absoluteUrl = url.resolve sourceUrl, data.url
 
 		req = superagent data.method, absoluteUrl
 			.set data.headers

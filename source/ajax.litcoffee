@@ -8,7 +8,7 @@ This file only contains notes on internal details.
 	app = require "./app"
 	performRequest = require "./ajax/perform-request"
 	_ = require "lodash"
-	uri = require "./uri"
+	url = require "url"
 
 	ajax =
 
@@ -30,10 +30,10 @@ This file only contains notes on internal details.
 			settings._requestId = requestId
 			settings.requestOf = app.name
 
-			absoluteUrl = uri.relativeToAbsolute location.href, settings.url
+			absoluteUrl = url.resolve location.href, settings.url
 			isSameOrigin =
-				uri.parse( absoluteUrl ).hostname is
-				uri.parse( location.href ).hostname
+				url.parse( absoluteUrl ).hostname is
+				url.parse( location.href ).hostname
 
 			if isSameOrigin
 				# Handle request in current context.
