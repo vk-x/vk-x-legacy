@@ -640,22 +640,6 @@ String.prototype.leftPad = function (l, c) {
       if (hex.length==3) hex=hex.replace(/([A-Z0-9])([A-Z0-9])([A-Z0-9])/i,'$1$1$2$2$3$3');
 		return [parseInt(hex.substr(0, 2), 16), parseInt(hex.substr(2, 2), 16), parseInt(hex.substr(4, 2), 16)];
 	}
-   function hex2rgba(hexcolor,ret_struct){
-      var rgb=hex2rgb(hexcolor);
-      var r=rgb[0];
-      var g=rgb[1];
-      var b=rgb[2];
-      var min, a = ( 255 - (min = Math.min(r, g, b)) ) / 255;
-
-      var color={
-           r    : r = 0|( r - min ) / a,
-           g    : g = 0|( g - min ) / a,
-           b    : b = 0|( b - min ) / a,
-           a    : a = (0|1000*a)/1000,
-           rgba : 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')'
-       };
-       return ret_struct?color:color.rgba;
-   }
 
 /// end of color functions
 
@@ -1225,7 +1209,7 @@ var VKFDS_SWF_HTTPS_LINK='https://pp.vk.me/c6147/u13391307/c0b944fc2c34a1.zip';
 var VKTextToSave="QweQwe Test File"; var VKFNameToSave="vkontakte.txt";
 
 function vkOnSaveDebug(t,n){/*alert(n+"\n"+t)*/}
-function vkOnResizeSaveBtn(w,h){
+function vkOnResizeSaveBtn(w,h){ // Вызывается из флешки как и vkOnSaveDebug
 			ge("vkdatasaver").setAttribute("height",h);
 			ge("vkdatasaver").setAttribute("width",w+2);
 			hide("vkdsldr"); show("vksavetext");
