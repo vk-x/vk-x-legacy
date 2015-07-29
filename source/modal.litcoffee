@@ -25,9 +25,9 @@ This file only contains notes on internal details.
 			"page_help.css"
 		]
 
-## `modal.show`
+## `modal.showPage`
 
-		show: ( options = {}) ->
+		showPage: ( options = {}) ->
 			throw Error "Modal content not specified!" unless options.content
 			throw Error "Modal page name not specified!" unless options.pageName
 

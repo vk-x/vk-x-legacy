@@ -8,10 +8,10 @@
 		
 		describe "showChangelog", ->
 
-			it "should correctly call modal.show()", ( done ) ->
+			it "should correctly call modal.showPage()", ( done ) ->
 				sinon.stub i18n, "t", ( name ) -> name
-				sinon.stub modal, "show", ( settings ) ->
-					modal.show.restore()
+				sinon.stub modal, "showPage", ( settings ) ->
+					modal.showPage.restore()
 					settings.title.should.equal "changelogTitle"
 					settings.iconLink.should.equal app.homepage
 					settings.subtitle.should.equal "changelogSubtitle"

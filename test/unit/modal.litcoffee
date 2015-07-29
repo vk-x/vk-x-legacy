@@ -22,7 +22,7 @@ separate this functionality.
 ```CoffeeScript
 modal = require "./modal"
 
-modal.show
+modal.showPage
 	title: "Hello, world!" # optional, app.name is default
 	icon: yes # yes | no | "small", optional, yes is default
 	iconLink: "/id1" # <a> which contains icon will have this as href, optional
@@ -42,11 +42,9 @@ We can use vk's `stManager` to include them and the css.
 		it "should have STMANAGER_DEPENDENCIES", ->
 			modal.STMANAGER_DEPENDENCIES.should.be.an "array"
 
-## `modal.show`
+## `modal.showPage`
 
-		describe "show", ->
-
-####
+		describe "showPage", ->
 
 			it "should call stManager.add() and then WkView.show()", ( done ) ->
 				window.stManager = add: ( dependencies, callback ) ->
@@ -67,7 +65,7 @@ We can use vk's `stManager` to include them and the css.
 					callback()
 					done()
 
-				modal.show
+				modal.showPage
 					title: "fake-title"
 					icon: yes
 					iconLink: "/id1"
@@ -76,7 +74,7 @@ We can use vk's `stManager` to include them and the css.
 					pageName: "fake-pageName"
 
 			it "should throw when no content specified", ->
-				( -> modal.show
+				( -> modal.showPage
 					title: "fake-title"
 					icon: yes
 					iconLink: "/id1"
@@ -85,7 +83,7 @@ We can use vk's `stManager` to include them and the css.
 					not specified!"
 
 			it "should throw when no page name specified", ->
-				( -> modal.show
+				( -> modal.showPage
 					title: "fake-title"
 					icon: yes
 					iconLink: "/id1"
@@ -111,6 +109,6 @@ We can use vk's `stManager` to include them and the css.
 					callback()
 					done()
 
-				modal.show
+				modal.showPage
 					content: "fake-content"
 					pageName: "fake-pageName"

@@ -17,7 +17,7 @@
 				.replace "{name}", app.name
 				.replace "{homepage}", app.homepage
 
-			modal.show
+			modal.showPage
 				title: title
 				iconLink: app.homepage
 				subtitle: subtitle
