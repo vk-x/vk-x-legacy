@@ -141,6 +141,11 @@ var vk_photos = {
                   p_options.push({l:app.i18n.IDL('SaveAlbumAsHtml'), onClick:function(item) {
                      vkGetPageWithPhotos(oid,aid);
                   }});
+                  if (aid !== "tag") {
+                    p_options.push({l:app.i18n.IDL('SaveAlbumAsZip'), onClick:function(item) {
+                       app.photo.downloadAlbumAsZip({ ownerId: oid, albumId: aid });
+                    }});
+                  }
                p_options.push({l:app.i18n.IDL('Links'), onClick:function(item) {
                      vkGetLinksToPhotos(oid,aid);
                }});

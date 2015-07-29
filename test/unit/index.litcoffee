@@ -7,3 +7,4 @@
 	require "./install"
 	require "./main-menu"
 	require "./modal"
+	require "./photo"

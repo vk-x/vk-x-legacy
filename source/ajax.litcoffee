@@ -24,6 +24,7 @@ This file only contains notes on internal details.
 			settings = _.defaults options,
 				method: "GET"
 				url: ""
+				responseType: ""
 				data: {}
 				query: {}
 				headers: {}

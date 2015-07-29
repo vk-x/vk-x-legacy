@@ -25,7 +25,14 @@ This file only contains notes on internal details.
 		else
 			req.query data.data
 
-		req.end ( response ) ->
+		# Workaround for visionmedia/superagent#654
+		originalXhr = superagent.getXHR
+		superagent.getXHR = ->
+			xhr = originalXhr()
+			xhr.responseType = data.responseType
+			xhr
+
+		req.end ( error, response ) ->
 			# postMessage() clones data for security reasons.
 			# Let's prepare safe clonable properties.
 			responseData =
@@ -61,6 +68,12 @@ This file only contains notes on internal details.
 			# P.S. There're other properties like "xhr"
 			# (raw XMLHttpRequest) which can't be cloned.
 
+			# Workaround for visionmedia/superagent#654
+			responseData.response.response = response.xhr.response
+
 			callback responseData
+
+		# Workaround for visionmedia/superagent#654
+		superagent.getXHR = originalXhr
 
 	module.exports = { performRequest }
