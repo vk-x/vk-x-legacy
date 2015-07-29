@@ -50,4 +50,11 @@ This file only contains notes on internal details.
 					className: "wk_large_cont"
 				, "", no
 
+## `modal.showMessageBox`
+
+		showMessageBox: ( options = {}) ->
+			box = MessageBox options
+			box.content options.content
+			box.show()
+
 	module.exports = modal

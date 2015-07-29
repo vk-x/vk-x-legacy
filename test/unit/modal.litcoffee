@@ -29,6 +29,14 @@ modal.showPage
 	subtitle: "Smaller second title" # optional, "" is default
 	content: "..."
 	pageName: "example" # Used in url: /current/page#example
+
+modal.showMessageBox
+	# All options are optional.
+	# See `window.MessageBox` on vk.com for more options.
+	title: "foo"
+	content: "<strong>bar</strong>"
+	dark: yes
+	width: 650
 ```
 
 #### Use existing vk wiki-style modals functionality.
@@ -112,3 +120,39 @@ We can use vk's `stManager` to include them and the css.
 				modal.showPage
 					content: "fake-content"
 					pageName: "fake-pageName"
+
+## `modal.showMessageBox`
+
+		describe "showMessageBox", ->
+
+			it "should use vk's MessageBox()", ->
+
+				# A workaround for sinon.wrapMethod()
+				# See https://github.com/cjohansen/Sinon.JS/pull/449
+				window.MessageBox ?= ->
+
+				sinon.stub window, "MessageBox", ( options ) ->
+					options.should.contain
+						foo: "bar"
+
+					box =
+						content: ( content ) ->
+							content.should.equal "whatever"
+							@
+						show: ->
+							@
+
+					sinon.spy box, "content"
+					sinon.spy box, "show"
+
+					box
+
+				box = modal.showMessageBox
+					foo: "bar"
+					content: "whatever"
+
+				MessageBox.should.have.been.calledOnce
+				box.content.should.have.been.calledOnce
+				box.show.should.have.been.calledOnce
+
+				MessageBox.restore()
