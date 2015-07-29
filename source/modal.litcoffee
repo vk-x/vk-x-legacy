@@ -7,6 +7,7 @@ This file only contains notes on internal details.
 
 	_ = require "lodash"
 	template = require "./modal/template"
+	progressBarTemplate = require "./modal/progressBarTemplate"
 	app = require "./app"
 	fs = require "fs"
 	logo = "data:image/png;base64," + fs.readFileSync "#{__dirname}/meta/" +
@@ -55,6 +56,29 @@ This file only contains notes on internal details.
 		showMessageBox: ( options = {}) ->
 			box = MessageBox options
 			box.content options.content
+			box.show()
+
+## `modal.showProgressBar`
+
+		showProgressBar: ( options = {}) ->
+			options = _.defaults options,
+				content: ""
+				progress: 0
+
+			box = MessageBox options
+
+			progressBarHtml = progressBarTemplate options
+			box.progress = options.progress
+			box.content options.content + progressBarHtml
+
+			box.setProgress = ( progress = 0 ) ->
+				if progress > 100
+					progress = 100
+				el = @bodyNode.getElementsByClassName( "vkx-progress-bar-done" )[ 0 ]
+				el.style.width = progress + "%"
+				@progress = progress
+				@
+
 			box.show()
 
 	module.exports = modal

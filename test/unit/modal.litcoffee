@@ -156,3 +156,41 @@ We can use vk's `stManager` to include them and the css.
 				box.show.should.have.been.calledOnce
 
 				MessageBox.restore()
+
+## `modal.showProgressBar`
+
+		describe "showProgressBar", ->
+
+			it "should use showMessageBox()", ->
+
+				# A workaround for sinon.wrapMethod()
+				# See https://github.com/cjohansen/Sinon.JS/pull/449
+				window.MessageBox ?= ->
+
+				sinon.stub window, "MessageBox", ( options ) ->
+					options.should.contain
+						foo: "bar"
+
+					box =
+						content: ( content ) ->
+							content.should.contain "whatever"
+							@
+						show: ->
+							@
+
+					sinon.spy box, "content"
+					sinon.spy box, "show"
+
+					box
+
+				box = modal.showProgressBar
+					foo: "bar"
+					content: "whatever"
+					progress: 0
+
+				MessageBox.should.have.been.calledOnce
+				box.content.should.have.been.calledOnce
+				box.show.should.have.been.calledOnce
+				box.setProgress.should.be.a "function"
+
+				MessageBox.restore()
