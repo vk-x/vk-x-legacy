@@ -1,5 +1,4 @@
 //  functions for work with users
-var vkUsersDomain={};
 var isUserRegEx=[
 /(^|\/)(reg|regstep|club|event|photo|photos|album|albums|audios|video|videos|note|notes|app|page|board|topic|write|public|publics|groups|wall|graffiti|tag\d|doc|gifts)-?\d+/i,
 /(^|\/)(events|changemail|mail|im([^a-z0-9]|$)|audio|apps|editapp|feed|friends|friendsphotos|search|invite|settings|edit|fave|stats|video|groups|notes|docs|gifts|support|bugs|dev)(\?.*#?|#|$)/i,
@@ -14,19 +13,6 @@ function isUserLink(url){
 		isUserRegEx[5].test(url)) && !isUserRegEx[6].test(url)){
 	  return true;
 	} else return false;
-}
-
-
-function getUserID(url,callback){
- url=String(url);
- if (/^\d+$/.test(url)){callback(url);  return;}
- if (vkUsersDomain[url]){callback(vkUsersDomain[url]);  return; }
- AjGet('/groups_ajax.php?act=a_inv_by_link&page='+url,function(r){ // payments.php?act=votes_transfer_get_person&page=durov -captcha
-    r=r.responseText;
-    var uid=(r)?r.match(/name=.id..value=.(\d+)/)[1]:null;
-    vkUsersDomain[url]=uid;
-    callback(uid);
- });
 }
 
 var vkUsersGroupsDomain={};
@@ -92,13 +78,6 @@ function vkGetUserInfo(uid,callback){
           callback(_vk_users_info[uid])
         }
       });
-}
-
-// <a href=# onclick="vkGoToLink('albums%id','kiberinfinity'); return false;">
-function vkGoToLink(link,mid){
-  getUserID(mid,function(uid){
-    document.location.href=link.replace(/%id/g,uid);
-  });
 }
 
 vk_users = {
@@ -424,14 +403,6 @@ function vkAddToFave(uid,is_del){ // Turn you to online
 	});
 }
 
-function vkAddToSubscribtions(uid,is_del){
-  app.vkApi.request({
-    method: "subscriptions." + is_del ? "unfollow" : "follow",
-    data: { uid: uid, v: "3.0" },
-    callback: function() { vkMsg('<b>OK</b>',2000); }
-  });
-}
-
 function vkAddToBL(uid){
 	vkMsg(vkLdrMonoImg,1000);
 	AjGet('/settings?act=blacklist&al=1',function(r,t){
@@ -458,30 +429,6 @@ function vkBanUser(user_link,gid){
       var name = trim(user_link)
       showBox('al_groups.php', {act: 'bl_edit', name: name, gid: gid}, {stat: ['page.css', 'ui_controls.js', 'ui_controls.css'], dark: 1});
    }
-}
-
-function vkBanUser_(user_link,gid) {// old
-	if (gid || cur.gid || cur.oid<0){
-		if (!gid) gid=cur.oid?Math.abs(cur.oid):cur.gid;
-		var ban=function(){
-			vkLdr.show();
-			AjGet('/club'+gid+'?act=blacklist&al=1',function(r,t){
-				var hash=t.split("hash: '")[1];
-				if (!hash){
-					vkLdr.hide();
-					vkMsg(app.i18n.IDL('Error'),2000);
-					return;
-				}
-				hash=hash.split("',")[0];
-				ajax.post('al_groups.php', {act: 'bl_user', name: user_link, gid: gid, hash: hash}, {onDone: function(text, mid, html) {
-					  vkLdr.hide();
-					  vkMsg(text,3000);
-					}
-				});//, showProgress: lockButton.pbind(btn), hideProgress: unlockButton.pbind(btn)
-			});
-		};
-		vkAlertBox(app.i18n.IDL('ban'),app.i18n.IDL('BanConfirm'),ban,true);
-	}
 }
 
 function vkBanUserFunc(user_link,gid,callback) {
@@ -1213,17 +1160,6 @@ function vkHideRemAddFrBlock(){
 }
 //  UPD_END  //
 //////////////
-//*
-function vkFriendsIdsGet(callback){
-  app.vkApi.request({
-    method: "friends.get",
-    data: { v: "3.0" },
-    callback: function( r ) {
-      callback(r.response);
-    }
-  });
-}
-
 
 function vkFriendsBySex(add_link){
 	if (add_link  && !ge('section_slists')){
@@ -1431,19 +1367,6 @@ vk_fav={
       curFastChat.friends=new_list;
 
    }
-}
-
-
-function vkFastChatSortUsers(a,b){
-   var x=0;
-   var y=0;
-
-
-   af=(a.indexOf('vk_faved_user')!=-1);
-   ao=(a.indexOf('fc_contact_online')!=-1);
-
-   bf=(b.indexOf('vk_faved_user')!=-1);
-   bo=(b.indexOf('fc_contact_online')!=-1);
 }
 
 function vkFavOnlineChecker(on_storage){

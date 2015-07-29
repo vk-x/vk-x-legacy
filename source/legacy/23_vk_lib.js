@@ -126,28 +126,7 @@ if (!window.Audio){
       output = formatArray(array, 0, pad_val, pad_char);
          return output;
    }
-	function vkTimer(callback, delay) {
-       /* Example:
-         var timer = new Timer(function() {
-             alert("Done!");
-         }, 1000);
-         timer.pause();
-         timer.resume();
-       */
-       var timerId, start, remaining = delay;
 
-       this.pause = function() {
-           window.clearTimeout(timerId);
-           remaining -= new Date() - start;
-       };
-
-       this.resume = function() {
-           start = new Date();
-           timerId = window.setTimeout(callback, remaining);
-       };
-
-       this.resume();
-   }
    function isArray(obj) { return Object.prototype.toString.call(obj) === '[object Array]'; }
 	function vkCutBracket(s,bracket){
       if (isArray(s)) return s;
@@ -242,11 +221,6 @@ if (!window.Audio){
       }
    }
 
-   function num_to_text(s){
-      s+='';
-      return s.length<4?s:s.split('').reverse().join('').replace(/(\d{3})/g,'$1 ').split('').reverse().join('').replace(/^\s+/,'');
-   }
-
 	function vkLinksUnescapeCyr(str){
 	  var escaped=["%B8", "%E9", "%F6", "%F3", "%EA", "%E5", "%ED", "%E3", "%F8", "%F9", "%E7", "%F5", "%FA", "%F4", "%FB", "%E2", "%E0", "%EF", "%F0", "%EE", "%EB", "%E4", "%E6", "%FD", "%FF", "%F7", "%F1", "%EC", "%E8", "%F2", "%FC", "%E1", "%FE","%A8", "%C9", "%D6", "%D3", "%CA", "%C5", "%CD", "%C3", "%D8", "%D9", "%C7", "%D5", "%DA", "%D4", "%DB", "%C2", "%C0", "%CF", "%D0", "%CE", "%CB", "%C4", "%C6", "%DD", "%DF", "%D7", "%D1", "%CC", "%C8", "%D2", "%DC", "%C1", "%DE"];
 	  var unescaped=["\u0451", "\u0439", "\u0446", "\u0443", "\u043a", "\u0435", "\u043d", "\u0433", "\u0448", "\u0449", "\u0437", "\u0445", "\u044a", "\u0444", "\u044b", "\u0432", "\u0430", "\u043f", "\u0440", "\u043e", "\u043b", "\u0434", "\u0436", "\u044d", "\u044f", "\u0447", "\u0441", "\u043c", "\u0438", "\u0442", "\u044c", "\u0431", "\u044e","\u0401", "\u0419", "\u0426", "\u0423", "\u041a", "\u0415", "\u041d", "\u0413", "\u0428", "\u0429", "\u0417", "\u0425", "\u042a", "\u0424", "\u042b", "\u0412", "\u0410", "\u041f", "\u0420", "\u041e", "\u041b", "\u0414", "\u0416", "\u042d", "\u042f", "\u0427", "\u0421", "\u041c", "\u0418", "\u0422", "\u042c", "\u0411", "\u042e"];
@@ -295,10 +269,6 @@ if (!window.Audio){
 	  for (var key in attr)  el.setAttribute(key,attr[key]);
 	  if (inner) el.innerHTML=inner;
 	  return el;
-	}
-	function DelElem(el)	{
-		var Node = ge(el);
-		if(Node) Node.parentNode.removeChild(Node);
 	}
 
 	function insertAfter(node, ref_node) {
@@ -364,24 +334,7 @@ if (!window.Audio){
 		   }
 		   return b;
 	}
-	function $xp(s, t){
-		return new DOMParser().parseFromString(s, "text/xml");
-	}
-	function $hp(s){
-		var a = document.createElement("div");
-		a.innerHTML = s;
-		return a;
-	}
-	function $rnd(tmpl, ns) {
-		var fn = function(w, g) {
-			g = g.split("|");
-			var cnt = ns[g[0]];
-			for(var i = 1; i < g.length; i++)
-				cnt = eval(g[i])(cnt);
-			return cnt || w;
-		};
-		return tmpl.replace(/\$\{([A-Za-z0-9_|.]+)\}/g, fn);
-	}
+
 	function vkLocalStoreReady(){
 	  if (window.localStorage || window.GM_SetValue || window.sessionStorage) {
 		return true;
@@ -484,15 +437,6 @@ if (!window.Audio){
 	allsett[0]=sett.join('');
 	SettBit = allsett.join('-');//settings.allsett('-');
 	vksetCookie('remixbit',SettBit);
-	}
-
-	function vkAddScript(jsrc){
-	  for (var i=0;i<arguments.length;i++){
-		var js = document.createElement('script');
-		js.type = 'text/javascript';
-		js.src = arguments[i];
-		document.getElementsByTagName('head')[0].appendChild(js);
-	  }
 	}
 
 	function vkRand(){return Math.round((Math.random() * (100000000 - 1)));}
@@ -718,20 +662,6 @@ String.prototype.leftPad = function (l, c) {
 /* FUNCTIONS. LEVEL 2*/
 
 /* VK GUI */
-	//javascript:   var x=0;  setInterval("ge('content').innerHTML=vkProgressBar(x++,100,600,'Выполнено %');",100);  void(0);
-	function vkProgressBarOld(val,max,width,text){
-			if (val>max) val=max;
-		var pos=(val*100/max).toFixed(2);;
-			var perw=(val/max)*width;
-			text=(text || '%').replace("%",pos+'%');
-			html='<div class="vkProgBar vkPBFrame" style="width: '+perw+'px;">'+
-					'<div class="vkProgBar vkProgBarFr" style="width: '+width+'px;">'+text+'</div>'+
-				'</div>'+
-				'<div  class="vkProgBar vkProgBarBgFrame" style="width: '+width+'px;">'+
-					'<div class="vkProgBar vkProgBarBg" style="width: '+width+'px;">'+text+'</div>'+
-				'</div>';
-			return html;
-	}
 
 	function vkProgressBar(val,max,width,text){
 			if (val>max) val=max;
@@ -958,12 +888,6 @@ vk_hor_slider={
     setStyle(bodyNode, 'cursor', 'pointer');
     setStyle(scale, 'cursor', 'pointer');
   },
-  sliderSelectChanged: function (id) {
-    var percent = ge(id+'_select').value;
-    var pos=ge(id+'_position').value;
-    vk_hor_slider.sliderUpdate(percent,pos,id);
-    vk_hor_slider.sliderApply(id);
-  },
   sliderUpdate: function (percent, val,id) {
       percent = intval(percent);
       ge(id+'_select').value=percent;
@@ -1101,12 +1025,6 @@ vk_v_slider={
     setStyle(bodyNode, 'cursor', 'pointer');
     setStyle(scale, 'cursor', 'pointer');
   },
-  sliderSelectChanged: function (id) {
-    var percent = ge(id+'_select').value;
-    var pos=ge(id+'_position').value;
-    vk_v_slider.sliderUpdate(percent,pos,id);
-    vk_v_slider.sliderApply(id);
-  },
   sliderUpdate: function (percent, val,id) {
       percent = intval(percent);
       ge(id+'_select').value=percent;
@@ -1143,11 +1061,6 @@ function vkSetMouseScroll(el,next,back){
       if (wheelData<0) next(e); else back(e);
       return cancelEvent(e);
  });
-}
-
-
-function sideBarMenu(){
-	return ge('side_bar').getElementsByTagName('ol')[0];
 }
 
 vkApis={
@@ -1304,11 +1217,6 @@ function vkFileSize(size,c){
 	var filesizename = [" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB"];
 	return size ? (size/Math.pow(1024, (i = Math.floor(Math.log(size)/Math.log(1024))))).toFixed(c).replace(x,'')+filesizename[i] : '0 Bytes';
 }
-
-function vkattachScript(id, c) {
- document.getElementsByTagName('head')[0].appendChild(  vkCe('script', {id: id, type: 'text/javascript', src: c})  );
-}
-
 
 // DATA SAVER
 var VKFDS_SWF_LINK='http://cs6147.vk.me/u13391307/c0b944fc2c34a1.zip';

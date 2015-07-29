@@ -293,7 +293,6 @@ function vkProccessLinks(el){
 	  if (getSet(38)=='y') ProcessHighlightFriendLink(nodes[i]);
      if (getSet(55)=='y') vk_im.process_date_link(nodes[i]);
      if (getSet(58)=='y') vkProcessTopicLink(nodes[i]);
-     //vkProcessDocPhotoLink(nodes[i]);
 	  vk_plugins.processlink(nodes[i]);
     }
     /*
@@ -305,26 +304,6 @@ function vkProccessLinks(el){
  vklog('ProcessLinks time:' + (unixtime()-tstart) +'ms');
 }
 
-
-function vkProcessDocPhotoLink(node){
-   if (hasClass(node,'page_doc_photo_href') && !node.getAttribute('zoombtn')){
-      var h=geByClass('page_doc_photo_hint',node)[0];
-      if (h && h.innerHTML.toLowerCase().indexOf('.gif')!=-1){
-         var btn=vkCe('div',{'class':'fl_l zoom_ico_white',onclick:"vkDocImageInlineView(this,'"+node.href+"',event);"});//<div class="fl_l zoom_ico_white"></div>
-         h.appendChild(btn);
-         node.setAttribute('zoombtn',1);
-      }
-   }
-
-}
-function vkDocImageInlineView(el,href,e){
-   cancelEvent(e);
-   var a=el.parentNode.parentNode;
-   var img=a.getElementsByTagName('img')[0];
-   if (img) img.src=href;
-   hide(el);
-   addClass(a,'doc_gif_anim');
-}
 function ProcessAwayLink(node){
   var href=node.getAttribute('href');
   if (href && href.indexOf('away.php?')!=-1){
@@ -575,9 +554,6 @@ function vkCommon(){
 		confirmGo=goAway;
 	}
 
-	//Inj.After('ajax._receive','html});','vkProcessOnReceive(h);'); // хук на функцию, которая и так сама по себе большой шиздец. надо что то другое придумать...
-	//Inj.Replace('ajax.framepost',' done',' function(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10){done(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10); setTimeout("vkProcessNode(); ",50);}'); //alert(\'qwe\');
-
 	Inj.Start('ajax.framegot','if (h) h=vkProcessOnFramegot(h);');
 	Inj.Before('ajax._post','o.onDone.apply','vkResponseChecker(answer,url,q);');// если это будет пахать нормально, то можно снести часть инъекций в другие модули.
 	Inj.Start('ajax.post','if (vkAllowPost(url, query, options)==false) return;');
@@ -592,16 +568,9 @@ function vkCommon(){
    vk_pages.inj_common();
    vk_audio.inj_common();
    vk_videos.inj_common();
-
-   //if(window.TopSearch) Inj.End('TopSearch.prepareRows','vkProccessLinks(tsWrap);');
-	//if (window.setFavIcon) Inj.Try('setFavIcon');
-
-   //if (getSet(64)=='y') vkToTopBackLink();
-
 }
 
 function vkProcessOnFramegot(h){ if (h && h.indexOf('vk_usermenu_btn')==-1 && h.indexOf('vkPopupAvatar')==-1) return vkModAsNode(h,vkProcessNodeLite); }
-function vkProcessOnReceive(h){	if (h.innerHTML && h.innerHTML.indexOf('vk_usermenu_btn')==-1 && h.indexOf('vkPopupAvatar')==-1) {	vkProcessNode(h);}}
 
 function vkResponseChecker(answer,url,q){// detect HTML in response and prosessing
 	//var rx=/div.+class.+[^\\]"/;
@@ -1630,31 +1599,17 @@ function vkNotifier(){
 	if(getSet(36)=='y'){
 		vk_allow_autohide_notify=false;
 		Inj.Before('Notifier.showEvent','ev.fadeTO','if (vk_allow_autohide_notify)');
-      Inj.Start('Notifier.unfreezeEvents','if (!vk_allow_autohide_notify) return;'); //Inj.Before('Notifier.unfreezeEvents','this.fadeTO','if (vk_allow_autohide_notify)');
+      Inj.Start('Notifier.unfreezeEvents','if (!vk_allow_autohide_notify) return;');
 
 
 		Inj.Before('Notifier.onInstanceFocus','Notifier.hideAllEvents','if (vk_allow_autohide_notify)');
-      /*Inj.Before('Notifier.onInstanceFocus','Notifier.hideEvent','if (vk_allow_autohide_notify)');
-		Inj.Before('Notifier.onInstanceFocus','curNotifier.q_events = []','if (vk_allow_autohide_notify)');
-		Inj.Before('Notifier.onInstanceFocus','curNotifier.q_shown = []','if (vk_allow_autohide_notify)');*/
-
 		Notifier.unfreezeEvents=Notifier.freezeEvents;
 	}
    if (getSet(51)=='y'){
       vk_fav.inj_notifier();
    }
 
-
-   //Inj.Before('FastChat.clistRender','if (lastMid','html.sort(vkFastChatSortUsers);');
-   //Inj.Before('FastChat.clistRender','FastChat.clistUpdateTitle','vkProccessLinks(curFastChat.el.clist);');
-
    Inj.Before('Notifier.lpCheck','var response','if (!text || text=="") return;'); //error fix?
-	 /* delay for hide notify msg
-	  vk_notifier_show_timeout=20000;
-	  //Inj.Replace('Notifier.showEventUi','5000','vk_notifier_show_timeout');
-	  Inj.Replace('Notifier.showEvent','5000','vk_notifier_show_timeout');
-	  Inj.Replace('Notifier.unfreezeEvents','5000','vk_notifier_show_timeout');
-	  */
 
     if (getSet(62)=='y')  FastChat.selectPeer=function(mid,e){return showWriteMessageBox(e, mid)}
     Inj.Start('FastChat.imChecked','vkFcEvents(response);');
@@ -1695,10 +1650,8 @@ function vkFcEvents(response){
 /* FRIENDS */
 function vkFriends(){
 	Inj.Before('Friends.showMore','cur.fContent.appendChild',"html=[vkModAsNode(html.join(''),vkProcessNode)];");
-   //Inj.Replace('Friends.acceptRequest','text;','text+vkFrLstSel(mid); alert(text);');
    Inj.Replace('Friends.acceptRequest','text;','vkFrReqDoneAddUserLists(text,mid);');
 }
-function vkFrLstSel(mid){ return '<div class="actions"><a class="lists_select" onmousedown="return Friends.ddShow('+mid+', this, event)">'+app.i18n.IDL('AddFrToList')+'</a></div>'; }
 function vkFrReqDoneAddUserLists(text,mid){
    var div=vkCe('div',{},text);
    var el=geByClass('friends_added',div)[0] || geByClass('friends_added_text',div)[0];

@@ -689,14 +689,6 @@ function vkMakeRightBar(){
    updSideTopLink(true);
    setTimeout("updSideTopLink(true);",500);
 }
-//if (getSet(44)=='y') vkMoveSuggFrBox();
-function vkMoveSuggFrBox(){
-	var e=geByClass('ad_box_friend',ge('left_ads'))[0];
-	if (!e) return;
-	var e2=vkNextEl(e);
-	ge('left_blocks').appendChild(e);
-	if (!e2) ge('left_blocks').appendChild(e2);
-}
 
 function vkFrCat2Menu(ret){
   var str='';
@@ -1259,10 +1251,6 @@ function vkMenu(){//vkExLeftMenu
     if (page=='custom_sublink') continue;
 
     if (cfg > 1 && !(hasClass(item,'fl_r') || item.id=='myprofile_edit')){// && MenuIcons[page]
-      /*
-      var img=document.createElement('img');
-      img.src=(cfg == 2)?icon_url+MenuIcons[page]:vkSideImg(page);
-      item.insertBefore(img,item.firstChild);*/
       var ico=document.createElement('div');
       ico.className='vkicon vkico_'+page;
       item.insertBefore(ico,item.firstChild);
@@ -1382,7 +1370,6 @@ function UpdateCounters(only_msg,data){
 	}
 	var HL=[];
 	if (!window.VK_LAST_COUNTERS) {
-		//ol=sideBarMenu();
 		var cnt=[0,0,0,0,0,0,0];
 		if (!only_msg){
 			for (var key in menu_vars){
@@ -1431,7 +1418,6 @@ function UpdateCounters(only_msg,data){
 				}
 				VK_LAST_COUNTERS=cnt.join('-');
 				VK_MENU_LAST_HIGHLIGHT=HL;
-				//vkHighlightCounters();
 				vklog('Menu counters are updated');
 			}
 		}
@@ -1445,35 +1431,6 @@ function UpdateCounters(only_msg,data){
 	} else {
 		AjGet('feed2.php?mask=m'+vkRand(),onupdate);
 	}
-}
-
-function vkHighlightCounters(){
-	var vkMenuHighlightEl=function(e){
-		//*
-      /* REPLACE TO CSS ANIMATION
-      var MENU_HIGHLIGHT_DELAY=2000;      //(ms) yellow highlight in menu on changed counters
-      var SIDEBAR_ITEM_HIGHLIGHT_COLOR = "#fcf78a";
-
-		var e=vk$(e);
-		var backcolor=e.css('backgroundColor');
-		e.animate({backgroundColor:SIDEBAR_ITEM_HIGHLIGHT_COLOR},700,function(){//rgb(255,255,0)
-			setTimeout(function(){
-				e.animate({backgroundColor:backcolor},700,function(){e.css('backgroundColor',"")});
-			},MENU_HIGHLIGHT_DELAY);
-		});*/
-
-
-		//*/
-		/*
-		var backcolor=getStyle(e, 'backgroundColor');
-		animate(e, {backgroundColor: SIDEBAR_ITEM_HIGHLIGHT_COLOR}, 700,function(){//rgb(255,255,0)
-			setTimeout(function(){
-				animate(e,{backgroundColor:backcolor},700,function(){setStyle(e,{backgroundColor: ''})});
-			},MENU_HIGHLIGHT_DELAY);
-		});
-		*/
-	}
-	for (var i=0;i<VK_MENU_LAST_HIGHLIGHT.length;i++) vkMenuHighlightEl(VK_MENU_LAST_HIGHLIGHT[i]);
 }
 
 function vkMoneyBoxAddHide(){

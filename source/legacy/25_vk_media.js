@@ -2060,20 +2060,13 @@ if (!window.vkopt_plugins) vkopt_plugins={};
 
 
 /* VIDEO */
-function vkVideo(){
-   //Inj.End('Video.onListInit','vk_videos.update_vid_titles();');
-   /*if (getSet(76)=='y')
-      Inj.Replace('Video.drawVideo','if (v[3]','if (false && v[3]');*/
-}
+function vkVideo(){}
 
 function vkVideoPage(){
    window.vk_vid_down && vk_vid_down.vid_page();
 
    vkVideoAddOpsBtn();
    vkVideoNullAlbum();
-
-   /*if (getSet(76)=='y')
-      vk_videos.update_vid_titles();*/
 }
 function vkVideoEditPage(){
    vkVidEditAlbumTitle(null,true);
@@ -2125,33 +2118,6 @@ vk_videos = {
          params['autoplay']=0;
       //params['force_hd']=3;
       //console.log('showVideo:',opts);
-   },
-   update_vid_titles:function(){
-      var els=geByClass('video_row_relative');
-      var ids={};
-      for (var i=0; i<els.length; i++){
-         var vid=(els[i].id || '').match(/video_row(-?\d+)_(\d+)/);
-         if (vid){
-            ids[vid[1]+'_'+vid[2]]=els[i];
-         }
-      }
-      console.log(ids);
-      var data=cur.videoList['all'];//cur.vSection
-      for (var i=0; i<data.length; i++){
-         //data[i][3] title
-         if (ids[data[i][0]+'_'+data[i][1]]){
-            console.log(data[i][3],data[i][0],data[i][1]);
-            var el=geByClass('video_raw_info_name',ids[data[i][0]+'_'+data[i][1]])[0]
-            if (!el) continue;
-            el.innerHTML=data[i][3];
-            /*var el=ge('video_row'+ids[data[i][0]+'_'+data[i][1]]);
-            if (el){
-               el=geByClass('video_raw_info_name',el)[0];
-               if (!el) continue;
-               el.innerHTML=data[i][3];
-            }*/
-         }
-      }
    },
    tpl:'\
       <a class="choose_video_row fl_l" href="/video%oid_%vid" onclick="return cur.chooseMedia(\'video\', \'%oid_%vid\', \'%thumb\')">\
@@ -2801,43 +2767,9 @@ function vkVidShowOwnerName(oid,el){
 
 vkVidVars=null;
 
-function vkTagAllFriends(vid,hash){
-	var FID_PER_REQ=10;
-	var addTags=function(ids,callback) {
-	  var actionCont = ge('mv_action_info');
-	  show(actionCont);
-	  mv = mvcur.mvData;
-	  ajax.post('al_video.php', {act: 'add_tags', video: mv.videoRaw, ids: ids.join(','), hash: mv.hash}, {onDone: function(info, tagsList) {
-		ge('mv_action_info').innerHTML = info;	ge('mv_tags_list').innerHTML = tagsList;(tagsList ? show : hide)('mv_tags');(info ? show : hide)('mv_action_info');	videoview.recache(mv.videoRaw);
-		callback();
-	  }});
-	};
-	var fids=[];
-	var cur_offset=0;
-	var add=function(){
-		var del_count=fids.length;
-		var ids_part=fids.slice(cur_offset,cur_offset+FID_PER_REQ);
-		if (ids_part.length==0) vkMsg(app.i18n.IDL('Done'),2000);
-		else {
-			ge('mv_action_info').innerHTML=vkProgressBar(cur_offset,del_count,310,ids_part+' %');
-			addTags(ids_part,function(){cur_offset+=FID_PER_REQ; setTimeout(add,300); });
-		}
-	};
-	var actionCont = ge('mv_action_info');
-	actionCont.innerHTML = '<img src="/images/upload.gif" />';
-	show(actionCont);
-	vkFriendsIdsGet(function(all_ids){	fids=all_ids;	add();	});
-}
-
 /* AUDIO */
 
 function vkAudioPlayer(){
-   /*
-    && INJ_AUDIOPLAYER_DUR_MOD){
-      window.vkAudioDurMod=function(res){   return vkAudioDurSearchBtn(res,audioPlayer.lastSong[5]+' - '+audioPlayer.lastSong[6],audioPlayer.id) }
-      Inj.Replace('audioPlayer.setCurTime','dur.innerHTML = res','dur.innerHTML = vkAudioDurMod(res)');
-      Inj.Replace('audioPlayer.setGraphics','dur.innerHTML = res','dur.innerHTML = vkAudioDurMod(res)');
-   }*/
    vk_audio_player.inj();
 }
 
@@ -3030,7 +2962,6 @@ vk_audio={
               var name=el.parentNode.getElementsByTagName('b')[0].innerText+' - '+(span_title || ge('title'+id) || spans[1] || spans[0]).innerText;
               name=vkCleanFileName(name);
               if (smartlink) {url+=(url.indexOf('?')>0?'':'?')+vkDownloadPostfix()+'&/'+vkEncodeFileName(name)+'.mp3';};//normal name
-              //if (SearchLink && el){el.innerHTML=vkAudioDurSearchBtn(el.innerText,name,id);/* "<a href='/search?c[section]=audio&c[q]="+name+"'>"+el.innerText+"</a>";*/}
             if (download){
                divs[i].setAttribute('style','width:17px;');
                divs[i].setAttribute('vk_ok','1');
@@ -3548,8 +3479,7 @@ function vkParseAudioInfo(_aid,node,anode){
     } else {
       var sr=/<\/?span>/ig;
 	  var a_node = anode || ge('audio'+_aid) || $x(".//div[@id='audio" + _aid + "']", node)[0];
-	  //var t_node=ge('title'+_aid) || $x(".//span[@id='title" + _aid + "']", node)[0];
-	  var a_info=a_node.getElementsByTagName('input')[0];//ge('audio_info'+_aid) || $x(".//input[@id='audio_info" + _aid + "']", node)[0];
+	  var a_info=a_node.getElementsByTagName('input')[0];
 
 	  var art, title, nfo = geByClass1('info', a_node);
       art = geByTag1('b', nfo);
@@ -3706,30 +3636,6 @@ function vkAudioDelDup(add_button,btn){
 }
 
 vk_pads={
-   pl_remove:function(aid){ //aid=-1321_1414_141
-      //var aid = audio.id.substr(5);
-      var padPlist = padAudioPlaylist();
-
-      if (aid && padPlist && !padPlist[aid]) {
-         aid = aid.replace('_pad', '');
-      }
-      if (aid && padPlist && padPlist[aid]) {
-         var next_id = padPlist[aid]._next;
-         var prev_id = padPlist[aid]._prev;
-
-         if (padPlist[next_id] && padPlist[next_id]._prev) padPlist[next_id]._prev=prev_id;
-         if (padPlist[prev_id] && padPlist[prev_id]._next) padPlist[prev_id]._next=next_id;
-         delete padPlist[aid];
-
-         Pads.updateAudioPlaylist();
-
-         if (window.audioPlaylist && audioPlaylist[aid]) {
-            window.audioPlaylist = padPlist;
-         }
-         ls.set('pad_playlist', padPlist);
-         ls.set('pad_pltime', vkNow());
-      }
-   },
    pl_add:function(aid,to){
       to = to || 0;
       var padPlist = padAudioPlaylist();
@@ -3860,14 +3766,6 @@ function vkDownloadPostfix(){
 	но есть вероятность оказаться на виду у разработчиков контакта и спалиться за скачиванием музыки
 	*/
 	return (AUDIO_DOWNLOAD_POSTFIX ? 'dl=1' : '');
-}
-
-function vkAudioDurSearchBtn(audio,fullname,id){
-	var sq=fullname?fullname:audio[5]+' - '+audio[6];
-	var dur=fullname?audio:audio[4];
-	id = fullname?id:audio[0]+'_'+audio[1];
-	//var onclick='if (checkEvent(event)) return; Audio.selectPerformer(event, \''+sq+'\'); return false';'return nav.go(this, event);'
-	return '<a href="/search?c[q]='+sq+'&c[section]=audio" onmouseover="vkGetAudioSize(\''+id+'\',this)" onclick="if (checkEvent(event)) return; vk_audio.search_track(event, \''+sq+'\'); return false">'+dur+'</a>';
 }
 
 function vkAudioBtns(){
@@ -5940,12 +5838,9 @@ vk_vid_down={
             }
             ge('mv_actions').innerHTML+=vk_vid_down.vkVidDownloadLinks(vkVidVars);
             ge('mv_actions').innerHTML+=vk_plugins.video_links(vkVidVars,vk_vid_down.vkVidDownloadLinksArray(vkVidVars));
-            //if (h.indexOf('showTagSelector')!=-1){	ge('mv_actions').innerHTML+='<a href="#" onclick="vkTagAllFriends(); return false;">'+app.i18n.IDL("selall")+'</a>';	}
          }
       }
-   },
-
-   dummy:function(){}
+   }
 }
 
 vk_au_down={
