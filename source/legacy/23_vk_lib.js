@@ -376,7 +376,7 @@ if (!window.Audio){
 
 	function vkgetCookie(name,temp){
 	  if (name=='remixbit' && SettBit && !temp) return SettBit;
-	  if (name=='remixmid') { if (temp) return false; else { tmp=window.vk.id; return tmp; } }
+	  if (name=='remixmid') { if (temp) return false; else { var tmp=window.vk.id; return tmp; } }
 	  if (vkLocalStoreReady() && (SetsOnLocalStore[name] || /api\d+_[a-z]+/.test(name))){
 		var val=vkGetVal(name);
 		if (val) return val;
@@ -423,7 +423,7 @@ if (!window.Audio){
 
 	function setSet(num,type,setting) {
 	if (!setting) setting=0;
-	settings=vkgetCookie('remixbit').split('-');
+	var settings=vkgetCookie('remixbit').split('-');
 	if (num=='-') settings[setting]=type;
 	else settings[setting][num]=type;
 	SettBit = settings.join('-');
@@ -431,8 +431,8 @@ if (!window.Audio){
 	}
 
 	function setCfg(num,type) {
-	allsett=vkgetCookie('remixbit').split('-');
-	sett=allsett[0].split('');
+	var allsett=vkgetCookie('remixbit').split('-');
+	var sett=allsett[0].split('');
 	sett[num]=type;
 	allsett[0]=sett.join('');
 	SettBit = allsett.join('-');//settings.allsett('-');
@@ -461,7 +461,7 @@ if (!window.Audio){
 			return;
 		  }
 		  if (check_count) check_count--;
-		  func_=func;
+		  var func_=func;
 		  if (typeof func == 'string') func_=eval(func);
 		  if (!check_timeout) check_timeout=1000;
 		  if (func_) callback(func_);
@@ -652,7 +652,7 @@ String.prototype.leftPad = function (l, c) {
 			var pos=(val*100/max).toFixed(2).replace(/\.00/,'');
 			var perw=(val/max)*width;
 			text=(text || '%').replace("%",pos+'%');
-			html='<div class="vkProg_Bar vkPB_Frame" style="width: '+perw+'px;">'+
+			var html='<div class="vkProg_Bar vkPB_Frame" style="width: '+perw+'px;">'+
 					'<div class="vkProg_Bar vkProg_BarFr" style="width: '+width+'px;">'+text+'</div>'+
 				'</div>'+
 				'<div  class="vkProg_Bar vkProg_BarBgFrame" style="width: '+width+'px;">'+
@@ -731,7 +731,7 @@ String.prototype.leftPad = function (l, c) {
 		vkContTabsCount=1;
 		vkaddcss(".activetab{display:block} .noactivetab{display:none} ")
 	  } else vkContTabsCount++;
-	  j=vkContTabsCount;
+	  var j=vkContTabsCount;
 	  vkContTabsSwitch=function(idx,show_all){
 			var ids=idx.split("_");
 			if (show_all){
@@ -1074,7 +1074,7 @@ vkApis={
 
 		var get=function(){
 			if (progress) progress(cur,count);
-			vk_ph_xhr=ajax.post('al_photos.php', {act: 'show', list: listId, offset: cur}, {
+			ajax.post('al_photos.php', {act: 'show', list: listId, offset: cur}, {
             onDone: function(listId, ph_count, offset, data) {
                if (!count) count=ph_count;
                for(var i=0; i<data.length;i++){
@@ -1143,7 +1143,7 @@ function utf8_encode ( str_data ) {
 }
 
  function utf8ToWindows1251(str){ //function from SaveFrom.Net extension
-    var res = '', i = 0, c = c1 = c2 = 0;
+    var res = '', i = 0, c = 0, c2 = 0;
     var a = {
       208: {
         160: 208, 144: 192, 145: 193, 146: 194,
@@ -1191,7 +1191,7 @@ function utf8_encode ( str_data ) {
 
 function vkFileSize(size,c){
 	c = (c==null)?2:c;
-	x=[]; x[c]=''; x='.'+x.join('0');
+	var x=[]; x[c]=''; x='.'+x.join('0');
 	var filesizename = [" Bytes", " KB", " MB", " GB", " TB", " PB", " EB", " ZB", " YB"];
 	return size ? (size/Math.pow(1024, (i = Math.floor(Math.log(size)/Math.log(1024))))).toFixed(c).replace(x,'')+filesizename[i] : '0 Bytes';
 }
@@ -1399,7 +1399,7 @@ function vkDownloadFile(el,ignore) {
 /* NOTIFY TOOLS */
 function vkShowNotify(params){
    params = params || {};
-   vk_nf_id=unixtime()+vkRand();//window.vk_nf_id || 0;
+   var vk_nf_id=unixtime()+vkRand();//window.vk_nf_id || 0;
    params.id='vk_nf_id_'+vk_nf_id;//(++);
    params.type='vkopt';
    Inj.Wait('curNotifier.version',function(){
@@ -1457,14 +1457,9 @@ function vkShowEvent(obj){ // vkShowEvent({id:'vk_typing_123',title:'%USERNAME%'
          obj.add,
          id,
          obj.author_id || "",
-         obj.custom || "" // script >-> ev.custom = eval('('+msg[12]+')');
+         obj.custom || ""
       ];
-      //console.log(msg.join('<!>'));
-      events=[msg.join('<!>')];
-
-      //Notifier.lcSend('feed', extend({full: curNotifier.idle_manager && curNotifier.idle_manager.is_idle && !this.canNotifyUi(), key: curNotifier.key}, response));
-      //Notifier.pushEvents(events);
-      //*
+      var events=[msg.join('<!>')];
 
       var response={events:events,sound:obj.sound};
       Notifier.lcSend('feed',extend({
@@ -1475,14 +1470,8 @@ function vkShowEvent(obj){ // vkShowEvent({id:'vk_typing_123',title:'%USERNAME%'
       if (!obj.hide_in_current_tab){
          Notifier.pushEvents(events,false,obj.sound);
       }
-      //console.log(response);
-      //*/
-      //Notifier.lpChecked({ts:vkNow(),key:curNotifier.key,events:events,sound:obj.sound});
    });
-}//*/
-
-//vkShowNotify({sound:'On',title:'TestTitle',text:'QazQwe',author_photo:'http://cs10781.vk.com/u17115308/e_ceb5c84f.jpg',author_link:'mail',link:'audio',onclick:'nav.go(this)'}); //,
-//setInterval(function(){vkShowNotify({sound:'On',title:'TestTitle',text:'QazQwe',author_photo:'http://cs10781.vk.com/u17115308/e_ceb5c84f.jpg',author_link:'mail',link:'audio',onclick:'nav.go(this)'});},500)
+}
 
 /* FOR VKOPT PLUGINS */
 if (!window.vkopt_plugins) vkopt_plugins={};
@@ -1497,16 +1486,6 @@ vk_plugins={
 		  for (var key in StaticFiles)  if (key.indexOf('.js') != -1) vkInj(key);
 		}
 		if (p.processLinks) vkProccessLinks();
-		/*
-		if (cur.vkAlbumMenu && p.album_actions && !p.album_actions_ok) {
-			var m=nav.objLoc[0].match(/album(-?\d+)_(\d+)/);
-			if(m && ! /album\d+_00/.test(nav.objLoc[0])){
-				var oid=m[1];
-				var aid=m[2];
-				var a=p.album_actions();
-				for(var i=0;i<a.lenght;i++) cur.vkAlbumMenu.addItem(a[i]);
-			}
-		}*/
 	},
 	init:function(){
 		for (var key in vkopt_plugins){

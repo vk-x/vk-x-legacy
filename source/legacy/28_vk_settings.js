@@ -74,7 +74,7 @@ function vkLocalStorageMan(ret){
   vkLsNewKey=function(key_){
     localStorage.removeItem(key_);
     ge('LsList').innerHTML=vkGetLsList();
-    el=ge("LsEditNode");
+    var el=ge("LsEditNode");
     el.innerHTML='<u>Key:</u> <input type="text" id="LsValNameEdit"/><br>'+
                  '<u>Value:</u><br><textarea id="LsValEdit" rows=5 cols=86  style_="height:100px; width:100%;"></textarea><br>'+
                  '<div style="padding-top:5px;">'+vkRoundButton(['Save key',"javascript:vkLsSaveNewVal()"])+'</div>';
@@ -88,7 +88,7 @@ function vkLocalStorageMan(ret){
     //ge("LsEditNode").innerHTML='';
   }
   vkLsEdit=function(_key){
-    el=ge("LsEditNode");
+    var el=ge("LsEditNode");
     el.innerHTML='<u>Key:</u> <b>'+_key+'</b><br>'+
                  '<u>Value:</u><br><textarea id="LsValEdit" rows=5 cols=86  style_="height:100px; width:100%;">'+localStorage[_key]+'</textarea><br>'+
                  '<div style="padding-top:5px;">'+vkRoundButton(['Save key',"javascript:vkLsSaveVal('"+_key+"')"],['Delete key',"javascript:vkLsDelVal('"+_key+"')"])+'</div>';
@@ -153,9 +153,9 @@ function vkGetVkoptFullConfig(){
 }
 
 function vkCheckSettLength(){
-  s2=vkgetCookie('remixbit') || "";
+  var s2=vkgetCookie('remixbit') || "";
   s2=s2.split('-');
-  s1=DefSetBits.split('-');
+  var s1=DefSetBits.split('-');
   s2[0]+=s1[0].substr(s2[0].length);
   for (var i=0; i<s1.length; i++)  if (s2[i]==null && s1[i]!=null) s2[i]=s1[i];
   s2=s2.join('-');
@@ -615,7 +615,7 @@ function vkInitSettings(){
 
 vk_settings = {
    dislikes_icons:function(){
-      html='\
+      var html='\
       <div class="dislikes_icons fl_r dislike_icon_%cur">\
          <a class="post_dislike_icon dislike_icon_striked" onclick="return vk_settings.dislikes_icons_set(0,this);"></a>\
          <a class="post_dislike_icon dislike_icon_broken"  onclick="return vk_settings.dislikes_icons_set(1,this);"></a>\
@@ -653,8 +653,8 @@ vk_settings = {
       vkCheckSettLength();
 
       var remixbit=vkgetCookie('remixbit');
-      allsett = remixbit.split('-');
-      sett = allsett[0].split('');
+      var allsett = remixbit.split('-');
+      var sett = allsett[0].split('');
 
       for (var j = 0; j <= VK_SETTS_COUNT; j++){
          if (sett[j] == null) { if (!vkoptSetsObj[j] || !vkoptSetsObj[j][0]) sett[j] = 'n'; else sett[j] = '0'; }
@@ -902,8 +902,8 @@ function vkMakeSettings(){
   vkCheckSettLength();
 
   var remixbit=vkgetCookie('remixbit');
-  allsett = remixbit.split('-');
-  sett = allsett[0].split('');
+  var allsett = remixbit.split('-');
+  var sett = allsett[0].split('');
 
   for (var j = 0; j <= VK_SETTS_COUNT; j++){
 	if (sett[j] == null) { if (!vkoptSetsObj[j] || !vkoptSetsObj[j][0]) sett[j] = 'n'; else sett[j] = '0'; }
