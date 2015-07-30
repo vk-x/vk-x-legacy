@@ -576,8 +576,7 @@ function vkInitSettings(){
 		{id:6, text:app.i18n.IDL("seOnAway")},
 		{id:34, text:app.i18n.IDL("seSwichTextChr")},
       {id:77, text:app.i18n.IDL("seBatchCleaners")},
-      {id:78, text:app.i18n.IDL("seCutBracket")},
-      {id:98, text:app.i18n.IDL("seRegexBlock")+'<input type="text" style="width: 100%;" onchange="setSet(\'-\',encodeURIComponent(this.value),6)" value="'+decodeURIComponent(getSet('-',6))+'" />'}
+      {id:78, text:app.i18n.IDL("seCutBracket")}
     ],
    Hidden:[
       {id:82, text:app.i18n.IDL("FullThumb")},
