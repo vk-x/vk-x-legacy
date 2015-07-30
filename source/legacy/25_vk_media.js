@@ -2416,7 +2416,7 @@ vk_videos = {
               data: params,
               callback: function( r ) {
                 console.log(r);
-                var arr=cur.videoList['all'];
+                var arr=cur.videoList['all']['list'];
                 for (var j=0;j<arr.length; j++){
                   for (var i=0;i<vids.length; i++){
                      if (arr[j] && arr[j][1]==vids[i]) arr[j][6]=to_album;
@@ -2438,7 +2438,7 @@ vk_videos = {
          if (x){
             rx=new RegExp(x[1],x[2]);
          }
-         var arr=cur.videoList['all'];
+         var arr=cur.videoList['all']['list'];
          function filter_arr(regex,all){
             arr=arr.filter(function(video){
                var title=winToUtf(video[3]);
@@ -2700,7 +2700,7 @@ function vkVidAddToGroup(oid,vid,to_gid){
 }
 
 function vkVideoAddOpsBtn(){
-   var p=ge('video_summary');
+   var p=geByClass('t_r',ge('video_tabs'))[0];
    if (!ge('vk_video_ops')){
       var oid=cur.oid;
       var aid=((cur.vSection || "").match(/album_(\d+)/) || [])[1];
@@ -2712,14 +2712,14 @@ function vkVideoAddOpsBtn(){
          p_options.push({l:app.i18n.IDL('AddMod'), onClick:vkVideShowAdder});
       }
       if (getSet(77)=='y')
-         p_options.push({l:app.i18n.IDL('DelAll'), onClick:vk_videos.clean});
+         p_options.push({l:app.i18n.IDL('DelAll',2), onClick:vk_videos.clean});
       if (cur.canEditAlbums)
          p_options.push({l:app.i18n.IDL('VideoMove'), onClick:vk_videos.mass_move_box});
 
       p_options=p_options.concat(vk_plugins.videos_actions(oid,aid));
       if (p_options.length>0){
-         p.appendChild(vkCe('span',{'class':'divide'},'|'));
-		 p.appendChild(btn);
+         p.insertBefore(vkCe('span',{'class':'divide fl_l'},'&nbsp;'),p.firstChild);
+		 p.insertBefore(btn,p.firstChild);
          stManager.add(['ui_controls.js', 'ui_controls.css'],function(){
             cur.vkAlbumMenu = new DropdownMenu(p_options, {
               target: ge('vk_video_ops'),
@@ -5050,19 +5050,13 @@ vk_vid_down={
    },
    vkVideoGetLinksBtn: function(){
       if (getSet(2)!='y') return;
-      /*
-      var p=ge('video_albums_list');
-      if (p && !ge('video_get_links')){
-         var attrs={
-            'id':"video_get_links",
-            'class':"side_filter",
-            'onmouseover':"addClass(this, 'side_filter_over');",
-            'onmouseout':"removeClass(this, 'side_filter_over');"
-         };
 
-         p.insertBefore(vkCe('div',attrs,app.i18n.IDL('Links')),p.firstChild);
+      return {
+         l:app.i18n.IDL('Links',2),
+         onClick:function(){
+            vk_vid_down.vkVideoGetLinks(cur.oid,((nav.objLoc['section'] || "").match(/\d+/) || 0));
+         }
       }
-      */
       var p=ge('video_summary');
       if (p && !ge('video_get_links')){
          var attrs={
@@ -5268,9 +5262,9 @@ vk_vid_down={
       quality = quality!=null ? quality : 3;
       var smartlink=true;
       var load=function(cback){
-         ajax.post('al_video.php', {act: 'load_videos_silent', oid: oid, offset: 0}, {
+         ajax.post('al_video.php', {act: 'load_videos_silent', oid: oid, offset: 0, section:'all'}, {
             onDone: function(_list) {
-               var list = eval('('+_list+')')['all'];
+               var list = eval('('+_list+')')['all']['list'];
                cback(list);
             }
          });
