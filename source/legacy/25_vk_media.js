@@ -138,15 +138,15 @@ var vk_photos = {
 
                var p_options = [];
                //if (!vkbrowser.chrome && !vkbrowser.safari)
-                  p_options.push({l:app.i18n.IDL('SaveAlbumAsHtml'), onClick:function(item) {
+                  p_options.push({l:app.i18n.IDL('SaveAlbumAsHtml'), onClick:function() {
                      vkGetPageWithPhotos(oid,aid);
                   }});
                   if (aid !== "tag") {
-                    p_options.push({l:app.i18n.IDL('SaveAlbumAsZip'), onClick:function(item) {
+                    p_options.push({l:app.i18n.IDL('SaveAlbumAsZip'), onClick:function() {
                        app.photo.downloadAlbumAsZip({ ownerId: oid, albumId: aid });
                     }});
                   }
-               p_options.push({l:app.i18n.IDL('Links'), onClick:function(item) {
+               p_options.push({l:app.i18n.IDL('Links'), onClick:function() {
                      vkGetLinksToPhotos(oid,aid);
                }});
                if (cur.statsPhotoAddHash)
@@ -155,7 +155,7 @@ var vk_photos = {
 
                p_options.push({
                   l:app.i18n.IDL('FullThumb'),
-                  onClick:function(item) {
+                  onClick:function() {
                      vk_photos.toggle_thumb_size();
                   }
                });
@@ -163,7 +163,7 @@ var vk_photos = {
                if (aid=='photos')
                   p_options.push({
                      l:app.i18n.IDL('mPhC'),
-                     onClick:function(item) {
+                     onClick:function() {
                         cur.oid=oid;
                         vk_ph_comms.init();
                      }
@@ -329,7 +329,7 @@ var vk_photos = {
       //*/
       return false;
    },
-   choose_album_item:function(oid,aid,offset){
+   choose_album_item:function(oid,aid){
       var PER_PAGE=20;
       //vkMakePageList(0,100,'#','return page(%%);',PER_PAGE,true)
       ge('photos_choose_rows').innerHTML=vkBigLdrImg;
@@ -339,7 +339,6 @@ var vk_photos = {
      var photos=null;
      var photos_reverse=null;
      var cur_photos=null;
-     var count=null;
 
       params.v = "3.0";
       app.vkApi.request({
@@ -457,7 +456,7 @@ var vk_photos = {
                aBox.addButton(getLang('box_save'),function(){
                   aBox.hide();
                   ajax.post('docs.php', {act: 'a_add', doc: data[1], hash: hash}, {
-                     onDone: function(text, tooltip) {
+                     onDone: function(text) {
                         showDoneBox(text);
                      }
                   });
@@ -826,7 +825,6 @@ var vk_photos = {
       if (ge('vk_wall_post_type1')) return;
       var vk__addMediaIndex=0;
       if (window.__addMediaIndex) vk__addMediaIndex=__addMediaIndex;
-      var lnkId = ++vk__addMediaIndex;
       if (ge('page_add_media')){
          Inj.Wait("geByClass('add_media_rows')[0]",AddItem,300,10);
       }
@@ -2250,7 +2248,6 @@ vk_videos = {
         }
       };
 
-      var _count=0;
       var cur_offset=0;
       var scan=function(){
          if (cur_offset==0) ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,app.i18n.IDL('listreq')+' %');
@@ -2280,7 +2277,7 @@ vk_videos = {
 
          box=new MessageBox({title: app.i18n.IDL('DelVideos'),closeButton:true,width:"350px"});
          box.removeButtons();
-         box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+         box.addButton(app.i18n.IDL('Cancel'),function(){abort=true; box.hide();},'no');
          var html='</br><div id="vk_del_msg" style="padding-bottom:10px;"></div><div id="vk_scan_msg"></div>';
          box.content(html).show();
          scan();
@@ -2710,14 +2707,6 @@ function vkVideoAddOpsBtn(){
          p_options.push({l:app.i18n.IDL('DelAll'), onClick:vk_videos.clean});
       if (cur.canEditAlbums)
          p_options.push({l:app.i18n.IDL('VideoMove'), onClick:vk_videos.mass_move_box});
-
-      /*
-      p_options.push({l:app.i18n.IDL('Links'), onClick:function(item) {
-            //
-      }});
-      p_options.push({l:app.i18n.IDL('Add'), h:'/album'+oid+'_'+aid+'?act=add'});
-      */
-
 
       p_options=p_options.concat(vk_plugins.videos_actions(oid,aid));
       if (p_options.length>0){
@@ -3411,7 +3400,7 @@ function vkCleanAudios(){
 
       box=new MessageBox({title: app.i18n.IDL('DelAudios'),closeButton:true,width:"350px"});
 		box.removeButtons();
-		box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+		box.addButton(app.i18n.IDL('Cancel'),function(){abort=true; box.hide();},'no');
 		var html='</br><div id="vk_del_msg" style="padding-bottom:10px;"></div><div id="vk_scan_msg"></div>';
 		box.content(html).show();
 		scan();
@@ -4710,7 +4699,7 @@ vk_aalbum={
 
       box=new MessageBox({title: app.i18n.IDL('Searching...'),closeButton:true,width:"350px", onHide:function(r){abort=true; get_track();} });
       box.removeButtons();
-      box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide(); get_track();},'no');
+      box.addButton(app.i18n.IDL('Cancel'),function(){abort=true; box.hide(); get_track();},'no');
       var html='</br><div id="vk_scan_msg"></div><div id="vk_scan_info" style="padding-bottom:10px;"></div>';
       box.content(html).show();
 
@@ -4797,7 +4786,7 @@ function vkAlbumCollectPlaylist(){
 
    box=new MessageBox({title: app.i18n.IDL('Searching...'),closeButton:true,width:"350px", onHide:function(r){abort=true; get_track();}});
    box.removeButtons();
-   box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide(); get_track();},'no');
+   box.addButton(app.i18n.IDL('Cancel'),function(){abort=true; box.hide(); get_track();},'no');
    var html='</br><div id="vk_scan_msg"></div><div id="vk_scan_info" style="padding-bottom:10px;"></div>';
    box.content(html).show();
 
@@ -5292,7 +5281,6 @@ vk_vid_down={
               callback: function( r ) {
                 var data=r.response;
                 if (data.length>1){
-                  var count=data.shift();
                   for (var i=0; i<data.length; i++){
                      var v=data[i];
                      album_list.push([v.owner_id,v.vid,v.image,v.title,v.description,'',v.album,0,0,v.duration,'']);

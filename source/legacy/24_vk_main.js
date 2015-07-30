@@ -275,7 +275,7 @@ function VkOptMainInit(){
 
 }
 
-function vkOnDocumentClick(e) {
+function vkOnDocumentClick() {
    var el=document.activeElement;
    if ((el.contentEditable=="true" || el.tagName=='TEXTAREA'))
       vkAddSmilePanel(el);
@@ -528,7 +528,7 @@ function vkAjaxNavDisabler(strLoc){
 		return false;
 	}
 }
-function vkAllowPost(url, q, options){
+function vkAllowPost(url, q){
    if (SUPPORT_STEALTH_MOD && q && q.audio_html && q.audio_orig){
       q.audio_html=q.audio_orig;
    }
@@ -544,7 +544,7 @@ function vkAllowPost(url, q, options){
 }
 function vkCommon(){
     if (getSet(6)=='y'){
-		goAway=function(lnk,params){
+		goAway=function(lnk){
          lnk=lnk.replace(/&#0+(\d+);/g,"&#$1;");
          lnk=winToUtf(lnk);//.replace(/&amp;/,'&');
          window.open(lnk, '_blank');
@@ -589,11 +589,11 @@ function vkResponseChecker(answer,url,q){// detect HTML in response and prosessi
 }
 
 function vkProcessResponse(answer,url,q){
-  if (url=='/photos.php' && q.act=="a_choose_photo_box") vkPhChooseProcess(answer,url,q);
-  if (url=='/al_photos.php' && q.act=="choose_photo") vkPhChooseProcess(answer,url,q);
-  if (url=='/video.php' && q.act=="a_choose_video_box") vkVidChooseProcess(answer,url,q);
-  if (url=='/al_video.php' && q.act=="a_choose_video_box") vkVidChooseProcess(answer,url,q);
-  if ((url=='/audio' || url=='/audio.php' || url=='/al_audio.php') && q.act=="a_choose_audio_box") vkAudioChooseProcess(answer,url,q);
+  if (url=='/photos.php' && q.act=="a_choose_photo_box") vkPhChooseProcess(answer, q);
+  if (url=='/al_photos.php' && q.act=="choose_photo") vkPhChooseProcess(answer, q);
+  if (url=='/video.php' && q.act=="a_choose_video_box") vkVidChooseProcess(answer, q);
+  if (url=='/al_video.php' && q.act=="a_choose_video_box") vkVidChooseProcess(answer, q);
+  if ((url=='/audio' || url=='/audio.php' || url=='/al_audio.php') && q.act=="a_choose_audio_box") vkAudioChooseProcess(answer, q);
   if (url=='/al_friends.php' && q.act=='add_box') answer[1]=answer[1].replace('"friends_add_block" style="display: none;"','"friends_add_block"');
   if(url=='/al_groups.php' && q.act=='people_silent') {
       if(answer[0].members)  answer[0].members = vkModAsNode(answer[0].members,vkProcessNodeLite,url,q);
@@ -704,7 +704,7 @@ vk_ch_media={
 
    }
 }
-function vkPhChooseProcess(answer,url,q){
+function vkPhChooseProcess(answer,q){
   vkCheckPhotoLinkToMedia=function(){
     var btn=ge('vk_link_to_photo_button');
     var val=ge('vk_link_to_photo').value.match(/photo(-?\d+)_(\d+)/);
@@ -762,7 +762,7 @@ function vkPhChooseProcess(answer,url,q){
   }
 }
 
-function vkVidChooseProcess(answer,url,q){
+function vkVidChooseProcess(answer,q){
 //*
   vkCheckVideoLinkToMedia=function(){
     var btn=ge('vk_link_to_video_button');
@@ -809,7 +809,7 @@ function vkVidChooseProcess(answer,url,q){
 //*/
 }
 
-function vkAudioChooseProcess(answer,url,q){
+function vkAudioChooseProcess(answer,q){
   vkCheckAudioLinkToMedia=function(){
     var btn=ge('vk_link_to_audio_button');
     var val=ge('vk_link_to_audio').value.match(/audio(-?\d+)_(\d+)/);
@@ -1079,7 +1079,6 @@ vk_messages={
          if (offset==0) ge('saveldr').innerHTML=vkProgressBar(offset,10,w);
 
          var code=[];
-         var rcode=[];
          for (var i=0; i<20; i++){
             code.push('API.messages.getHistory({user_id:'+uid+', count:'+PER_REQ+', offset:'+offset+', rev:1}).items');//
             offset+=PER_REQ;
@@ -1169,14 +1168,14 @@ vk_im={
 
          var p_options = [];
          if (getSet(40)=='y') {
-            p_options.push({l:app.i18n.IDL('msgdelinbox',2), onClick:function(item) {
+           p_options.push({l:app.i18n.IDL('msgdelinbox',2), onClick:function() {
                vkDeleteMessages();
             }});
-            p_options.push({l:app.i18n.IDL('msgdeloutbox',2), onClick:function(item) {
+            p_options.push({l:app.i18n.IDL('msgdeloutbox',2), onClick:function() {
                vkDeleteMessages(true);
             }});
          }
-         p_options.push({l:app.i18n.IDL('Stats',2), onClick:function(item) {
+         p_options.push({l:app.i18n.IDL('Stats',2), onClick:function() {
             vkMsgStats();
          }});
 
@@ -1249,9 +1248,7 @@ vk_im={
             ge('im_media_dpreview'),
             ge('im_media_mpreview'),
             ge('im_sdocs_preview')
-         ], tgl = {}, len = 0, i,
-        progressNode = ge('im_progress_preview'),
-        curPeerMedia = cur.imPeerMedias[cur.peer];
+         ], curPeerMedia = cur.imPeerMedias[cur.peer];s[cur.peer];
 
       var contIndex = 0, cont, cls;
       var ind = curPeerMedia.length,
@@ -1443,7 +1440,6 @@ function vkIM(){
 
 
 function vkImEvents(response){
-   var ts = response.ts;
    if (response.updates) {
       for (var i in response.updates) {
         var update = response.updates[i],
@@ -1591,7 +1587,7 @@ function vkIMSaveHistoryBox(peer){
       <div class="button_gray"><button href="#" onclick="vkMakeMsgHistory('+peer+',true); return false;">'+app.i18n.IDL('SaveHistoryCfg')+'</button></div>\
       </div>\
    </div>';
-   var box=vkAlertBox(app.i18n.IDL('SaveHistory'), t);
+   vkAlertBox(app.i18n.IDL('SaveHistory'), t);
 }
 
 /* NOTIFIER */
@@ -1621,10 +1617,8 @@ function vkFcEvents(response){
    }
    each(response.events, function (){
       var ev = this.split('<!>'),
-         evVer = ev[0],
          evType = ev[1],
          peer = ev[2];
-         //console.log('fc:',evType,peer,ev);
       if (evType=='typing' && peer) {
          var uid = peer<2e9?peer:ev[3];
          var chat = peer>2e9?peer-2e9:0;
@@ -1780,7 +1774,7 @@ function vkDeleteMessages(is_out){
 			del_offset=0;
 			callback();
 		} else
-		AjPost('mail?act=a_mark', {mark: MARK_ACT, msgs_ids: ids_part.join(','), hash: cur.mark_hash, al:1},function(r,t){
+		AjPost('mail?act=a_mark', {mark: MARK_ACT, msgs_ids: ids_part.join(','), hash: cur.mark_hash, al:1},function(){
 			del_offset+=MSG_IDS_PER_DEL_REQUEST;
 			setTimeout(function(){del(callback);},MSG_DEL_REQ_DELAY);
 		});
@@ -1820,7 +1814,7 @@ function vkDeleteMessages(is_out){
 	var run=function(){
 		box=new MessageBox({title: app.i18n.IDL('DeleteMessages'),closeButton:true,width:"350px"});
 		box.removeButtons();
-		box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+		box.addButton(app.i18n.IDL('Cancel'),function(){abort=true; box.hide();},'no');
 		var html='<div id="vk_del_msg" style="padding-bottom:10px;"></div><div id="vk_scan_msg"></div>';
 		box.content(html).show();
 		scan();
@@ -1858,7 +1852,7 @@ function vkDeleteMessagesHistory(uid){
 			del_offset=0;
 			callback();
 		} else
-		AjPost('mail?act=a_mark', {mark: MARK_ACT, msgs_ids: ids_part.join(','), hash: mark_hash, al:1},function(r,t){
+		AjPost('mail?act=a_mark', {mark: MARK_ACT, msgs_ids: ids_part.join(','), hash: mark_hash, al:1},function(){
 			del_offset+=MSG_IDS_PER_DEL_REQUEST;
 			setTimeout(function(){del(callback);},MSG_DEL_REQ_DELAY);
 		});
@@ -1901,7 +1895,7 @@ function vkDeleteMessagesHistory(uid){
 	var run=function(){
 		box=new MessageBox({title: app.i18n.IDL('DeleteMessages'),closeButton:true,width:"350px"});
 		box.removeButtons();
-		box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+		box.addButton(app.i18n.IDL('Cancel'),function(){abort=true; box.hide();},'no');
 		var html='<div id="vk_del_msg" style="padding-bottom:10px;"></div><div id="vk_scan_msg"></div>';
 		box.content(html).show();
 		scan();
@@ -1927,7 +1921,6 @@ function vkMakeMsgHistory(uid,show_format){
 	var offset=0;
 	var result='';
 	var user1='user1';
-	var user2='user1';
 	var mid=window.vk.id;
 	var msg_pattern=vkGetVal('VK_SAVE_MSG_HISTORY_PATTERN') || SAVE_MSG_HISTORY_PATTERN;
 	var date_fmt=vkGetVal('VK_SAVE_MSG_HISTORY_DATE_FORMAT') || SAVE_MSG_HISTORY_DATE_FORMAT;
@@ -2097,7 +2090,6 @@ function vkCleanNotes(){
 	var del_offset=0;
 	var cur_offset=0;
 	var abort=false;
-	var filter=['owner','others','all'];
 	var deldone=function(){
 			box.hide();
 			vkMsg(app.i18n.IDL("ClearDone"),3000);
@@ -2163,7 +2155,7 @@ function vkCleanNotes(){
 		start_offset=soffset?soffset:0;
 		box=new MessageBox({title: app.i18n.IDL('ClearNotes'),closeButton:true,width:"350px"});
 		box.removeButtons();
-		box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+		box.addButton(app.i18n.IDL('Cancel'),function(){abort=true; box.hide();},'no');
 		var html='<div id="vk_del_msg" style="padding-bottom:10px;"></div><div id="vk_scan_msg"></div>';
 		box.content(html).show();
 		scan();
@@ -2203,8 +2195,8 @@ function vkCleanNotes(){
 		aBox.content(app.i18n.IDL('CleanNotesConfirm')+html);
 		aBox.show();
 		//vkAlertBox(app.i18n.IDL('ClearNotes'),app.i18n.IDL('CleanNotesConfirm')+html,vkRunClean,true);
-		var delTime = new Datepicker(ge('notes_del_after_date'), {time:'notes_del_after_time', width:140});
-		var cb = new Checkbox(ge("notes_del_by_time"), {  width: 270,
+		new Datepicker(ge('notes_del_after_date'), {time:'notes_del_after_time', width:140});
+		new Checkbox(ge("notes_del_by_time"), {  width: 270,
 														  checked:by_time,
 														  label: app.i18n.IDL('DelCreatedAfterTime'),
 														  onChange: function(state) { by_time = (state == 1); }
@@ -2308,7 +2300,7 @@ function vkTopicSubscribe(add_link){
 	ajax.post('al_board.php', {act: 'post_comment',topic: cur.topic,last: last,hash: cur.hash,comment: text},{
 		showProgress:showGlobalPrg.pbind(progr_el, {cls: 'progress_inv_img', w: 46, h: 16}),
 		hideProgress:hide.pbind('global_prg'),
-		onDone: function(count, from, rows, offset, pages, preload) {
+		onDone: function(count, from, rows) {
 			var pid=rows.split(text)[1].match(/Board\.deletePost\((\d+)\)/);
 			if (!pid) {
 				vkMsg(app.i18n.IDL('Error'));

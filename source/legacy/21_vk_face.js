@@ -882,7 +882,6 @@ vk_menu={
 }
 
 function vkMenu(){//vkExLeftMenu
-  var CSS_ICONS=false;
   var tstart=tend=unixtime();
   var cfg=getSet(15);
   var MFR_CFG=13; //mod my friends
@@ -935,32 +934,6 @@ function vkMenu(){//vkExLeftMenu
 	   /*#stl_side { z-index: 0 !important;}*/\
   ");
 
-  var icon_url='http://vkoptimizer.narod.ru/icons/';
-  var MenuIcons={
-      'profile':'home.png',
-      'friends':'freinds.png',
-      'albums':'photo.png',
-      'video':'videos.png',
-      'audio':'audios.png',
-      'mail':'mail.png',
-	  'im':'mail.png',
-      'notes':'notes.png',
-      'groups':'groups.png',
-      'events':'events.png',
-      'newsfeed':'news.png',
-      'feed':'news.png',
-      'fave':'fave.png',
-      'settings':'settings.png',
-      'matches':'matches.png',
-      'opinions':'opinions.png',
-      'questions':'questions.png',
-      'apps':'apps.png',
-	  'docs':'docs.png',
-	  'wall':'wall.png',
-      'market':'market.png',
-      'gifts':'gift2me.png'
-  };
-  // sub_item = [link, lang, show_only_when_<b>21</b>, expressinon_when_item_hide]
  var ExMenu={
     //*
     'profile':[
@@ -1133,7 +1106,7 @@ function vkMenu(){//vkExLeftMenu
     if (vkMenuCurrentSub!=cur) {  vkMenuHide();  show(cur);   vkMenuCurrentSub=cur; }
     clearTimeout(vkMenuHider);
   }
-  vkMenuItemOut=function(e,elem){ clearTimeout(vkMenuHider);  vkMenuHider=setTimeout(vkMenuHide,vkMenuHideTimeout); }
+  vkMenuItemOut=function(){ clearTimeout(vkMenuHider);  vkMenuHider=setTimeout(vkMenuHide,vkMenuHideTimeout); }
   vkMenuHide=function(){if (vkMenuCurrentSub){ hide(vkMenuCurrentSub); vkMenuCurrentSub=null; }}
   var setActions=function(elem){
       if (elem){
@@ -1626,7 +1599,6 @@ extend(vk_cur, {
 				var photo = vk_calEvents[i][4];
 				var href = vk_calEvents[i][2];
 				var name = vk_calEvents[i][1];
-				var fid = vk_calEvents[i][0];
 				events+='<div class="event_block">\
 							<a href="' + href + '" onclick="return nav.go(this, event);"><img src="' + photo + '"/></a>\
 							<div class="event_name">\
@@ -1695,7 +1667,6 @@ function vkClock() {
 
 function wr_date(){
   var ms=['01','02','03','04','05','06','07','08','09','10','11','12'];
-  var d=document;
   var up=new Date();
   var dt=up.getDate();
   var m=up.getMonth();//ms[];
@@ -1860,7 +1831,7 @@ function FindAndProcessTextNodes(node,func){
         childItem++;
     }
 }
-function SmileNode(mainNode,childItem,searchWord){
+function SmileNode(mainNode,childItem){
     node = mainNode.childNodes[childItem];
     for (key in SmilesMap){
       var regex=(SmilesMap[key][0])?SmilesMap[key][0]:SmilesMap[key];
@@ -1882,26 +1853,17 @@ function SmileNode(mainNode,childItem,searchWord){
          searchWord=false;
       if (searchWord){
          var startIndex = node.nodeValue.indexOf(searchWord)+f.length;
-         var endIndex = searchWord.length-f.length-l.length;
          if(startIndex!=-1){
-            var secondNode = node.splitText(startIndex);
-            var thirdNode = secondNode.splitText(endIndex);
-
-
-         // var smilepath=(SmilesMap[key][0])?SmilesMap[key][1]:'icq';
-
           var smile = mainNode.ownerDocument.createElement('img');
           smile.setAttribute('style',"margin-bottom:-0.3em; border:0px;");
-          //smile.src='http://kolobok.us/smiles/'+smilepath+'/'+key+'.gif';
-          smile.src=vkSmilesLinks[key];//'http://vkoptcss.narod.ru/smiles/'+key+'.gif';
+          smile.src=vkSmilesLinks[key];
           smile.setAttribute("onclick","RemoveSmile(this);");
           smile.alt=val;
           smile.title=val;
 
           mainNode.replaceChild(smile,mainNode.childNodes[childItem+1]);
-          //childItem = childItem*1+2;
           if(mainNode.childNodes[childItem] && regex.test(mainNode.childNodes[childItem].nodeValue)){
-              childItem = SmileNode(mainNode,childItem,searchWord);
+              childItem = SmileNode(mainNode,childItem);
           }
       }
     }

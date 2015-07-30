@@ -1,6 +1,6 @@
 /* TEXTAREAS FUNCTIONS */
 
-function vkInsertToField(field,text,html){
+function vkInsertToField(field,text){
 	var obj=ge(field);
    if (obj && obj.contentEditable=="true"){
       var s=document.getSelection()+"";
@@ -82,7 +82,7 @@ function replaceSelectedText(obj,cbFunc){
 }
 ///////////////////////////
 
-function PasteSmile(text,rfield,key){
+function PasteSmile(text,rfield){
 	vkInsertToField(rfield,text);
 }
 
@@ -158,18 +158,14 @@ function vkTxtPanelButtons(eid,emoji){
 function vkAddSmilePanel(el){
 	if (getSet(33)!='y' && getSet(95)!='y') return;
 	var tstart=unixtime();
-	var te_btn_count=0;
 	var touts={};
 	if (!window.txtareas_events) txtareas_events=[];
-   //if (!window.txtareas_ids) txtareas_ids=0;
 
    var btns_count = 0;
    var add_panel=function(ta){
 		if ((ta.getAttribute('onfocus') && ta.getAttribute('onfocus').indexOf('showEditPost')!=-1) || ta.getAttribute('vk_edit_btns') || !ta.id)
-         return;//continue;//ge('edit_btns_'+ta.id)
-		//if (!ta.id) ta.id='vktextfield_'+(txtareas_ids++);
+         return;
       var panel=vkCe('div',{id:'edit_btns_'+ta.id,"class":'vk_textedit_panel emoji_no_tabs'},
-						//vkTxtPanelButtons(ta.id)+
 						'<div style="float:left; font-size:7px; margin-top:-10px; margin-right:3px;" onclick="fadeOut(\''+'edit_btns_'+ta.id+'\');">x</div>');
 		if (getSet(33)=='y'){
          panel.appendChild(vkTxtPanelButtons(ta.id));
@@ -181,7 +177,6 @@ function vkAddSmilePanel(el){
             btns_count++;
          }
       }
-		//alert(panel.innerHTML);
 		if (btns_count == 0) return;
 		ta.parentNode.insertBefore(panel,ta);
 		hide(panel);
@@ -199,7 +194,6 @@ function vkAddSmilePanel(el){
 		};
 		var panel_mousemove=function(e){
 			var pid=e.target.id;
-			var panel=ge(pid);
 			clearTimeout(touts[pid]);
 		};
 		txtareas_events.push(panel_mousemove);
@@ -248,7 +242,7 @@ function SwichKeybText(str){
 			var messer=str.substr(i,1);
 		    for (var u=0; u < alfeng.length; u++) {
 					if(messer==alfeng[u]){
-						var messer=messer.replace(alfeng[u],alfrus[u]);
+						messer=messer.replace(alfeng[u],alfrus[u]);
 						break;
 					}
 		    }
@@ -263,7 +257,6 @@ if(vk_EnableSwichText){
   var Key;
   var ctrlKey;
   var shiftKey;
-  var pressed;
   event=window.event?window.event:event;
   Key=event.keyCode;//
   ctrlKey=event.ctrlKey;

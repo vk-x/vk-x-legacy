@@ -92,7 +92,7 @@ vk_users = {
       if (!ops.el){
          box=new MessageBox({title: app.i18n.IDL('Scaning'),closeButton:true,width:"350px"});
          box.removeButtons();
-         box.addButton(app.i18n.IDL('Cancel'),function(r){abort=true; box.hide();},'no');
+         box.addButton(app.i18n.IDL('Cancel'),function(){abort=true; box.hide();},'no');
       }
       var html='<div id="vk_scan_bar" style="padding-bottom:10px;">'+vkBigLdrImg+'</div>';
       if (!ops.el) box.content(html).show();

@@ -346,19 +346,18 @@ function init_colorpicker(target, onselect, inhcolor){
         upcolor();
         lock = 0;
     }
-    function bodyup(e){
+    function bodyup(){
         paldown = 0;
         slddown = 0;
         window.removeEventListener("mousemove", pelettemdown, true);
         window.removeEventListener("mousemove", slidermdown, true);
         window.removeEventListener("mouseup", bodyup, true);
     }
-    function onapply(e){
-        //console.log(e);
+    function onapply(){
         oncancel();
         onselect(hcolor);
     }
-    function oncancel(e){
+    function oncancel(){
         target.removeChild(picker);
         for(var i = pickers.length; p = pickers[--i];){
             if(p == target){
@@ -383,7 +382,7 @@ FrCol_click=function(color){
     ge('spct11').style.backgroundColor = color;
 }
 
-MsgCol_click=function(color, id){
+MsgCol_click=function(color){
     setMsgColor(color);
     ge('spct10').style.backgroundColor = color;
 }
@@ -771,7 +770,7 @@ vk_settings = {
       }
    }
 }
-function vksettobj(s){
+function vksettobj(){
   vkoptSetsObj={};
   var x=0;
   for (var key in vkoptSets){
@@ -886,8 +885,7 @@ function vkSetNY(id,is_on){	setCfg(id,is_on?'y':'n');};
 
 
 var _vk_inp_to={'__cnt_id':0};
-function vkInpChange(e,obj,callback){
-   //var val=trim(obj.value);
+function vkInpChange(obj,callback){
    if (!obj.id){
       obj.id='vkobjid_'+_vk_inp_to['__cnt_id'];
       _vk_inp_to['__cnt_id']= _vk_inp_to['__cnt_id']+1;
@@ -951,7 +949,7 @@ function vkShowSettings(box){
   var tpl='<div id="vksetts_search">\
      <div id="vksetts_sbox" style="display:none;">\
         <div class="vk_clear_input" id="vksets_clear_inp" onclick="val(\'vksetts_sinp\',\'\'); vk_settings.filter();"></div>\
-        <input class="search vksetts_sinp" id="vksetts_sinp" onkeyup="vkInpChange(event, this, vk_settings.filter);" onpaste="vkInpChange(event, this, vk_settings.filter);" oncut="vkInpChange(event, this, vk_settings.filter);" onfocus="addClass(\'vksetts_sbox\', \'vksets_search_focus\');" onblur="removeClass(\'vksetts_sbox\', \'vksets_search_focus\');">\
+        <input class="search vksetts_sinp" id="vksetts_sinp" onkeyup="vkInpChange(this, vk_settings.filter);" onpaste="vkInpChange(this, vk_settings.filter);" oncut="vkInpChange(this, vk_settings.filter);" onfocus="addClass(\'vksetts_sbox\', \'vksets_search_focus\');" onblur="removeClass(\'vksetts_sbox\', \'vksets_search_focus\');">\
       </div>\
       <div id="vksets_search_result"></div>\
       <div id="vksets_stoggle_btn" style="position:relative"><div style="position:absolute; right:0px; top:15px"><a class="vk_magglass_icon" href="#" onclick="toggle(\'vksetts_sbox\'); if (isVisible(\'vksetts_sbox\')) elfocus(\'vksetts_sinp\'); return false;"></a></div></div>\
@@ -974,7 +972,7 @@ function vkShowSettings(box){
   return false;
 }
 
-function vkSaveSettingsOnServer(check){
+function vkSaveSettingsOnServer(){
 	var sett=vkgetCookie("remixbit");
 	var cur_date=Math.round((new Date().getTime())/1000);
 	sett+='|'+cur_date;

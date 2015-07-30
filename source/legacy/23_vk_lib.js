@@ -80,7 +80,7 @@ if (vkbrowser.mozilla){
 }
 
 if (!window.Audio){
-  Audio= function(url){
+  Audio= function(){
     this.notification    = function(){this.play  = function(){};};
     this.play  = function(){};
   }
@@ -88,7 +88,7 @@ if (!window.Audio){
 
 /* FUNCTIONS. LEVEL 1 */
 	//LANG
-   function print_r( array, return_val ) {
+   function print_r( array) {
       var output = "", pad_char = " ", pad_val = 4;
 
       var formatArray = function (obj, cur_depth, pad_val, pad_char) {
@@ -215,7 +215,7 @@ if (!window.Audio){
          if (FULL_ENCODE_FILENAME)
             return encodeURIComponent(s);
          else
-            return s.replace(/([^A-Za-z\u0410-\u042f\u0430-\u044f])/g,function (str, p1, offset, s) {return encodeURIComponent(p1)});
+            return s.replace(/([^A-Za-z\u0410-\u042f\u0430-\u044f])/g,function (str, p1) {return encodeURIComponent(p1)});
       }catch(e){
          return s;
       }
@@ -231,7 +231,7 @@ if (!window.Audio){
 	}
 
    function vkFormatTime(t){
-      var res, sec, min, hour;
+      var res, sec, min;
       t = Math.max(t, 0);
       sec = t % 60;
       res = (sec < 10) ? '0'+sec : sec;
@@ -829,7 +829,6 @@ vk_hor_slider={
         startMargin = slider.offsetLeft || 0,
         maxX = (scale.clientWidth || 100) - slider.offsetWidth,
         selectEvent = 'mousedown selectstart',
-        defPercent = intval(vk_hor_slider.default_percent),
         margin, percent,position;
 
     var _temp = function (e) {
@@ -876,7 +875,6 @@ vk_hor_slider={
       percent = intval(percent);
       ge(id+'_select').value=percent;
       ge(id+'_position').value=val;
-      var maxVal=parseInt(ge(id+'_slider_scale').getAttribute("max_value")) || 0;
 
       var slider = ge(id+'_slider'),
       maxX = (slider.parentNode.clientWidth || 100) - slider.offsetWidth;
@@ -976,7 +974,6 @@ vk_v_slider={
         startMargin = (slider.offsetTop+halfH) || 0,
         maxY = (scale.clientHeight || 100) /*- slider.offsetHeight*/,
         selectEvent = 'mousedown selectstart',
-        defPercent = intval(vk_v_slider.default_percent),
         margin, percent,position,h;
 
     var _temp = function (e) {
@@ -1013,7 +1010,6 @@ vk_v_slider={
       percent = intval(percent);
       ge(id+'_select').value=percent;
       ge(id+'_position').value=val;
-      var maxVal=parseInt(ge(id+'_slider_scale').getAttribute("max_value")) || 0;
 
       var slider = ge(id+'_slider'),
 	  halfH =slider.offsetHeight / 2,
@@ -1039,7 +1035,6 @@ vk_v_slider={
 function vkSetMouseScroll(el,next,back){
  addEvent(ge(el),'mousewheel DOMMouseScroll',function(e){//
       e = e ? e : window.event;
-      var wheelElem = e.target ? e.target : e.srcElement;
       var wheelData = e.detail ? e.detail * -1 : e.wheelDelta / 40;
       if (Math.abs(wheelData)>100) { wheelData=Math.round(wheelData/100); }
       if (wheelData<0) next(e); else back(e);
@@ -1050,7 +1045,6 @@ function vkSetMouseScroll(el,next,back){
 vkApis={
 	photos:function(oid,aid,callback){
 		var params={aid:aid};
-		var method='photos.get';
 		params[oid<0?'gid':'uid']=Math.abs(oid);
     params.v = "3.0";
     app.vkApi.request({
@@ -1081,7 +1075,7 @@ vkApis={
 		var get=function(){
 			if (progress) progress(cur,count);
 			vk_ph_xhr=ajax.post('al_photos.php', {act: 'show', list: listId, offset: cur}, {
-            onDone: function(listId, ph_count, offset, data, opts) {
+            onDone: function(listId, ph_count, offset, data) {
                if (!count) count=ph_count;
                for(var i=0; i<data.length;i++){
                   if (temp[data[i].id]) continue;
@@ -1109,7 +1103,7 @@ vkApis={
 		}
       var next=true;
       var nxt=function(){next=true;};
-      var ti=setInterval(function(){ // знаю... этот ужасный костыль для избежания наращивания стека вызовов...
+      setInterval(function(){ // знаю... этот ужасный костыль для избежания наращивания стека вызовов...
          if (!next) return;
          next=false;
          get();
@@ -1686,7 +1680,7 @@ if (!window.vkopt_plugins) vkopt_plugins={};
 
 if (!window.winToUtf) winToUtf=function(text) {
   text=text.replace(/&#0+(\d+);/g,"&#$1;");
-  var m, i, j, code;  m = text.match(/&#[0-9]{2}[0-9]*;/gi);
+  var m, j, code;  m = text.match(/&#[0-9]{2}[0-9]*;/gi);
   for (j in m) {   var val = '' + m[j]; code = intval(val.substr(2, val.length - 3));
     if (code >= 32 && ('&#' + code + ';' == val)) text = text.replace(val, String.fromCharCode(code));
   }  text = text.replace(/&quot;/gi, '"').replace(/&amp;/gi, '&').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>');
