@@ -150,6 +150,7 @@
 		Donate: "Donate"
 		Done: "Done"
 		DontInNewWindow: "Don't open this link in new window"
+		DontRemoveAlbumCover: "Don't remove album cover"
 		download: "[ Download ]"
 		downloadAll: "[ Download all ]"
 		downloadAllGifs: "[ Download all GIFs]"

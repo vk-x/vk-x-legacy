@@ -137,6 +137,7 @@
 		dislike: "Не нравится"
 		Done: "Выполнено"
 		DontInNewWindow: "Не открывайте эту ссылку в новом окне"
+		DontRemoveAlbumCover: "Не удалять обложку альбома"
 		download: "[ Скачать ]"
 		downloadAll: "[ Скачать всё ]"
 		downloadAllGifs: "[ Скачать все GIF ]"

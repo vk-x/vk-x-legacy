@@ -1535,6 +1535,30 @@ vk_photoadm={
    },
 
    move_photos: function( oid, target_aid, pids ) {},
+   get_album_info:function(oid,aid, callback){
+
+      switch(aid){
+         case '0':
+         case '00':
+         case '000':
+            callback();
+            return;
+      }
+
+      app.vkApi.request({
+        method: "photos.getAlbums",
+        data: {
+          owner_id: oid,
+           album_ids: aid,
+           need_covers:1
+        },
+        callback: function( r ) {
+           var data=r.response || [];
+           var album = data[0];
+           callback(album);
+        }
+      });
+   },
    check_all: function( uncheck ) {}
 }
 
@@ -1546,7 +1570,7 @@ function vkAlbumAdminItems(){
 
 		a.push({l:app.i18n.IDL('paCheckUnik'), onClick:vkAlbumCheckDublicatUser, s:{borderColor:"#DDDDDD", borderTop:"1px", borderTopStyle:"solid"}});
 		a.push({l:app.i18n.IDL('paGetPByUser'), onClick:vkGetPhotoByUserBox});
-		a.push({l:app.i18n.IDL('paDelOld'), onClick:vkOldPhotos});
+		a.push({l:app.i18n.IDL('paDelOld'), onClick:function(){vkOldPhotos();} });
 		a.push({l:'club337',h:'/club337'});//, app.i18n.IDL('paDevSpecialFor')
 	}
 	return a;
@@ -1588,11 +1612,44 @@ function vkGetPhotoByUserBox() {
   return false;
 }
 
-function vkOldPhotos(){
+function vkOldPhotos(del_count, ignore_pid){
 
   var aoid=cur.moreFrom.match(/album(-?\d+)_(\d+)/);
   var aid=aoid[2];
   var oid=aoid[1];
+
+  if (!del_count){
+    var box = vkAlertBox('...',vkBigLdrImg);
+    vk_photoadm.get_album_info(oid,aid,function(info){
+       box.removeButtons();
+
+       var html='<h2>'+app.i18n.IDL('paDelCount')+'</h2>'+
+                (info && info.thumb_id?'<div style="padding:3px 0px" class="fl_r"><div id="vk_del_old_ignorecover" class="checkbox" onclick="checkbox(this)"><div></div>'+app.i18n.IDL('DontRemoveAlbumCover')+'</div></div>':'')+
+                '<input type="text" class="text" id="vk_del_old_count" value="0">'
+       box.setOptions({title:app.i18n.IDL('deleting')});
+       box.content(html);
+
+       on_submit = function(){
+         ignore_pid = 0;
+         del_count = parseInt(val('vk_del_old_count'));
+
+         if (ge('vk_del_old_ignorecover') && isChecked('vk_del_old_ignorecover')){
+            ignore_pid = info.thumb_id;
+         }
+         if (del_count>0){
+            box.hide();
+            vkOldPhotos(del_count,ignore_pid);
+         } else {
+            alert(app.i18n.IDL('paNullCount'));
+         }
+       }
+       box.addButton(getLang('box_cancel'),box.hide, 'no');
+       box.addButton('OK',on_submit,'yes');
+
+    })
+    return;
+  }
+
   var photoSort=function (a, b){
     var p1=a.pid;//[0].match(/_(\d+)/)[1];
     var p2=b.pid;//[0].match(/_(\d+)/)[1];
@@ -1601,7 +1658,7 @@ function vkOldPhotos(){
     return 0;
   }
   //AjGet('photos.php?act=a_album&oid='+oid+'&aid='+aid,function(r,t){
-  var count=parseInt(prompt(app.i18n.IDL('paDelCount')));
+  var count=parseInt(del_count);
   ge('photos_container').innerHTML=vkBigLdrImg;
   vkDisableAlbumScroll();
   vkAdmGetPhotosWithUsers(oid,aid,function(r){
@@ -1613,10 +1670,12 @@ function vkOldPhotos(){
 	}
     //var list=eval('('+t+')');
     list=list.sort(photoSort);
+    count = Math.min(list.length, count);
     var html="";
     var photos_id=[];
     if (count){
       for (var i=0;i<count;i++){
+        if (list[i].pid==ignore_pid) continue;
         var pid=oid+'_'+list[i].pid;
 		var src=list[i].src;
 		html+='<td><div id="ph'+pid+'"><a href="/photo'+pid+'"  onclick="if (cur.cancelClick) return (cur.cancelClick = false); return showPhoto(\''+pid+'\', \''+cur.moreFrom+'\', {img: this, root: 1}, event)"><img src="'+src+'" style="max-width: 130px"></a></div></td>'+/*((i % 5 == 0)?'<tr>':'')+*/
