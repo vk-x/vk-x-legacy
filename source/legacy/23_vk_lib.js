@@ -112,14 +112,14 @@ if (!window.Audio){
             str += base_pad + "]\n";
          } else {
             str = obj.toString();
-         };
+         }
 
          return str;
       };
 
       var repeat_char = function (len, _char) {
          var str = "";
-         for(var i=0; i < len; i++) { str += _char; };
+         for(var i=0; i < len; i++) { str += _char; }
          return str;
       };
 
@@ -643,13 +643,12 @@ String.prototype.leftPad = function (l, c) {
 			var pos=(val*100/max).toFixed(2).replace(/\.00/,'');
 			var perw=(val/max)*width;
 			text=(text || '%').replace("%",pos+'%');
-			var html='<div class="vkProg_Bar vkPB_Frame" style="width: '+perw+'px;">'+
+			return '<div class="vkProg_Bar vkPB_Frame" style="width: '+perw+'px;">'+
 					'<div class="vkProg_Bar vkProg_BarFr" style="width: '+width+'px;">'+text+'</div>'+
 				'</div>'+
 				'<div  class="vkProg_Bar vkProg_BarBgFrame" style="width: '+width+'px;">'+
 					'<div class="vkProg_Bar vkProg_BarBg" style="width: '+width+'px;">'+text+'</div>'+
 				'</div>';
-			return html;
 	}
 
 	function vkRoundButton(){ //vkRoundButton(['caption','href'],['caption2','href2'])

@@ -6,7 +6,7 @@ function GetUnReadColorCss(){
 	var textcolor=rgb2hex(Array(rr,gg,bb));
 	//alert(bgcolor+'\n'+textcolor);
 												 //#E2E9FF
-	var mailcss= '#mail_rows_t tr.new_msg { background-color: '+bgcolor+' !important;}\n\
+	return '#mail_rows_t tr.new_msg { background-color: '+bgcolor+' !important;}\n\
 	#mail_rows_t tr.new_msg a { color: '+textcolor+' !important;}\n\
 	.im_new_msg, .im_new_msg .im_log_author, .im_new_msg .im_log_body, .im_new_msg .im_log_date { color: #000 !important; background-color: '+bgcolor+' !important; }\
 	#im_dialogs .new_msg a,.im_new_msg, .dialogs_new_msg, .dialogs_new_msg .dialogs_msg_body, .fc_msgs_unread, .fc_msg_unread{ color: '+textcolor+' !important;  background-color: '+bgcolor+' !important;}\
@@ -14,9 +14,6 @@ function GetUnReadColorCss(){
 	#im_dialogs .new_msg div.mail_body{color: #000;} .im_hist tr.un td.user a{color: '+textcolor+'}\
    .mail_history_unread {background-color: '+bgcolor+' !important; color: '+textcolor+'}\
    ';
-
-	//bg_old: .im_hist tr.un,#im_dialogs .new_msg,.im_new_msg,.dialogs_new_msg
-	return mailcss;                            //#3B4DA0
 }
 
 function vkStyles(){

@@ -271,7 +271,7 @@ vk_profile={
                }
            }
          });
-      };
+      }
 
       get_users(function(list){
          var to=3;
@@ -2227,14 +2227,12 @@ vk_groups = {
          ge("vk_gr_req_all_link").href="javascript:vk_groups.requests_block(true)";
          removeClass('vk_gr_req_all_link','as_list')
       }
-      ajax.post('groupsedit.php', {act: 'get_list', id: Math.abs(cur.oid), tab: 'requests'}, {onDone: function(cnt, res) {
-            //console.log('gr_requests',cnt, res);
+      ajax.post('groupsedit.php', {act: 'get_list', id: Math.abs(cur.oid), tab: 'requests'}, {onDone: function(cnt, udata) {
             if (cnt<=0) {
                hide('vk_group_requests');
                return;
             }
             show('vk_group_requests');
-            var udata=res;
             var to=3;
             var count=is_list?udata.length:Math.min(udata.length,FAVE_ONLINE_BLOCK_SHOW_COUNT);
             var users='';
@@ -2414,7 +2412,7 @@ vk_groups = {
                }
            }
          });
-      };
+      }
       scan();
       return false;
    },
