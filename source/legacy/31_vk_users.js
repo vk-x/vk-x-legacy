@@ -791,7 +791,7 @@ function vkGetProfile(uid,callback,no_switch_button){
 					  <div class="labeled fl_l">'+info_labels[i][0]+'</div>\n\
 					</div>';
       var activity = profile.activity;
-      if (window.Emoji && Emoji.emojiToHTML)
+      if (window.Emoji && Emoji.emojiToHTML && activity)
             activity = Emoji.emojiToHTML(activity,true) || activity;
 		var html=VK_PROFILE_TPL.replace("%AVA_SRC%",ava_url)
 							   .replace(/%UID%/g,uid)
