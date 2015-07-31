@@ -3257,6 +3257,7 @@ vk_feed={
       .vkf_group .vk_feed_group,\
       .vkf_friend .vk_feed_friend,\
       .vkf_regexp .vk_feed_regexp,\
+      .vkf_ad .vk_feed_ad,\
       .vkf_repost .vk_feed_repost{display:block !important}\
       \
       .vkf_nophoto .vk_feed_photo,\
@@ -3270,6 +3271,7 @@ vk_feed={
       .vkf_nogroup .vk_feed_group,\
       .vkf_nofriend .vk_feed_friend,\
       .vkf_noregexp .vk_feed_regexp,\
+      .vkf_noad .vk_feed_ad,\
       .vkf_norepost .vk_feed_repost{'+(FEEDFILTER_DEBUG ? 'border:2px solid red' : 'display:none')+' !important}\
    ';
    },
@@ -3308,7 +3310,8 @@ vk_feed={
             links :false,
             friend:false,
             group :false,
-            regexp:false
+            regexp:false,
+            ad: false
          };
 
          var p=geByClass('post',row)[0];
@@ -3345,15 +3348,15 @@ vk_feed={
          if (t) {
             types.text=true;
 
-            switch (block_mode) {
-               case block_modes.REGEXP:
-                  types.regexp=block_conditions.test(t.innerHTML);
-                  break;
-               case block_modes.KEYWORDS:
-                  for (var i = 0;i < block_conditions.length && !types.regexp;i++)
-                     types.regexp = (t.innerHTML.indexOf(block_conditions[i]) > -1);
-                  break;
-            }
+             // Advertisements
+             switch (block_mode) {
+                 case block_modes.REGEXP:
+                     types.ad=block_conditions.test(t.innerHTML); break;
+                 case block_modes.KEYWORDS:
+                     for (var i = 0;i < block_conditions.length && !types.ad;i++)
+                         types.ad = (t.innerHTML.toLowerCase().indexOf(block_conditions[i].trim().toLocaleLowerCase()) > -1);
+                     break;
+             }
          }
 
          //Links
@@ -3377,18 +3380,20 @@ vk_feed={
       }
 
        // подготовка к проверке текста постов по регулярке или ключевым словам
-       var stop_list = decodeURIComponent(getSet('-',6));
+       var stop_list = decodeURIComponent(getSet('-', 6));
        var block_conditions;
-       var block_modes = {REGEXP:1, KEYWORDS: 2};
+       var block_modes = {REGEXP: 1, KEYWORDS: 2};
        var block_mode = null;
        if (stop_list) {
            var matches = stop_list.match(/^\/(.+)\/(g?i?m?)$/);
            if (matches && matches.length == 3) {
-               block_conditions = new RegExp(matches[1],matches[2]);
+               block_conditions = new RegExp(matches[1], matches[2]);
                block_mode = block_modes.REGEXP;
            }
            else {
-               block_conditions = stop_list.split('|');
+               var indexOf_comma = stop_list.indexOf(',');
+               var indexOf_pipe = stop_list.indexOf('|');
+               block_conditions = stop_list.split(indexOf_comma != -1 && (indexOf_pipe != -1 && indexOf_comma < indexOf_pipe || indexOf_pipe == -1) ? ',' : '|');
                block_mode = block_modes.KEYWORDS;
            }
        }
@@ -3431,6 +3436,7 @@ vk_feed={
       p=ge('feed_summary_wrap');
       var panel=vkCe('div',{id:'vk_feed_filter_panel',style:'display:none;'});
       p.appendChild(panel);
+      var shesterenka='<span onclick="vk_feed.show_adblock_hint(this);event.cancelBubble=true" id="adblock_rules" class="vkico_settings feed_since_owner_row page_album_title"></span>';
 
       var cfg=(vkGetVal('vk_feed_filter') || '000000000000').split('');
       var items=[
@@ -3445,6 +3451,7 @@ vk_feed={
          [app.i18n.IDL('with_links'), 'links', false],// 8    links
          [app.i18n.IDL('from_friend'),'friend',false],// 9    friend
          [app.i18n.IDL('from_group'), 'group', false], // 10   group
+         [app.i18n.IDL('with_ad')+shesterenka, 'ad', false], // 11   ad
          [app.i18n.IDL('by_regexp'), 'regexp', false] // 11   regexp
       ];
       for (var i=0; i<items.length; i++){
@@ -3520,6 +3527,23 @@ vk_feed={
       });
 
    },
+    show_adblock_hint: function (el) {
+        showTooltip(el, {
+            center: true,
+            text: app.i18n.IDL("seRules") + '<div class="vk_cancel_ico fl_r" onclick="vk_feed.hide_adblock_hint()"></div>' +
+                '<input type="text" style="width: 100%;" onchange="setSet(\'-\',encodeURIComponent(this.value),6)" value="' + decodeURIComponent(getSet('-', 6)) + '" />',
+            slide: 15,
+            className: 'rich wall_tt',
+            onCreate: function () {
+                removeEvent(el, 'mouseout');
+            }
+        });
+    },
+    hide_adblock_hint: function () {
+        var el = ge('adblock_rules');
+        if (!el.tt || !el.tt.hide) return;
+        el.tt.hide();
+    },
    /* <Работа со списком источников новостей> */
     additional_owners: [],  // массив айдишников тех, кого нашли через прямой адрес странички
     hang_handler: function (box) {  // Повесить на поле ввода "Быстрый поиск", которое в окне box, обработчик нажатия клавиш
