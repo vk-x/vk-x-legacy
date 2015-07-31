@@ -154,6 +154,7 @@ vk_profile={
       vk_profile.only4friends_checkbox();
       vk_highlinghts.groups_block();
       vk_highlinghts.profile_groups();
+      vk_groups.show_oid();
    },
    inj:function(){
       Inj.After('profile.init','});','setTimeout("vkProcessNode();",2);');
@@ -2087,6 +2088,12 @@ vk_groups = {
    .vk_gru_row{width:195px; padding-left:3px;}\
    ',
    // GROUP PAGE
+   show_oid:function(){
+      if (!SHOW_OID_IN_TITLES) return;
+      var p = geByClass1('page_name') || ge('header');
+      if (p && !ge('vk_oid_info'))
+         p.appendChild(se('<small id="vk_oid_info" class="nobold divide"> [id:'+cur.oid+']</small>'));
+   },
    show_members_btn:function(){
       var p=ge('group_followers') || ge('public_followers');
       if (!p) return;

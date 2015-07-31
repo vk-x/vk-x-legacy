@@ -334,6 +334,7 @@ function vkPublicPage(){
    vkGroupStatsBtn();
    vkUpdWallBtn();
    vk_groups.show_members_btn();
+   vk_groups.show_oid();
 }
 /* EVENTS */
 function vkEventPage(){
@@ -341,7 +342,7 @@ function vkEventPage(){
    vk_photos.pz_item();
    vkWallAlbumLink();
    vkUpdWallBtn();
-   //vkWikiPagesList(true);
+   vk_groups.show_oid();
 }
 /* GROUPS */
 function vkGroupPage(){
@@ -349,13 +350,13 @@ function vkGroupPage(){
    vk_photos.pz_item();
 	vkCheckGroupsAdmin();
    vkModGroupBlocks();
-   //vkAudioBlock();
    vkWallAlbumLink();
    vkUpdWallBtn();
    vkWikiPagesList(true);
    vkGroupStatsBtn();
    vk_groups.show_members_btn();
    vk_groups.requests_block();
+   vk_groups.show_oid();
 }
 
 function vkGroupStatsBtn(){
