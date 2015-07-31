@@ -2316,7 +2316,6 @@ var vkTopicSearch = {
         if (header && !ge('vkTopicSearchProgress')) {
             var textfield = vkCe('div', { class: 'fl_r ts' },
                 '<input onkeyup="vkTopicSearch.keyup(event)" type="text" class="text search" placeholder="'+app.i18n.IDL('mMaS')+'..."><div id="vkTopicSearchProgress"></div>');
-                '<input onkeyup="vkTopicSearch.keyup(event)" id="ts_input" type="text" class="text" placeholder="'+app.i18n.IDL('mMaS')+'..."><div id="vkTopicSearchProgress"></div>');
             header.insertBefore(textfield, header.firstChild);
             vkaddcss('#bt_title {max-width: 397px;}');
         }
