@@ -1744,7 +1744,6 @@ vk_graff={
       }
 
       if (ge('vk_wall_post_type0')) return;
-      var lnkId = ++vk__addMediaIndex;
       if (ge('page_add_media')){
          Inj.Wait("geByClass('add_media_rows')[0]",AddGraffItem,300,10);
       }
