@@ -1394,10 +1394,13 @@ function vkGetPageWithPhotos(oid,aid){
 			var html='<h4>No images</h4>'
 		else {
 			vkImgsList='<div style="background:#FFB; border:1px solid #AA0;  margin:20px; padding:20px;">'+app.i18n.IDL('HtmlPageSaveHelp')+'</div>'+vkImgsList;
-         //vkImgsList=vkImgsList.replace(/#/g,'%23');
-			var html='<h4><a href="#" onclick="vkWnd(vkImgsList,\''+document.title.replace(/['"]+/g,"")+'\'); return false;">'+app.i18n.IDL('ClickForShowPage')+'</a></h4>';
+			var html='<h4><a href="#" id="vkGetPageWithPhotos">'+app.i18n.IDL('ClickForShowPage')+'</a></h4>';
 		}
 		box.content(html).show();
+        if (vkImgsList.length)
+            ge('vkGetPageWithPhotos').onclick = function () {
+                vkWnd(vkImgsList, document.title.replace(/['"]+/g, ""));
+            };
     },function(c,f){
 		if (!f) f=1;
 		ge('ph_ldr_progress').innerHTML=vkProgressBar(c,f,310);
