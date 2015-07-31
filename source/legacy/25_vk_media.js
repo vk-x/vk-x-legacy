@@ -5525,7 +5525,8 @@ vk_vid_down={
          if (p && p.innerHTML.indexOf('vk_vid_down.vkVidLoadLinks')!=-1) return;
          if (!vid) return;
          if (!p){
-            p=geByClass('info',el)[1] || geByClass('info',el)[0];
+            if (geByClass('post_video_title',el)[0]) return;
+            p = geByClass('info',el)[1] || geByClass('info',el)[0];
             var div=vkCe('div',{"class":"vk_vid_download_t"},'<span class="fl_l"><a href="#" onclick="vk_vid_down.vkVidLoadLinks('+vid[1]+','+vid[2]+',this.parentNode'+(vid[3]?", '"+vid[3]+"','"+type+"'":'')+'); cancelEvent(event); return false;">'+app.i18n.IDL('download')+'</a></span>');
             if (p) p.appendChild(div);
             else v.parentNode.appendChild(div);
@@ -5575,6 +5576,9 @@ vk_vid_down={
 
       els=geByClass('video_row_thumb',node);
       for (var i=0; i<els.length; i++) add_link_to_thumb(els[i]);
+
+      els=geByClass('page_post_video_play_inline',node);
+      for (var i=0; i<els.length; i++) add_link_to_thumb(els[i].parentNode.parentNode,'page_post_video_play_inline');
    },
    vkVidLoadLinks: function(oid,vid,el,yid,type){
        var smartlink=true;//(getSet(1) == 'y')?true:false;
