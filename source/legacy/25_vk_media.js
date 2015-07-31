@@ -1449,8 +1449,8 @@ function vkWallAlbumLink(){
 }
 
 
-var VKPRU_SWF_LINK='http://cs4320.vk.com/u13391307/ac8f5bbe4ce7a8.zip';
-var VKPRU_SWF_HTTPS_LINK='https://pp.userapi.com/c4320/u13391307/ac8f5bbe4ce7a8.zip';
+var VKPRU_SWF_LINK='http://app.vk.com/c420730/u13391307/6360944486b815.swf';
+var VKPRU_SWF_HTTPS_LINK='https://app.vk.com/c420730/u13391307/6360944486b815.swf';
 
 function vkPhotoUrlUpload(url){
 	PRUBox = new MessageBox({title: app.i18n.IDL('PhotoUpload'),width:"290px"});
