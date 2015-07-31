@@ -393,7 +393,7 @@
 		seGS: "[ Riceve impostazioni ]"
 		seHideWIUmsg: "Nasconde tabelli con informazione false"
 		seHLMail: "Fondo superiore di nuovi messaggi"
-		seICQico: " Mostra icona di verifica ICQ stato in profilo"
+		seICQico: " Mostra icona di verifica Skype/ICQ stato in profilo"
 		selall: "[ Segnala tutti ]"
 		selgrs: "[ Seleziona i gruppi ]"
 		seLightFriends: "Rimarca gli amici in un altre colore"

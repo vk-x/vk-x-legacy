@@ -482,7 +482,6 @@ function vkInitSettings(){
       {id:2,  text:app.i18n.IDL("seLinkVi")},
       {id:66, text:app.i18n.IDL("seVidDownloadLinks")},
       {id:92,  text:app.i18n.IDL("seVideoHideConfirm")},
-      {id:76, text:app.i18n.IDL("seVideoFullTitles")},
 
       {id:3,  text:app.i18n.IDL("seCompactAudio")},
       {id:90, text:app.i18n.IDL("seAudioFullTitles")},
@@ -585,7 +584,7 @@ function vkInitSettings(){
   };
 
 	//LAST 98
-  //FREE 19,20
+  //FREE 19,20,76
 
 	vkSetsType={
       "on"  :[app.i18n.IDL('on'),'y'],

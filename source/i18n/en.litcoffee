@@ -591,7 +591,7 @@
 		seHideLeftFrendsBlock: "Hide block with suggested friends"
 		seHideWIUmsg: "Hide notifications about unreliable information"
 		seHLMail: "Custom background of unread messages"
-		seICQico: "Show ICQ status check icon in profiles"
+		seICQico: "Show Skype/ICQ status icon in profiles"
 		seIMAlwaysShowTime: "Show time for associated messages in conversations"
 		seIMFullTime: "Show full time for every message in conversations (d.mm.yy HH:MM:ss)"
 		selall: "[ Select all ]"
