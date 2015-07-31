@@ -569,6 +569,7 @@ function vkInitSettings(){
       {id:97, text:examples.seSubscribeToPostComments+app.i18n.IDL("seSubscribeToPostComments")},
       {id:98, text:app.i18n.IDL("seShowAllComments")},
       {id:99, text:app.i18n.IDL("seSortByLikes")},
+      {id:100, text:app.i18n.IDL("seTopicSearch")},
       {id:88, text:app.i18n.IDL("seGroupRequestsBlock"),info:'infoUseNetTrafic'},
 		{id:9,  header:app.i18n.IDL("seTestFr"), text:app.i18n.IDL("seRefList"), sub:{id:1, text:'<br>'+app.i18n.IDL("now")+': <b>%cur</b> '+app.i18n.IDL("day")+'<br>'+app.i18n.IDL("set")+': %sets'+
             '<br><a onClick="vkFriendsCheck();" style="cursor: hand;">'+app.i18n.IDL('seCreList')+'</a>',
