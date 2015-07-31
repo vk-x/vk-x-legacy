@@ -5081,20 +5081,6 @@ vk_vid_down={
             vk_vid_down.vkVideoGetLinks(cur.oid,((nav.objLoc['section'] || "").match(/\d+/) || 0));
          }
       }
-      var p=ge('video_summary');
-      if (p && !ge('video_get_links')){
-         var attrs={
-            'id':"video_get_links",
-          'href':'#',
-            'class':"_fl_r nobold",
-            'onclick':"return nav.change({section:'album_0'});"
-         };
-         p.appendChild(vkCe('span',{"class":'divide'},'|'));
-        p.appendChild(vkCe('a',attrs,app.i18n.IDL('Links')));
-
-      }
-      var btn=ge('video_get_links');
-      btn.setAttribute('onclick',"vk_vid_down.vkVideoGetLinks("+cur.oid+","+((nav.objLoc['section'] || "").match(/\d+/) || 0)+"); return false;");
    },
    vkVideoGetLinks: function(oid,aid){
       var box=vkAlertBox(app.i18n.IDL('Links'),'<div id="vk_links_container">'+vkBigLdrImg+'</div>');
