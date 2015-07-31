@@ -89,7 +89,7 @@ if (!window.Audio){
 /* FUNCTIONS. LEVEL 1 */
 	//LANG
    function print_r( array) {
-      var output = "", pad_char = " ", pad_val = 4;
+      var pad_char = " ", pad_val = 4;
 
       var formatArray = function (obj, cur_depth, pad_val, pad_char) {
          if(cur_depth > 0)
@@ -123,7 +123,7 @@ if (!window.Audio){
          return str;
       };
 
-      output = formatArray(array, 0, pad_val, pad_char);
+      var output = formatArray(array, 0, pad_val, pad_char);
          return output;
    }
 
@@ -181,8 +181,7 @@ if (!window.Audio){
       }
       var preescape="" + str;
       var escaped="";
-      var i=0;
-      for(i=0;i<preescape.length;i++){
+      for(var i=0;i<preescape.length;i++){
          escaped=escaped+encodeCharx(preescape.charAt(i));
       }
       return escaped;
@@ -288,7 +287,6 @@ if (!window.Audio){
       if (id) styleElement.setAttribute('mark',id);
 		styleElement.appendChild(document.createTextNode(addcss));
 		document.getElementsByTagName("head")[0].appendChild(styleElement);
-		addcss='';
 	}
 
 	function $c(type,params){

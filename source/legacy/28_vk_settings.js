@@ -912,7 +912,6 @@ function vkMakeSettings(){
   allsett[0] = sett.join('');
   vksetCookie('remixbit', allsett.join('-'));
 
-  var html="";
   var tabs=[];
   var excluded={
    'Hidden':1
