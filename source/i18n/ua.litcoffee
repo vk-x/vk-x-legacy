@@ -147,6 +147,7 @@
 		Donate: "Пожертвувати"
 		Done: "Виконано"
 		DontInNewWindow: "Не відкривайте це посилання в новому вікні"
+		DontRemoveAlbumCover: "Не видаляти обкладинку альбому"
 		download: "[ Завантажити ]"
 		download_M3U: "Скачати M3U плейлист"
 		download_PLS: "Скачати PLS плейлист"
