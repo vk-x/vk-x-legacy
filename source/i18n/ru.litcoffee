@@ -393,6 +393,7 @@
 		NewPost: "Новая запись"
 		No: "Нет"
 		nodesdel: "Удаление заметок"
+		NoMoreResults: "Больше нет результатов"
 		Noname: "Нет имени"
 		NoteCreated: "Заметка создана"
 		NoteCreating: "Создание заметки"

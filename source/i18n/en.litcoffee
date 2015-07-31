@@ -405,6 +405,7 @@
 		NewPost: "New post"
 		No: "Cancel"
 		nodesdel: "Deleting notes"
+		NoMoreResults: "No more results"
 		Noname: "Noname"
 		NoteCreated: "Note created"
 		NoteCreating: "Note is creating"
