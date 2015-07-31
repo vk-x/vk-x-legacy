@@ -182,8 +182,8 @@ function GetUserMenuSett() {
                      app.i18n.IDL("clAddFr"),
                      app.i18n.IDL("clAddToFav"),
                      app.i18n.IDL("addblack"),
-                     app.i18n.IDL("SendAbuse")
-                     //app.i18n.IDL("AddToSubscribtions")
+                     app.i18n.IDL("SendAbuse"),
+                     app.i18n.IDL("FavAddUser")
                     ];
 
     var res="";
