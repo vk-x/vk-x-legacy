@@ -66,7 +66,7 @@ var VKOPT_CFG_LIST=[
          'SHOW_OID_IN_TITLES'
 ];
 
-var vkNewSettings=[94,95,96,97]; //"new" label on settings item
+var vkNewSettings=[98,99,100,79]; //"new" label on settings item
 var SetsOnLocalStore={
   'vkOVer':'c',
   'remixbit':'c',
