@@ -140,14 +140,14 @@ var SmilesMap = {
 'wink': /;\)+|;-\)+|\^_~/gi,
 'blum1': /:-[p\u0440]|[\+=:][p\u0440]|:-[P\u0420]|[\+=:][P\u0420]|[:\+=]b|:-b/gi,
 'cool': /B-?[D\)]|8-[D\)]/gi,
-'biggrin': /[:\=]-?D+/gi,
+'biggrin': /[:=]-?D+/gi,
 
 'mamba': [/[=:]\[\]|\*WASSUP\*|\*SUP\*/ig,'big_madhouse'],
 'blush':  /:-?\[|;-\.|;'>/gi, //\^_\^|
 
 'shok': /=-?[0OОoо]|o_0|o_O|0_o|O_o|[OО]_[OО]/gi,
 'diablo':  /[\]}]:-?>|>:-?\]|\*DIABLO\*/gi,
-'cray': /[:;]-?\'\(|[:;]\'-\(/gi,
+'cray': /[:;]-?'\(|[:;]'-\(/gi,
 'mocking': /\*JOKINGLY\*|8[Pp]/gi,
 'give_rose': /@-->--|@}->--|@}-:--|@>}--`---/gi,
 'music': /\[:-?\}/gi,
@@ -167,7 +167,7 @@ var SmilesMap = {
 'dance':/\*DANCE\*/gi,
 'crazy':/\*CRAZY\*|%-\)/gi,
 'lol':/\*LOL\*|xD+|XD+/gi,
-'i_am_so_happy': /:\!\)/gi,
+'i_am_so_happy': /:!\)/gi,
 'mad': /:\\|:-[\\\/]/gi,
 'sorry':/\*SORRY\*/ig,
 
@@ -185,7 +185,7 @@ var SmilesMap = {
 'girl_devil':[/\}:o/ig,'big_he_and_she'],
 'dash1':[/\*WALL\*|X-\|/ig,'big_madhouse'],
 'facepalm':/\*FACEPALM\*/ig,
-'help':[/[\*\!]HELP[\*\!]/ig,'big_standart'],
+'help':[/[\*!]HELP[\*!]/ig,'big_standart'],
 'spam':[/!SPAM!|SPAM,.IP.LOGGED/ig,'other'],
 'flood':[/!FLOOD!/ig,'other'],
 'opera':/\*OPERA\*/ig,
@@ -220,7 +220,6 @@ var TextPasteSmiles={
 'bad':':-!',
 'wacko1':'%-)',
 'crazy':'*CRAZY*',
-'mad':':-/',
 'lol':'*LOL*',
 'dance':'*DANCE* ',
 'nea':'*NO*',

@@ -222,7 +222,7 @@ function init_colorpicker(target, onselect, inhcolor){
     };
 
     function HexToRGB(hex) {
-        var hex = parseInt(((hex.indexOf('#') > -1) ? hex.substring(1) : hex), 16);
+        hex = parseInt(((hex.indexOf('#') > -1) ? hex.substring(1) : hex), 16);
         return {r: hex >> 16, g: (hex & 0x00FF00) >> 8, b: (hex & 0x0000FF)};
     };
 //end /
@@ -962,7 +962,7 @@ function vkShowSettings(box){
 
   var html=tpl.replace(/%html/g,vkMakeSettings());
   if (!window.vkSettingsBox || isNewLib()) vkSettingsBox = new MessageBox({title: header,closeButton:true,width:"650px"});
-  var box=vkSettingsBox;
+  box=vkSettingsBox;
   box.removeButtons();
   box.addButton(isNewLib()?app.i18n.IDL('Hide'):{
     onClick: function(){ box.hide(200); },
