@@ -1714,10 +1714,8 @@ function SmileNode(mainNode,childItem){
     var node = mainNode.childNodes[childItem];
     for (var key in SmilesMap){
       var regex=(SmilesMap[key][0])?SmilesMap[key][0]:SmilesMap[key];
-      //new_regex= new RegExp("(\\s|^)("+regex.source+")([\\s\\.,]|$)", (regex.ignoreCase?'i':''));
 
       var searchWord = node.nodeValue.match(regex);
-      //if (searchWord) console.log(searchWord);
       var f='';
       var l='';
       var val=''
@@ -1732,19 +1730,23 @@ function SmileNode(mainNode,childItem){
          searchWord=false;
       if (searchWord){
          var startIndex = node.nodeValue.indexOf(searchWord)+f.length;
+         var endIndex = searchWord.length-f.length-l.length;
          if(startIndex!=-1){
-          var smile = mainNode.ownerDocument.createElement('img');
-          smile.setAttribute('style',"margin-bottom:-0.3em; border:0px;");
-          smile.src=vkSmilesLinks[key];
-          smile.setAttribute("onclick","RemoveSmile(this);");
-          smile.alt=val;
-          smile.title=val;
+            var secondNode = node.splitText(startIndex);
+            secondNode.splitText(endIndex);
 
-          mainNode.replaceChild(smile,mainNode.childNodes[childItem+1]);
-          if(mainNode.childNodes[childItem] && regex.test(mainNode.childNodes[childItem].nodeValue)){
-              childItem = SmileNode(mainNode,childItem);
-          }
-      }
+             var smile = mainNode.ownerDocument.createElement('img');
+             smile.setAttribute('style',"margin-bottom:-0.3em; border:0px;");
+             smile.src=vkSmilesLinks[key];
+             smile.setAttribute("onclick","RemoveSmile(this);");
+             smile.alt=val;
+             smile.title=val;
+
+             mainNode.replaceChild(smile,mainNode.childNodes[childItem+1]);
+             if(mainNode.childNodes[childItem] && regex.test(mainNode.childNodes[childItem].nodeValue)){
+                 childItem = SmileNode(mainNode,childItem);
+             }
+         }
     }
   }
   return childItem;
