@@ -2373,8 +2373,8 @@ var vkTopicSearch = {
         cur.pgCont.innerHTML += '<a class="wr_header" style="text-align: center">' + app.i18n.IDL('NoMoreResults') + '</a>';
     },
     check: function (comments) {    // проверить массив комментариев на существование подходящего комментария. Это может быть порция от API либо кэш целиком.
-        for (var i in comments)
-            if ((k=comments[i].text.toLowerCase().indexOf(vkTopicSearch.query)) > -1)
+        for (var i in comments) {
+            if ((k=comments[i].text.toLowerCase().indexOf(vkTopicSearch.query)) > -1) {
                 cur.pgCont.innerHTML += rs(vkTopicSearch.tpl, {
                     OID: cur.owner,
                     UID: comments[i].from_id,
@@ -2387,6 +2387,7 @@ var vkTopicSearch = {
                     DATE: dateFormat(comments[i].date * 1000, "dd.mm.yyyy HH:MM:ss")
                 });
             }
+        }
     },
     progress: function (current, total) {   // обновление прогрессбара
         if (!total) total = 1;
