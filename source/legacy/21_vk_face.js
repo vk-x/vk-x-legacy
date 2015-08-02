@@ -1262,9 +1262,6 @@ function vkMenu(){//vkExLeftMenu
   }
   var nav=(ge('sideBar') || ge('side_bar')).getElementsByTagName('ol')[0];
 
-  nav.addEventListener( "mouseover",
-  	app.util.throttle( UpdateCounters, 1000 ) );
-
   if (window.vkLinks && vkLinks.length>1){
         var li=document.createElement('li');
         var html='<a class="left_row" href="#" '+setActions()+' onclick="return false;"><span class="left_label inl_bl">'+vkLinks[0]+'</span></a><ul '+setActions()+'>';//
