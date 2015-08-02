@@ -2342,7 +2342,11 @@ vk_videos = {
         } else {
           app.vkApi.request({
             method: "video.delete",
-            data: {oid:cur.oid,vid:item_id, v: "3.0" },
+            data: {
+              owner_id: item_id[0],
+              video_id: item_id[1],
+              target_id: cur.oid
+            },
             callback: function() {
               del_offset++;
               setTimeout(function(){del(callback);},DEL_REQ_DELAY);
@@ -2356,7 +2360,7 @@ vk_videos = {
          if (cur_offset==0) ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,2,310,app.i18n.IDL('listreq')+' %');
 
          var params={};
-         params[cur.oid>0?"uid":"gid"]=Math.abs(cur.oid);
+         params['owner_id']=cur.oid;
          params['count']=REQ_CNT;
          params['offset']=cur_offset;
 
@@ -2370,7 +2374,7 @@ vk_videos = {
             if (!ms[0]){ del(deldone);  return; }
             var _count=ms.shift();
             ge('vk_scan_msg').innerHTML=vkProgressBar(cur_offset,_count,310,app.i18n.IDL('listreq')+' %');
-            for (var i=0;i<ms.length;i++) mids.push(ms[i].vid);
+            for (var i=0;i<ms.length;i++) mids.push([ms[i].owner_id, ms[i].vid]);
             if (cur_offset<_count){ cur_offset+=REQ_CNT; setTimeout(scan,SCAN_REQ_DELAY);} else del(deldone);
           }
         });
