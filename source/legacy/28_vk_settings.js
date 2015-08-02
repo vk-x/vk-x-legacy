@@ -494,6 +494,7 @@ function vkInitSettings(){
       {id:4,  text:app.i18n.IDL("seMoreDarkViewer")},
       {id:7,  text:app.i18n.IDL("seScroolPhoto")},
       {id:93, text:app.i18n.IDL("seAlbumPhotosExInfo"),info:'infoUseNetTrafic'}
+      , {id:101, text:app.i18n.IDL("seUseHtml5ForVideo"),info:'infoOnlyForCompatible'}
     ],
     Users:[
       {id:10, text:app.i18n.IDL("seExUserMenu")+'<br><a href="#" onclick="toggle(\'vkExUMenuCFG\'); return false;">[<b> '+app.i18n.IDL("Settings")+' </b>]</a>'+
@@ -583,7 +584,7 @@ function vkInitSettings(){
    ]
   };
 
-	//LAST 98
+	//LAST 101
   //FREE 19,20,76
 
 	vkSetsType={
