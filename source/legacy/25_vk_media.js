@@ -125,10 +125,10 @@ var vk_photos = {
               }});
               stManager.add(['ui_controls.js', 'ui_controls.css'], function () {
                   // TODO: refactor out into `app.dropdown`.
-                  cur.vkAlbumMenu = new DropdownMenu(p_options, {
+                  cur.vkAlbumsMenu = new DropdownMenu(p_options, {
                       target: ge('vk_albums_act_menu'),
                       containerClass: 'dd_menu_posts',
-                      updateHeader: false,
+                      updateTarget: false,
                       offsetLeft: -15,
                       showHover: false
                   });
