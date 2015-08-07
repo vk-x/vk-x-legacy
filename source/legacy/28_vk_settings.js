@@ -576,6 +576,7 @@ function vkInitSettings(){
 		{id:34, text:app.i18n.IDL("seSwichTextChr")},
       {id:77, text:app.i18n.IDL("seBatchCleaners")},
       {id:78, text:app.i18n.IDL("seCutBracket")}
+    , {id:102, text:app.i18n.IDL("seUseCache"), info:'infoUseCache'}
     ],
    Hidden:[
       {id:82, text:app.i18n.IDL("FullThumb")},
@@ -584,7 +585,7 @@ function vkInitSettings(){
    ]
   };
 
-	//LAST 101
+	//LAST 102
   //FREE 19,20,76
 
 	vkSetsType={

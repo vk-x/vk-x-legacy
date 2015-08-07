@@ -428,7 +428,7 @@ var vk_photos = {
       url=encodeURI(url);
 
 
-      AjGet('/wall'+vk.id+'?offset=100000000',function(r,t){
+      AjGet('/wall'+vk.id+'?offset=100000000',function(t){
          var o=(t.match(/"share":(\{[^}]+\})/)||[])[1];
          if (!o) {alert('hash error'); return;}
          o=eval('('+o+')');
@@ -522,7 +522,7 @@ var vk_photos = {
       stManager.add('upload.js',function(){
          var photo=photo_id;
          if (/photo-?\d+_\d+/.test(photo)) photo=photo.match(/photo(-?\d+_\d+)/)[1];
-         AjPost('/al_photos.php',{'act':'edit_photo', 'al': 1, 'photo': photo},function(r,t){
+         AjPost('/al_photos.php',{'act':'edit_photo', 'al': 1, 'photo': photo},function(t){
                var upload_url=t.match(/"upload_url":"(.*)"/);
                var hash=t.match(/', '([a-f0-9]{18})'\)/);
                var aid=t.match(/selectedItems:\s*\[(-?\d+)\]/)[1];
@@ -1736,7 +1736,7 @@ function vkOldPhotos(del_count, ignore_pid){
     if(p1>p2) return 1;
     return 0;
   }
-  //AjGet('photos.php?act=a_album&oid='+oid+'&aid='+aid,function(r,t){
+
   var count=parseInt(del_count);
   ge('photos_container').innerHTML=vkBigLdrImg;
   vkDisableAlbumScroll();
@@ -1994,21 +1994,7 @@ function vkBanUserList(users,gid,info_el){
   var idx=0;
   users=users.split(',');
   info_el=ge(info_el);
-  /*
-  var BanUser=function(id,gid,callback){
-    info_el.innerHTML="<h4>"+app.i18n.IDL('paBanUsers')+": "+(idx+1)+"/"+users.length+"</h4>";
-    AjGet("/groups_ajax.php?act=a_inv_by_link&b=1&page="+id+"&gid="+gid,function(req){
-      req=req.responseText;
-      req=req.replace('id="invForm"','class="invForm"');
-      var hash = req.match(/"hash".value="(.+)"/i)[1];
-      req=req.replace(hash,decodehash(hash));
-      div = document.createElement('div');
-      div.innerHTML=req;
-      var form = geByClass('invForm', div)[0];
-      var url="/groups_ajax.php?"+ajx2q(serializeForm(form));
-      AjGet(url,callback);
-    });
-  }*/
+
   var onDone=function(text){
     if (idx<users.length){
       info_el.innerHTML=vkProgressBar(idx+1,users.length,550,app.i18n.IDL('paBanUsers')+": "+(idx+1)+"/"+users.length)+'<br><br>'+text;
@@ -5476,7 +5462,7 @@ vk_vid_down={
             }
             var _oid=vids_info[idx][0];
             var _vid=vids_info[idx][1];
-            AjGet('/video.php?act=a_flash_vars&vid='+_oid+'_'+_vid,function(r,t){
+            AjGet('/video.php?act=a_flash_vars&vid='+_oid+'_'+_vid,function(t){
                if(!t || t=='NO_ACCESS'){
                   next();
                } else {
@@ -5501,20 +5487,9 @@ vk_vid_down={
 
       var api_used=false;
       var process=function(vids){
-         //console.log('aid:',aid,'  oid:',oid,' quality:',quality/*,' vids:',vids*/);
          var result=[];
-         /* фильтрация по альбому. устаревший код.
-         if (aid>0){
-            for (var i=0; i<vids.length; i++){
-               //console.log(vids[i][6]);
-               if (parseInt(vids[i][6])==aid)
-                  result.push(vids[i]);
-            }
-         } else
-         */
             result=vids;
 
-         //console.log('List:',result);
          if (result.length==0 && !api_used) {
             load_api(function(res){
                api_used=true;
@@ -5527,11 +5502,7 @@ vk_vid_down={
          }
       }
 
-      /*if (cur.oid==oid && cur.videoList && cur.videoList['all'] || false){
-         process(cur.videoList['all']);
-      } else*/ {
-         load(process);
-      }
+      load(process);
 
    },
    vkVidGetLinkBtn: function(vid,res){//for cur.videoTpl
@@ -5542,7 +5513,6 @@ vk_vid_down={
             <small class="fl_r '+(!window.vk_vid_list_adder?'vk_vid_add_hidden':'vk_vid_add_visible')+'"><a href="#" onclick="return vk_videos.add_to_group('+vid[0]+','+vid[1]+');">'+app.i18n.IDL('AddToGroup')+'</a>'+(cur_oid!=oid?'<span class="divide">|</span>':'')+'</small>\
             </div></div>');
          res=res.replace(/"video_raw_info_name">/,'"video_raw_info_name"><span class="vk_txt_icon" onclick="cancelEvent(event); vk_videos.get_description('+vid[0]+','+vid[1]+',this);"></span>');
-         //alert(res);
          return res;
       }
       if (!vid || getSet(66)=='n') return '';
@@ -5669,9 +5639,7 @@ vk_vid_down={
        var fmt=['240p','360p','480p','720p'];
        el=ge(el);
        el.innerHTML=vkLdrImg;
-       AjGet('/video.php?act=a_flash_vars&vid='+oid+'_'+vid,function(r,t){
-         //console.log(t);
-         // if (t=='NO_ACCESS')
+       AjGet('/video.php?act=a_flash_vars&vid='+oid+'_'+vid,function(t){
          var getyt=function(youid){
             var html='<a href="http://youtube.com/watch?v='+youid+'">YouTube</a>';
                vk_vid_down.vkGetYoutubeLinks(youid,function(r){
@@ -5688,7 +5656,6 @@ vk_vid_down={
             vk_vid_down.vkGetVimeoLinks(vimeoid,function(r){
                if (!r) return;
                var html='<a href="http://vimeo.com/'+vimeoid+'">Vimeo</a>';
-               //alert(html);
                for (var i=0;i<r.length;i++)
                   html+='<a href="'+r[i][0]+'" title="'+r[i][2]+'"  class="vk_down_icon">'+r[i][1]+'<small class="divide">'+r[i][2]+'</small></a>';
                el.innerHTML=html;

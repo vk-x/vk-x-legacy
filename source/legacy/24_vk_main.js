@@ -1833,7 +1833,7 @@ function vkDeleteMessagesHistory(uid){
 			vkMsg(app.i18n.IDL('DeleteMessagesDone'),3000);
 	};
 	var get_mark_hash=function(callback){
-		AjGet('/al_mail.php?al=1',function(r,t){
+		AjGet('/al_mail.php?al=1',function(t){
 			mark_hash=t.split('"mark_hash":"')[1].split('"')[0];
 			callback();
 		});

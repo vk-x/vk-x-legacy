@@ -586,24 +586,19 @@ if (!window.Audio){
  * TODO: Remove these functions completely; use app.ajax directly.
  */
 
-function AjGet ( url, callback ) {
-  var callbackAdapter = function( response, meta ) {
-    callback( meta, meta.response.text );
-  };
-  app.ajax.get({ url: url, callback: callbackAdapter });
+function AjGet( url, callback ) {
+  shouldCache = getSet( 102 ) === "y"
+  app.ajax.get({ url: url, callback: callback, cache: shouldCache });
   return true;
 }
 
-function AjPost ( url, data, callback ) {
-  var callbackAdapter = function( response, meta ) {
-    meta.error = meta.response.error;
-    callback( meta.response, meta.response.text );
-  };
-  app.ajax.post({ url: url, callback: callbackAdapter, data: data });
+function AjPost( url, data, callback ) {
+  shouldCache = getSet( 102 ) === "y"
+  app.ajax.post({ url: url, data: data, callback: callback, cache: shouldCache });
   return true;
 }
 
-function AjCrossAttachJS ( url ) {
+function AjCrossAttachJS( url ) {
   var evalScript = function( script ) {
     window.eval( script );
   };
@@ -1161,7 +1156,7 @@ vkApis={
         });
     },
    faves:function(callback){
-      AjGet('/fave?section=users&al=1',function(r,t){
+      AjGet('/fave?section=users&al=1',function(t){
          var r=t.match(/"faveUsers"\s*:\s*(\[[^\]]+\])/);
          if (r){
             r=eval('('+r[1]+')');
