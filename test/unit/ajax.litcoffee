@@ -85,6 +85,7 @@ The `settings` object is guaranteed to have the following properties:
 - **`method`** - `"GET"`, `"HEAD"`, `"POST"` - http request method
 - **`url`** - `string` - target URL
 - **`data`** - `object` - data to send
+- **`responseType`** - `string` - XHR response type
 - **`query`** - `object` - query params to send
 - **`headers`** - `object` - request headers to set
 - **`requestOf`** - `string` - you should check that this equals project
