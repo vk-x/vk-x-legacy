@@ -32,6 +32,7 @@ ajax.request
 	data: to: "send"
 	query: params: "to apply"
 	headers: to: "set"
+	cache: on # off by default
 ```
 
 None of the options are required.
@@ -235,6 +236,33 @@ It just checks that request is correct and calls provided function
 				ajax.request
 					url: "http://example.com/"
 					callback: callback
+
+#### It caches the response when requested to do so:
+
+			it "should cache the response when `cache: on`", ( done ) ->
+				mimicBackgroundListener ( requestData ) ->
+					delete requestData.requestOf
+					requestData.responseOf = appName
+					requestData.response = { text: "foo" }
+					window.postMessage requestData, "*"
+
+				# Send request to background and call callback on response.
+				ajax.request
+					url: "http://example.com/"
+					cache: on
+					callback: ( firstResponse ) ->
+
+						# Now the background listener has been removed.
+						# This test will fail on timeout if `ajax.request`
+						# will wait for response again instead of using cache.
+
+						ajax.request
+							url: "http://example.com/"
+							cache: on
+							callback: ( secondResponse ) ->
+
+								firstResponse.should.deep.equal secondResponse
+								done()
 
 ## `ajax.get`
 **`ajax.get`** is an alias for `ajax.request method: "GET"`

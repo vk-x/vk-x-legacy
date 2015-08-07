@@ -9,6 +9,9 @@ This file only contains notes on internal details.
 	performRequest = require "./ajax/perform-request"
 	_ = require "lodash"
 	url = require "url"
+	md5 = require "md5-jkmyers"
+
+	cache = {}
 
 	ajax =
 
@@ -28,6 +31,16 @@ This file only contains notes on internal details.
 				data: {}
 				query: {}
 				headers: {}
+				cache: off
+
+			if settings.cache is on
+				cacheId = md5 JSON.stringify settings
+
+				if cacheId of cache
+					data = cache[ cacheId ]
+					callback data.response.text, data
+					return
+
 			settings._requestId = requestId
 			settings.requestOf = app.name
 
@@ -56,6 +69,9 @@ property to message data with a value of `_requestId` property like so:
 
 					# Don't listen anymore when the response arrives.
 					window.removeEventListener "message", listener
+
+					if settings.cache is on
+						cache[ cacheId ] = data
 
 					callback data.response.text, data
 
