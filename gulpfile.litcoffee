@@ -78,13 +78,6 @@ Then go change some code and see it rebuilding automatically.
 
 # Tasks specification
 
-#### `gulpfile.js`
-[gulp](http://gulpjs.com) uses [`gulpfile.js`](gulpfile.js) as a place
-for tasks specification.  
-It doesn't support CoffeeScript out-of-the-box,
-so we use [`gulpfile.js`](gulpfile.js) to load runtime CoffeeScript compiler
-and then load this `gulpfile.litcoffee` file.
-
 #### Loading dependencies
 See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 
