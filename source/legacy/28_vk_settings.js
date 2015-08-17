@@ -585,8 +585,9 @@ function vkInitSettings(){
    ]
   };
 
-	//LAST 102
-  //FREE 19,20,76
+	//LAST 103
+  //FREE 19,20,76,102,103
+  // 103 - should have been used for seUseHTML5ForSave, see f571674f7ad952d136acfa9817c38640cbd4e67b.
 
 	vkSetsType={
       "on"  :[app.i18n.IDL('on'),'y'],

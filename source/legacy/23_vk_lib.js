@@ -1256,24 +1256,7 @@ function vkOnResizeSaveBtn(w,h){ // Вызывается из флешки ка�
 			return {text:VKTextToSave,name:VKFNameToSave};
 }
 function vkSaveText(text,fname){
-  VKTextToSave=text; VKFNameToSave=fname;
-  var html = '<div><span id="vkdsldr"><div class="box_loader"></div></span>'+
-             '<span id="vksavetext" style="display:none">'+app.i18n.IDL("ClickForSave")+'</span>'+
-             '<div id="dscontainer" style="display:inline-block;position:relative;top:8px;"></div>'+
-             '</div>';
-  DataSaveBox = new MessageBox({title: app.i18n.IDL('SaveToFile')});
-  var Box = DataSaveBox;
-  vkOnSavedFile=function(){Box.hide(200);};
-  Box.removeButtons();
-  Box.addButton(app.i18n.IDL('Cancel'),Box.hide,'no');
-  Box.content(html).show();
-  var swf=location.protocol=='https:'?VKFDS_SWF_HTTPS_LINK:VKFDS_SWF_LINK;
-  var params={width:100, height:29, allowscriptaccess: 'always',"wmode":"transparent","preventhide":"1","scale":"noScale"};
-  var vars={};//'idl_browse':app.i18n.IDL('Browse'),'mask_name':mask[0],'mask_ext':mask[1]
-	renderFlash('dscontainer',
-		{url:swf,id:"vkdatasaver"},
-		params,vars
-	);
+  app.saveFile.saveText({ text: text, filename: fname });
 }
 
 //END DATA SAVER

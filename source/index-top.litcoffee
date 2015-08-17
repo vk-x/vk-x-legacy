@@ -12,6 +12,7 @@ For compatibility with legacy code:
 	app.util.md5 = require "md5-jkmyers"
 	app.vkApi = require "./vk-api"
 	app.photo = require "./photo"
+	app.saveFile = require "./save-file"
 
 	app.i18n.addLanguage "ru", require "./i18n/ru"
 	app.i18n.addLanguage "ua", require "./i18n/ua"

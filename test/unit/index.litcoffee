@@ -8,3 +8,4 @@
 	require "./main-menu"
 	require "./modal"
 	require "./photo"
+	require "./save-file"
