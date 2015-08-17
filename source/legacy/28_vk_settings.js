@@ -495,6 +495,7 @@ function vkInitSettings(){
       {id:7,  text:app.i18n.IDL("seScroolPhoto")},
       {id:93, text:app.i18n.IDL("seAlbumPhotosExInfo"),info:'infoUseNetTrafic'}
       , {id:101, text:app.i18n.IDL("seUseHtml5ForVideo"),info:'infoOnlyForCompatible'}
+      , {id:104, text:app.i18n.IDL("seUseHtml5ForAudio")}
     ],
     Users:[
       {id:10, text:app.i18n.IDL("seExUserMenu")+'<br><a href="#" onclick="toggle(\'vkExUMenuCFG\'); return false;">[<b> '+app.i18n.IDL("Settings")+' </b>]</a>'+
@@ -585,7 +586,7 @@ function vkInitSettings(){
    ]
   };
 
-	//LAST 103
+	//LAST 104
   //FREE 19,20,76,102,103
   // 103 - should have been used for seUseHTML5ForSave, see f571674f7ad952d136acfa9817c38640cbd4e67b.
 

@@ -4,7 +4,7 @@ if (!window.DefSetBits)
 
 // This is how settings are stored now. Because f*** you.
 // Chars 32, 69 are known to be unused.
-var DefSetBits='yyyynnyyynyyy0n0yy0nnnynyyynyy0nynynnnnyy0yyy1yynnnnny0nynynynnnnyynnynnnynyyyynnyn3nnnnynynnnnnyynnnnnn-3-0-#c5d9e7-#34a235-1-';
+var DefSetBits='yyyynnyyynyyy0n0yy0nnnynyyynyy0nynynnnnyy0yyy1yynnnnny0nynynynnnnyynnynnnynyyyynnyn3nnnnynynnnnnyynnnnnnn-3-0-#c5d9e7-#34a235-1-';
 
 var DefExUserMenuCfg='11111110111111111111'; // default user-menu items config
 var vk_upd_menu_timeout=20000;      //(ms) Update left menu timeout

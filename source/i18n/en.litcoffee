@@ -694,6 +694,7 @@
 		seTypingNotify: "Notify, when somebody is typing you a message (conversations or quick chat must be opened)"
 		seUpdate: "[ Notify about updates ]"
 		seUseCache: "Use cache for network requests"
+		seUseHtml5ForAudio: "Use HTML5 as audio player"
 		seUseHtml5ForVideo: "Use the HTML5 video player"
 		seVidDownloadLinks: "Links to download video in the lists"
 		seVideoFullTitles: "Show full names of videos and folders"
