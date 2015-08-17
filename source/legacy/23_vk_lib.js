@@ -1346,40 +1346,13 @@ function vkMsg(text,show_timeout){
 	  }, out);
 	}
 	showDoneBox(text,{out: show_timeout});
-/*
-vkaddcss("/* Box notify * /\
-.vk_top_result_baloon_wrap { padding-top: 50px;  z-index: 1000;}\
-.vk_top_result_baloon {\
-  text-align:center;\
-  color: #FFF;  cursor: pointer;  background: url('/images/mv_bg.png');  background: rgba(0, 0, 0, 0.75);\
-  -moz-border-radius: 5px;  -webkit-border-radius: 5px;  border-radius: 5px;\
-  -moz-box-shadow: 0 2px 15px #888;   -webkit-box-shadow: 0 2px 15px #888;   box-shadow: 0 2px 15px #888;\
-  padding: 15px 15px;  width: 380px;  text-shadow: 0px 1px 0px #262626;\
-}\
-div.vk_top_result_header {  font-weight: bold;  font-size: 12px;  padding-bottom: 5px;}\
-div.vk_top_result_baloon a {  color: #B1DAFF;  font-weight: bold;}\
-");
- if (!show_timeout) show_timeout=1000;
-  text = text.replace('<b>', '<div class="vk_top_result_header">').replace('</b>', '</div>');
-  var pageW = bodyNode.offsetWidth,
-      resEl = ce('div', {
-        className: 'vk_top_result_baloon_wrap fixed',
-        innerHTML: '<div class="vk_top_result_baloon">' + text + '</div>'
-      } , {left: (pageW - 400) / 2});
-  bodyNode.insertBefore(resEl, ge('page_wrap'));
-  boxRefreshCoords(resEl);
-  setTimeout(function () {
-    fadeOut(resEl.firstChild, 500, function () {
-      re(resEl);
-    });
-  }, show_timeout);*/
 }
 
 vkLdr={
 	box:null,
 	show:function(){
 		vkLdr.box=new MessageBox({title:''});
-		vkLdr.box.setOptions({title: false, hideButtons: true,onHide:__bq.hideAll}).show();
+		vkLdr.box.setOptions({title: false, hideButtons: true,onHide:__bq.hideLast}).show();
 		hide(vkLdr.box.bodyNode);
 		show(boxLoader);
 		boxRefreshCoords(boxLoader);
