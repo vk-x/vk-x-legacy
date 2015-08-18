@@ -42,6 +42,7 @@ var ZODIAK_SIGN_OPHIUCHUS=false;
 var AUDIO_DOWNLOAD_POSTFIX=false;
 var FEEDFILTER_DEBUG=false;
 var SHOW_OID_IN_TITLES=false;
+var ENABLE_CACHE=false;
 
 var VKOPT_CFG_LIST=[
          'vk_DEBUG',
@@ -63,7 +64,8 @@ var VKOPT_CFG_LIST=[
          'ZODIAK_SIGN_OPHIUCHUS',
          'AUDIO_DOWNLOAD_POSTFIX',
          'FEEDFILTER_DEBUG',
-         'SHOW_OID_IN_TITLES'
+         'SHOW_OID_IN_TITLES',
+         'ENABLE_CACHE'
 ];
 
 var vkNewSettings=[98,99,100,79]; //"new" label on settings item

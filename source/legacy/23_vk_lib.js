@@ -588,14 +588,12 @@ if (!window.Audio){
  */
 
 function AjGet( url, callback ) {
-  shouldCache = getSet( 102 ) === "y"
-  app.ajax.get({ url: url, callback: callback, cache: shouldCache });
+  app.ajax.get({ url: url, callback: callback, cache: ENABLE_CACHE });
   return true;
 }
 
 function AjPost( url, data, callback ) {
-  shouldCache = getSet( 102 ) === "y"
-  app.ajax.post({ url: url, data: data, callback: callback, cache: shouldCache });
+  app.ajax.post({ url: url, data: data, callback: callback, cache: ENABLE_CACHE });
   return true;
 }
 
