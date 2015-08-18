@@ -124,8 +124,7 @@ if (!window.Audio){
          return str;
       };
 
-      var output = formatArray(array, 0, pad_val, pad_char);
-         return output;
+      return formatArray(array, 0, pad_val, pad_char);
    }
 
    function isArray(obj) { return Object.prototype.toString.call(obj) === '[object Array]'; }
@@ -1059,7 +1058,7 @@ vkApis={
                         callback(result);
                 }
             });
-        }
+        };
         run(0);
     },
 	photos_hd:function(oid,aid,callback,progress){
