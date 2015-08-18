@@ -283,7 +283,7 @@ function vkOnDocumentClick() {
 /* USERS */
 function vkProccessLinks(el){
  var tstart=unixtime();
- el=(el)?el:ge('content');//document
+ el=el || ge('content');//document
     var nodes=el.getElementsByTagName('a');
     for (var i=0;i<nodes.length;i++){
      if (getSet(10)=='y') vkProcessUserLink(nodes[i]);
@@ -2150,7 +2150,7 @@ function vkCleanNotes(){
     });
 	};
 	var vkRunClean=function(soffset){
-		start_offset=soffset?soffset:0;
+		start_offset=soffset || 0;
 		box=new MessageBox({title: app.i18n.IDL('ClearNotes'),closeButton:true,width:"350px"});
 		box.removeButtons();
 		box.addButton(app.i18n.IDL('Cancel'),function(){abort=true; box.hide();},'no');
@@ -2247,7 +2247,7 @@ function vkTopicTooltip(el,gid,topic,post,type){
     stManager.add(post?'board.css':'wall.css', function() {
        showTooltip(el, {
          url: url,
-         params: extend({act: 'post_tt', post: bp_post?bp_post:post_id}, params),
+         params: extend({act: 'post_tt', post: bp_post || post_id}, params),
          slide: 15,
          shift: [30, -3, 0],//78
          ajaxdt: 100,

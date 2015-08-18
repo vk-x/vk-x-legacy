@@ -1245,7 +1245,7 @@ function vkDelWallPostComments(oid,pid){
 function vkCleanWall(oid){
 	var REQ_CNT=100;
 	var WALL_DEL_REQ_DELAY=400;
-	oid=oid?oid:0;
+	oid=oid || 0;
 	var start_offset=0;
 	var box=null;
 	var mids=[];
@@ -1312,7 +1312,7 @@ function vkCleanWall(oid){
 	};
 	vkRunCleanWall=function(soffset){
 		abox.hide();
-		start_offset=soffset?soffset:0;
+		start_offset=soffset || 0;
 		box=new MessageBox({title: app.i18n.IDL('ClearWall'),closeButton:true,width:"350px"});
 		box.removeButtons();
 		box.addButton(app.i18n.IDL('Cancel'),function(){abort=true; box.hide();},'no');
@@ -1566,7 +1566,7 @@ function vkFriends_get(idx){
   if (getSet(46) == 'n' && idx=='online') {
     clearTimeout(window.IDFrOnlineTO);
 	var tout=getSet('-',5);
-    IDFriendTime=(tout?tout:1)*60000;
+    IDFriendTime=(tout || 1)*60000;
 	if (!IDFriendTime) {
 		topMsg('Please, check <a href="/settings?act=' + app.name +
          '">' + app.name + ' settings</a>');

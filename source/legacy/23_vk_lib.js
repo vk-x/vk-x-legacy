@@ -322,9 +322,8 @@ if (!window.Audio){
 	}
 
 	function $x(xpath, root) {
-		   root = root ? root : document;
 		   try {
-				   var a = document.evaluate(xpath, root, null, 7, null);
+				   var a = document.evaluate(xpath, root || document, null, 7, null);
 		   } catch(e) {
 				   return[];
 		   }
@@ -657,7 +656,7 @@ String.prototype.leftPad = function (l, c) {
 	  return html;
 	}
 	function vkButton(caption,onclick_attr,gray){
-		return '<div class="button_'+(gray?'gray':'blue')+'"><button onclick="' + (onclick_attr?onclick_attr:'') + '">'+caption+'</button></div>';
+		return '<div class="button_'+(gray?'gray':'blue')+'"><button onclick="' + (onclick_attr || '') + '">'+caption+'</button></div>';
 	}
 
 	function vkMakePageList(cur,end,href,onclick,step,without_ul){
@@ -1017,7 +1016,7 @@ vk_v_slider={
 
 function vkSetMouseScroll(el,next,back){
  addEvent(ge(el),'mousewheel DOMMouseScroll',function(e){//
-      e = e ? e : window.event;
+      e = e || window.event;
       var wheelData = e.detail ? e.detail * -1 : e.wheelDelta / 40;
       if (Math.abs(wheelData)>100) { wheelData=Math.round(wheelData/100); }
       if (wheelData<0) next(e); else back(e);
@@ -1305,7 +1304,7 @@ function vkWnd(text,title){
 	var url='about:blank';
 	var as_data=true;
 	text = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\"><html>" +
-		"<head><title>" + ( title ? title : app.name ) + "</title></head>" +
+		"<head><title>" + ( title || app.name ) + "</title></head>" +
 		"<body>" + text + "</body></html>";
 	if (as_data){
 		url='data:text/html;charset=utf-8,'+encodeURIComponent(text);//charset=utf-8,
@@ -1386,7 +1385,7 @@ function vkDragOutFile(el) {
         a = ":" + name + ":" + url;
         //alert(a);
     } else {
-        a = ':'+(d?d:'')+':' + a
+        a = ':'+(d || '')+':' + a
     }
     el.addEventListener("dragstart", function(e) {
         e.dataTransfer.setData("DownloadURL", a);//
