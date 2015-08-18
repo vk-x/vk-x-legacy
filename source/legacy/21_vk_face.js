@@ -967,7 +967,7 @@ function vkMenu(){//vkExLeftMenu
         ['/albums'+window.vk.id+'?act=added',app.i18n.t( "mTags" ),true]
     ],
     'video':[
-        ['/video',app.i18n.IDL("mViM")],
+        ['/video?section=all',app.i18n.IDL("mViM")],
         ['/video?section=tagged',app.i18n.IDL("mViW")],
         ['/video?section=uploaded',app.i18n.IDL("mViUploaded")],
         ['/video?section=comments',app.i18n.IDL("mPhC")],
