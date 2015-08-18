@@ -725,7 +725,7 @@ function vkGetProfile(uid,callback,no_switch_button){
       var msg_count=r.response.msg_count;
 		var common='';
 		//console.log(profile);
-		var username='<a href="/id'+uid+'" onclick="return nav.go(this, event);">'+profile.first_name+' '+profile.nickname+' '+profile.last_name+'</a>';
+		var username='<a href="/id'+uid+'" onclick="return nav.go(this, event);">'+profile.first_name+' '+(profile.nickname || '')+' '+profile.last_name+'</a>';
 		var ava_url=profile.photo_big;
       var last_seen=(profile.last_seen || {}).time;
 		var online=profile.online?vkOnlineInfo(profile):(last_seen?'<div class="vk_last_seen">'+(new Date(last_seen*1000)).format("HH:MM:ss<br>dd.mm.yy")+'</div>':'');//'Offline';
@@ -789,7 +789,7 @@ function vkGetProfile(uid,callback,no_switch_button){
 					  <div class="label fl_l">'+info_labels[i][1]+'</div>\n\
 					  <div class="labeled fl_l">'+info_labels[i][0]+'</div>\n\
 					</div>';
-      var activity = profile.activity;
+      var activity = profile.activity || '';
       if (window.Emoji && Emoji.emojiToHTML && activity)
             activity = Emoji.emojiToHTML(activity,true) || activity;
 		var html=VK_PROFILE_TPL.replace("%AVA_SRC%",ava_url)
