@@ -656,7 +656,7 @@ vk_ch_media={
    photo:function(id,img,w,h){
       var sizes=null;
 
-      img=img || "http://vk.com/images/no_photo.png";
+      img=img || "/images/no_photo.png";
       if (img){
          w = w || 115;
          h = h || 87;
@@ -672,7 +672,7 @@ vk_ch_media={
          }
 
       } else {
-         img="http://vk.com/images/no_photo.png";
+         img="/images/no_photo.png";
          sizes={
             "s": [img, 57, 43],
             "m": [img, 115, 87],
@@ -695,12 +695,12 @@ vk_ch_media={
    },
    video:function(vid){
       cur.chooseMedia('video', vid, {
-         "thumb": "http://vk.com/images/video_s.png",
+         "thumb": "/images/video_s.png",
          "editable": {
             "sizes": {
-               "s": ["http://vk.com/images/video_s.png", 130, 98],
-               "m": ["http://vk.com/images/video_m.png", 160, 120],
-               "l": ["http://vk.com/images/video_l.png", 240]
+               "s": ["/images/video_s.png", 130, 98],
+               "m": ["/images/video_m.png", 160, 120],
+               "l": ["/images/video_l.png", 240]
             },
             "duration": 0
          }
@@ -716,15 +716,15 @@ function vkPhChooseProcess(answer,q){
     if (val){
       vk_ch_media.photo(val[1]+'_'+val[2]);
       /*
-      cur.chooseMedia('photo', val[1]+'_'+val[2],{"thumb_s": "http://vk.com/images/no_photo.png", "thumb_m": "http://vk.com/images/no_photo.png","view_opts": '{temp:{x_src: "http://vk.com/images/no_photo.png"}}',  "editable": {
+      cur.chooseMedia('photo', val[1]+'_'+val[2],{"thumb_s": "/images/no_photo.png", "thumb_m": "/images/no_photo.png","view_opts": '{temp:{x_src: "/images/no_photo.png"}}',  "editable": {
       "sizes": {
-         "s": ["http://vk.com/images/no_photo.png", 57, 43],
-         "m": ["http://vk.com/images/no_photo.png", 115, 87],
-         "x": ["http://vk.com/images/no_photo.png", 575, 435],
-         "o": ["http://vk.com/images/no_photo.png", 115, 87],
-         "p": ["http://vk.com/images/no_photo.png", 230, 174],
-         "q": ["http://vk.com/images/no_photo.png", 345, 261],
-         "r": ["http://vk.com/images/no_photo.png", 575, 435]
+         "s": ["/images/no_photo.png", 57, 43],
+         "m": ["/images/no_photo.png", 115, 87],
+         "x": ["/images/no_photo.png", 575, 435],
+         "o": ["/images/no_photo.png", 115, 87],
+         "p": ["/images/no_photo.png", 230, 174],
+         "q": ["/images/no_photo.png", 345, 261],
+         "r": ["/images/no_photo.png", 575, 435]
       }
    }
 });//*/
@@ -773,7 +773,7 @@ function vkVidChooseProcess(answer,q){
     var val=ge('vk_link_to_video').value.match(/video(-?\d+)_(\d+)/);
     lockButton(btn);
     if (val){
-      //cur.chooseMedia('video', val[1]+'_'+val[2], 'http://vk.com/images/video_s.png');
+      //cur.chooseMedia('video', val[1]+'_'+val[2], '/images/video_s.png');
       vk_ch_media.video(val[1]+'_'+val[2]);
     } else {
       alert(app.i18n.IDL('IncorrectVideoLink'))
@@ -862,13 +862,13 @@ function vkAudioChooseProcess(answer,q){
 vk_messages={
    html_tpl:'<!DOCTYPE html>\
    <html>\
-      <head><meta charset="utf-8"/><link rel="shortcut icon" href="http://vk.com/images/fav_chat.ico"/><link rel="stylesheet" type="text/css" href="http://vk.com/css/al/common.css" /><title>%title</title><style>\
+      <head><meta charset="utf-8"/><link rel="shortcut icon" href="/images/fav_chat.ico"/><link rel="stylesheet" type="text/css" href="http://vk.com/css/al/common.css" /><title>%title</title><style>\
       body{text-align:center;font:12px/16px Verdana;margin:5px;}\
       hr{border-color:#C3D1E0;}\
       .messages{width:950px;margin:0 auto;text-align:left;} .msg_item {overflow:hidden} .from,.msg_body,.att_head,.attacments,.attacment,.fwd{margin-left:80px;}\
       .upic{float:left} .upic img{vertical-align:top;width:70px;padding:5px;height:70px;}\
       a,a:visited{text-decoration:none;color:#2B587A} a:hover{text-decoration:underline} .att_head{color:#777;}\
-      .att_ico{float:left;width:11px;height:11px;margin: 3px 3px 2px; background-image:url(\'http://vk.com/images/icons/mono_iconset.gif\');}\
+      .att_ico{float:left;width:11px;height:11px;margin: 3px 3px 2px; background-image:url(\'/images/icons/mono_iconset.gif\');}\
       .att_photo{background-position: 0 -30px;} .att_audio{background-position: 0 -222px;} .att_video{background-position: 0 -75px;}\
       .att_doc{background-position: 0 -280px;} .att_wall,.att_fwd{background-position: 0 -194px;} .att_gift{background-position: 0 -105px;} \
       .att_sticker{background-position: 0 -362px; width: 12px; height: 12px;}\
@@ -902,7 +902,7 @@ vk_messages={
           replacedText = replacedText.replace(replacePattern3,'$1<a href="http://$2" target="_blank">$2</a>');
 
          if (window.Emoji && Emoji.emojiToHTML)
-            replacedText = Emoji.emojiToHTML(replacedText,true).replace(/"\/images\//g,'"http://vk.com/images/') || replacedText;
+            replacedText = Emoji.emojiToHTML(replacedText,true).replace(/"\/images\//g,'"/images/') || replacedText;
 
           return replacedText;
       }
@@ -980,7 +980,7 @@ vk_messages={
       html+='<hr>';
 
       // icons
-      // http://vk.com/images/icons/mono_iconset.gif
+      // /images/icons/mono_iconset.gif
 
       // build
       for(var i=0,j=msg.length;i<j;i++){
@@ -988,7 +988,7 @@ vk_messages={
                            id: msgfwd[i].user_id,
                            first_name: 'DELETED',
                            last_name: '',
-                           photo_100: 'http://vk.com/images/deactivated_c.gif'
+                           photo_100: '/images/deactivated_c.gif'
                         } );
 		 html+='<div id="msg'+msg[i].id+'" class="msg_item">';
          html+='<div class="upic"><img src="'+
@@ -1027,7 +1027,7 @@ vk_messages={
                            id: msgfwd[k].user_id,
                            first_name: 'DELETED',
                            last_name: '',
-                           photo_100: 'http://vk.com/images/deactivated_c.gif'
+                           photo_100: '/images/deactivated_c.gif'
                         } );
 			html+='<div class="msg_item">';
             html+='<div class="upic"><img src="'+
@@ -1125,7 +1125,7 @@ vk_messages={
                              id: users_ids[i],
                              first_name: 'DELETED',
                              last_name: '',
-                             photo_100: 'http://vk.com/images/deactivated_c.gif'
+                             photo_100: '/images/deactivated_c.gif'
                           }
 
                     var html=vk_messages.make_html(messages, users);

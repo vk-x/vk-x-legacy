@@ -301,7 +301,7 @@ var vk_photos = {
          else oid=oid?oid:vk.id;
          var sys=[{
             aid:"wall",
-            thumb_src:'http://vk.com/images/m_noalbum.png',
+            thumb_src:'/images/m_noalbum.png',
             owner_id:oid,
             title:app.i18n.IDL('photos_on_wall'),
             size:'-',
@@ -310,7 +310,7 @@ var vk_photos = {
          if (oid>0)
             sys.push({
                aid:"saved",
-               thumb_src:'http://vk.com/images/m_noalbum.png',
+               thumb_src:'/images/m_noalbum.png',
                owner_id:oid,
                title:app.i18n.IDL('Saved_photos'),
                size:'-',
@@ -1502,7 +1502,7 @@ function vkPhotosWallAlbum(){
    if (ge('photos_top_container')) return;
    var gid=cur.oid;
    var html='<div class="clear_fix album top_album">\
-       <div class="fl_l thumb"><a href="/album'+gid+'_00?rev=1" onclick="return nav.go(this, event)"><img src="http://vk.com/images/m_noalbum.gif"></a></div>\
+       <div class="fl_l thumb"><a href="/album'+gid+'_00?rev=1" onclick="return nav.go(this, event)"><img src="/images/m_noalbum.gif"></a></div>\
        <div class="fl_l info_wrap">\
          <div class="name"><a href="/album'+gid+'_00?rev=1" onclick="return nav.go(this, event)">'+app.i18n.IDL('photos_on_wall')+'</a></div>\
          <a class="fl_r" href="/album'+gid+'_00?act=comments" onclick="return nav.go(this, event)">'+app.i18n.IDL('komm',1)+'</a>\
