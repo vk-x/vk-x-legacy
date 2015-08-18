@@ -691,6 +691,7 @@
 		Settings: "Settings"
 		settingsSectionBackup: "Backup"
 		SettsNotSaved: "<center><a href=# onclick=\"return false;\">If settings aren't saved</a></center>"
+		seTurningPosts: "Turning posts buttons"
 		seTypingNotify: "Notify, when somebody is typing you a message (conversations or quick chat must be opened)"
 		seUpdate: "[ Notify about updates ]"
 		seUseCache: "Use cache for network requests"

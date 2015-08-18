@@ -624,6 +624,7 @@
 		seToTopOld: "Старое поведение кнопки &ldquo;Наверх&rdquo;(Наверх/Вниз)"
 		Settings: "Настройки"
 		SettsNotSaved: "<center><a href=# onclick=\"return false;\">Если настройки не сохраняются</a></center>"
+		seTurningPosts: "Кнопки листания постов"
 		seTypingNotify: "Оповещать о пишущих сообщение (должны быть открыты диалоги или чат)."
 		seUpdate: "[ Информация об обновлениях скрипта ]"
 		seUseCache: "Использовать кэш для сетевых запросов"

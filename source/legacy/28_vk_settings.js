@@ -569,6 +569,7 @@ function vkInitSettings(){
       {id:98, text:app.i18n.IDL("seShowAllComments")},
       {id:99, text:app.i18n.IDL("seSortByLikes")},
       {id:100, text:app.i18n.IDL("seTopicSearch")},
+      {id:19, text:app.i18n.IDL("seTurningPosts")},
       {id:88, text:app.i18n.IDL("seGroupRequestsBlock"),info:'infoUseNetTrafic'},
 		{id:9,  header:app.i18n.IDL("seTestFr"), text:app.i18n.IDL("seRefList"), sub:{id:1, text:'<br>'+app.i18n.IDL("now")+': <b>%cur</b> '+app.i18n.IDL("day")+'<br>'+app.i18n.IDL("set")+': %sets'+
             '<br><a onClick="vkFriendsCheck();" style="cursor: hand;">'+app.i18n.IDL('seCreList')+'</a>',
@@ -587,7 +588,7 @@ function vkInitSettings(){
   };
 
 	//LAST 104
-  //FREE 19,20,76,102,103
+  //FREE 20,76,102,103
   // 103 - should have been used for seUseHTML5ForSave, see f571674f7ad952d136acfa9817c38640cbd4e67b.
 
 	vkSetsType={
