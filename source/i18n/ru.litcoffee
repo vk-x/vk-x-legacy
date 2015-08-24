@@ -658,6 +658,7 @@
 		TetAtet: "Тет-а-тет"
 		TimeRemaining: "До скробблинга трека осталось <time>"
 		TinEyeSearch: "[ Поиск копий  (TinEye) ]"
+		Title: "Заголовок"
 		topicadded: "Добавлен в новости"
 		TrackNotScrobbled: "Ошибка при скробблинге трека"
 		TrackPassed: "Трек проигнорирован"

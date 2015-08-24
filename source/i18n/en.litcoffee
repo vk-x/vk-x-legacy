@@ -731,6 +731,7 @@
 		theme_num: [ "", "<b>%s</b> skin", "<b>%s</b> skins", "<b>%s</b> skins" ]
 		TimeRemaining: "<time> remained till scrobbling"
 		TinEyeSearch: "[ Search copies (TinEye) ]"
+		Title: "Title"
 		ToggleQuickPreviews: "Show quick album preview"
 		topicadded: "Added in news"
 		TopicNewMess: "TopicNewMess"
