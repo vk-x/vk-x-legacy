@@ -12,8 +12,8 @@ This file only contains notes on internal details.
 	saveAs = require "filesaver.js"
 	modal = require "./modal"
 	vkApi = require "./vk-api"
-	ajax = require "./ajax"
 	i18n = require "./i18n"
+	saveFile = require "./save-file"
 
 	photo =
 
@@ -72,14 +72,18 @@ This file only contains notes on internal details.
 
 						filename = "#{photoIndex + 1}_#{photoInfo.id}.jpg"
 
-						ajax.get
+						saveFile.download
 							url: link
-							responseType: "arraybuffer"
-							callback: ( text, result ) ->
+							callback: ( err, file ) ->
+								if err
+									callback err
+									return
+
 								if not progressBox.isVisible()
 									callback new Error "The user has cancelled downloading."
 									return
-								zip.file filename, result.response.response
+
+								zip.file filename, file
 								progressBox.setProgress Math.round 100 * photoIndex / photos.length
 								setTimeout -> addPhotoToZip photoIndex + 1
 
