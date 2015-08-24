@@ -17,6 +17,16 @@ This file only contains notes on internal details.
 
 	photo =
 
+## `photo.getBestQualityUrl`
+
+		getBestQualityUrl: ( photoInfo ) ->
+			photoInfo.photo_2560 ?
+			photoInfo.photo_1280 ?
+			photoInfo.photo_807 ?
+			photoInfo.photo_604 ?
+			photoInfo.photo_130 ?
+			photoInfo.photo_75
+
 ## `photo.downloadAlbumAsZip`
 
 		downloadAlbumAsZip: ({ ownerId, albumId, callback } = {}) ->
@@ -40,7 +50,7 @@ This file only contains notes on internal details.
 					owner_id: ownerId
 					album_id: albumId
 					rev: 1
-				callback: ( result ) ->
+				callback: ( result ) =>
 					if result.error
 						callback new Error result.error
 
@@ -48,7 +58,7 @@ This file only contains notes on internal details.
 
 					zip = new JsZip
 
-					addPhotoToZip = ( photoIndex ) ->
+					addPhotoToZip = ( photoIndex ) =>
 						if photoIndex >= photos.length
 							zipBlob = zip.generate type: "blob"
 							saveAs zipBlob, "album#{ownerId}_#{albumId}.zip"
@@ -58,12 +68,7 @@ This file only contains notes on internal details.
 
 						photoInfo = photos[ photoIndex ]
 
-						link = photoInfo.photo_2560 ?
-							photoInfo.photo_1280 ?
-							photoInfo.photo_807 ?
-							photoInfo.photo_604 ?
-							photoInfo.photo_130 ?
-							photoInfo.photo_75
+						link = @getBestQualityUrl photoInfo
 
 						filename = "#{photoIndex + 1}_#{photoInfo.id}.jpg"
 
