@@ -38,7 +38,6 @@ vkApi.request
 	data: ...
 	callback: ( result ) ->
 		returnedPhotos = result.response.items
-
 		# Now get the best quality URL
 		url = photo.getBestQualityUrl returnedPhotos[ 0 ]
 ```
