@@ -3,6 +3,7 @@
 
 	module.exports =
 		transform: [ templateTransform, "coffeeify", "jadeify", brfsTransform ]
+		plugin: [ "proxyquireify/plugin" ]
 		extensions: [
 			".litcoffee", ".template.litcoffee"
 			".js", ".template.js"

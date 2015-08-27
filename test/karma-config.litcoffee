@@ -12,6 +12,8 @@ testing functions: `describe`, `it`, etc.
 It provides assertion features like `foo.should.equal "bar"`.
 - [Sinon.JS](http://sinonjs.org/) - spy/stub/mock library.
 See [its docs](http://sinonjs.org/docs) for more.
+- [proxyquire](https://github.com/thlorenz/proxyquire) - allows overriding
+dependencies at runtime.
 
 ## Write tests
 
