@@ -1,4 +1,4 @@
-	through = require "through"
+	through = require "through2"
 	config = require "../package"
 	_ = require "lodash"
 
@@ -7,11 +7,13 @@
 		return through() if -1 is fileName.indexOf ".template."
 
 		content = ""
-		write = ( buffer ) -> content += buffer
-		end = ->
-			@queue _.template content, config
-			@queue null
+		write = ( chunk, enc, callback ) ->
+			content += chunk.toString "utf8"
+			callback()
+		end = ( callback ) ->
+			@push new Buffer _.template( content ) config
+			callback()
 
-		through write, end
+		through.obj write, end
 
 	module.exports = templateTransform

@@ -1,4 +1,4 @@
-# [Karma](http://karma-runner.github.io/) config
+# [Karma](https://karma-runner.github.io/) config
 
 ## Tests tech stack
 
@@ -25,7 +25,7 @@ convenience.
 
 ## Config
 
-See: http://karma-runner.github.io/0.12/config/configuration-file.html.  
+See: https://karma-runner.github.io/0.13/config/configuration-file.html.  
 Also see `package.json` file for a list of dependencies.
 
 	module.exports = ( config ) ->
@@ -35,14 +35,11 @@ Also see `package.json` file for a list of dependencies.
 
 			files: [ "./unit/index.litcoffee" ]
 
-			frameworks: [ "mocha", "sinon-chai", "browserify" ]
+			frameworks: [ "mocha", "chai-sinon", "browserify" ]
 
 			preprocessors:
-				"**/*.template.*": [ "lodash" ]
 				"**/*.litcoffee": [ "coffee" ]
 				"./unit/**/*.*": [ "browserify" ]
-
-			lodashPreprocessor: data: require "../package.json"
 
 			browserify: require "../build/browserify-config"
 

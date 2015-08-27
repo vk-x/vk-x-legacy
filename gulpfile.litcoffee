@@ -97,10 +97,13 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 See [`test/karma-config.litcoffee`](test/karma-config.litcoffee) file
 for docs on tests.
 
-	gulp.task "test", ->
-		gulp.src [ "./test/unit/index.litcoffee" ]
-			.pipe plugins.karma
-				configFile: "test/karma-config.litcoffee"
+	gulp.task "test", ( done ) ->
+		karma = require "karma"
+		server = new karma.Server
+			configFile: "#{__dirname}/test/karma-config.litcoffee"
+		, done
+
+		server.start()
 
 #### `clean-build` and `clean-dist`
 
