@@ -203,7 +203,7 @@ Let's rock.
 #### It caches the token.
 
 			it "should cache the token", ( done ) ->
- 
+
 `_performAuth` should be called only once as the result should be cached.
 
 				isFakeAuthCalled = no
@@ -240,7 +240,7 @@ Let's rock.
 #### It doesn't auth multiple times simultaneously.
 
 			it "should auth once at a time", ( done ) ->
- 
+
 `_performAuth` should be called only once.
 
 				isFakeAuthCalled = no

@@ -15,7 +15,7 @@ This file only contains notes on internal details.
 Although these fields are exposed as public, it is strongly recommended to only
 use those without an undersore (`_`).
 Private methods are here for testing purposes only (see tests).
-		
+
 		_widgetUrl: "/widget_like.php"
 
 		_fetchWidgetHtml: ({ appId, targetUrl, callback }) ->

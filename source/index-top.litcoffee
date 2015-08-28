@@ -23,5 +23,5 @@ For compatibility with legacy code:
 
 	# TODO: Migrate to "en" some day.
 	app.i18n.setFallbackLanguage "ru"
-	
+
 	window.app = app

@@ -62,7 +62,7 @@ translated = i18n.IDL "someKey", 2
 
 			it "should add a language to _languages", ->
 				i18n.addLanguage "fake", hello: "world!"
-				
+
 				i18n._languages.should.deep.equal fake: hello: "world!"
 
 			it "should throw if the language has been already added", ->

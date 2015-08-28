@@ -169,7 +169,7 @@ To get dislikes we can use regular
 								.should.have.been.calledOnce
 							dislike._parseHashValues
 								.should.have.been.calledOnce
-							
+
 							# Second call, should use cache.
 							dislike._getHashValues
 								appId: fakeAppId

@@ -5,7 +5,7 @@
 		app = require "../../source/app"
 		modal = require "../../source/modal"
 		i18n = require "../../source/i18n"
-		
+
 		describe "showChangelog", ->
 
 			it "should correctly call modal.showPage()", ( done ) ->
