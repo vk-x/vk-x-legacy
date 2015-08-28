@@ -142,7 +142,7 @@ for docs on tests.
 
 	gulp.task "meta", [ "clean-build" ], ->
 		noticeTemplate = fs.readFileSync "./source/meta/notice.template.js"
-		
+
 		metaStream = gulp.src "source/meta/*/**/*"
 			.pipe plugins.filter "!**/*.ignore.*"
 			.pipe plugins.filter "!**/*.litcoffee"
@@ -238,15 +238,19 @@ Distributable Maxthon extension created using
 		pathToSource = path.join cwd, "build", "maxthon"
 		pathToBuilder = path.join cwd, "build", "maxthon-packer.exe"
 
-		execFile pathToBuilder, [ pathToSource, pathToResult ], null,
-			( error ) ->
-				if error
-					console.log "Maxthon packager exitted with error:".yellow,
-						error
-				else unless isWindows
-					console.log ( "Looks like Maxthon packager finished " +
-						"successfully." ).green
-				done()
+		try
+			execFile pathToBuilder, [ pathToSource, pathToResult ], null,
+				( error ) ->
+					if error
+						console.log "Maxthon packager exitted with error:".yellow,
+							error
+					else unless isWindows
+						console.log ( "Looks like Maxthon packager finished " +
+							"successfully." ).green
+					done()
+		catch error
+			console.log "Maxthon packager exitted with error:".yellow, error
+			done()
 
 #### `dist-zip`
 Distributable extensions created using ZIP archivation.
