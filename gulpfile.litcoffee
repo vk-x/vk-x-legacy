@@ -1,16 +1,5 @@
 # Dev documentation
 
-## Build status
-
-master | develop
-:----: | :-----:
-[![Build Status](https://travis-ci.org/vk-x/vk-x.png?branch=master)](https://travis-ci.org/vk-x/vk-x) | [![Develop](https://travis-ci.org/vk-x/vk-x.png?branch=develop)](https://travis-ci.org/vk-x/vk-x)
-
-We have **[Travis CI](https://travis-ci.org/vk-x/vk-x)** running
-`gulp test && gulp dist` on each push and Pull Request.  
-See **Prepare environment**, **Run tests** and **Build extensions**
-below for more info.
-
 ## Tech stack
 
 We use [CoffeeScript](http://coffeescript.org) language.
