@@ -133,9 +133,8 @@ for docs on tests.
 		noticeTemplate = fs.readFileSync "./source/meta/notice.template.js"
 
 		metaStream = gulp.src "source/meta/*/**/*"
-			.pipe plugins.filter "!**/*.ignore.*"
-			.pipe plugins.filter "!**/*.litcoffee"
-			.pipe plugins.filter "!**/*.js"
+			.pipe plugins.filter [ "**/*", "!**/*.ignore.*" ]
+			.pipe plugins.filter [ "**/*", "!**/*.{js,litcoffee}" ]
 			.pipe plugins.if /\.template\./, plugins.template config
 			.pipe plugins.if /\.template\./, plugins.rename ( path ) ->
 				path.basename = path.basename.replace /\.template$/, ""
