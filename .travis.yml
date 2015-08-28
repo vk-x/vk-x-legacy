@@ -2,5 +2,5 @@ language: node_js
 node_js:
   - node
   - iojs
-after_script: npm coverage
+after_script: npm run coverage
 sudo: false
