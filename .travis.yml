@@ -3,3 +3,4 @@ node_js:
   - node
   - iojs
 after_script: npm coverage
+sudo: false
