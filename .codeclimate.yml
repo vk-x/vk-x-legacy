@@ -1,0 +1,13 @@
+engines:
+  eslint:
+    enabled: true
+  coffeelint:
+    enabled: true
+
+ratings:
+  paths:
+  - source/**/*.litcoffee
+
+exclude_paths:
+- **/*.template.*
+- source/i18n/**/*

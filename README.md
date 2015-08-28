@@ -2,6 +2,7 @@
 
 [![Travis](https://img.shields.io/travis/vk-x/vk-x.svg)](https://travis-ci.org/vk-x/vk-x)
 [![Coverage](https://img.shields.io/codeclimate/coverage/github/vk-x/vk-x.svg)](https://codeclimate.com/github/vk-x/vk-x/coverage)
+[![Code Climate](https://img.shields.io/codeclimate/github/vk-x/vk-x.svg)](https://codeclimate.com/github/vk-x/vk-x)
 [![Gratipay](https://img.shields.io/gratipay/deltaidea.svg)](https://gratipay.com/~deltaidea)
 
 **vk-x** is a cross-browser extension for [vk.com](http://vk.com)
