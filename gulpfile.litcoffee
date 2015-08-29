@@ -1,3 +1,32 @@
+# Table of contents
+
+<!-- MarkdownTOC depth=4 autolink=true bracket=round -->
+
+- [Dev documentation](#dev-documentation)
+	- [Tech stack](#tech-stack)
+	- [Fork the repo](#fork-the-repo)
+	- [Prepare environment](#prepare-environment)
+	- [Build unpacked extensions](#build-unpacked-extensions)
+	- [Install an unpacked extension](#install-an-unpacked-extension)
+		- [Chromium](#chromium)
+		- [Firefox](#firefox)
+		- [Opera 12](#opera-12)
+		- [Maxthon](#maxthon)
+	- [Run tests](#run-tests)
+	- [Build extensions](#build-extensions)
+	- [Test and build continuously](#test-and-build-continuously)
+- [Tasks specification](#tasks-specification)
+	- [Loading dependencies](#loading-dependencies)
+	- [`test`](#test)
+	- [`clean-build` and `clean-dist`](#clean-build-and-clean-dist)
+	- [`meta`](#meta)
+	- [`scripts`](#scripts)
+	- [`dist-maxthon`](#dist-maxthon)
+	- [`dist-zip`](#dist-zip)
+	- [Shortcuts](#shortcuts)
+
+<!-- /MarkdownTOC -->
+
 # Dev documentation
 
 ## Tech stack
