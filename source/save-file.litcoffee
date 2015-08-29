@@ -5,9 +5,7 @@ This file only contains notes on internal details.
 
 # `saveFile` module
 
-	# Applies polyfill immediately, no method call needed.
-	require "blob-polyfill"
-
+	Blob = require "blob"
 	saveAs = require "filesaver.js"
 	ajax = require "./ajax"
 

@@ -5,9 +5,7 @@ This file only contains notes on internal details.
 
 # `photo` module
 
-	# Applies polyfill immediately, no method call needed.
-	require "blob-polyfill"
-
+	Blob = require "blob"
 	JsZip = require "jszip"
 	saveAs = require "filesaver.js"
 	modal = require "./modal"
