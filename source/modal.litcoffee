@@ -10,8 +10,7 @@ This file only contains notes on internal details.
 	progressBarTemplate = require "./modal/progressBarTemplate"
 	app = require "./app"
 	fs = require "fs"
-	logo = "data:image/png;base64," + fs.readFileSync "#{__dirname}/meta/" +
-	"logo.png", "base64"
+	logo = "data:image/png;base64," + require "./meta/logo.png"
 
 	modal =
 

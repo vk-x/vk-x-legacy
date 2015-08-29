@@ -1,5 +1,5 @@
 	templateTransform = require "./template-transform"
-	brfsTransform = require "./brfs-transform"
+	base64Transform = require "./base64-transform"
 
 	module.exports = ( type = "build" ) ->
 		if type is "test"
@@ -8,7 +8,7 @@
 				templateTransform
 				[ "browserify-coffee-coverage", instrumentor: "istanbul" ]
 				"jadeify"
-				brfsTransform
+				base64Transform
 			]
 
 		else
@@ -17,7 +17,7 @@
 				templateTransform
 				"coffeeify"
 				"jadeify"
-				brfsTransform
+				base64Transform
 			]
 
 		transform: transform
