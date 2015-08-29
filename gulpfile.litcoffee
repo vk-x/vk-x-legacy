@@ -80,13 +80,31 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 	plugins = ( require "gulp-load-plugins" )()
 	cwd = process.cwd()
 	distPrefix = "#{config.name}-#{config.version}"
-	browserifyConfig = require "./build/browserify-config"
+	browserifyConfig = ( require "./build/browserify-config" )()
 
 #### `test`
 See [`test/karma-config.litcoffee`](test/karma-config.litcoffee) file
 for docs on tests.
 
-	gulp.task "test", ( done ) ->
+	gulp.task "browserify-test", ( done ) ->
+		browserify = require "browserify"
+		buffer = require "vinyl-buffer"
+		source = require "vinyl-source-stream"
+		globby = require "globby"
+
+		globby [ "**/*.litcoffee" ], cwd: "./test/unit", ( err, entries ) ->
+			streams = entries.map ( entry ) ->
+				b = browserify ( require "./build/browserify-config" ) "test"
+				b.add path.join "./test/unit", entry
+				b.bundle()
+					.pipe source entry
+					.pipe buffer()
+					.pipe gulp.dest "test/bundle/"
+
+			es.concat streams
+				.on "end", done
+
+	gulp.task "test", [ "browserify-test" ], ( done ) ->
 		karma = require "karma"
 		server = new karma.Server
 			configFile: "#{__dirname}/test/karma-config.litcoffee"

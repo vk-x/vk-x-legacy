@@ -30,47 +30,27 @@ convenience.
 See: https://karma-runner.github.io/0.13/config/configuration-file.html.  
 Also see `package.json` file for a list of dependencies.
 
-	browserifyConfig = require "../build/browserify-config"
-	istanbul = require "browserify-istanbul"
-	browserifyConfig.transform.push istanbul()
-
 	module.exports = ( config ) ->
 		config.set
 
 			logLevel: config.LOG_WARN
 
-			files: [ "./unit/index.litcoffee" ]
+			files: [ "./bundle/**/*.*" ]
 
-			frameworks: [ "mocha", "chai-sinon", "browserify" ]
+			frameworks: [ "mocha", "chai-sinon" ]
 
 			plugins: [
-				"karma-coffee-preprocessor"
 				"karma-mocha"
 				"karma-chai-sinon"
-				"karma-browserify"
 				"karma-coverage"
 				"karma-phantomjs-launcher"
 			]
 
-			preprocessors:
-				"**/*.litcoffee": [ "coverage" ]
-				"./unit/**/*.*": [ "browserify" ]
-
 			coverageReporter:
 				dir: "coverage/"
 				reporters: [
-					type: "lcovonly", subdir: "."
+					type: "lcov", subdir: "."
 				]
-				instrumenters:
-					ibrik: require "ibrik"
-				instrumenter:
-					"**/*.litcoffee": [ "ibrik" ]
-
-			coffeePreprocessor:
-				options:
-					sourceMap: on
-
-			browserify: browserifyConfig
 
 			reporters: [ "progress", "coverage" ]
 

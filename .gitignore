@@ -1,4 +1,5 @@
 /test/coverage
+/test/bundle
 /node_modules
 /*.sublime-*
 /build/*/
