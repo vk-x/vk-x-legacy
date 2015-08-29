@@ -23,10 +23,6 @@ See `package.json` for a full list of dependencies.
 
 **Note**: run all these commands inside project directory.
 
-#### Dependencies status
-
-![Dependencies status](https://david-dm.org/vk-x/vk-x.png)
-
 ## Build unpacked extensions
 To build unpacked extensions open command line and type: `$ gulp build`.
 
