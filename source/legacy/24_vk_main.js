@@ -2386,7 +2386,7 @@ var vkTopicSearch = {
                     TEXT: (comments[i].text.substr(0,k)+'<b>'+comments[i].text.substr(k,vkTopicSearch.query.length)+'</b>'+comments[i].text.substr(k+vkTopicSearch.query.length)) // выделить жирным запрос
                         .replace(/\[id[^\|]+\|([^\]]+)\]/g, "$1"), // замена кодов обращений на просто имя
                     TOPICID: vkTopicSearch.topic_id,
-                    DATE: dateFormat(comments[i].date * 1000, "dd.mm.yyyy HH:MM:ss")
+                    DATE: app.util.dateFormat(comments[i].date * 1000, "dd.mm.yyyy HH:MM:ss")
                 });
             }
         }

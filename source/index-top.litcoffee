@@ -10,6 +10,7 @@ For compatibility with legacy code:
 	app.modal = require "./modal"
 	app.util = require "lodash"
 	app.util.md5 = require "md5-jkmyers"
+	app.util.dateFormat = require "dateformat"
 	app.vkApi = require "./vk-api"
 	app.photo = require "./photo"
 	app.saveFile = require "./save-file"
