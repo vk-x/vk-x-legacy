@@ -3,8 +3,9 @@
 <!-- MarkdownTOC depth=4 autolink=true bracket=round -->
 
 - [Dev documentation](#dev-documentation)
+	- [TL;DR](#tldr)
 	- [Tech stack](#tech-stack)
-	- [Fork the repo](#fork-the-repo)
+	- [Get the code](#get-the-code)
 	- [Prepare environment](#prepare-environment)
 	- [Build unpacked extensions](#build-unpacked-extensions)
 	- [Install an unpacked extension](#install-an-unpacked-extension)
@@ -29,31 +30,58 @@
 
 # Dev documentation
 
+## TL;DR
+vk-x is written in CoffeeScript, built using Browserify, tested in PhantomJS
+using Karma.
+
+- `npm i` to prepare the environment
+- `gulp test` to run tests
+- `gulp build` to build unpacked extensions
+- `gulp dist` to build packed extensions
+- `gulp` to watch for changes and automatically run `gulp test` and `gulp build`
+
 ## Tech stack
+We use [Literate CoffeeScript](http://coffeescript.org/#literate) for the code,
+[Jade](http://jade-lang.com/) for templates,
+[Stylus](http://learnboost.github.io/stylus/) for styles.
 
-We use [CoffeeScript](http://coffeescript.org) language.
+Scripts are assembled using [Browserify](http://browserify.org/).
+See [`scripts` task](#scripts) defined below and
+[browserify config](build/browserify-config.litcoffee) for gore details.  
+Templates, styles and [even images](build/base64-transform.litcoffee) are
+inlined using transforms.
 
-## Fork the repo
+Tests are run by [Karma](http://karma-runner.github.io/)
+in [PhantomJS](http://phantomjs.org/).
+See [`test/karma-config.litcoffee`](test/karma-config.litcoffee) file
+for docs on tests.
 
-- If you are new to Git see: https://help.github.com/articles/set-up-git
-- Sign up for [Github](https://github.com/).
-- Fork the project repo. See: https://help.github.com/articles/fork-a-repo
+[gulp](https://github.com/gulpjs/gulp) is our build automation tool.
+
+There's a bunch of JavaScript files in
+[`source/legacy`](source/legacy) - that's the VkOpt code. We're rewriting it.
+
+## Get the code
+- If you are new to Git, see
+[Set Up Git](https://help.github.com/articles/set-up-git).
+- Sign up for [GitHub](https://github.com/).
+- Fork the project repo and clone it locally.
+See [Fork A Repo](https://help.github.com/articles/fork-a-repo).
 
 ## Prepare environment
-
-We use [gulp](http://gulpjs.com) to build extensions and
-[Karma](http://karma-runner.github.io/) to run tests.  
-See `package.json` for a full list of dependencies.
-
 - Install [NodeJS](http://nodejs.org/).
 - Install [gulp](http://gulpjs.com) command line utility:
-`$ npm install -g gulp`
-- Install dev dependencies: `$ npm install`
+`npm install -g gulp`
+- Install dependencies: `npm install`
 
-**Note**: run all these commands inside project directory.
+See [`package.json`](package.json) for a full list of dependencies.
+
+**Note**: run these commands inside the project directory.
 
 ## Build unpacked extensions
-To build unpacked extensions open command line and type: `$ gulp build`.
+`gulp build`
+
+See the [`build` task](#shortcuts) defined below.
 
 ## Install an unpacked extension
 
@@ -79,16 +107,22 @@ Opera extensions page.
 No idea. :(
 
 ## Run tests
-To run unit tests open command line and type: `$ gulp test`.
+`gulp test`
+
+See the [`test` task](#test) defined below.
 
 ## Build extensions
-To build packed extensions open command line and type: `$ gulp dist`.
+`gulp dist`
+
+See the [`dist` task](#shortcuts) defined below.
 
 ## Test and build continuously
 If you want to rerun tests and rebuild unpacked extensions on
-changes simply run: `$ gulp`.
+changes simply run: `gulp`.
 
 Then go change some code and see it rebuilding automatically.
+
+See the [`default` task](#shortcuts) defined below.
 
 # Tasks specification
 
