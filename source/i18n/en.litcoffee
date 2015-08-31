@@ -241,6 +241,7 @@
 		HistMsgDates: "<b>Messages dates:</b> from %start to %end"
 		HistMsgFwd: "Forwarded messages:"
 		HistMsgGeoAttach: "Location:"
+		History: "History"
 		HistoryError: "Unable to get status history!<br>Err no: "
 		Home_tel: "Alternative phone"
 		HtmlPageSaveHelp: "Wait until this page will finish loading and save as web-page to save all photos. Photos will be save in folder with the same name as web-page\t\t\t\t\t\t<small><br>Opera: \"Save as..\" -> \"HTML-file with images\"\t\t\t\t\t\t<br>Firefox: \"Save as...\" -> \"Web-page, fully\" (Be careful! Firefox can use a lot of memory, when you are saving a big amount of photos with this function)\t\t\t\t\t\t</small>"
