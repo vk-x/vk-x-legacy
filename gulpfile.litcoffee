@@ -34,7 +34,8 @@
 vk-x is written in CoffeeScript, built using Browserify, tested in PhantomJS
 using Karma.
 
-- `npm i` to prepare the environment
+- install [Node.js](http://nodejs.org/)
+- `npm i -g gulp && npm i` to prepare the environment
 - `gulp test` to run tests
 - `gulp build` to build unpacked extensions
 - `gulp dist` to build packed extensions
@@ -69,7 +70,7 @@ There's a bunch of JavaScript files in
 See [Fork A Repo](https://help.github.com/articles/fork-a-repo).
 
 ## Prepare environment
-- Install [NodeJS](http://nodejs.org/).
+- Install [Node.js](http://nodejs.org/).
 - Install [gulp](http://gulpjs.com) command line utility:
 `npm install -g gulp`
 - Install dependencies: `npm install`
