@@ -162,7 +162,9 @@ for docs on tests.
 
 	gulp.task "browserify-test", ( done ) ->
 		getBrowserifyStream [ "**/*.litcoffee" ], "./test/unit", "test", ( stream ) ->
-			stream.on "end", done
+			stream
+				.pipe gulp.dest "./test/bundle/"
+				.on "end", done
 
 	gulp.task "test", [ "browserify-test" ], ( done ) ->
 		karma = require "karma"
