@@ -284,6 +284,103 @@ saver.zip ( zipBlob ) ->
 				for file in filesToAdd
 					saver.add file
 
+			it "should have 'doneCount' and 'totalCount' properties", ( done ) ->
+				filesToAdd = [
+					url: "fake-url-1"
+					filename: "fake-filename-1"
+				,
+					url: "fake-url-2"
+					filename: "fake-filename-2"
+				,
+					text: "fake-text-3"
+					filename: "fake-filename-3"
+				]
+
+				addedFiles = []
+
+				sinon.stub JsZip.prototype, "file", ->
+				sinon.stub JsZip.prototype, "generate", ->
+
+				sinon.stub saveFile, "download", ({ callback }) ->
+					callback null, "fake-file"
+
+				saver = saveFile.saveMultipleAsZip()
+				saver.doneCount.should.equal 0
+				saver.totalCount.should.equal 0
+
+				saver.afterEach ( filename ) ->
+					addedFiles.push filename
+					saver.doneCount.should.equal addedFiles.length
+					saver.totalCount.should.equal filesToAdd.length
+
+				saver.zip ->
+					for file in filesToAdd
+						addedFiles.should.contain file.filename
+					JsZip.prototype.file.restore()
+					JsZip.prototype.generate.restore()
+					saveFile.download.restore()
+					done()
+
+				for file in filesToAdd
+					saver.add file
+
+				saver.totalCount.should.equal filesToAdd.length
+
+			it "should not add files with already used filenames", ( done ) ->
+				filesToAdd = [
+					url: "fake-url-foo"
+					filename: "fake-filename-1"
+				,
+					url: "fake-url-bar"
+					filename: "fake-filename-2"
+				,
+					text: "fake-text-foo"
+					filename: "fake-filename-3"
+				]
+
+				conflictingFiles = [
+					text: "fake-text-bar"
+					filename: "fake-filename-3"
+				,
+					text: "fake-text-qux"
+					filename: "fake-filename-3"
+				,
+					url: "fake-url-qux"
+					filename: "fake-filename-2"
+				]
+
+				addedFiles = []
+
+				sinon.stub JsZip.prototype, "file", ( filename, content ) ->
+					for file in conflictingFiles
+						if content in [ file.text, file.url ]
+							done new Error "added conflicting file #{content}"
+
+				sinon.stub JsZip.prototype, "generate", ->
+
+				sinon.stub saveFile, "download", ({ callback, url }) ->
+					callback null, url
+
+				saver = saveFile.saveMultipleAsZip()
+
+				saver.afterEach ( filename ) ->
+					addedFiles.push filename
+
+				saver.zip ( zipBlob ) ->
+					for file in filesToAdd
+						addedFiles.should.contain file.filename
+					JsZip.prototype.file.restore()
+					JsZip.prototype.generate.restore()
+					saveFile.download.restore()
+					done()
+
+				for file in filesToAdd
+					saver.add file
+				for file in conflictingFiles
+					saver.add file
+
+				saver.totalCount.should.equal 3
+
 ## `saveFile.saveText`
 
 		describe "saveText", ->

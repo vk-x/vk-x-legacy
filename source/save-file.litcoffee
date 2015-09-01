@@ -37,6 +37,8 @@ This file only contains notes on internal details.
 		saveMultipleAsZip: ({ concurrency } = {}) ->
 			zip = new JsZip
 
+			usedFilenames = []
+
 			queue = async.queue ({ url, text, filename }, done ) ->
 				wrappedDone = ->
 					queue.doneCount += 1
@@ -62,8 +64,10 @@ This file only contains notes on internal details.
 			queue.doneCount = 0
 
 			queue.add = ( task, callback ) ->
-				queue.totalCount += 1
-				queue.push task, callback
+				unless task.filename in usedFilenames
+					queue.totalCount += 1
+					usedFilenames.push task.filename
+					queue.push task, callback
 
 			queue.zip = ( callback ) ->
 				queue.drain = ->
