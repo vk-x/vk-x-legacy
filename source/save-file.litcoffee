@@ -38,6 +38,11 @@ This file only contains notes on internal details.
 			zip = new JsZip
 
 			queue = async.queue ({ url, text, filename }, done ) ->
+				wrappedDone = ->
+					queue.doneCount += 1
+					queue._afterEach? filename, queue.doneCount, queue.totalCount
+					done()
+
 				if url?
 					saveFile.download
 						url: url
@@ -46,16 +51,27 @@ This file only contains notes on internal details.
 								queue.error? err
 							else
 								zip.file filename, file
-							done()
+							wrappedDone()
+
 				else if text?
 					zip.file filename, text
-					setTimeout done
+					setTimeout wrappedDone
 
 			queue.concurrency = concurrency ? 3
-			queue.add = queue.push
+			queue.totalCount = 0
+			queue.doneCount = 0
+
+			queue.add = ( task, callback ) ->
+				queue.totalCount += 1
+				queue.push task, callback
+
 			queue.zip = ( callback ) ->
 				queue.drain = ->
 					callback zip.generate type: "blob"
+
+			queue.afterEach = ( callback ) ->
+				queue._afterEach = callback
+
 			queue
 
 ## `saveFile.saveText`

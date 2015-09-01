@@ -108,7 +108,7 @@ Usage:
 ```CoffeeScript
 saver = saveFile.saveMultipleAsZip concurrency: 3
 
-saver.afterEach ( err, doneCount, totalCount ) ->
+saver.afterEach ( filename, doneCount, totalCount ) ->
 
 saver.add url: "/foo.jpg", filename: "foo.jpg"
 saver.add text: "Hello, world!", filename: "hw.txt"
@@ -235,6 +235,49 @@ saver.zip ( zipBlob ) ->
 						addedFiles.should.contain file.filename
 					zipBlob.should.equal "fake-blob"
 					JsZip.prototype.file.restore()
+					JsZip.prototype.generate.restore()
+					saveFile.download.restore()
+					done()
+
+				for file in filesToAdd
+					saver.add file
+
+			it "should call 'afterEach' after each file", ( done ) ->
+				filesToAdd = [
+					url: "fake-url-1"
+					filename: "fake-filename-1"
+				,
+					url: "fake-url-2"
+					filename: "fake-filename-2"
+				,
+					text: "fake-text-3"
+					filename: "fake-filename-3"
+				]
+
+				addedFiles = []
+
+				sinon.stub JsZip.prototype, "file", ->
+
+				sinon.stub JsZip.prototype, "generate", ({ type }) ->
+					type.should.equal "blob"
+					"fake-blob"
+
+				sinon.stub saveFile, "download", ({ callback }) ->
+					callback null, "fake-file"
+
+				saver = saveFile.saveMultipleAsZip()
+
+				saver.afterEach ( filename, doneCount, totalCount ) ->
+					addedFiles.push filename
+					doneCount.should.equal addedFiles.length
+					totalCount.should.equal filesToAdd.length
+
+				saver.zip ( zipBlob ) ->
+					for file in filesToAdd
+						addedFiles.should.contain file.filename
+					zipBlob.should.equal "fake-blob"
+					JsZip.prototype.file.restore()
+					JsZip.prototype.generate.restore()
 					saveFile.download.restore()
 					done()
 
