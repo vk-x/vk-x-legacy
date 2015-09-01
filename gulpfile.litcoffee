@@ -146,15 +146,16 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 	browserifyConfig = ( require "./build/browserify-config" ) "build"
 
 	getBrowserifyStream = ( globs, cwd, buildType, callback ) ->
-		globby globs, cwd: cwd, ( err, entries ) ->
-			streams = entries.map ( entry ) ->
-				b = browserify ( require "./build/browserify-config" ) buildType
-				b.add path.join cwd, entry
-				b.bundle()
-					.pipe source entry
-					.pipe buffer()
+		globby globs, cwd: cwd
+			.then ( entries ) ->
+				streams = entries.map ( entry ) ->
+					b = browserify ( require "./build/browserify-config" ) buildType
+					b.add path.join cwd, entry
+					b.bundle()
+						.pipe source entry
+						.pipe buffer()
 
-			callback es.concat streams
+				callback es.concat streams
 
 #### `test`
 See [`test/karma-config.litcoffee`](test/karma-config.litcoffee) file
@@ -165,6 +166,8 @@ for docs on tests.
 			stream
 				.pipe gulp.dest "./test/bundle/"
 				.on "end", done
+
+		"returning non-promise to prevent early task ending"
 
 	gulp.task "test", [ "browserify-test" ], ( done ) ->
 		karma = require "karma"
