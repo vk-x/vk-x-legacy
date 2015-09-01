@@ -24,6 +24,7 @@
     "coverage": "codeclimate-test-reporter < test/coverage/lcov.info"
   },
   "dependencies": {
+    "async": "1.4.2",
     "blob": "0.0.4",
     "browserify": "11.0.1",
     "browserify-coffee-coverage": "deltaidea/browserify-coffee-coverage#feature/litcoffee",

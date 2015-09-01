@@ -4,6 +4,8 @@
 
 		saveFile = require "../../source/save-file"
 
+		JsZip = require "jszip"
+
 ## What?
 
 **`saveFile`** provides useful abstractions for saving text and binary files.
@@ -98,6 +100,146 @@ Downloads a file and returns it as an `ArrayBuffer` to the callback.
 				saveFile.download
 					url: "fake-url"
 					callback: fakeCallback
+
+## `saveFile.saveMultipleAsZip`
+
+Usage:
+
+```CoffeeScript
+saver = saveFile.saveMultipleAsZip concurrency: 3
+
+saver.afterEach ( err, doneCount, totalCount ) ->
+
+saver.add url: "/foo.jpg", filename: "foo.jpg"
+saver.add text: "Hello, world!", filename: "hw.txt"
+
+saver.zip ( zipBlob ) ->
+	saveAs zipBlob, "result.zip"
+```
+
+		describe "saveMultipleAsZip", ->
+
+			it "should set concurrency to 3 by default", ->
+				saver = saveFile.saveMultipleAsZip()
+				saver.concurrency.should.equal 3
+
+			it "should set concurrency to the provided number", ->
+				saver = saveFile.saveMultipleAsZip concurrency: 100
+				saver.concurrency.should.equal 100
+
+			it "should return an object with method 'add'", ->
+				saver = saveFile.saveMultipleAsZip()
+				saver.add.should.be.a "function"
+
+			it "should download files using 'saveFile.download'", ( done ) ->
+				sinon.stub JsZip.prototype, "file", ( filename, file ) ->
+					filename.should.equal "fake-filename"
+					file.should.equal "fake-file"
+
+					JsZip.prototype.file.restore()
+					saveFile.download.restore()
+					done()
+
+				sinon.stub saveFile, "download", ({ url, callback }) ->
+					url.should.equal "fake-url"
+					callback null, "fake-file"
+
+				saver = saveFile.saveMultipleAsZip()
+				saver.add
+					url: "fake-url"
+					filename: "fake-filename"
+
+			it "should save text files to the zip", ( done ) ->
+				sinon.spy saveFile, "download"
+
+				sinon.stub JsZip.prototype, "file", ( filename, file ) ->
+					filename.should.equal "fake-filename"
+					file.should.equal "fake-text"
+
+					JsZip.prototype.file.restore()
+					saveFile.download.should.not.have.been.called
+					saveFile.download.restore()
+					done()
+
+				saver = saveFile.saveMultipleAsZip()
+				saver.add
+					text: "fake-text"
+					filename: "fake-filename"
+
+			# See also: https://github.com/caolan/async/pull/727
+			it "should pass error to 'error' when download fails", ( done ) ->
+				sinon.stub JsZip.prototype, "file"
+					.throws()
+
+				sinon.stub saveFile, "download", ({ callback }) ->
+					callback new Error "Oh, snap!"
+
+				saver = saveFile.saveMultipleAsZip()
+
+				saver.error = ( err ) ->
+					err.should.be.an.instanceof Error
+					JsZip.prototype.file.restore()
+					saveFile.download.restore()
+					done()
+
+				saver.add
+					url: "fake-url"
+					filename: "fake-filename"
+
+			it "should not kill the queue when download fails", ( done ) ->
+				sinon.stub JsZip.prototype, "file"
+					.throws()
+
+				sinon.stub saveFile, "download", ({ callback }) ->
+					callback new Error "Oh, snap!"
+
+				saver = saveFile.saveMultipleAsZip()
+
+				saver.drain = ->
+					JsZip.prototype.file.restore()
+					saveFile.download.restore()
+					done()
+
+				saver.add
+					url: "fake-url"
+					filename: "fake-filename"
+
+			it "should pass a zip blob to the 'zip' callback", ( done ) ->
+				filesToAdd = [
+					url: "fake-url-1"
+					filename: "fake-filename-1"
+				,
+					url: "fake-url-2"
+					filename: "fake-filename-2"
+				,
+					text: "fake-text-3"
+					filename: "fake-filename-3"
+				]
+
+				addedFiles = []
+
+				sinon.stub JsZip.prototype, "file", ( filename ) ->
+					addedFiles.push filename
+
+				sinon.stub JsZip.prototype, "generate", ({ type }) ->
+					type.should.equal "blob"
+					"fake-blob"
+
+				sinon.stub saveFile, "download", ({ callback }) ->
+					callback null, "fake-file"
+
+				saver = saveFile.saveMultipleAsZip()
+
+				saver.zip ( zipBlob ) ->
+					for file in filesToAdd
+						addedFiles.should.contain file.filename
+					zipBlob.should.equal "fake-blob"
+					JsZip.prototype.file.restore()
+					saveFile.download.restore()
+					done()
+
+				for file in filesToAdd
+					saver.add file
 
 ## `saveFile.saveText`
 

@@ -8,6 +8,8 @@ This file only contains notes on internal details.
 	Blob = require "blob"
 	saveAs = require "filesaver.js"
 	ajax = require "./ajax"
+	async = require "async"
+	JsZip = require "jszip"
 
 	saveFile =
 
@@ -29,6 +31,32 @@ This file only contains notes on internal details.
 						callback null, result.response.response
 					else
 						callback new Error "Error while downloading!"
+
+## `saveFile.saveMultipleAsZip`
+
+		saveMultipleAsZip: ({ concurrency } = {}) ->
+			zip = new JsZip
+
+			queue = async.queue ({ url, text, filename }, done ) ->
+				if url?
+					saveFile.download
+						url: url
+						callback: ( err, file ) ->
+							if err?
+								queue.error? err
+							else
+								zip.file filename, file
+							done()
+				else if text?
+					zip.file filename, text
+					setTimeout done
+
+			queue.concurrency = concurrency ? 3
+			queue.add = queue.push
+			queue.zip = ( callback ) ->
+				queue.drain = ->
+					callback zip.generate type: "blob"
+			queue
 
 ## `saveFile.saveText`
 
