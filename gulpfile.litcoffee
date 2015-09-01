@@ -138,30 +138,31 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 	config = require "./package"
 	plugins = ( require "gulp-load-plugins" )()
 	cwd = process.cwd()
+	browserify = require "browserify"
+	buffer = require "vinyl-buffer"
+	source = require "vinyl-source-stream"
+	globby = require "globby"
 	distPrefix = "#{config.name}-#{config.version}"
-	browserifyConfig = ( require "./build/browserify-config" )()
+	browserifyConfig = ( require "./build/browserify-config" ) "build"
+
+	getBrowserifyStream = ( globs, cwd, buildType, callback ) ->
+		globby globs, cwd: cwd, ( err, entries ) ->
+			streams = entries.map ( entry ) ->
+				b = browserify ( require "./build/browserify-config" ) buildType
+				b.add path.join cwd, entry
+				b.bundle()
+					.pipe source entry
+					.pipe buffer()
+
+			callback es.concat streams
 
 #### `test`
 See [`test/karma-config.litcoffee`](test/karma-config.litcoffee) file
 for docs on tests.
 
 	gulp.task "browserify-test", ( done ) ->
-		browserify = require "browserify"
-		buffer = require "vinyl-buffer"
-		source = require "vinyl-source-stream"
-		globby = require "globby"
-
-		globby [ "**/*.litcoffee" ], cwd: "./test/unit", ( err, entries ) ->
-			streams = entries.map ( entry ) ->
-				b = browserify ( require "./build/browserify-config" ) "test"
-				b.add path.join "./test/unit", entry
-				b.bundle()
-					.pipe source entry
-					.pipe buffer()
-					.pipe gulp.dest "test/bundle/"
-
-			es.concat streams
-				.on "end", done
+		getBrowserifyStream [ "**/*.litcoffee" ], "./test/unit", "test", ( stream ) ->
+			stream.on "end", done
 
 	gulp.task "test", [ "browserify-test" ], ( done ) ->
 		karma = require "karma"
@@ -229,62 +230,65 @@ for docs on tests.
 
 #### `scripts`
 
-	gulp.task "scripts", [ "clean-build" ], ->
-		sourceForTopStream = ->
-			legacyStream =
-				gulp.src "source/legacy/*.js"
-					.pipe plugins.concat "legacy.js"
-
-			browserifyStream = gulp.src "source/index-top.litcoffee", read: no
-				.pipe plugins.browserify browserifyConfig
+	getSourceForTopStream = ( callback ) ->
+		getBrowserifyStream [ "index-top.litcoffee" ], "./source", "build", ( stream ) ->
+			browserifyStream = stream
 				.pipe plugins.rename "bundle.js"
 
-			es.concat browserifyStream, legacyStream
+			legacyStream = gulp.src "source/legacy/*.js"
+				.pipe plugins.concat "legacy.js"
+
+			resultStream = es.concat browserifyStream, legacyStream
 				.pipe plugins.order [ "bundle.js", "legacy.js" ]
 				.pipe plugins.concat "run-in-top.js"
 
-		sourceForFramesStream = ->
-			gulp.src "source/index-frames.litcoffee", read: no
-				.pipe plugins.browserify browserifyConfig
-				.pipe plugins.rename "run-in-frames.js"
+			callback resultStream
 
-		injectSourceForTop = plugins.inject sourceForTopStream(),
+	getSourceForFramesStream = ( callback ) ->
+		getBrowserifyStream [ "index-frames.litcoffee" ], "./source", "build", ( stream ) ->
+			callback stream.pipe plugins.rename "run-in-frames.js"
+
+	injectSourceForTop = ( stream ) ->
+		plugins.inject stream,
 			starttag: "sourceForTop = \""
 			endtag: "\""
 			transform: ( path, file ) ->
 				escapeString = require "js-string-escape"
 				escapeString file.contents
 
-		injectSourceForFrames = plugins.inject sourceForFramesStream(),
+	injectSourceForFrames = ( stream ) ->
+		plugins.inject stream,
 			starttag: "sourceForFrames = \""
 			endtag: "\""
 			transform: ( path, file ) ->
 				escapeString = require "js-string-escape"
 				escapeString file.contents
 
-		userscriptHeader = fs.readFileSync "./source/meta/opera/" +
-			"userscript-header.js"
-		noticeTemplate = fs.readFileSync "./source/meta/notice.template.js"
+	userscriptHeader = -> fs.readFileSync "./source/meta/opera/userscript-header.js"
+	noticeTemplate = -> fs.readFileSync "./source/meta/notice.template.js"
 
-		contentScriptStream =
-			gulp.src [
-				"source/meta/*/**/content.litcoffee"
-				"source/meta/*/**/background.litcoffee"
-			], read: no
-				.pipe plugins.browserify browserifyConfig
-				.pipe plugins.rename extname: ".js"
-				.pipe plugins.header noticeTemplate, config
-				.pipe injectSourceForTop
-				.pipe injectSourceForFrames
-				.pipe plugins.if /opera/, plugins.header userscriptHeader
-				.pipe gulp.dest "build"
+	gulp.task "scripts", [ "clean-build" ], ( done ) ->
+		getSourceForTopStream ( sourceForTopStream ) ->
+			getSourceForFramesStream ( sourceForFramesStream ) ->
+				getBrowserifyStream [
+					"**/content.litcoffee"
+					"**/background.litcoffee"
+				], "./source/meta", "build", ( stream ) ->
+					contentScriptStream = stream
+						.pipe plugins.rename extname: ".js"
+						.pipe plugins.header noticeTemplate(), config
+						.pipe injectSourceForTop sourceForTopStream
+						.pipe injectSourceForFrames sourceForFramesStream
+						.pipe plugins.if /opera/, plugins.header userscriptHeader()
+						.pipe gulp.dest "build"
 
-		distStream = es.concat sourceForTopStream(), sourceForFramesStream()
-			.pipe plugins.header noticeTemplate, config
-			.pipe gulp.dest "build/chromium"
-			.pipe gulp.dest "build/firefox/scripts"
+					distStream = es.concat sourceForTopStream, sourceForFramesStream
+						.pipe plugins.header noticeTemplate(), config
+						.pipe gulp.dest "build/chromium"
+						.pipe gulp.dest "build/firefox/scripts"
 
-		es.concat contentScriptStream, distStream
+					es.concat contentScriptStream, distStream
+						.on "end", done
 
 #### `dist-maxthon`
 Distributable Maxthon extension created using

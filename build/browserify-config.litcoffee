@@ -1,7 +1,7 @@
 	templateTransform = require "./template-transform"
 	base64Transform = require "./base64-transform"
 
-	module.exports = ( type = "build" ) ->
+	module.exports = ( type ) ->
 		if type is "test"
 			plugin = [ "proxyquireify/plugin" ]
 			transform = [
