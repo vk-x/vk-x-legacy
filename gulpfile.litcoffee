@@ -157,11 +157,31 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 
 				callback es.concat streams
 
+	removeFolder = ( folder, callback ) ->
+		busyFiles = []
+		retryInterval = 50
+		tryRemove = ->
+			fs.remove folder, ( error ) ->
+				if error
+					if error.path not in busyFiles
+						busyFiles.push error.path
+						relativePath = path.relative cwd, error.path
+						errorMessage = "Can't remove #{relativePath}, " +
+						"will retry each #{retryInterval}ms until success."
+						console.log errorMessage.yellow
+					setTimeout tryRemove, retryInterval
+				else callback()
+		tryRemove()
+
 #### `test`
 See [`test/karma-config.litcoffee`](test/karma-config.litcoffee) file
 for docs on tests.
 
-	gulp.task "browserify-test", ( done ) ->
+	gulp.task "clean-test", ( done ) ->
+		removeFolder "test/bundle", ->
+			removeFolder "test/coverage", done
+
+	gulp.task "browserify-test", [ "clean-test" ], ( done ) ->
 		getBrowserifyStream [ "**/*.litcoffee" ], "./test/unit", "test", ( stream ) ->
 			stream
 				.pipe gulp.dest "./test/bundle/"
@@ -178,22 +198,6 @@ for docs on tests.
 		server.start()
 
 #### `clean-build` and `clean-dist`
-
-	removeFolder = ( folder, callback ) ->
-		busyFiles = []
-		retryInterval = 50
-		tryRemove = ->
-			fs.remove folder, ( error ) ->
-				if error
-					if error.path not in busyFiles
-						busyFiles.push error.path
-						relativePath = path.relative cwd, error.path
-						errorMessage = "Can't remove #{relativePath}, " +
-						"will retry each #{retryInterval}ms until success."
-						console.log errorMessage.yellow
-					setTimeout tryRemove, retryInterval
-				else callback()
-		tryRemove()
 
 	gulp.task "clean-dist", ( done ) ->
 		removeFolder "dist", done
