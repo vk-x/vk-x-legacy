@@ -157,6 +157,8 @@ See: https://github.com/gulpjs/gulp/blob/master/README.md#sample-gulpfile
 
 				callback es.concat streams
 
+		"returning non-promise to prevent tasks from ending too early"
+
 	removeFolder = ( folder, callback ) ->
 		busyFiles = []
 		retryInterval = 50
@@ -186,8 +188,6 @@ for docs on tests.
 			stream
 				.pipe gulp.dest "./test/bundle/"
 				.on "end", done
-
-		"returning non-promise to prevent early task ending"
 
 	gulp.task "test", [ "browserify-test" ], ( done ) ->
 		karma = require "karma"
