@@ -17,9 +17,26 @@
 ```CoffeeScript
 saveFile = require "./save-file"
 
+# Download a file and get it as `ArrayBuffer`.
+saveFile.download
+	url: "http://vk.com/favicon.ico"
+	callback: ( err, file ) ->
+
+# Save a text file.
 saveFile.saveText
 	text: "Hello, world!"
 	filename: "hw.txt"
+
+# Download and save multiple files.
+saver = saveFile.saveMultipleAsZip concurrency: 3
+
+saver.afterEach ( filename, doneCount, totalCount ) ->
+
+saver.add url: "/foo.jpg", filename: "foo.jpg"
+saver.add text: "Hello, world!", filename: "hw.txt"
+
+saver.zip ( zipBlob ) ->
+	saveAs zipBlob, "result.zip"
 ```
 
 #### Use modern JavaScript features: `Blob` and `saveAs`.
@@ -383,8 +400,19 @@ saver.zip ( zipBlob ) ->
 
 ## `saveFile.saveText`
 
+Synchronously saves a text file using `Blob` and `saveAs`.
+
+```CoffeeScript
+saveFile.saveText
+	text: "Hello, world!"
+	filename: "hw.txt"
+```
+
 		describe "saveText", ->
 
-			# TODO: Use a proxyquire-like tool to mock Blob and saveAs. See #177.
-			it "exists", ->
-				saveFile.saveText.should.be.a "function"
+			it.skip "should be a thin wrapper around Blob and saveAs", ->
+				# From cjohansen/Sinon.JS#743:
+				# Native objects are notoriously unreliable as spying/stubbing
+				# targets.
+				#
+				# Should find or publish thin wrappers for Blob and saveAs.
