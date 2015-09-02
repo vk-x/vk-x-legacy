@@ -6,7 +6,7 @@ This file only contains notes on internal details.
 # `saveFile` module
 
 	Blob = require "blob"
-	saveAs = require "filesaver.js"
+	saveAs = require( "filesaver.js" ).saveAs
 	ajax = require "./ajax"
 	async = require "async"
 	JsZip = require "jszip"
