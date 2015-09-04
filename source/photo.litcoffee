@@ -25,17 +25,22 @@ This file only contains notes on internal details.
 			photoInfo.photo_130 ?
 			photoInfo.photo_75
 
+## `photo.normalizeAlbumId`
+
+		normalizeAlbumId: ( rawId ) ->
+			rawId = "#{rawId}"
+			switch rawId
+				when "000" then "saved"
+				when "00" then "wall"
+				when "0" then "profile"
+				else rawId
+
 ## `photo.downloadAlbumAsZip`
 
 		downloadAlbumAsZip: ({ ownerId, albumId, callback } = {}) ->
 			callback ?= ->
 
-			if albumId is "000"
-				albumId = "saved"
-			else if albumId is "00"
-				albumId = "wall"
-			else if albumId is "0"
-				albumId = "profile"
+			albumId = @normalizeAlbumId albumId
 
 			progressBox = modal.showProgressBar
 				title: i18n.t "downloadingPhotosToZipTitle"

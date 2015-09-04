@@ -60,6 +60,35 @@ In other words, use `photo_sizes: 0` when calling [`photos.get`](https://vk.com/
 
 					result.should.equal fakePhotoInfo[ "photo_#{size}" ]
 
+## `photo.normalizeAlbumId`
+
+Usage:
+
+```CoffeeScript
+normalizedId = photo.normalizeAlbumId rawId
+```
+
+Normalizes an album id if necesary. For example, if you parse it from the url,
+you might get `"000"`. But the API expects you to use `"saved"` as an id in that
+case. This function handles such cases and return an API-ready album id.
+
+		describe "normalizeAlbumId", ->
+
+			[
+				[ "000", "saved" ]
+				[ "saved", "saved" ]
+				[ "00", "wall" ]
+				[ "wall", "wall" ]
+				[ "0", "profile" ]
+				[ 0, "profile" ]
+				[ "profile", "profile" ]
+				[ "123", "123" ]
+				[ 123, "123" ]
+			].forEach ([ rawId, normalizedId ]) ->
+				it "should normalize #{rawId} as #{normalizedId}", ->
+					result = photo.normalizeAlbumId rawId
+					result.should.equal normalizedId
+
 ## `photo.downloadAlbumAsZip`
 
 		describe "downloadAlbumAsZip", ->
