@@ -167,7 +167,11 @@ var vk_photos = {
                   }});
                   if (aid !== "tag") {
                     p_options.push({l:app.i18n.IDL('SaveAlbumAsZip'), onClick:function() {
-                       app.photo.downloadAlbumAsZip({ ownerId: oid, albumId: aid });
+                       app.photo.downloadAlbumAsZip({
+                          ownerId: oid,
+                          albumId: aid,
+                          callback: function() {}
+                       });
                     }});
                   }
                p_options.push({l:app.i18n.IDL('Links'), onClick:function() {
