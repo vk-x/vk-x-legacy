@@ -97,6 +97,7 @@ case. This function handles such cases and return an API-ready album id.
 			i18n = require "../../source/i18n"
 			vkApi = require "../../source/vk-api"
 			saveFile = require "../../source/save-file"
+			saveAsModule = require "filesaver.js"
 
 			it "should use saveFile.saveMultipleAsZip", ( done ) ->
 				sinon.stub photo, "normalizeAlbumId", ( albumId ) ->
@@ -116,9 +117,7 @@ case. This function handles such cases and return an API-ready album id.
 				sinon.stub i18n, "t", ->
 					"fake-translation"
 
-				# Can't stub global.saveAs, it's a property - not a function.
-				originalSaveAs = global.saveAs
-				global.saveAs = sinon.spy ( zipBlob ) ->
+				sinon.stub saveAsModule, "saveAs", ( zipBlob ) ->
 					zipBlob.should.equal "fake-zip-blob"
 
 				sinon.stub saveFile, "saveMultipleAsZip", ({ concurrency }) ->
@@ -178,8 +177,8 @@ case. This function handles such cases and return an API-ready album id.
 
 						i18n.t.restore()
 
-						global.saveAs.should.have.been.calledOnce
-						global.saveAs = originalSaveAs
+						saveAsModule.saveAs.should.have.been.calledOnce
+						saveAsModule.saveAs.restore()
 
 						done()
 
@@ -203,9 +202,7 @@ case. This function handles such cases and return an API-ready album id.
 				sinon.stub i18n, "t", ->
 					"fake-translation"
 
-				# Can't stub global.saveAs, it's a property - not a function.
-				originalSaveAs = global.saveAs
-				global.saveAs = sinon.stub()
+				sinon.stub saveAsModule, "saveAs"
 
 				isSaverKilled = no
 
@@ -248,8 +245,8 @@ case. This function handles such cases and return an API-ready album id.
 						vkApi.request.restore()
 						saveFile.saveMultipleAsZip.restore()
 						i18n.t.restore()
-						global.saveAs.should.have.not.been.called
-						global.saveAs = originalSaveAs
+						saveAsModule.saveAs.should.have.not.been.called
+						saveAsModule.saveAs.restore()
 
 						done()
 

@@ -9,6 +9,7 @@ This file only contains notes on internal details.
 	vkApi = require "./vk-api"
 	i18n = require "./i18n"
 	saveFile = require "./save-file"
+	saveAsPolyfill = require "filesaver.js"
 
 	photo =
 
@@ -72,7 +73,7 @@ This file only contains notes on internal details.
 							filename: "#{i + 1}_#{photoInfo.id}.jpg"
 
 					saver.zip ( zipBlob ) ->
-						saveAs zipBlob, "album#{ownerId}_#{albumId}.zip"
+						saveAsPolyfill.saveAs zipBlob, "album#{ownerId}_#{albumId}.zip"
 						progressBar.hide()
 						callback()
 
