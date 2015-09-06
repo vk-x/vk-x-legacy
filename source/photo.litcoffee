@@ -35,7 +35,8 @@ This file only contains notes on internal details.
 ## `photo.downloadAlbumAsZip`
 
 		downloadAlbumAsZip: ({ ownerId, albumId, callback } = {}) ->
-			callback ?= ->
+			if not callback
+				throw new Error "Callback is not specified!"
 
 			albumId = photo.normalizeAlbumId albumId
 

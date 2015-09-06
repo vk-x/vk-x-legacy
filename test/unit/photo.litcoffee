@@ -252,3 +252,11 @@ case. This function handles such cases and return an API-ready album id.
 						global.saveAs = originalSaveAs
 
 						done()
+
+			it "should throw an Error if no callback", ->
+				fun = ->
+					photo.downloadAlbumAsZip
+						ownerId: "fake-owner-id"
+						albumId: "fake-album-id"
+
+				fun.should.throw Error, /callback/i
