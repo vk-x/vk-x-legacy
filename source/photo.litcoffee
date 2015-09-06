@@ -59,8 +59,8 @@ This file only contains notes on internal details.
 					saver = saveFile.saveMultipleAsZip concurrency: 3
 					saver.afterEach ( filename, doneCount, totalCount ) ->
 						if not progressBar.isVisible()
-							callback new Error "The user has cancelled downloading."
 							saver.kill()
+							callback new Error "The user has cancelled downloading."
 							return
 						progressBar.setProgress Math.round 100 * doneCount / totalCount
 

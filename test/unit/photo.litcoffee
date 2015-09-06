@@ -167,6 +167,7 @@ case. This function handles such cases and return an API-ready album id.
 
 						photo.getBestQualityUrl.restore()
 
+						progressBar.hide.should.have.been.calledOnce
 						modal.showProgressBar.should.have.been.calledOnce
 						modal.showProgressBar.restore()
 
@@ -175,11 +176,79 @@ case. This function handles such cases and return an API-ready album id.
 
 						saveFile.saveMultipleAsZip.restore()
 
-						progressBar.hide.should.have.been.calledOnce
-
 						i18n.t.restore()
 
 						global.saveAs.should.have.been.calledOnce
+						global.saveAs = originalSaveAs
+
+						done()
+
+			it "should kill the saver when user cancels downloading", ( done ) ->
+				sinon.stub photo, "normalizeAlbumId", ( albumId ) ->
+					albumId.should.equal "fake-album-id"
+					"fake-normalized-album-id"
+
+				sinon.stub photo, "getBestQualityUrl", ( photoInfo ) ->
+					"fake-url-#{photoInfo.id}"
+
+				addedFiles = []
+
+				progressBar =
+					isVisible: -> addedFiles.length < 2
+					setProgress: sinon.stub()
+					hide: sinon.stub()
+				sinon.stub modal, "showProgressBar", ->
+					progressBar
+
+				sinon.stub i18n, "t", ->
+					"fake-translation"
+
+				# Can't stub global.saveAs, it's a property - not a function.
+				originalSaveAs = global.saveAs
+				global.saveAs = sinon.stub()
+
+				isSaverKilled = no
+
+				sinon.stub saveFile, "saveMultipleAsZip", ({ concurrency }) ->
+					concurrency.should.be.a "number"
+
+					afterEachCallback = null
+					afterEach: ( callback ) ->
+						afterEachCallback = callback
+					add: ({ url, filename }) ->
+						addedFiles.push { url, filename }
+						afterEachCallback? filename, addedFiles.length, addedFiles.length
+					zip: ( callback ) ->
+						unless isSaverKilled
+							callback "fake-zip-blob"
+					kill: ->
+						isSaverKilled = yes
+
+				sinon.stub vkApi, "request", ({ callback }) ->
+					callback response: items: [
+							id: "foo"
+						,
+							id: "bar"
+						,
+							id: "qux"
+						]
+
+				photo.downloadAlbumAsZip
+					ownerId: "fake-owner-id"
+					albumId: "fake-album-id"
+					callback: ( err ) ->
+						isSaverKilled.should.equal yes
+						err.should.be.an.instanceof Error
+						addedFiles.length.should.be.lessThan 3
+
+						photo.normalizeAlbumId.restore()
+						photo.getBestQualityUrl.restore()
+						progressBar.hide.should.have.not.been.called
+						modal.showProgressBar.restore()
+						vkApi.request.restore()
+						saveFile.saveMultipleAsZip.restore()
+						i18n.t.restore()
+						global.saveAs.should.have.not.been.called
 						global.saveAs = originalSaveAs
 
 						done()
