@@ -5,9 +5,6 @@ This file only contains notes on internal details.
 
 # `photo` module
 
-	Blob = require "blob"
-	JsZip = require "jszip"
-	saveAs = require "filesaver.js"
 	modal = require "./modal"
 	vkApi = require "./vk-api"
 	i18n = require "./i18n"
@@ -40,9 +37,9 @@ This file only contains notes on internal details.
 		downloadAlbumAsZip: ({ ownerId, albumId, callback } = {}) ->
 			callback ?= ->
 
-			albumId = @normalizeAlbumId albumId
+			albumId = photo.normalizeAlbumId albumId
 
-			progressBox = modal.showProgressBar
+			progressBar = modal.showProgressBar
 				title: i18n.t "downloadingPhotosToZipTitle"
 				content: i18n.t "downloadingPhotosToZipText"
 				dark: yes
@@ -53,43 +50,28 @@ This file only contains notes on internal details.
 					owner_id: ownerId
 					album_id: albumId
 					rev: 1
-				callback: ( result ) =>
+				callback: ( result ) ->
 					if result.error
 						callback new Error result.error
 
 					photos = result.response.items
 
-					zip = new JsZip
-
-					addPhotoToZip = ( photoIndex ) =>
-						if photoIndex >= photos.length
-							zipBlob = zip.generate type: "blob"
-							saveAs zipBlob, "album#{ownerId}_#{albumId}.zip"
-							progressBox.hide()
-							callback()
+					saver = saveFile.saveMultipleAsZip concurrency: 3
+					saver.afterEach ( filename, doneCount, totalCount ) ->
+						if not progressBar.isVisible()
+							callback new Error "The user has cancelled downloading."
+							saver.kill()
 							return
+						progressBar.setProgress Math.round 100 * doneCount / totalCount
 
-						photoInfo = photos[ photoIndex ]
+					photos.forEach ( photoInfo, i ) ->
+						saver.add
+							url: photo.getBestQualityUrl photoInfo
+							filename: "#{i + 1}_#{photoInfo.id}.jpg"
 
-						link = @getBestQualityUrl photoInfo
-
-						filename = "#{photoIndex + 1}_#{photoInfo.id}.jpg"
-
-						saveFile.download
-							url: link
-							callback: ( err, file ) ->
-								if err
-									callback err
-									return
-
-								if not progressBox.isVisible()
-									callback new Error "The user has cancelled downloading."
-									return
-
-								zip.file filename, file
-								progressBox.setProgress Math.round 100 * photoIndex / photos.length
-								setTimeout -> addPhotoToZip photoIndex + 1
-
-					addPhotoToZip 0
+					saver.zip ( zipBlob ) ->
+						saveAs zipBlob, "album#{ownerId}_#{albumId}.zip"
+						progressBar.hide()
+						callback()
 
 	module.exports = photo
