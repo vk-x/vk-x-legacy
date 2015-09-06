@@ -9,7 +9,6 @@ This file only contains notes on internal details.
 	template = require "./modal/template"
 	progressBarTemplate = require "./modal/progressBarTemplate"
 	app = require "./app"
-	fs = require "fs"
 	logo = "data:image/png;base64," + require "./meta/logo.png"
 
 	modal =
