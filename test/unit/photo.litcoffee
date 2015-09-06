@@ -260,3 +260,39 @@ case. This function handles such cases and return an API-ready album id.
 						albumId: "fake-album-id"
 
 				fun.should.throw Error, /callback/i
+
+			it "should return an Error when API request fails", ( done ) ->
+				sinon.stub photo, "normalizeAlbumId", ( albumId ) ->
+					albumId.should.equal "fake-album-id"
+					"fake-normalized-album-id"
+
+				sinon.stub photo, "getBestQualityUrl", ( photoInfo ) ->
+					"fake-url-#{photoInfo.id}"
+
+				progressBar =
+					isVisible: sinon.stub()
+					setProgress: sinon.stub()
+					hide: sinon.stub()
+				sinon.stub modal, "showProgressBar", ->
+					progressBar
+
+				sinon.stub i18n, "t", ->
+					"fake-translation"
+
+				sinon.stub vkApi, "request", ({ callback }) ->
+					callback
+						error: "fake-api-error"
+
+				photo.downloadAlbumAsZip
+					ownerId: "fake-owner-id"
+					albumId: "fake-album-id"
+					callback: ( err ) ->
+						err.should.be.an.instanceof Error
+
+						photo.normalizeAlbumId.restore()
+						photo.getBestQualityUrl.restore()
+						modal.showProgressBar.restore()
+						vkApi.request.restore()
+						i18n.t.restore()
+
+						done()

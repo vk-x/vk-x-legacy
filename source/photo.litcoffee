@@ -54,6 +54,7 @@ This file only contains notes on internal details.
 				callback: ( result ) ->
 					if result.error
 						callback new Error result.error
+						return
 
 					photos = result.response.items
 
