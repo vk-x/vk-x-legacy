@@ -59,7 +59,7 @@ This file only contains notes on internal details.
 
 					photos = result.response.items
 
-					saver = saveFile.saveMultipleAsZip concurrency: 3
+					saver = saveFile.saveMultipleAsZip concurrency: 6
 					saver.afterEach ( filename, doneCount, totalCount ) ->
 						if not progressBar.isVisible()
 							saver.kill()
