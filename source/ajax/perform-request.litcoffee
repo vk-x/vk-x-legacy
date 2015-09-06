@@ -63,6 +63,8 @@ This file only contains notes on internal details.
 				"type"
 				"unauthorized"
 			]
+			if response.error
+				response.error = response.error.message
 			for prop in safeProperties
 				responseData.response[ prop ] = response[ prop ]
 			# P.S. There're other properties like "xhr"
