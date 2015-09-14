@@ -1,8 +1,7 @@
 language: node_js
 
 node_js:
-  - node
-  - iojs
+  - stable
 
 # http://stackoverflow.com/a/25661593
 before_install:
