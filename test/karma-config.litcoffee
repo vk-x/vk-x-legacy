@@ -43,7 +43,7 @@ Also see `package.json` file for a list of dependencies.
 				"karma-mocha"
 				"karma-chai-sinon"
 				"karma-coverage"
-				"karma-phantomjs-launcher"
+				"karma-chrome-launcher"
 			]
 
 			coverageReporter:
@@ -54,6 +54,12 @@ Also see `package.json` file for a list of dependencies.
 
 			reporters: [ "progress", "coverage" ]
 
-			browsers: [ "PhantomJS" ]
+			# http://stackoverflow.com/a/25661593
+			customLaunchers:
+				Chrome_travis_ci:
+					base: "Chrome"
+					flags: [ "--no-sandbox" ]
+
+			browsers: [ if process.env.TRAVIS then "Chrome_travis_ci" else "Chrome" ]
 
 			singleRun: yes
