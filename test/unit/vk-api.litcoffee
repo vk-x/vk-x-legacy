@@ -39,7 +39,7 @@ All options are required.
 vkApi.request
 	method: "users.get"
 	data: fields: "online"
-	callback: ({ online }) -> alert if online then "Online" else "Offline"
+	callback: ({ response }) -> alert if response?.online then "Online" else "Offline"
 ```
 
 #### Use hidden iframe for authorization.
