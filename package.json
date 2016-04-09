@@ -1,9 +1,9 @@
 {
-  "name": "vk-x",
+  "name": "vk-x-legacy",
   "version": "0.5.0",
-  "description": "Extension for vk.com inspired by and based on VkOpt.",
-  "description_ru": "Расширение для vk.com, вдохновлённое и основанное на VkOpt.",
-  "homepage": "https://github.com/vk-x/vk-x",
+  "description": "vk-x for the old vk.com.",
+  "description_ru": "vk-x для старого vk.com.",
+  "homepage": "https://github.com/vk-x/vk-x-legacy",
   "private": true,
   "extensionUpdateUrls": {
     "firefox": "https://vk-x.github.io/update/firefox.xml",
@@ -18,7 +18,7 @@
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vk-x/vk-x"
+    "url": "https://github.com/vk-x/vk-x-legacy"
   },
   "scripts": {
     "test": "gulp test && gulp dist",
